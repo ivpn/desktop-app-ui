@@ -1,0 +1,200 @@
+﻿<Window x:Class="IVPN.Windows.PrivateEmailManager"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        Style="{StaticResource FlatWindowStyle}"
+        mc:Ignorable="d" Height="550" Width="543"
+        ResizeMode="CanResizeWithGrip"
+        Title="E-mail manager"
+        Loaded="PrivateEmailManager_OnLoaded" WindowStartupLocation="CenterScreen">
+    <Window.Resources>
+        
+        <Style x:Key="MenuItemButtonStyle"  TargetType="Button" BasedOn="{StaticResource ButtonMouseOverBackgroundChangeble}">
+            <Setter Property="Background" Value="Transparent"/>
+            <Setter Property="Foreground" Value="#172533"/>
+            <Setter Property="FontSize" Value="15"/>
+            <Setter Property="HorizontalContentAlignment" Value="Left"/>
+            <Setter Property="Margin" Value="8,8,16,8"/>
+            <Setter Property="BorderBrush" Value="Transparent"/>
+            <Setter Property="BorderThickness" Value="1"/>
+
+            <Style.Triggers>
+                <Trigger Property="IsMouseOver" Value="True">
+                    <Setter Property="BorderBrush" Value="#178FE6"></Setter>
+                </Trigger>
+            </Style.Triggers>
+        </Style>
+    </Window.Resources>
+
+    <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="*"/>
+        </Grid.RowDefinitions>
+
+        <Popup Grid.Row="1" x:Name="GuiContextMenu" StaysOpen="False" Placement="Mouse" PopupAnimation="Scroll" AllowsTransparency="True">
+            <Border BorderThickness="1" BorderBrush="#CCCBCB" Background="#F2F2F2" Opacity="0.99">
+                <Grid>
+                    <Grid.RowDefinitions>
+                        <RowDefinition/>
+                        <RowDefinition/>
+                        <RowDefinition/>
+                    </Grid.RowDefinitions>
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="Auto"/>
+                        <ColumnDefinition Width="*"/>
+                    </Grid.ColumnDefinitions>
+
+                    <Grid.Resources>
+                        <Style TargetType="Button" BasedOn="{StaticResource MenuItemButtonStyle}"/>
+                    </Grid.Resources>
+
+                    <Button Grid.Row="0" Grid.Column="1" Name="GuiCopyMenuItem" Click="GuiCopyMenuItem_Click">
+                        <TextBlock Margin="3"> Copy</TextBlock>
+                    </Button>
+                    <Button Grid.Row="1" Grid.Column="1" Name="GuiEditMenuItem" Click="GuiEditMenuItem_Click">
+                        <TextBlock Margin="3"> Edit note</TextBlock>
+                    </Button>
+
+                    <Image Grid.Row="2" Grid.Column="0" Source="../Resources/iconDelete.png" Stretch="None" Margin="10,0,0,0"/>
+                    <Button Grid.Row="2" Grid.Column="1" Name="GuiDeleteMenuItem" Click="GuiDeleteMenuItem_Click">
+                        <TextBlock Margin="3" Name="GuiDeleteMenuItemHeader"> Delete e-mail</TextBlock>
+                    </Button>
+                </Grid>
+            </Border>
+        </Popup>
+
+        <DataGrid Name="GuiDataGrid" MouseDoubleClick="GuiDataGrid_OnMouseDoubleClick" MouseRightButtonUp="GuiDataGrid_OnMouseRightButtonUp"
+                  Grid.Row="1" 
+                  ItemsSource="{Binding Model.PrivateEmails}"
+                  GridLinesVisibility="None" 
+                  AutoGenerateColumns="False"
+                  Background="Transparent"
+                  AlternatingRowBackground="#80E9EBED"
+                  RowHeight="42"
+                  RowHeaderWidth="0"
+                  ColumnHeaderHeight="42"
+                  BorderThickness="0"
+                  SelectionUnit="FullRow"
+                  SelectionChanged="GuiDataGrid_SelectionChanged">
+
+            <DataGrid.ColumnHeaderStyle>
+                <Style TargetType="DataGridColumnHeader">
+                    <Setter Property="VerticalAlignment" Value="Center"/>
+                    <Setter Property="FontSize" Value="15"/>
+                    <Setter Property="FontWeight" Value="Bold"/>
+                    <Setter Property="Foreground" Value="#26394D"/>
+                    <Setter Property="Background" Value="Transparent"/>
+                    <Setter Property="Margin" Value="32,0,0,0"/>
+                </Style>
+            </DataGrid.ColumnHeaderStyle>
+            
+            <DataGrid.CellStyle>
+                <Style TargetType="DataGridCell">
+                    <Setter Property="BorderThickness" Value="0"/>
+                    <Style.Triggers>
+                        <Trigger Property="IsSelected" Value="True">
+                            <Setter Property="Background" Value="#178FE6"></Setter>
+                        </Trigger>
+                    </Style.Triggers>
+                </Style>
+            </DataGrid.CellStyle>
+
+            <DataGrid.Columns>
+
+                <DataGridTextColumn Header="Private e-mail address" Binding="{Binding Email}" IsReadOnly="True">
+                    <DataGridTextColumn.ElementStyle>
+                        <Style TargetType="TextBlock">
+                            <Setter Property="VerticalAlignment" Value="Center"/>
+                            <Setter Property="TextWrapping" Value="NoWrap"/>
+                            <Setter Property="FontSize" Value="15"/>
+                            <Setter Property="Margin" Value="32,0,0,0"/>
+                            
+                        </Style>
+                    </DataGridTextColumn.ElementStyle>
+                </DataGridTextColumn>
+
+                <DataGridTextColumn Header="Notes" Binding="{Binding Notes, Converter={StaticResource SingleLineStringConverter}}" Width="*" IsReadOnly="True">
+                    <DataGridTextColumn.ElementStyle>
+                        <Style TargetType="TextBlock">
+                            <Setter Property="VerticalAlignment" Value="Center"/>
+                            <Setter Property="TextWrapping" Value="NoWrap"/>
+                            <Setter Property="FontSize" Value="15"/>
+                            <Setter Property="Margin" Value="32,0,0,0"/>
+                        </Style>
+                    </DataGridTextColumn.ElementStyle>
+
+                    <DataGridTextColumn.HeaderStyle>
+                        <Style TargetType="DataGridColumnHeader">
+                            <Setter Property="Template">
+                                <Setter.Value>
+                                    <ControlTemplate TargetType="DataGridColumnHeader">
+                                        <Grid>
+                                            <Grid.ColumnDefinitions>
+                                                <ColumnDefinition Width="*"/>
+                                                <ColumnDefinition Width="Auto"/>
+                                            </Grid.ColumnDefinitions>
+
+                                            <TextBlock Grid.Column="0"
+                                                       Text="Notes" 
+                                                       VerticalAlignment="Center" 
+                                                       FontSize="15"
+                                                       FontWeight="Bold"
+                                                       Foreground="#26394D"
+                                                       Margin="32,0,0,0"
+                                                       />
+
+                                            <StackPanel Grid.Column="1" HorizontalAlignment="Right" Orientation="Horizontal">
+                                                <StackPanel.Resources>
+                                                    <Style TargetType="Button">
+                                                        <Style.Triggers>
+                                                            <Trigger Property="IsEnabled" Value="False">
+                                                                <Setter Property="Background" Value="Transparent"/>
+                                                                <Setter Property="Opacity" Value="0.5"/>
+                                                            </Trigger>
+                                                        </Style.Triggers>
+                                                    </Style>
+                                                </StackPanel.Resources>
+                                                <Button Name="GuiButtonReload" Background="Transparent" Width="40" BorderThickness="0" Click="GuiButtonReload_Click">
+                                                    <Button.Content>
+                                                        <Image Source="../Resources/iconRefresh.png" Stretch="None"/>
+                                                    </Button.Content>
+                                                </Button>
+                                                <Button Name="GuiButtonAdd" Background="Transparent" Width="40" BorderThickness="0" Margin="8,0,20,0" Click="GuiButtonAdd_Click">
+                                                    <Button.Content>
+                                                        <Image Source="../Resources/iconAdd.png" Stretch="None"/>
+                                                    </Button.Content>
+                                                </Button>
+                                            </StackPanel>
+
+                                        </Grid>
+                                    </ControlTemplate>
+                                </Setter.Value>
+                            </Setter>
+                        </Style>
+                    </DataGridTextColumn.HeaderStyle>
+                </DataGridTextColumn>
+
+            </DataGrid.Columns>
+        </DataGrid>
+
+        <Grid Name="ProgressView" Grid.Row="1" VerticalAlignment="Center" >
+            <Grid.RowDefinitions>
+                <RowDefinition Height="Auto"/>
+                <RowDefinition Height="Auto"/>
+            </Grid.RowDefinitions>
+            
+            <TextBlock Grid.Row="0" FontSize="20" 
+                       Foreground="#26394D"
+                       FontWeight="DemiBold" 
+                       HorizontalAlignment="Center" 
+                       Name="GuiProgressText">
+                Updating
+            </TextBlock>
+
+            <ProgressBar x:Name="UIProgressBar" Grid.Row="1" Foreground="#178FE6" Margin="15" Width="250"/>
+            
+        </Grid>
+    </Grid>
+</Window>

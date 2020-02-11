@@ -1,0 +1,78 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<document type="com.apple.InterfaceBuilder3.Cocoa.XIB" version="3.0" toolsVersion="14490.70" targetRuntime="MacOSX.Cocoa" propertyAccessControl="none">
+    <dependencies>
+        <deployment identifier="macosx"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.CocoaPlugin" version="14490.70"/>
+        <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
+    </dependencies>
+    <objects>
+        <customObject id="-2" userLabel="File's Owner" customClass="SessionLimitViewController">
+            <connections>
+                <outlet property="GuiButtonBack" destination="BAl-VK-KB4" id="rZ0-Wz-vHu"/>
+                <outlet property="OnButtonUpgradePlan" destination="Ql8-te-KfY" id="IEz-Vy-mLH"/>
+                <outlet property="UIButtonLogOutAll" destination="EUj-y1-QkB" id="0W3-QZ-jwp"/>
+                <outlet property="UIButtonTryAgain" destination="Qbd-Ig-XYF" id="e7B-HV-vGq"/>
+                <outlet property="UIButtonUpgrade" destination="Ql8-te-KfY" id="r3r-ew-dMf"/>
+                <outlet property="view" destination="4" id="17"/>
+            </connections>
+        </customObject>
+        <customObject id="-1" userLabel="First Responder" customClass="FirstResponder"/>
+        <customObject id="-3" userLabel="Application" customClass="NSObject"/>
+        <customView id="4" customClass="SessionLimitView">
+            <rect key="frame" x="0.0" y="0.0" width="320" height="529"/>
+            <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
+            <subviews>
+                <imageView horizontalHuggingPriority="251" verticalHuggingPriority="251" id="Ked-dc-ja1">
+                    <rect key="frame" x="56" y="304" width="209" height="172"/>
+                    <autoresizingMask key="autoresizingMask" flexibleMinX="YES" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                    <imageCell key="cell" refusesFirstResponder="YES" alignment="left" imageScaling="proportionallyDown" image="imageLaptop" id="Ynj-Gr-7TD"/>
+                </imageView>
+                <customView id="EUj-y1-QkB" customClass="CustomButton">
+                    <rect key="frame" x="30" y="80" width="260" height="44"/>
+                    <autoresizingMask key="autoresizingMask" flexibleMinX="YES" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                    <connections>
+                        <action selector="OnButtonLogoutAllDevices:" target="-2" id="8No-LW-Ijn"/>
+                    </connections>
+                </customView>
+                <customView id="Ql8-te-KfY" customClass="CustomButton">
+                    <rect key="frame" x="30" y="138" width="260" height="44"/>
+                    <autoresizingMask key="autoresizingMask" flexibleMinX="YES" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                    <connections>
+                        <action selector="OnButtonUpgradePlan:" target="-2" id="Fod-Dr-lHB"/>
+                    </connections>
+                </customView>
+                <textField verticalHuggingPriority="750" horizontalCompressionResistancePriority="250" id="GEL-xv-2Fn">
+                    <rect key="frame" x="28" y="240" width="264" height="43"/>
+                    <autoresizingMask key="autoresizingMask" flexibleMinX="YES" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                    <textFieldCell key="cell" sendsActionOnEndEditing="YES" alignment="center" title="You've reached the maximum number of connected devices." id="SMq-Ze-dKd">
+                        <font key="font" metaFont="system" size="14"/>
+                        <color key="textColor" red="0.47843137250000001" green="0.54117647059999996" blue="0.59999999999999998" alpha="0.84999999999999998" colorSpace="calibratedRGB"/>
+                        <color key="backgroundColor" name="controlColor" catalog="System" colorSpace="catalog"/>
+                    </textFieldCell>
+                </textField>
+                <button verticalHuggingPriority="750" id="Qbd-Ig-XYF">
+                    <rect key="frame" x="30" y="208" width="260" height="18"/>
+                    <autoresizingMask key="autoresizingMask" flexibleMinX="YES" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                    <buttonCell key="cell" type="roundTextured" title="Try again" bezelStyle="texturedRounded" alignment="center" imageScaling="proportionallyDown" inset="2" id="wRw-HO-b0g">
+                        <behavior key="behavior" pushIn="YES" lightByBackground="YES" lightByGray="YES"/>
+                        <font key="font" metaFont="system" size="14"/>
+                    </buttonCell>
+                    <connections>
+                        <action selector="OnButtonTryAgain:" target="-2" id="GOy-14-Ers"/>
+                    </connections>
+                </button>
+                <customView id="BAl-VK-KB4" customClass="CustomButton">
+                    <rect key="frame" x="0.0" y="0.0" width="320" height="59"/>
+                    <autoresizingMask key="autoresizingMask" widthSizable="YES" flexibleMaxY="YES"/>
+                    <connections>
+                        <action selector="OnGoBackButtonPressed:" target="-2" id="g5r-LP-MBV"/>
+                    </connections>
+                </customView>
+            </subviews>
+            <point key="canvasLocation" x="140" y="164.5"/>
+        </customView>
+    </objects>
+    <resources>
+        <image name="imageLaptop" width="200" height="173"/>
+    </resources>
+</document>

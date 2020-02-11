@@ -1,0 +1,97 @@
+﻿<Window x:Class="IVPN.ExceptionWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        Title="Problem report for IVPN" 
+        WindowStartupLocation="CenterScreen" 
+        Width="504" Icon="/IVPN Client;component/Resources/application.ico"
+        MinWidth="504" MinHeight="300" SizeToContent="Height">
+    <Grid x:Uid="Grid_1">
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="Auto"/>
+            <ColumnDefinition Width="*"/>
+        </Grid.ColumnDefinitions>
+
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto" />
+            <RowDefinition Height="Auto" />
+            <RowDefinition Height="*" />
+            <RowDefinition Height="Auto" />
+        </Grid.RowDefinitions>
+
+        <Image Grid.Row="0" Grid.RowSpan="3" Grid.Column="0" Margin="10,0,0,0" Source="/IVPN Client;component/Resources/application.ico" Width="64" VerticalAlignment="Top"></Image>
+
+        <Border Margin="20,10,20,0" Grid.Row="0" Grid.Column="1">
+            <TextBlock Name="GuiTextBlockMessageText" FontSize="20" FontFamily="Segoe UI Semibold" TextWrapping="Wrap">IVPN Application quit unexpectedly</TextBlock>
+        </Border>
+
+        <Border Grid.Row="1" Grid.Column="1" Margin="20,10,20,0">
+            <StackPanel Orientation="Vertical">
+                <TextBlock TextWrapping="Wrap">To help us improve IVPN Client, we have created an error report for you to send us.</TextBlock>
+
+                <TextBlock  Margin="0,10,0,0" Name="GuiTextBlockAskEnableLogging" TextWrapping="Wrap" FontFamily="Segoe UI Semilight" Foreground="#FF3E3B3B" HorizontalAlignment="Left">You can enable logging in the application preferences to help us better understand the reason application crashed in the future.
+                    You will be able to review logs before submitting them together with crash report.</TextBlock>
+            </StackPanel>
+        </Border>
+
+        <Grid Grid.Row="2" Grid.Column="1" Margin="20,10,20,0">
+            <Grid.RowDefinitions>
+                <RowDefinition Height="Auto"/>
+                <RowDefinition Height="Auto"/>
+                <RowDefinition Height="*"/>
+                <RowDefinition Height="Auto"/>
+            </Grid.RowDefinitions>
+
+            <TextBlock Grid.Row="0" FontFamily="Segoe UI Semibold" FontSize="14">Comments:</TextBlock>
+            <TextBlock Grid.Row="1" FontFamily="Segoe UI Semilight" Foreground="#FF3E3B3B" HorizontalAlignment="Left"
+                       ToolTip="Provide any steps necessary to reproduce an issue">
+                Provide any steps necessary to reproduce an issue
+            </TextBlock>
+            <TextBox Name="GuiTextBoxUserComments" Grid.Row="2" TextWrapping="Wrap" Margin="0,0,0,0" AcceptsReturn="True" AcceptsTab="True" MinHeight="50" />
+
+            <StackPanel Grid.Row="3" Margin="0,0,0,0" Orientation="Vertical">
+                <CheckBox Name="GuiCheckBoxIsCreateTicket" Visibility="Collapsed">Create separate ticket for current issue in IVPN user-support</CheckBox>
+            </StackPanel>
+        </Grid>
+
+        <Grid Grid.Row="3" Grid.Column="1" Margin="0,0,0,0">
+            <Button  Width="85" Height="25" HorizontalAlignment="Left" Margin="20,14,14,14" Click="ViewReport_Click">View report</Button>
+            <StackPanel Orientation="Horizontal" HorizontalAlignment="Right" Margin="0,10,20,10">
+
+                <ProgressBar Name="UIProgressBar" Width="70" Margin="10"/>
+
+                <Button Name="GuiSendReportButton" IsDefault="True" Margin="0,0,10,0" Width="85" Height="25" Click="SendReport">
+                    Send Report
+                </Button>
+                <Button IsCancel="True" Margin="0,0,0,0" Width="85" Height="25" Name="CancelButton" Click="CancelButton_Click">
+                    <Button.Style>
+                        <Style TargetType="Button">
+                            <Setter Property="Content" Value="Close" />
+                            <Style.Triggers>
+                                <DataTrigger Binding="{Binding ElementName=GuiProgressRing, Path=IsActive}" Value="True">
+                                    <Setter Property="Content" Value="Cancel" />
+                                </DataTrigger>
+                            </Style.Triggers>
+                        </Style>
+                    </Button.Style>
+                </Button>
+            </StackPanel>
+        </Grid>
+
+
+
+
+        <!--        <TextBlock x:Uid="TextBlock_3" Grid.Row="3" TextWrapping="Wrap">You can tell us what actions has caused this error so we can fix it:</TextBlock>
+        <TextBox x:Uid="tbErrorComment" TabIndex="2" Grid.Row="4" AcceptsReturn="True" Name="tbErrorComment"></TextBox>
+        <Grid x:Uid="Grid_2" Grid.Row="5">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition x:Uid="ColumnDefinition_1" Width="Auto" />
+                <ColumnDefinition x:Uid="ColumnDefinition_2" Width="*" />                
+            </Grid.ColumnDefinitions>
+            <TextBlock x:Uid="TextBlock_1" Grid.Column="0" VerticalAlignment="Center"><Hyperlink x:Uid="Hyperlink_1" Click="Hyperlink_Click">Show stack trace</Hyperlink></TextBlock>
+            <StackPanel x:Uid="StackPanel_1" Grid.Column="1" HorizontalAlignment="Right" Orientation="Horizontal">
+                <Button TabIndex="3" x:Uid="Button_1" Margin="0,8,2,0" Height="23" Width="70" Click="Button_Click">Send error</Button>
+                <Button TabIndex="4" x:Uid="Button_2" Margin="2,8,0,0" Height="23" Width="70" IsCancel="True">Don't send</Button>
+            </StackPanel>
+        </Grid> -->
+    </Grid>
+</Window>

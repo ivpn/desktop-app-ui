@@ -1,0 +1,182 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<document type="com.apple.InterfaceBuilder3.Cocoa.XIB" version="3.0" toolsVersion="14113" targetRuntime="MacOSX.Cocoa" propertyAccessControl="none">
+    <dependencies>
+        <deployment identifier="macosx"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.CocoaPlugin" version="14113"/>
+        <capability name="box content view" minToolsVersion="7.0"/>
+        <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
+        <capability name="system font weights other than Regular or Bold" minToolsVersion="7.0"/>
+    </dependencies>
+    <objects>
+        <customObject id="-2" userLabel="File's Owner" customClass="ServerSelectionViewController">
+            <connections>
+                <outlet property="GuiBtnMultiHop" destination="zh2-2B-eV2" id="48l-GD-OR2"/>
+                <outlet property="GuiBtnSingeHop" destination="CNv-0m-bW5" id="yEz-tI-AkK"/>
+                <outlet property="GuiEntryServerAutomaticText" destination="7Kd-zW-CgN" id="GrI-Fb-yTT"/>
+                <outlet property="GuiEntryServerDescription" destination="97x-8x-OZm" id="cmh-88-Sx1"/>
+                <outlet property="GuiEntryServerImage" destination="q04-bi-tHh" id="fAW-RU-jmI"/>
+                <outlet property="GuiEntryServerName" destination="mgR-6r-LKX" id="uoU-qL-Uf5"/>
+                <outlet property="GuiEntryServerPingStatusImage" destination="qKt-J9-SSu" id="gzq-0n-o8Z"/>
+                <outlet property="GuiEntryServerView" destination="seP-jI-9Pk" id="zMH-cw-XhH"/>
+                <outlet property="GuiExitServerDescription" destination="95y-Kh-k8C" id="apn-Vh-0jE"/>
+                <outlet property="GuiExitServerImage" destination="LDZ-bS-LSx" id="FpA-uC-xhM"/>
+                <outlet property="GuiExitServerName" destination="tjd-OT-me8" id="6RO-zo-h9c"/>
+                <outlet property="GuiExitServerPingStatusImage" destination="LIj-1W-Zj8" id="aJs-O2-TqR"/>
+                <outlet property="GuiExitServerView" destination="RYo-bN-kfN" id="5mI-Yv-xaJ"/>
+                <outlet property="GuiLabelServerChangePopoverText" destination="CY0-YT-R2A" id="VAa-Ha-0mY"/>
+                <outlet property="GuiLabelServerChangePopoverTitle" destination="mVx-JL-E1h" id="wf5-DU-9rq"/>
+                <outlet property="GuiUnbaleToChangeWhenConnectedView" destination="7Op-yG-2AW" id="FQ1-br-wJ9"/>
+                <outlet property="view" destination="4" id="17"/>
+            </connections>
+        </customObject>
+        <customObject id="-1" userLabel="First Responder" customClass="FirstResponder"/>
+        <customObject id="-3" userLabel="Application" customClass="NSObject"/>
+        <customView misplaced="YES" id="4" customClass="ServerSelectionView">
+            <rect key="frame" x="0.0" y="0.0" width="320" height="202"/>
+            <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+            <subviews>
+                <customView misplaced="YES" id="CNv-0m-bW5" customClass="CustomButton">
+                    <rect key="frame" x="0.0" y="158" width="161" height="44"/>
+                    <autoresizingMask key="autoresizingMask" widthSizable="YES" flexibleMaxX="YES" flexibleMinY="YES"/>
+                    <connections>
+                        <action selector="OnSingleHopPressed:" target="-2" id="ll9-uM-26D"/>
+                    </connections>
+                </customView>
+                <customView misplaced="YES" id="zh2-2B-eV2" customClass="CustomButton">
+                    <rect key="frame" x="160" y="158" width="160" height="44"/>
+                    <autoresizingMask key="autoresizingMask" flexibleMinX="YES" widthSizable="YES" flexibleMinY="YES"/>
+                    <connections>
+                        <action selector="OnMultiHopPressed:" target="-2" id="Izj-Fd-awm"/>
+                    </connections>
+                </customView>
+                <box misplaced="YES" boxType="custom" title="Box" id="seP-jI-9Pk">
+                    <rect key="frame" x="-1" y="79" width="322" height="80"/>
+                    <autoresizingMask key="autoresizingMask" flexibleMinY="YES"/>
+                    <view key="contentView" id="NQF-jD-WHT">
+                        <rect key="frame" x="1" y="1" width="320" height="78"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <subviews>
+                            <imageView horizontalHuggingPriority="251" verticalHuggingPriority="251" misplaced="YES" id="q04-bi-tHh">
+                                <rect key="frame" x="21" y="29" width="24" height="24"/>
+                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
+                                <imageCell key="cell" refusesFirstResponder="YES" alignment="left" imageAlignment="left" imageScaling="proportionallyDown" image="ca" id="Sgc-X2-Sy9"/>
+                            </imageView>
+                            <imageView misplaced="YES" id="sT9-sK-AHy">
+                                <rect key="frame" x="293" y="29" width="20" height="24"/>
+                                <autoresizingMask key="autoresizingMask" flexibleMinX="YES" flexibleMinY="YES"/>
+                                <imageCell key="cell" refusesFirstResponder="YES" alignment="left" animates="YES" imageAlignment="right" imageScaling="proportionallyDown" image="iconArrowLeft" id="yHC-iL-nYc"/>
+                            </imageView>
+                            <textField horizontalHuggingPriority="251" verticalHuggingPriority="750" misplaced="YES" id="97x-8x-OZm">
+                                <rect key="frame" x="62" y="43" width="207" height="17"/>
+                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
+                                <textFieldCell key="cell" scrollable="YES" lineBreakMode="clipping" sendsActionOnEndEditing="YES" alignment="center" title="Entry server" id="BHo-la-37l">
+                                    <font key="font" metaFont="cellTitle"/>
+                                    <color key="textColor" name="labelColor" catalog="System" colorSpace="catalog"/>
+                                    <color key="backgroundColor" name="controlColor" catalog="System" colorSpace="catalog"/>
+                                </textFieldCell>
+                            </textField>
+                            <textField horizontalHuggingPriority="251" verticalHuggingPriority="750" misplaced="YES" id="mgR-6r-LKX">
+                                <rect key="frame" x="62" y="22" width="207" height="20"/>
+                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
+                                <textFieldCell key="cell" scrollable="YES" lineBreakMode="clipping" sendsActionOnEndEditing="YES" alignment="center" title="Label" id="hNO-eF-yGi">
+                                    <font key="font" metaFont="systemSemibold" size="16"/>
+                                    <color key="textColor" name="labelColor" catalog="System" colorSpace="catalog"/>
+                                    <color key="backgroundColor" name="controlColor" catalog="System" colorSpace="catalog"/>
+                                </textFieldCell>
+                            </textField>
+                            <imageView horizontalHuggingPriority="251" verticalHuggingPriority="251" misplaced="YES" id="qKt-J9-SSu">
+                                <rect key="frame" x="276" y="24" width="16" height="16"/>
+                                <autoresizingMask key="autoresizingMask" flexibleMinX="YES" flexibleMinY="YES"/>
+                                <imageCell key="cell" refusesFirstResponder="YES" alignment="left" imageScaling="proportionallyDown" image="iconStatusGood" id="xPy-Fq-Yvv"/>
+                            </imageView>
+                            <textField horizontalHuggingPriority="251" verticalHuggingPriority="750" misplaced="YES" id="7Kd-zW-CgN">
+                                <rect key="frame" x="62" y="6" width="207" height="18"/>
+                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
+                                <textFieldCell key="cell" scrollable="YES" lineBreakMode="clipping" sendsActionOnEndEditing="YES" alignment="center" title="fastest server" id="T8h-Bp-2dc">
+                                    <font key="font" metaFont="smallSystem"/>
+                                    <color key="textColor" name="labelColor" catalog="System" colorSpace="catalog"/>
+                                    <color key="backgroundColor" name="controlColor" catalog="System" colorSpace="catalog"/>
+                                </textFieldCell>
+                            </textField>
+                        </subviews>
+                    </view>
+                </box>
+                <box misplaced="YES" boxType="custom" title="Box" id="RYo-bN-kfN">
+                    <rect key="frame" x="-1" y="0.0" width="322" height="80"/>
+                    <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
+                    <view key="contentView" id="Lio-te-LRm">
+                        <rect key="frame" x="1" y="1" width="320" height="78"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <subviews>
+                            <imageView horizontalHuggingPriority="251" verticalHuggingPriority="251" misplaced="YES" id="LDZ-bS-LSx">
+                                <rect key="frame" x="21" y="29" width="24" height="24"/>
+                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
+                                <imageCell key="cell" refusesFirstResponder="YES" alignment="left" imageScaling="proportionallyDown" image="de" id="860-14-mKm"/>
+                            </imageView>
+                            <imageView misplaced="YES" id="iGb-1b-x4j">
+                                <rect key="frame" x="291" y="29" width="20" height="24"/>
+                                <autoresizingMask key="autoresizingMask" flexibleMinX="YES" flexibleMinY="YES"/>
+                                <imageCell key="cell" refusesFirstResponder="YES" alignment="left" animates="YES" imageScaling="proportionallyDown" image="iconArrowLeft" id="tdp-M9-Nnm"/>
+                            </imageView>
+                            <textField horizontalHuggingPriority="251" verticalHuggingPriority="750" misplaced="YES" id="tjd-OT-me8">
+                                <rect key="frame" x="62" y="22" width="209" height="20"/>
+                                <autoresizingMask key="autoresizingMask" widthSizable="YES" flexibleMinY="YES"/>
+                                <textFieldCell key="cell" scrollable="YES" lineBreakMode="clipping" sendsActionOnEndEditing="YES" alignment="center" title="Label" id="LfL-KX-jcC">
+                                    <font key="font" metaFont="systemSemibold" size="16"/>
+                                    <color key="textColor" name="labelColor" catalog="System" colorSpace="catalog"/>
+                                    <color key="backgroundColor" name="controlColor" catalog="System" colorSpace="catalog"/>
+                                </textFieldCell>
+                            </textField>
+                            <textField horizontalHuggingPriority="251" verticalHuggingPriority="750" misplaced="YES" id="95y-Kh-k8C">
+                                <rect key="frame" x="62" y="43" width="209" height="17"/>
+                                <autoresizingMask key="autoresizingMask" widthSizable="YES" flexibleMinY="YES"/>
+                                <textFieldCell key="cell" scrollable="YES" lineBreakMode="clipping" sendsActionOnEndEditing="YES" alignment="center" title="Exit server" id="4XB-Uk-ZtJ">
+                                    <font key="font" metaFont="cellTitle"/>
+                                    <color key="textColor" name="labelColor" catalog="System" colorSpace="catalog"/>
+                                    <color key="backgroundColor" name="controlColor" catalog="System" colorSpace="catalog"/>
+                                </textFieldCell>
+                            </textField>
+                            <imageView horizontalHuggingPriority="251" verticalHuggingPriority="251" misplaced="YES" id="LIj-1W-Zj8">
+                                <rect key="frame" x="274" y="24" width="16" height="16"/>
+                                <autoresizingMask key="autoresizingMask" flexibleMinX="YES" flexibleMinY="YES"/>
+                                <imageCell key="cell" refusesFirstResponder="YES" alignment="left" imageScaling="proportionallyDown" image="iconStatusGood" id="cVN-YB-Fcj"/>
+                            </imageView>
+                        </subviews>
+                    </view>
+                </box>
+            </subviews>
+            <point key="canvasLocation" x="28" y="120"/>
+        </customView>
+        <customView misplaced="YES" id="7Op-yG-2AW">
+            <rect key="frame" x="0.0" y="0.0" width="284" height="104"/>
+            <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
+            <subviews>
+                <textField horizontalHuggingPriority="251" verticalHuggingPriority="750" misplaced="YES" id="mVx-JL-E1h">
+                    <rect key="frame" x="18" y="67" width="248" height="17"/>
+                    <autoresizingMask key="autoresizingMask" widthSizable="YES" flexibleMinY="YES"/>
+                    <textFieldCell key="cell" scrollable="YES" lineBreakMode="clipping" sendsActionOnEndEditing="YES" alignment="center" title="You are now connected to IVPN" id="Xui-BY-2yu">
+                        <font key="font" metaFont="systemSemibold" size="16"/>
+                        <color key="textColor" name="labelColor" catalog="System" colorSpace="catalog"/>
+                        <color key="backgroundColor" name="controlColor" catalog="System" colorSpace="catalog"/>
+                    </textFieldCell>
+                </textField>
+                <textField verticalHuggingPriority="750" horizontalCompressionResistancePriority="250" misplaced="YES" id="CY0-YT-R2A">
+                    <rect key="frame" x="18" y="8" width="248" height="46"/>
+                    <autoresizingMask key="autoresizingMask" flexibleMinY="YES" heightSizable="YES"/>
+                    <textFieldCell key="cell" sendsActionOnEndEditing="YES" alignment="center" title="You can change server only when IVPN is disconnected." id="M8K-b9-TeE">
+                        <font key="font" metaFont="system"/>
+                        <color key="textColor" name="labelColor" catalog="System" colorSpace="catalog"/>
+                        <color key="backgroundColor" name="controlColor" catalog="System" colorSpace="catalog"/>
+                    </textFieldCell>
+                </textField>
+            </subviews>
+            <point key="canvasLocation" x="25" y="325"/>
+        </customView>
+    </objects>
+    <resources>
+        <image name="ca" width="24" height="24"/>
+        <image name="de" width="24" height="24"/>
+        <image name="iconArrowLeft" width="20" height="24"/>
+        <image name="iconStatusGood" width="10" height="10"/>
+    </resources>
+</document>

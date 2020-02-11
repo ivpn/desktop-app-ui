@@ -1,0 +1,98 @@
+﻿<Page x:Class="IVPN.Views.wp_FastestServerConfig"
+      xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+      xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+      xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+      xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+      mc:Ignorable="d" 
+      d:DesignHeight="320" d:DesignWidth="300"
+      Width="318"
+      Title="wp_FastestServerConfig">
+
+    <Page.Resources>
+        
+        <DataTemplate x:Key="ServerDataTemplate">
+            <Button HorizontalContentAlignment="Stretch" FontWeight="Normal" Tag="{Binding}" Click="ItemButton_OnClick"
+                    Height="52" Cursor="Hand">
+
+                <Button.Template>
+                    <ControlTemplate>
+                        <Grid>
+                            <Border
+                                x:Name="Border"
+                                Background="{TemplateBinding Background}">
+
+                                <ContentPresenter
+                                    Content="{Binding Path=Content, RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type Button}}}"
+                                    HorizontalAlignment="{TemplateBinding HorizontalContentAlignment}"
+                                    Margin="{TemplateBinding Padding}"
+                                    VerticalAlignment="{TemplateBinding VerticalContentAlignment}"
+                                    RecognizesAccessKey="True" />
+                            </Border>
+                        </Grid>
+                    </ControlTemplate>
+                </Button.Template>
+
+                <Button.Style>
+                    <Style TargetType="Button">
+                        <Setter Property="Background" Value="Transparent"/>
+                        <Style.Triggers>
+                            <Trigger Property="IsMouseOver" Value="True">
+                                <Setter Property="Background" Value="#DDDDDD" />
+                            </Trigger>
+                        </Style.Triggers>
+                    </Style>
+                </Button.Style>
+
+                <Grid>
+                    <Grid>
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="Auto" />
+                            <ColumnDefinition Width="Auto" />
+                            <ColumnDefinition Width="*" MaxWidth="200"/>
+                        </Grid.ColumnDefinitions>
+
+                        <CheckBox Grid.Column="0" VerticalAlignment="Center" Margin="12,0,0,0"
+                                  IsChecked="{Binding IsSelected, Mode=OneWay}"
+                                  ></CheckBox>
+
+                        <Image Grid.Column="1" Source="{Binding ServerInfo.CountryCode, Converter={StaticResource CountryCodeToFlagFileConverter}}" 
+                               VerticalAlignment="Center" HorizontalAlignment="Center"
+                               Margin="12,0,0,0"
+                               Width="24"/>
+
+                        <TextBlock Grid.Column="2" FontSize="14" Text="{Binding ServerInfo.FullName}" VerticalAlignment="Center" HorizontalAlignment="Left"
+                                   Margin="19,0,0,0">
+                        </TextBlock>
+                    </Grid>
+                </Grid>
+            </Button>
+        </DataTemplate>
+        
+    </Page.Resources>
+
+    <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="*"/>
+        </Grid.RowDefinitions>
+
+        <TextBlock Grid.Row="0" FontSize="24" Margin="12,28,12,0" Text="fastest server settings"/>
+
+        <TextBlock Grid.Row="1" Margin="12,5,0,5" TextWrapping="Wrap" Foreground="#26394D" Opacity="0.5">
+            Disable servers you do not want to be chosen as the fastest server 
+        </TextBlock>
+
+        <ScrollViewer Grid.Row="2" HorizontalScrollBarVisibility="Hidden" VerticalScrollBarVisibility="Auto" Margin="0,0,12,24" >
+            <StackPanel Orientation="Vertical">
+                <ItemsControl ItemsSource="{Binding Items}" ItemTemplate="{StaticResource ServerDataTemplate}">
+                    <ItemsControl.ItemsPanel>
+                        <ItemsPanelTemplate>
+                            <StackPanel></StackPanel>
+                        </ItemsPanelTemplate>
+                    </ItemsControl.ItemsPanel>
+                </ItemsControl>
+            </StackPanel>
+        </ScrollViewer>
+    </Grid>
+</Page>

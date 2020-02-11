@@ -1,0 +1,1382 @@
+﻿<Page x:Class="IVPN.Views.wp_MainPage"
+      xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+      xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+      xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+      xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+      xmlns:controls="http://metro.mahapps.com/winfx/xaml/controls"
+      xmlns:vpnProtocols="clr-namespace:IVPN.VpnProtocols;assembly=IVPN.Core"
+      mc:Ignorable="d" 
+      d:DesignHeight="600" d:DesignWidth="300"
+      Width="318"
+      Height="Auto">
+
+    <Page.Resources>
+        <SolidColorBrush x:Key="EnabledColor" Color="#178FE6"/>
+        <SolidColorBrush x:Key="DisabledColor" Color="#26394D"/>
+        <SolidColorBrush x:Key="AntitrackerHardcoreColor" Color="#FF0039"/>
+
+        <SolidColorBrush x:Key="DefaultNetworkColor" Color="Gray"/>
+        <SolidColorBrush x:Key="NoneNetworkColor" Color="Black"/>
+        <SolidColorBrush x:Key="UntrustedNetworkColor" Color="IndianRed"/>
+        <SolidColorBrush x:Key="TrustedNetworkColor" Color="#178FE6"/>
+
+        <Style x:Key="ControlStyleCollapsedIfSingleHop" TargetType="FrameworkElement">
+            <Style.Triggers>
+                <DataTrigger Binding="{Binding ViewModel.IsMultiHop}" Value="False">
+                    <Setter Property="Visibility" Value="Collapsed" />
+                </DataTrigger>
+            </Style.Triggers>
+        </Style>
+
+        <Style x:Key="ButtonStyleCollapsedIfSingleHop" TargetType="Button" BasedOn="{StaticResource ButtonMouseOverBackgroundChangeble}">
+            <Style.Triggers>
+                <DataTrigger Binding="{Binding ViewModel.IsMultiHop}" Value="False">
+                    <Setter Property="Visibility" Value="Collapsed" />
+                </DataTrigger>
+            </Style.Triggers>
+        </Style>
+
+        <Style x:Key="HopButtonStyle" TargetType="{x:Type Button}">
+            <Setter Property="BorderThickness" Value="0"/>
+            <Setter Property="Background" Value="Transparent"/>
+            <Setter Property="HorizontalContentAlignment" Value="Left"/>
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="{x:Type Button}">
+
+                        <TextBlock x:Name="BtnText" Margin="14" FontSize="24" Text="{TemplateBinding Content}" Cursor="Hand">
+                            <TextBlock.Triggers>
+                                <EventTrigger RoutedEvent="MouseEnter">
+                                    <BeginStoryboard>
+                                        <Storyboard>
+                                            <DoubleAnimation Storyboard.TargetProperty="Opacity" Storyboard.TargetName="BtnText" To="0.7" Duration="0:0:0.1"/>
+                                        </Storyboard>
+                                    </BeginStoryboard>
+
+                                </EventTrigger>
+
+                                <EventTrigger RoutedEvent="MouseLeave">
+                                    <BeginStoryboard>
+                                        <Storyboard>
+                                            <DoubleAnimation Storyboard.TargetProperty="Opacity" Storyboard.TargetName="BtnText" To="1" Duration="0:0:0.1"/>
+                                        </Storyboard>
+                                    </BeginStoryboard>
+                                </EventTrigger>
+                            </TextBlock.Triggers>
+                        </TextBlock>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+        </Style>
+
+        <Style x:Key="ElipseHideWhenDisconnecting" TargetType="Ellipse">
+            <Style.Triggers>
+                <DataTrigger Binding="{Binding AnimationType}" Value="Disconnecting">
+                    <Setter Property="Visibility" Value="Hidden"/>
+                </DataTrigger>
+                <DataTrigger Binding="{Binding AnimationType}" Value="Disconnected">
+                    <Setter Property="Visibility" Value="Hidden"/>
+                </DataTrigger>
+            </Style.Triggers>
+        </Style>
+
+        <Style x:Key="ConnectingEllipseStyle" TargetType="Ellipse" BasedOn="{StaticResource ElipseHideWhenDisconnecting}">
+            <Style.Triggers>
+
+                <DataTrigger Binding="{Binding AnimationType}" Value="Connecting">
+                    <DataTrigger.EnterActions>
+                        <BeginStoryboard Name="GuiConnectingAnimation">
+                            <Storyboard Timeline.DesiredFrameRate="20" RepeatBehavior="Forever" FillBehavior="Stop" AutoReverse="True">
+                                <DoubleAnimation By="20" Duration="0:0:2" Storyboard.TargetProperty="Width"/>
+                                <DoubleAnimation By="20" Duration="0:0:2"  Storyboard.TargetProperty="Height"/>
+                            </Storyboard>
+                        </BeginStoryboard>
+                    </DataTrigger.EnterActions>
+
+                    <DataTrigger.ExitActions>
+                        <StopStoryboard BeginStoryboardName="GuiConnectingAnimation"/>
+                    </DataTrigger.ExitActions>
+                </DataTrigger>
+
+            </Style.Triggers>
+        </Style>
+
+        <Storyboard x:Key="StoryboardTextBlockBlinking" Timeline.DesiredFrameRate="20">            
+                <DoubleAnimation From="0.2"  To="1" Duration="0:0:2" RepeatBehavior="Forever" FillBehavior="Stop" AutoReverse="True"
+                                 Storyboard.TargetProperty="Opacity"/>
+        </Storyboard>
+
+        <Style x:Key="ConnectingLabelStyle" TargetType="TextBlock">
+            <Style.Triggers>
+                <DataTrigger Binding="{Binding ViewModel.ConnectionState}" Value="Connected">
+                    <Setter Property="Foreground" Value="White"/>
+                </DataTrigger>
+
+                <DataTrigger Binding="{Binding ViewModel.PauseStatus}" Value="Paused">
+                    <Setter Property="Foreground" Value="Black"/>
+                </DataTrigger>
+                <DataTrigger Binding="{Binding ViewModel.PauseStatus}" Value="Pausing">
+                    <Setter Property="Foreground" Value="Black"/>
+                </DataTrigger>
+                <DataTrigger Binding="{Binding ViewModel.PauseStatus}" Value="Resuming">
+                    <Setter Property="Foreground" Value="Black"/>
+                </DataTrigger>
+
+                <DataTrigger Binding="{Binding AnimationType}" Value="Connecting">
+                    <DataTrigger.EnterActions>
+                        <StopStoryboard BeginStoryboardName="GuiDisconnectingAnimation"/>
+                        <BeginStoryboard Name="GuiConnectingAnimation" Storyboard="{StaticResource StoryboardTextBlockBlinking}"/>
+                    </DataTrigger.EnterActions>
+
+                    <DataTrigger.ExitActions>
+                        <StopStoryboard BeginStoryboardName="GuiConnectingAnimation"/>
+                    </DataTrigger.ExitActions>
+                </DataTrigger>
+
+                <DataTrigger Binding="{Binding AnimationType}" Value="Disconnecting">
+                    <DataTrigger.EnterActions>
+                        <StopStoryboard BeginStoryboardName="GuiConnectingAnimation"/>
+                        <BeginStoryboard Name="GuiDisconnectingAnimation" Storyboard="{StaticResource StoryboardTextBlockBlinking}"/>
+                    </DataTrigger.EnterActions>
+
+                    <DataTrigger.ExitActions>
+                        <StopStoryboard BeginStoryboardName="GuiDisconnectingAnimation"/>
+                    </DataTrigger.ExitActions>
+                </DataTrigger>
+
+            </Style.Triggers>
+        </Style>
+
+        <Style x:Key="ConnectedEllipse1Style" TargetType="Ellipse" BasedOn="{StaticResource ElipseHideWhenDisconnecting}">
+
+            <Style.Triggers>
+                <DataTrigger Binding="{Binding AnimationType}" Value="Connected">
+                    <DataTrigger.EnterActions>
+                        <BeginStoryboard Name="GuiConnectedAnimation">
+                            <Storyboard RepeatBehavior="Forever" FillBehavior="Stop">
+                                <DoubleAnimation Duration="0:0:2.4" To="340" Storyboard.TargetProperty="Width"/>
+                                <DoubleAnimation Duration="0:0:2.4" To="340" Storyboard.TargetProperty="Height"/>
+                                <DoubleAnimation Duration="0:0:2.4" To="0" Storyboard.TargetProperty="StrokeThickness"/>
+                                <DoubleAnimation Duration="0:0:2.4" From="1" To="0" Storyboard.TargetProperty="Opacity"/>
+                            </Storyboard>
+                        </BeginStoryboard>
+                    </DataTrigger.EnterActions>
+
+                    <DataTrigger.ExitActions>
+                        <StopStoryboard BeginStoryboardName="GuiConnectedAnimation"/>
+                    </DataTrigger.ExitActions>
+                </DataTrigger>
+
+            </Style.Triggers>
+
+        </Style>
+
+        <Style x:Key="ConnectButtonStyle" TargetType="Button">
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="Button">
+                        <Grid>
+                            <Ellipse 
+                                x:Name="GuiConnectBtnEllipse"
+                                Stroke="Black"
+                                StrokeThickness="0" 
+                                Fill="#ffdde5eb">
+                            </Ellipse>
+
+                            <TextBlock HorizontalAlignment="Center" VerticalAlignment="Center" FontSize="26" Name="GuiConnectBtnText" 
+                                       Text="{Binding ConnectButtonText}" Style="{StaticResource ConnectingLabelStyle}"/>
+
+                            <ContentPresenter HorizontalAlignment="Center"
+                                              VerticalAlignment="Center"/>
+                        </Grid>
+
+                        <ControlTemplate.Triggers>
+                            <DataTrigger Binding="{Binding AnimationType}" Value="Disconnecting">
+                                <Setter TargetName="GuiConnectBtnEllipse" Property="Visibility" Value="Hidden"/>
+                            </DataTrigger>
+
+                            <Trigger Property="IsPressed" Value="True">
+                                <Setter TargetName="GuiConnectBtnEllipse" Property="Fill" Value="{StaticResource EnabledColor}"/>
+                            </Trigger>
+
+                            <DataTrigger Binding="{Binding ViewModel.ConnectionState}" Value="Connected">
+                                <Setter TargetName="GuiConnectBtnEllipse" Property="Fill" Value="{StaticResource EnabledColor}"/>
+                            </DataTrigger>
+
+                            <DataTrigger Binding="{Binding ViewModel.PauseStatus}" Value="Paused">
+                                <Setter TargetName="GuiConnectBtnEllipse" Property="Fill" Value="#ffdde5eb"/>
+                                <Setter TargetName="GuiConnectBtnEllipse" Property="Visibility" Value="Visible"/>
+                            </DataTrigger>
+
+                            <DataTrigger Binding="{Binding ViewModel.PauseStatus}" Value="Pausing">
+                                <Setter TargetName="GuiConnectBtnEllipse" Property="Fill" Value="#ffdde5eb"/>
+                                <Setter TargetName="GuiConnectBtnEllipse" Property="Visibility" Value="Visible"/>
+                            </DataTrigger>
+
+                            <Trigger Property="IsMouseOver" Value="True">
+                                <Setter TargetName="GuiConnectBtnEllipse" Property="Fill" Value="#ffc9d4dc"/>
+                            </Trigger>
+
+                        </ControlTemplate.Triggers>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+
+            <Setter Property="Command" Value="{Binding ViewModel.DisconnectCommand}"/>
+            <Style.Triggers>
+                <DataTrigger Binding="{Binding ViewModel.ConnectionState}" Value="Disconnected">
+                    <Setter Property="Command" Value="{Binding ViewModel.ConnectCommand}"/>
+                </DataTrigger>
+
+                <DataTrigger Binding="{Binding ViewModel.PauseStatus}" Value="Paused">
+                    <Setter Property="Command" Value="{Binding ViewModel.ResumeCommand}"/>
+                </DataTrigger>
+            </Style.Triggers>
+        </Style>
+
+        <Style x:Key="PauseButtonStyle" TargetType="Button">
+
+            <Setter Property="Visibility" Value="Hidden"/>
+            <Setter Property="Command" Value="{Binding PauseButtonPressedCommand}"/>
+
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="Button">
+                        <Grid>
+                            <Ellipse 
+                                x:Name="GuiConnectBtnEllipse"
+                                Stroke="Black"
+                                StrokeThickness="0" 
+                                Fill="#ffdde5eb">
+                            </Ellipse>
+
+                            <Image Source="../Resources/Buttons/pause.png" Width="32" Height="32" Name="BtnImage"/>
+
+                            <ContentPresenter HorizontalAlignment="Center"
+                                              VerticalAlignment="Center"/>
+                        </Grid>
+
+                        <ControlTemplate.Triggers>
+
+                            <Trigger Property="IsPressed" Value="True">
+                                <Setter TargetName="GuiConnectBtnEllipse" Property="Fill" Value="{StaticResource EnabledColor}"/>
+                            </Trigger>
+
+                            <Trigger Property="IsMouseOver" Value="True">
+                                <Setter TargetName="GuiConnectBtnEllipse" Property="Fill" Value="#ffc9d4dc"/>
+                            </Trigger>
+
+                            <DataTrigger Binding="{Binding ViewModel.PauseStatus}" Value="Resumed">
+                                <Setter TargetName="BtnImage" Property="Source" Value="../Resources/Buttons/pause.png"></Setter>
+                                <Setter Property="ToolTip">
+                                    <Setter.Value>
+                                        <TextBlock>
+                                            Pause the VPN to temporarily route all traffic through your default unsecured connection.<LineBreak/>The VPN will be restored after a defined time interval or after manually resuming it.
+                                        </TextBlock>
+                                    </Setter.Value>
+                                </Setter>
+                            </DataTrigger>
+
+                            <DataTrigger Binding="{Binding ViewModel.PauseStatus}" Value="Paused">
+                                <Setter TargetName="BtnImage" Property="Source" Value="../Resources/Buttons/stop.png"></Setter>
+                                <Setter Property="Command" Value="{Binding ViewModel.DisconnectCommand}"/>
+                            </DataTrigger>
+
+                            <MultiDataTrigger>
+                                <MultiDataTrigger.Conditions>
+                                    <Condition Binding="{Binding ViewModel.ConnectionState}" Value="Connected"/>
+                                    <Condition Binding="{Binding ViewModel.PauseStatus}" Value="Paused"/>
+                                </MultiDataTrigger.Conditions>
+                                <Setter Property="Visibility" Value="Visible"/>
+                            </MultiDataTrigger>
+
+                            <MultiDataTrigger>
+                                <MultiDataTrigger.Conditions>
+                                    <Condition Binding="{Binding ViewModel.ConnectionState}" Value="Connected"/>
+                                    <Condition Binding="{Binding ViewModel.PauseStatus}" Value="Resumed"/>
+                                </MultiDataTrigger.Conditions>
+                                <Setter Property="Visibility" Value="Visible"/>
+                            </MultiDataTrigger>
+
+                        </ControlTemplate.Triggers>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+        </Style>
+
+        <!--
+        <Style x:Key="ServerSelectionBtn" TargetType="Button">
+            <Style.Triggers>
+                <EventTrigger RoutedEvent="MouseEnter">
+                    <BeginStoryboard>
+                        <Storyboard>
+                            <ColorAnimation Storyboard.TargetProperty="Background" To="#26394D" Duration="0:0:0.1" FillBehavior="HoldEnd"/>
+                        </Storyboard>
+                    </BeginStoryboard>
+                </EventTrigger>
+
+                <EventTrigger RoutedEvent="MouseLeave">
+                    <BeginStoryboard>
+                        <Storyboard>
+                            <ColorAnimation Storyboard.TargetProperty="Background" To="Transparent" Duration="0:0:0.1" FillBehavior="HoldEnd"/>
+                        </Storyboard>
+                    </BeginStoryboard>
+                </EventTrigger>
+            </Style.Triggers>
+        </Style>-->
+
+        <ItemsPanelTemplate x:Key="MenuItemPanelTemplate">
+            <StackPanel Margin="-20,0,0,0" Background="White"/>
+        </ItemsPanelTemplate>
+
+        <Style TargetType="{x:Type MenuItem}">
+            <Setter Property="ItemsPanel" Value="{StaticResource MenuItemPanelTemplate}"/>
+        </Style>
+
+        <Style x:Key="MenuItemButtonStyle"  TargetType="Button" BasedOn="{StaticResource ButtonMouseOverBackgroundChangeble}">
+            <Setter Property="Background" Value="Transparent"/>
+            <Setter Property="Foreground" Value="White"/>
+            <Setter Property="FontSize" Value="15"/>
+            <Setter Property="HorizontalContentAlignment" Value="Left"/>
+            <Setter Property="Margin" Value="8,8,16,8"/>
+            <Setter Property="BorderBrush" Value="Transparent"/>
+            <Setter Property="BorderThickness" Value="1"/>
+
+            <Style.Triggers>
+                <Trigger Property="IsMouseOver" Value="True">
+                    <Setter Property="BorderBrush" Value="#178FE6"></Setter>
+                </Trigger>
+            </Style.Triggers>
+        </Style>
+
+        <Style x:Key="VisibleIfConnected" TargetType="{x:Type FrameworkElement}" >
+            <Setter Property="Visibility" Value="Collapsed"/>
+            <Style.Triggers>
+                <DataTrigger Binding="{Binding ViewModel.ConnectionState}" Value="Connected">
+                    <Setter Property="Visibility" Value="Visible"/>
+                </DataTrigger>
+                <DataTrigger Binding="{Binding ViewModel.ConnectionState}" Value="Disconnecting">
+                    <Setter Property="Visibility" Value="Visible"/>
+                </DataTrigger>
+            </Style.Triggers>
+        </Style>
+
+        <Style x:Key="VisibleIfConnectedAndResumed" TargetType="{x:Type FrameworkElement}" >
+            <Setter Property="Visibility" Value="Collapsed"/>
+            <Style.Triggers>
+
+                <MultiDataTrigger>
+                    <MultiDataTrigger.Conditions>
+                        <Condition Binding="{Binding ViewModel.ConnectionState}" Value="Connected"/>
+                        <Condition Binding="{Binding ViewModel.PauseStatus}" Value="Resumed"/>
+                    </MultiDataTrigger.Conditions>
+                    <Setter Property="Visibility" Value="Visible"/>
+                </MultiDataTrigger>
+
+            </Style.Triggers>
+        </Style>
+
+    </Page.Resources>
+
+    <Grid Name="GuiMainGrid">
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="310"/>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="Auto"/>
+        </Grid.RowDefinitions>
+
+        <Grid Grid.Row="0" Margin="12">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="Auto"/>
+                <ColumnDefinition Width="*"/>
+                <ColumnDefinition Width="Auto"/>
+            </Grid.ColumnDefinitions>
+
+            <StackPanel Orientation="Horizontal" Grid.Column="0">
+
+                <StackPanel.Style>
+                    <Style TargetType="StackPanel">
+
+                        <Setter Property="ToolTip">
+                            <Setter.Value>
+                                <TextBlock>
+                                    Enabling AntiTracker will block ads, malicious websites,<LineBreak/>
+                                    and third-party trackers such as Google Analytics
+                                </TextBlock>
+                            </Setter.Value>
+                        </Setter>
+
+                    </Style>
+                </StackPanel.Style>
+
+                <TextBlock Foreground="{StaticResource DisabledColor}"
+                           FontSize="12" 
+                           HorizontalAlignment="Center" 
+                           VerticalAlignment="Center"
+                           Margin="0,0,10,0">AntiTracker</TextBlock>
+
+                <!--
+                <Button Background="Transparent" Style="{StaticResource {x:Static ToolBar.ButtonStyleKey}}"  Margin="2,0,10,0" IsTabStop="False">
+                    <Button.Content>
+                        <StackPanel>
+                            <Image Source="../Resources/iconInfo.png"/>
+                        </StackPanel>
+                    </Button.Content>
+                </Button>-->
+
+                <ToggleButton Name="GuiDnsFilterButton" HorizontalAlignment="Left"
+                                        VerticalAlignment="Center" 
+                                        Width="44" Height="20" 
+                                        BorderBrush="{StaticResource DisabledColor}"
+                                        Background="White"
+                                        IsChecked="{Binding ViewModel.IsAntiTrackerEnabled}"
+                                        ToolTipService.ShowOnDisabled="True">
+
+                    <ToggleButton.Style>
+                        <Style BasedOn="{StaticResource ToggleButtonSlider}" TargetType="ToggleButton">
+                            <Setter Property="Foreground" Value="{StaticResource EnabledColor}"/>
+
+                            <Setter Property="IsEnabled" Value="False"/>
+
+                            <Style.Triggers>
+
+
+                                <MultiDataTrigger>
+                                    <MultiDataTrigger.Conditions>
+                                        <Condition Binding="{Binding ViewModel.Settings.IsAntiTrackerHardcore}" Value="True"/>
+                                        <Condition Binding="{Binding ViewModel.IsAntiTrackerEnabled}" Value="True"/>
+                                    </MultiDataTrigger.Conditions>
+                                    <Setter Property="Foreground" Value="{StaticResource AntitrackerHardcoreColor}"/>
+                                </MultiDataTrigger>
+
+                                <MultiDataTrigger>
+                                    <MultiDataTrigger.Conditions>
+                                        <Condition Binding="{Binding ViewModel.ConnectionState}" Value="Disconnected"/>
+                                        <Condition Binding="{Binding ViewModel.IsAntiTrackerEnabled}" Value="True"/>
+                                    </MultiDataTrigger.Conditions>
+                                    <Setter Property="Opacity" Value="0.5"/>
+                                    <Setter Property="ToolTip" Value="AntiTracker will be activated when you connect"></Setter>
+                                </MultiDataTrigger>
+                                <MultiDataTrigger>
+                                    <MultiDataTrigger.Conditions>
+                                        <Condition Binding="{Binding ViewModel.PauseStatus}" Value="Paused"/>
+                                        <Condition Binding="{Binding ViewModel.IsAntiTrackerEnabled}" Value="True"/>
+                                    </MultiDataTrigger.Conditions>
+                                    <Setter Property="Opacity" Value="0.5"/>
+                                    <Setter Property="ToolTip" Value="AntiTracker will be activated when you connect"></Setter>
+                                </MultiDataTrigger>
+
+                                <!-- DNS control only enabled in Connected and Disconnected states -->
+                                <DataTrigger Binding="{Binding ViewModel.PauseStatus}" Value="Paused">
+                                    <Setter Property="IsEnabled" Value="True"/>
+                                </DataTrigger>
+                                <DataTrigger Binding="{Binding ViewModel.ConnectionState}" Value="Disconnected">
+                                    <Setter Property="IsEnabled" Value="True"/>
+                                </DataTrigger>
+                                <DataTrigger Binding="{Binding ViewModel.ConnectionState}" Value="Connected">
+                                    <Setter Property="IsEnabled" Value="True"/>
+                                </DataTrigger>
+
+                                <DataTrigger Binding="{Binding ViewModel.PauseStatus}" Value="Pausing">
+                                    <Setter Property="IsEnabled" Value="False"/>
+                                </DataTrigger>
+                                <DataTrigger Binding="{Binding ViewModel.PauseStatus}" Value="Resuming">
+                                    <Setter Property="IsEnabled" Value="False"/>
+                                </DataTrigger>
+                                <DataTrigger Binding="{Binding ViewModel.IsIsAntiTrackerChangingStatus}" Value="True">
+                                    <Setter Property="IsEnabled" Value="False"/>
+                                </DataTrigger>                                                                
+
+                            </Style.Triggers>
+
+                        </Style>
+                    </ToggleButton.Style>
+
+                </ToggleButton>
+            </StackPanel>
+
+            <StackPanel Orientation="Horizontal" Grid.Column="2" >
+
+                <StackPanel.ToolTip>
+                    <TextBlock>
+                        Enabling the IVPN firewall ensures that<LineBreak/>
+                        all traffic is routed through the VPN i.e.<LineBreak/> 
+                        no leaks outside the VPN tunnel
+                    </TextBlock>
+                </StackPanel.ToolTip>
+                
+
+                <TextBlock VerticalAlignment="Center" 
+                               Foreground="{StaticResource DisabledColor}" 
+                               FontSize="12"
+                               Text="Firewall" Margin="0,0,10,0">
+
+                    <TextBlock.Style>
+                        <Style TargetType="TextBlock">
+                            <Style.Triggers>
+                                <DataTrigger Binding="{Binding ViewModel.KillSwitchIsPersistent, Converter={StaticResource NegateConverter}}" Value="False">
+                                    <Setter Property="Opacity" Value="0.5"/>
+                                </DataTrigger>
+                            </Style.Triggers>
+                        </Style>
+                    </TextBlock.Style>
+
+                </TextBlock>
+
+                <!--
+                <Button Background="Transparent" Style="{StaticResource {x:Static ToolBar.ButtonStyleKey}}"  Margin="2,0,10,0" IsTabStop="False">
+                    <Button.Content>
+                        <StackPanel>
+                            <Image Source="../Resources/iconInfo.png"/>
+                        </StackPanel>
+                    </Button.Content>
+                </Button>-->
+
+                <ToggleButton Name="GuiFirewallButton" HorizontalAlignment="Left"
+                                  VerticalAlignment="Center" 
+                                  Width="44" Height="20" 
+                                  BorderBrush="{StaticResource DisabledColor}"
+                                  Background="White"
+                                  Foreground="{StaticResource EnabledColor}"
+                                  IsChecked="{Binding ViewModel.IsKillSwitchEnabled}"
+                                  
+                                  ToolTipService.ShowOnDisabled="True">
+
+                    <ToggleButton.Style>
+                        <Style BasedOn="{StaticResource ToggleButtonSlider}" TargetType="ToggleButton">
+
+                            <Setter Property="IsEnabled" Value="True"/>
+
+                            <Style.Triggers>
+
+                                <DataTrigger Binding="{Binding ViewModel.KillSwitchIsPersistent}" Value="True">
+                                    <Setter Property="IsEnabled" Value="False"/>
+                                    <Setter Property="ToolTip" Value="Firewall cannot be switched off when in persistent state"/>
+                                </DataTrigger>
+
+                                <DataTrigger Binding="{Binding ViewModel.PauseStatus}" Value="Paused">
+                                    <Setter Property="IsEnabled" Value="False"/>
+                                    <Setter Property="ToolTip" Value="Firewall cannot be switched on when in 'paused' state"/>
+                                </DataTrigger>
+
+                            </Style.Triggers>
+                        </Style>
+                    </ToggleButton.Style>
+                </ToggleButton>
+            </StackPanel>
+        </Grid>
+
+        <!-- WIFI information -->
+        <StackPanel  Orientation="Vertical" HorizontalAlignment="Center" Grid.Row="1" Margin="5">
+            <StackPanel.Style>
+                <Style TargetType="StackPanel">
+                    <Style.Triggers>
+                        <DataTrigger Binding="{Binding ViewModel.Settings.IsNetworkActionsEnabled}" Value="False">
+                            <Setter Property="Visibility" Value="Collapsed"/>
+                        </DataTrigger>
+                    </Style.Triggers>
+                </Style>
+            </StackPanel.Style>
+
+            <StackPanel Orientation="Horizontal" HorizontalAlignment="Center" Margin="10,0,10,0" >
+
+                <Image Name="GuiWiFiIcon" Width="16">
+                    <Image.Style>
+                        <Style TargetType="Image">
+                            <Setter Property="Source" Value="../Resources/iconWiFiBlue.png"/>
+                            <Style.Triggers>
+                                <DataTrigger Binding="{Binding ViewModel.WiFiState.ConnectedToInsecureNetwork}" Value="True">
+                                    <Setter Property="Source" Value="../Resources/iconWiFiRed.png"/>
+                                </DataTrigger>
+
+                                <DataTrigger Binding="{Binding ViewModel.WiFiState}" Value="{x:Null}">
+                                    <Setter Property="Visibility" Value="Collapsed"/>
+                                </DataTrigger>
+                            </Style.Triggers>
+                        </Style>
+                    </Image.Style>
+                </Image>
+
+                <TextBlock Margin="5,0,0,0" MaxWidth="180">
+                    <TextBlock.Style>
+                        <Style TargetType="TextBlock">
+                            <Setter Property="Text" Value="{Binding ViewModel.WiFiState.Network}"/>
+                            <Style.Triggers>
+                                <DataTrigger Binding="{Binding ViewModel.WiFiState}" Value="{x:Null}">
+                                    <Setter Property="Text" Value="no WiFi connection"/>
+                                    <Setter Property="Foreground" Value="{StaticResource DefaultNetworkColor}"/>
+                                </DataTrigger>
+                            </Style.Triggers>
+                        </Style>
+                    </TextBlock.Style>
+                </TextBlock>
+
+                <TextBlock Foreground="{StaticResource UntrustedNetworkColor}" VerticalAlignment="Center"  Text="(insecure)" Margin="5,0,0,0">
+                    <TextBlock.Style>
+                        <Style TargetType="TextBlock">
+                            <Setter Property="Visibility" Value="Collapsed"/>
+                            <Style.Triggers>
+                                <DataTrigger Binding="{Binding ViewModel.WiFiState.ConnectedToInsecureNetwork}" Value="True">
+                                    <Setter Property="Visibility" Value="Visible"/>
+                                </DataTrigger>
+                                <DataTrigger Binding="{Binding ViewModel.WiFiState}" Value="{x:Null}">
+                                    <Setter Property="Visibility" Value="Collapsed"/>
+                                </DataTrigger>
+                            </Style.Triggers>
+                        </Style>
+                    </TextBlock.Style>
+                </TextBlock>
+            </StackPanel>
+
+            <ComboBox VerticalAlignment="Center" VerticalContentAlignment="Center" HorizontalContentAlignment="Center" HorizontalAlignment="Stretch"
+                      MinWidth="150"
+                      SelectedItem="{Binding ViewModel.WiFiActionType}"
+                      ItemsSource="{Binding NetworkPossibleActions}">
+                <ComboBox.Style>
+                    <Style TargetType="ComboBox" BasedOn="{StaticResource ComboBoxTransparent}">
+                        <Style.Triggers>
+                            <DataTrigger Binding="{Binding ViewModel.WiFiState}" Value="{x:Null}">
+                                <Setter Property="Visibility" Value="Collapsed"/>
+                            </DataTrigger>
+                        </Style.Triggers>
+                    </Style>
+                </ComboBox.Style>
+
+                <ComboBox.ItemTemplate>
+                    <DataTemplate>
+                        <TextBlock HorizontalAlignment="Center" Margin="3">
+                            <TextBlock.Style>
+                                <Style TargetType="TextBlock">
+                                    <Setter Property="Text" Value="{Binding}"/>
+
+                                    <Style.Triggers>
+                                        <DataTrigger Binding="{Binding}" Value="Untrusted">
+                                            <Setter Property="Text" Value="untrusted"/>
+                                            <Setter Property="Foreground" Value="{StaticResource UntrustedNetworkColor}"/>
+                                        </DataTrigger>
+                                        <DataTrigger Binding="{Binding}" Value="Trusted">
+                                            <Setter Property="Text" Value="trusted"/>
+                                            <Setter Property="Foreground" Value="{StaticResource TrustedNetworkColor}"/>
+                                        </DataTrigger>
+                                        <DataTrigger Binding="{Binding}" Value="None">
+                                            <Setter Property="Text" Value="no status"/>
+                                            <Setter Property="Foreground" Value="{StaticResource NoneNetworkColor}"/>
+                                        </DataTrigger>
+
+                                        <MultiDataTrigger>
+                                            <MultiDataTrigger.Conditions>
+                                                <Condition Binding="{Binding}" Value="Default"/>
+                                                <Condition Binding="{Binding ViewModel.Settings.NetworkActions.DefaultActionType, RelativeSource={RelativeSource AncestorType=Page}}" Value="Untrusted"/>
+                                            </MultiDataTrigger.Conditions>
+                                            <Setter Property="Text" Value="default: untrusted"/>
+                                            <Setter Property="Foreground" Value="{StaticResource DefaultNetworkColor}"/>
+                                        </MultiDataTrigger>
+                                        <MultiDataTrigger>
+                                            <MultiDataTrigger.Conditions>
+                                                <Condition Binding="{Binding}" Value="Default"/>
+                                                <Condition Binding="{Binding ViewModel.Settings.NetworkActions.DefaultActionType, RelativeSource={RelativeSource AncestorType=Page}}" Value="Trusted"/>
+                                            </MultiDataTrigger.Conditions>
+                                            <Setter Property="Text" Value="default: trusted"/>
+                                            <Setter Property="Foreground" Value="{StaticResource DefaultNetworkColor}"/>
+                                        </MultiDataTrigger>
+                                        <MultiDataTrigger>
+                                            <MultiDataTrigger.Conditions>
+                                                <Condition Binding="{Binding}" Value="Default"/>
+                                                <Condition Binding="{Binding ViewModel.Settings.NetworkActions.DefaultActionType, RelativeSource={RelativeSource AncestorType=Page}}" Value="None"/>
+                                            </MultiDataTrigger.Conditions>
+                                            <Setter Property="Text" Value="no trust status set"/>
+                                            <Setter Property="Foreground" Value="{StaticResource DefaultNetworkColor}"/>
+                                        </MultiDataTrigger>
+                                    </Style.Triggers>
+                                </Style>
+                            </TextBlock.Style>
+                        </TextBlock>
+                    </DataTemplate>
+                </ComboBox.ItemTemplate>
+
+            </ComboBox>
+        </StackPanel>
+
+        <!-- Connect button -->
+        <Grid Grid.Row="1" Margin="0,0,0,10">
+
+            <Ellipse StrokeThickness="5" Stroke="{StaticResource EnabledColor}" Name="GuiCircle1" 
+                     HorizontalAlignment="Center"
+                     VerticalAlignment="Center"
+                     Width="160"
+                     Height="160" 
+                     Style="{StaticResource ConnectedEllipse1Style}">
+            </Ellipse>
+
+            <Ellipse StrokeThickness="20" Stroke="{StaticResource EnabledColor}" Name="GuiCircleConnecting" 
+                     HorizontalAlignment="Center"
+                     VerticalAlignment="Center"
+                     Width="165"
+                     Height="165"
+                     Opacity="0.5" 
+                     Style="{StaticResource ConnectingEllipseStyle}">
+            </Ellipse>
+
+            <Button Width="48" Height="48"
+                    Margin="150,120,0,0"
+                    Name="GuiPauseButton" 
+                    IsTabStop="False" Focusable="False"
+                    Style="{StaticResource PauseButtonStyle}">
+            </Button>
+
+            <!--Popup Name="GuiPauseMenuPopup"  Placement="Custom" HorizontalOffset="200" VerticalOffset="-1" StaysOpen="False" PlacementTarget="{Binding ElementName=GuiPauseButton}" PopupAnimation="Fade" AllowsTransparency="True"-->
+            <!-- due to 'Custom' placement, the CustomPopupPlacementCallback is implemented in the code -->
+            <Popup Name="GuiPauseMenuPopup"  Placement="Custom" StaysOpen="False" PlacementTarget="{Binding ElementName=GuiPauseButton}" PopupAnimation="Fade" AllowsTransparency="True">
+                <Border BorderBrush="#86c4f1" BorderThickness="0" Background="#ffdde5eb" Opacity="1" >
+                    <Grid>
+                        <Grid.RowDefinitions>
+                            <RowDefinition Height="Auto"/>
+                            <RowDefinition Height="Auto"/>
+                            <RowDefinition Height="Auto"/>
+                            <RowDefinition Height="Auto"/>
+                            <RowDefinition Height="Auto"/>
+                            <RowDefinition Height="Auto"/>
+                        </Grid.RowDefinitions>
+
+                        <Grid.Resources>
+                            <Style TargetType="Button" BasedOn="{StaticResource MenuItemButtonStyle}"/>
+                        </Grid.Resources>
+
+                        <Button Grid.Row="0" Margin="0" Tag="300" Click="GuiButtonPause_OnClick">
+                            <Grid Margin="0,0,10,0">
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="Auto"/>
+                                    <ColumnDefinition Width="*"/>
+                                </Grid.ColumnDefinitions>
+
+                                <Grid Grid.Column="0" Width="48" Height="48" HorizontalAlignment="Left">
+                                    <Ellipse Width="48" Height="48" HorizontalAlignment="Left"/>
+                                    <Image Source="../Resources/Buttons/pause.png" Width="32" Height="32"></Image>
+                                </Grid>
+
+                                <TextBlock Grid.Column="1" VerticalAlignment="Center" Foreground="Black">Pause for 5 minutes</TextBlock>
+                            </Grid>
+                        </Button>
+
+                        <Button Grid.Row="1" Tag="1800" Click="GuiButtonPause_OnClick">
+                            <TextBlock Margin="3" Foreground="Black">Pause for 30 minutes</TextBlock>
+                        </Button>
+
+                        <Button Grid.Row="2" Tag="3600" Click="GuiButtonPause_OnClick">
+                            <TextBlock Margin="3" Foreground="Black">Pause for 1 hour</TextBlock>
+                        </Button>
+
+                        <Button Grid.Row="3" Tag="10800" Click="GuiButtonPause_OnClick">
+                            <TextBlock Margin="3" Foreground="Black">Pause for 3 hours</TextBlock>
+                        </Button>
+
+                        <Button Grid.Row="4" Tag="0" Click="GuiButtonPause_OnClick">
+                            <TextBlock Margin="3" Foreground="Black">Pause for a custom time...</TextBlock>
+                        </Button>
+
+                    </Grid>
+                </Border>
+            </Popup>
+
+            <!--Margin="0,66,0,76"-->
+            <Button Width="168" Height="168"
+                    Name="GuiConnectButton" 
+                    IsTabStop="False" Focusable="False"
+                    Style="{StaticResource ConnectButtonStyle}"/>
+
+
+            <!--time left to resume-->
+            <StackPanel Orientation="Vertical" Margin="0,200,0,0" HorizontalAlignment="Center" VerticalAlignment="Center">
+
+                <StackPanel.Style>
+                    <Style TargetType="StackPanel">
+                        <Setter Property="Visibility" Value="Hidden"/>
+                        <Style.Triggers>
+                            <MultiDataTrigger>
+                                <MultiDataTrigger.Conditions>
+                                    <Condition Binding="{Binding ViewModel.ConnectionState}" Value="Connected"/>
+                                    <Condition Binding="{Binding ViewModel.PauseStatus}" Value="Paused"/>
+                                </MultiDataTrigger.Conditions>
+                                <Setter Property="Visibility" Value="Visible"/>
+                            </MultiDataTrigger>
+                        </Style.Triggers>
+                    </Style>
+                </StackPanel.Style>
+
+
+                <!--<TextBlock Text="time left to resume" Style="{StaticResource ConnectingLabelStyle}" HorizontalAlignment="Center" FontSize="12" Foreground="Gray"/>-->
+
+                <Button BorderThickness="0" Background="Transparent" MinWidth="150" 
+                        Name="GuiPauseTimeLeftButton" 
+                        Click="GuiPauseTimeLeftButton_OnClick"
+                        Style="{StaticResource {x:Static ToolBar.ButtonStyleKey}}" Focusable="False"
+                        ToolTip="Time left to resume">
+
+                    <TextBlock Name="GuiConnectBtnPauseInText" HorizontalAlignment="Center" Margin="0,0,0,0" FontSize="18"
+                               Text="{Binding ViewModel.TimeToResumeLeft}" Style="{StaticResource ConnectingLabelStyle}" Foreground="{StaticResource EnabledColor}"/>
+                </Button>
+
+            </StackPanel>
+
+            <!-- ACCOUNT EXPIRATION TEXT-->
+            <Button Margin="20,0,20,0" VerticalAlignment="Bottom" HorizontalAlignment="Stretch" Height="32"
+                    BorderThickness="0"
+                    MaxWidth="310"
+                    Background="White"
+                    Name="GuiAccountExpirationInfoButton" Click="GuiAccountExpirationInfoButton_OnClick" Style="{StaticResource {x:Static ToolBar.ButtonStyleKey}}" Focusable="False">
+                <Button.Content>
+                    <StackPanel Orientation="Horizontal" Margin="10,3,10,3">
+                        <Image Name="GuiAccountExpirationInfoImage" Source="../Resources/iconStatusModerate.png" Width="10" Margin="0,0,10,0"></Image>
+                        <TextBlock Name="GuiAccountExpirationInfoText">You have 3 days left in your free trial</TextBlock>
+                    </StackPanel>
+                </Button.Content>
+            </Button>
+
+
+        </Grid>
+
+        <!-- white area -->
+        <Grid Row="3" Background="#FFFFFF">
+            <Grid.RowDefinitions>
+                <RowDefinition Height="Auto"/>
+                <RowDefinition Height="Auto"/>
+                <RowDefinition Height="Auto"/>
+                <RowDefinition Height="Auto"/>
+                <RowDefinition Height="Auto"/>
+                <RowDefinition Height="Auto"/>
+                <RowDefinition Height="Auto"/>
+            </Grid.RowDefinitions>
+
+            <!-- single-hop multi-hop -->
+            <Grid Row="0">
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="Auto"/>
+                    <RowDefinition Height="Auto"/>
+                    <RowDefinition Height="Auto"/>
+                    <RowDefinition Height="Auto"/>
+                    <RowDefinition Height="Auto"/>
+                </Grid.RowDefinitions>
+
+                <!--hop selection buttons-->
+                <Grid Row="0" Height="72">
+                    <Grid.Style>
+                        <Style TargetType="Grid">
+                            <Style.Triggers>
+                                <DataTrigger Binding="{Binding ViewModel.IsAllowedMultiHop}" Value="False">
+                                    <Setter Property="Visibility" Value="Collapsed"/>
+                                </DataTrigger>
+                            </Style.Triggers>
+                        </Style>
+                    </Grid.Style>
+
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition/>
+                        <ColumnDefinition/>
+                    </Grid.ColumnDefinitions>
+
+                    <Popup Grid.Column="0" Grid.ColumnSpan="2" Name="GuiConnectedHopChangeWarningPopup" StaysOpen="False" Placement="Mouse" PopupAnimation="Scroll" AllowsTransparency="True">
+                        <Border BorderBrush="#172533" BorderThickness="1" Background="#26394D" Opacity="0.99">
+                            <Grid>
+                                <Grid.RowDefinitions>
+                                    <RowDefinition/>
+                                    <RowDefinition/>
+                                </Grid.RowDefinitions>
+
+                                <TextBlock Grid.Row="0" Margin="20,20,20,12" FontSize="15" FontWeight="Bold" Foreground="#FFFFFFFF" HorizontalAlignment="Center" TextAlignment="Center">
+                                    You are now connected to IVPN
+                                </TextBlock>
+                                <TextBlock Grid.Row="1" Margin="12,0,12,12" FontSize="15" Foreground="#FFFFFFFF" HorizontalAlignment="Center" TextAlignment="Center">
+                                    You can change server only when <LineBreak/> IVPN is disconnected.
+                                </TextBlock>
+
+                            </Grid>
+                        </Border>
+                    </Popup>
+
+                    <Button Grid.Column="0" Name="GuiButtonSingleHop" Click="GuiButtonSingleHop_Click" Content="single-hop">
+                        <Button.Style>
+                            <Style TargetType="Button" BasedOn="{StaticResource HopButtonStyle}">
+                                <Style.Triggers>
+                                    <DataTrigger Binding="{Binding ViewModel.IsMultiHop}" Value="False">
+                                        <Setter Property="Foreground" Value="{StaticResource EnabledColor}"/>
+                                    </DataTrigger>
+                                </Style.Triggers>
+                            </Style>
+                        </Button.Style>
+                    </Button>
+
+                    <Button Grid.Column="1" Name="GuiButtonMultiHop" Click="GuiButtonMultiHop_Click"  Content="multi-hop">
+                        <Button.Style>
+                            <Style TargetType="Button" BasedOn="{StaticResource HopButtonStyle}">
+                                <Style.Triggers>
+                                    <DataTrigger Binding="{Binding ViewModel.IsMultiHop}" Value="True">
+                                        <Setter Property="Foreground" Value="{StaticResource EnabledColor}"/>
+                                    </DataTrigger>
+                                </Style.Triggers>
+                            </Style>
+                        </Button.Style>
+                    </Button>
+                </Grid>
+
+                <Separator Grid.Row="1" Margin="12,0,12,0" Height="1" Foreground="{StaticResource DisabledColor}" Opacity="0.1"/>
+
+                <!-- Entry server button -->
+                <Button Grid.Row="2" HorizontalContentAlignment="Stretch" BorderThickness="0">
+                    <Button.Style>
+                        <Style TargetType="Button" BasedOn="{StaticResource ButtonMouseOverBackgroundChangeble}">
+                            <Setter Property="Background" Value="Transparent"/>
+                            <Style.Triggers>
+                                <DataTrigger Binding="{Binding ViewModel.IsMultiHop}" Value="False">
+                                    <Setter Property="Command" Value="{Binding SelectServerCommand}" />
+                                </DataTrigger>
+                                <DataTrigger Binding="{Binding ViewModel.IsMultiHop}" Value="True">
+                                    <Setter Property="Command" Value="{Binding SelectEntryServerCommand}" />
+                                </DataTrigger>
+
+                                <Trigger Property="IsMouseOver" Value="True">
+                                    <Setter Property="Background" Value="#0C26394D"/>
+                                </Trigger>
+                            </Style.Triggers>
+                        </Style>
+                    </Button.Style>
+
+                    <Button.Content>
+                        <StackPanel Orientation="Vertical">
+
+                            <!--Selected EntryServer button-->
+                            <Grid Name="GuiGridSelectedServer">
+                                <Grid.Style>
+                                    <Style TargetType="Grid">
+                                        <Style.Triggers>
+                                            <MultiDataTrigger>
+                                                <MultiDataTrigger.Conditions>
+                                                    <Condition Binding="{Binding ViewModel.IsAutomaticServerSelection}" Value="True" />
+                                                    <Condition Binding="{Binding ViewModel.IsMultiHop}" Value="False" />
+                                                    <Condition Binding="{Binding ViewModel.ConnectionState}" Value="Disconnected" />
+                                                    <Condition Binding="{Binding ViewModel.IsFastestServerInUse}" Value="False" />
+                                                </MultiDataTrigger.Conditions>
+                                                <Setter Property="Visibility" Value="Collapsed" />
+                                            </MultiDataTrigger>
+
+                                            <MultiDataTrigger>
+                                                <MultiDataTrigger.Conditions>
+                                                    <Condition Binding="{Binding ViewModel.IsAutomaticServerSelection}" Value="True" />
+                                                    <Condition Binding="{Binding ViewModel.IsMultiHop}" Value="False" />
+                                                    <Condition Binding="{Binding ViewModel.ConnectionState}" Value="Connecting" />
+                                                    <Condition Binding="{Binding ViewModel.IsFastestServerInUse}" Value="False" />
+                                                </MultiDataTrigger.Conditions>
+                                                <Setter Property="Visibility" Value="Collapsed" />
+                                            </MultiDataTrigger>
+
+                                            <DataTrigger Binding="{Binding ViewModel.IsFastestServerInUse}" Value="True">
+                                                <Setter Property="Visibility" Value="Visible" />
+                                            </DataTrigger>
+                                        </Style.Triggers>
+                                    </Style>
+                                </Grid.Style>
+
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="Auto"/>
+                                    <ColumnDefinition Width="*"/>
+                                    <ColumnDefinition Width="Auto"/>
+                                </Grid.ColumnDefinitions>
+
+                                <StackPanel Grid.Column="0">
+                                    <Image
+                                        Source="{Binding ViewModel.SelectedServer.CountryCode, Converter={StaticResource CountryCodeToFlagFileConverter}}" 
+                                        Width="24" 
+                                        Margin="12,12,0,0"/>
+                                </StackPanel>
+
+                                <Grid Grid.Column="1" HorizontalAlignment="Stretch">
+                                    <Grid.ColumnDefinitions>
+                                        <ColumnDefinition Width="*"/>
+                                        <ColumnDefinition Width="Auto"/>
+                                    </Grid.ColumnDefinitions>
+
+                                    <TextBlock Grid.Column="0" Text="{Binding ViewModel.SelectedServer.Name}" 
+                                               Margin="18,14,18,15" VerticalAlignment="Center" 
+                                               HorizontalAlignment="Left"
+                                               Foreground="{StaticResource DisabledColor}" 
+                                               FontSize="15"/>
+
+                                    <TextBlock Grid.Column="1" VerticalAlignment="Center" Foreground="Gray" HorizontalAlignment="Right" Margin="0,0,10,0"
+                                               ToolTip="Server was selected automatically"
+                                               Text="fastest server">
+                                        <TextBlock.Style>
+                                            <Style TargetType="TextBlock">
+                                                <Setter Property="Visibility" Value="Visible" />
+                                                <Style.Triggers>
+                                                    <DataTrigger Binding="{Binding ViewModel.IsAutomaticServerSelection}" Value="True">
+                                                        <Setter Property="Visibility" Value="Visible" />
+                                                    </DataTrigger>
+                                                    <DataTrigger Binding="{Binding ViewModel.IsAutomaticServerSelection}" Value="False">
+                                                        <Setter Property="Visibility" Value="Collapsed" />
+                                                    </DataTrigger>
+                                                    <DataTrigger Binding="{Binding ViewModel.IsFastestServerInUse}" Value="False">
+                                                        <Setter Property="Visibility" Value="Collapsed" />
+                                                    </DataTrigger>
+                                                    <DataTrigger Binding="{Binding ViewModel.IsMultiHop}" Value="True">
+                                                        <Setter Property="Visibility" Value="Collapsed" />
+                                                    </DataTrigger>
+
+                                                </Style.Triggers>
+                                            </Style>
+                                        </TextBlock.Style>
+                                    </TextBlock>
+                                </Grid>
+
+                                <Image Grid.Column="2" 
+                                       Source="{Binding ViewModel.SelectedServer.PingTimeRelative, Converter={StaticResource PingStatusToImageConverter}}" 
+                                       Margin="0,0,12,0" VerticalAlignment="Center"/>
+                            </Grid>
+
+                            <!-- Automatic server selected button (no fastest server detected) -->
+                            <Grid Name="GuiGridAutomaticServer" 
+                                  Visibility="{Binding ElementName=GuiGridSelectedServer, Path=Visibility, Converter={StaticResource InvertVisibilityConverter}}">
+
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="Auto"/>
+                                    <ColumnDefinition Width="*"/>
+                                    <ColumnDefinition Width="Auto"/>
+                                </Grid.ColumnDefinitions>
+
+                                <StackPanel Grid.Column="0">
+                                    <Image
+                                        Source="../Resources/AutomaticServer.png" 
+                                        Width="24" 
+                                        Margin="12,12,0,0"/>
+                                </StackPanel>
+
+                                <TextBlock Grid.Column="1" Text="fastest server" 
+                                           Margin="18,14,18,15" VerticalAlignment="Center" 
+                                           HorizontalAlignment="Left"
+                                           Foreground="{StaticResource DisabledColor}" 
+                                           FontSize="15">
+                                </TextBlock>
+
+                                <Image Grid.Column="2" 
+                                       Source="../Resources/iconStatusGood.png" 
+                                       Margin="0,0,12,0" VerticalAlignment="Center"/>
+                            </Grid>
+
+                        </StackPanel>
+                    </Button.Content>
+                </Button>
+
+                <Separator Grid.Row="3" Margin="12,0,12,0" Height="1" Foreground="{StaticResource DisabledColor}" Opacity="0.1" Style="{StaticResource ControlStyleCollapsedIfSingleHop}"/>
+
+                <!-- Exit server button -->
+                <Button Grid.Row="4" HorizontalContentAlignment="Stretch" BorderThickness="0" Command="{Binding SelectExitServerCommand}">
+
+                    <Button.Content>
+                        <Grid Grid.Row="5">
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="Auto"/>
+                                <ColumnDefinition Width="*"/>
+                                <ColumnDefinition Width="Auto"/>
+                            </Grid.ColumnDefinitions>
+
+                            <StackPanel Grid.Column="0">
+                                <Image
+                                       Source="{Binding ViewModel.SelectedExitServer.CountryCode, Converter={StaticResource CountryCodeToFlagFileConverter}}" 
+                                       Width="24" 
+                                       Margin="12,12,0,0"/>
+                            </StackPanel>
+
+                            <TextBlock Grid.Column="1" Text="{Binding ViewModel.SelectedExitServer.Name}" 
+                                       Margin="18,14,18,15" VerticalAlignment="Center" 
+                                       HorizontalAlignment="Left"
+                                       Foreground="{StaticResource DisabledColor}" 
+                                       FontSize="15"/>
+                            <Image Grid.Column="2" 
+                                   Source="{Binding ViewModel.SelectedExitServer.PingTimeRelative, Converter={StaticResource PingStatusToImageConverter}}" 
+                                   Margin="0,0,12,0" VerticalAlignment="Center"/>
+                        </Grid>
+                    </Button.Content>
+
+                    <Button.Style>
+                        <Style TargetType="Button" BasedOn="{StaticResource ButtonStyleCollapsedIfSingleHop}">
+                            <Setter Property="Background" Value="Transparent"/>
+                            <Style.Triggers>
+                                <Trigger Property="IsMouseOver" Value="True">
+                                    <Setter Property="Background" Value="#0C26394D"/>
+                                </Trigger>
+                            </Style.Triggers>
+                        </Style>
+                    </Button.Style>
+                </Button>
+            </Grid>
+
+            <Separator Grid.Row="2" Margin="12,0,12,0" Height="1" Foreground="{StaticResource DisabledColor}" Opacity="0.1"/>
+
+            <!-- Page footer -->
+            <!--
+            UNCOMMENT THIS TO REVERT CHANGES
+            <Grid Grid.Row="4" Margin="12,13,12,13">
+                -->
+            <Grid Grid.Row="4" Margin="12,0,12,5">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="Auto"/>
+                    <ColumnDefinition Width="Auto"/>
+                    <ColumnDefinition Width="Auto"/>
+                    <ColumnDefinition Width="*"/>
+                    <ColumnDefinition Width="Auto"/>
+                    <ColumnDefinition Width="Auto"/>
+                </Grid.ColumnDefinitions>
+
+                <Button Grid.Column="0" Name="GuiPreferencesButton" Background="Transparent" 
+                        BorderThickness="0" Margin="0,0,16,0" Command="{Binding  ViewModel.SettingsCommand}" ToolTip="Settings"
+                        Style="{StaticResource ButtonMouseOverBackgroundChangeble}">
+                    <Button.Content>
+                        <Image Name="SettingsBtnImage">
+                            <Image.Style>
+                                <Style TargetType="Image" >
+                                    <Setter Property="Source" Value="../Resources/iconSettings.png"/>
+                                    <Style.Triggers>
+                                        <Trigger Property="IsMouseOver" Value="True">
+                                            <Setter Property="Source" Value="../Resources/iconSettingsActive.png"/>
+                                        </Trigger>
+                                    </Style.Triggers>
+                                </Style>
+                            </Image.Style>
+                        </Image>
+                    </Button.Content>
+                </Button>
+
+                <Button Grid.Column="1" Name="GuiPrivateEmailsButton" Background="Transparent" 
+                        BorderThickness="0" Margin="0,0,16,0" ToolTip="Private e-mails" Click="GuiPrivateEmailsButton_OnClick">
+                    
+                    <Button.Style >
+                        <Style TargetType="Button" BasedOn="{StaticResource ButtonMouseOverBackgroundChangeble}">
+                            <Style.Triggers>
+                                <DataTrigger Binding="{Binding ViewModel.IsAllowedPrivateEmails}" Value="False">
+                                    <Setter Property="Visibility" Value="Collapsed"/>
+                                </DataTrigger>
+                            </Style.Triggers>
+                        </Style>
+                    </Button.Style>
+                    
+                    <Button.Content>
+                        <Image Name="PrivateEmailsBtnImage">
+                            <Image.Style>
+                                <Style TargetType="Image" >
+                                    <Setter Property="Source" Value="../Resources/iconEmail.png"/>
+                                    <Style.Triggers>
+                                        <Trigger Property="IsMouseOver" Value="True">
+                                            <Setter Property="Source" Value="../Resources/iconEmailActive.png"/>
+                                        </Trigger>
+                                    </Style.Triggers>
+                                </Style>
+                            </Image.Style>
+                        </Image>
+                    </Button.Content>
+                </Button>
+
+                <Popup Grid.Column="1" x:Name="GuiPrivateEmailsManuPopup" StaysOpen="False" Placement="Mouse" PopupAnimation="Scroll" AllowsTransparency="True">
+                    <Border BorderBrush="#172533" BorderThickness="1" Background="#26394D" Opacity="0.99">
+                        <Grid>
+                            <Grid.RowDefinitions>
+                                <RowDefinition/>
+                                <RowDefinition/>
+                            </Grid.RowDefinitions>
+
+                            <Grid.Resources>
+                                <Style TargetType="Button" BasedOn="{StaticResource MenuItemButtonStyle}"/>
+                            </Grid.Resources>
+
+                            <Button Grid.Row="0" Name="GuiMenuButtonGeneratePrivateEmail" Click="GuiMenuItemGeneratePrivateEmail_OnClick">
+                                <TextBlock Margin="3"> Generate new e-mail</TextBlock>
+                            </Button>
+                            <Button Grid.Row="1" Name="GuiMenuButtonManagePrivateEmail" Click="MenuItemManagePrivateEmails_OnClick">
+                                <TextBlock Margin="3"> Manage e-mails</TextBlock>
+                            </Button>
+                        </Grid>
+                    </Border>
+                </Popup>
+
+                <Button Grid.Column="2" Name="GuiConnectionInfoButton" Background="Transparent" 
+                        BorderThickness="0" Margin="0,0,16,0" Click="GuiConnectionInfoButton_Click" ToolTip="Connection status">
+                    <Button.Content>
+                        <StackPanel>
+                            <Image>
+                                <Image.Style>
+                                    <Style TargetType="Image" >
+                                        <Setter Property="Source" Value="../Resources/iconInformation.png"/>
+                                        <Style.Triggers>
+                                            <Trigger Property="IsMouseOver" Value="True">
+                                                <Setter Property="Source" Value="../Resources/iconInformationActive.png"/>
+                                            </Trigger>
+                                        </Style.Triggers>
+                                    </Style>
+                                </Image.Style>
+                            </Image>
+                        </StackPanel>
+                    </Button.Content>
+
+                    <Button.Style>
+                        <Style TargetType="Button" BasedOn="{StaticResource ButtonMouseOverBackgroundChangeble}">
+                            <!--
+                            <Setter Property="Visibility" Value="Collapsed"/>
+                            <Style.Triggers>
+                                <DataTrigger Binding="{Binding ViewModel.ConnectionState}" Value="Connected">
+                                    <Setter Property="Visibility" Value="Visible"/>
+                                </DataTrigger>
+                                <DataTrigger Binding="{Binding ViewModel.ConnectionState}" Value="Disconnecting">
+                                    <Setter Property="Visibility" Value="Visible"/>
+                                </DataTrigger>
+
+                            </Style.Triggers>
+                            -->
+                        </Style>
+                    </Button.Style>
+                </Button>
+
+                <Popup Grid.Column="2" Name="GuiConnectionInfoPopup" StaysOpen="False" Placement="Mouse" PopupAnimation="Scroll" AllowsTransparency="True" >
+                    <Border BorderBrush="#172533" BorderThickness="1" Background="#26394D" Opacity="0.99" MinWidth="250">
+                        <Grid>
+                            <Grid.RowDefinitions>
+                                <RowDefinition/>
+                                <RowDefinition/>
+                                <RowDefinition/>
+                                <RowDefinition/>
+                                <RowDefinition/>
+                                <RowDefinition/>
+                                <RowDefinition/>
+                            </Grid.RowDefinitions>
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="Auto"/>
+                                <ColumnDefinition Width="*"/>
+                            </Grid.ColumnDefinitions>
+
+                            <StackPanel Grid.Row="2" Grid.Column="0" Grid.ColumnSpan="2" Orientation="Vertical" Margin="12" VerticalAlignment="Center">
+                                <StackPanel.Style>
+                                    <Style TargetType="StackPanel">
+                                        <Setter Property="Visibility" Value="Collapsed"/>
+                                        <Style.Triggers>
+                                            <DataTrigger Binding="{Binding ProofsViewModel.State}" Value="Updating">
+                                                <Setter Property="Visibility" Value="Visible"/>
+                                            </DataTrigger>
+                                        </Style.Triggers>
+                                    </Style>
+                                </StackPanel.Style>
+
+                                <TextBlock FontSize="15" Foreground="#7A8A99" HorizontalAlignment="Center">Updating ...</TextBlock>
+
+
+                                
+                                <ProgressBar Margin="15" Width="100" BorderBrush="#172533" Foreground="#178FE6" Background="#26394D" IsIndeterminate="True"/>
+                                
+                            </StackPanel>
+
+                            <TextBlock  Grid.Row="2" Grid.Column="0" Grid.ColumnSpan="2" Text="{Binding ProofsViewModel.Error}" Margin="12" FontSize="15" Foreground="OrangeRed" TextWrapping="Wrap" MaxWidth="250" VerticalAlignment="Center" >
+                                <TextBlock.Style>
+                                    <Style TargetType="TextBlock">
+                                        <Setter Property="Visibility" Value="Collapsed"/>
+                                        <Style.Triggers>
+                                            <DataTrigger Binding="{Binding ProofsViewModel.State}" Value="Error">
+                                                <Setter Property="Visibility" Value="Visible"/>
+                                            </DataTrigger>
+                                        </Style.Triggers>
+                                    </Style>
+                                </TextBlock.Style>
+                            </TextBlock>
+
+                            <Grid Grid.Row="2" Grid.Column="0" Grid.ColumnSpan="2">
+                                <Grid.RowDefinitions>
+                                    <RowDefinition Height="Auto"/>
+                                    <RowDefinition Height="Auto"/>
+                                    <RowDefinition Height="Auto"/>
+                                </Grid.RowDefinitions>
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="Auto"/>
+                                    <ColumnDefinition Width="*"/>
+                                </Grid.ColumnDefinitions>
+
+                                <Grid.Style>
+                                    <Style TargetType="Grid">
+                                        <Setter Property="Visibility" Value="Hidden"/>
+                                        <Style.Triggers>
+                                            <DataTrigger Binding="{Binding ProofsViewModel.State}" Value="Ok">
+                                                <Setter Property="Visibility" Value="Visible"/>
+                                            </DataTrigger>
+                                        </Style.Triggers>
+                                    </Style>
+                                </Grid.Style>
+
+                                <TextBlock Grid.Row="0" Grid.Column="0" Text="Location" Margin="12" FontSize="15" Foreground="#7A8A99"/>
+                                <TextBlock Grid.Row="1" Grid.Column="0" Text="Public IP" Margin="12" FontSize="15" Foreground="#7A8A99"/>
+                                
+                                
+                                <StackPanel Grid.Row="0" Grid.Column="1" Orientation="Vertical" Margin="12,12,20,12">
+                                    <StackPanel Orientation="Horizontal">
+                                        <TextBlock Text="{Binding ProofsViewModel.GeoLookup.Country}"  FontSize="15" Foreground="#FFFFFFFF" />
+                                        <Image
+                                            Source="{Binding ProofsViewModel.GeoLookup.CountryCode, Converter={StaticResource CountryCodeToFlagFileConverterAllSet}}" 
+                                            Width="24" MinHeight="24"
+                                            Margin="12,0,0,0"/>
+
+                                    </StackPanel>
+                                    <TextBlock Text="{Binding ProofsViewModel.GeoLookup.City}" FontSize="15" Foreground="#FFFFFFFF">
+                                        <TextBlock.Style>
+                                            <Style TargetType="TextBlock">
+                                                <Style.Triggers>
+                                                    <Trigger Property="Text" Value="">
+                                                        <Setter Property="Visibility" Value="Collapsed"></Setter>
+                                                    </Trigger>
+                                                </Style.Triggers>
+                                            </Style>
+                                        </TextBlock.Style>
+                                    </TextBlock>
+                                </StackPanel>
+                                <TextBlock Grid.Row="1" Grid.Column="1" Text="{Binding ProofsViewModel.GeoLookup.IpAddress}" Margin="12,12,20,12" FontSize="15" Foreground="#FFFFFFFF" />
+
+                            </Grid>
+
+                            <TextBlock Grid.Row="3" Grid.Column="0" Text="Duration" Margin="12" FontSize="15" Foreground="#7A8A99" Style="{StaticResource VisibleIfConnectedAndResumed}"/>
+                            <TextBlock Grid.Row="3" Grid.Column="1" Text="{Binding ViewModel.ConnectionInfo.DurationString}"  Margin="12,12,20,12" FontSize="15" Foreground="#FFFFFFFF"  Style="{StaticResource VisibleIfConnectedAndResumed}"/>
+
+                            <TextBlock Grid.Row="4" Grid.Column="0" Text="Protocol" Margin="12" FontSize="15" Foreground="#7A8A99" Style="{StaticResource VisibleIfConnectedAndResumed}"/>
+                            <TextBlock Grid.Row="4" Grid.Column="1" Text="{Binding ViewModel.ConnectionInfo.VpnProtocolInfo}"  Margin="12,12,20,12" FontSize="15" Foreground="#FFFFFFFF"  Style="{StaticResource VisibleIfConnectedAndResumed}"/>
+
+                            <TextBlock Grid.Row="5" Grid.Column="0" Text="Local IP" Margin="12" FontSize="15" Foreground="#7A8A99" Style="{StaticResource VisibleIfConnectedAndResumed}"/>
+                            <TextBlock Grid.Row="5" Grid.Column="1" Text="{Binding ViewModel.ConnectionInfo.ClientIPAddress}"  Margin="12,12,20,12" FontSize="15" Foreground="#FFFFFFFF"  Style="{StaticResource VisibleIfConnectedAndResumed}"/>
+                        </Grid>
+                    </Border>
+                </Popup>
+
+                <StackPanel Grid.Column="5" Orientation="Horizontal" Margin="18,0,18,0">
+                    <Popup Name="GuiFirewallIsOffPopup" StaysOpen="False" Placement="Top" PlacementTarget="{Binding ElementName=GuiFirewallButton}" PopupAnimation="Scroll" AllowsTransparency="True">
+                        <Border BorderBrush="#172533" BorderThickness="1" Background="#26394D" Opacity="0.99">
+                            <Grid>
+                                <Grid.RowDefinitions>
+                                    <RowDefinition/>
+                                    <RowDefinition/>
+                                </Grid.RowDefinitions>
+
+                                <TextBlock Grid.Row="0" Margin="20,20,20,12" FontSize="15" FontWeight="Bold" Foreground="#FFFFFFFF" HorizontalAlignment="Center" TextAlignment="Center">
+                                    Firewall is off
+                                </TextBlock>
+                                <TextBlock Grid.Row="1" Margin="12,0,12,12" FontSize="15" Foreground="#FFFFFFFF" HorizontalAlignment="Center" TextAlignment="Center">
+                                    We recommend that the IVPN<LineBreak/>firewall is on when you are<LineBreak/>connected to the VPN.
+                                </TextBlock>
+
+                            </Grid>
+                        </Border>
+                    </Popup>
+                </StackPanel>
+                
+            </Grid>
+        </Grid>
+    </Grid>
+</Page>
+
+
+

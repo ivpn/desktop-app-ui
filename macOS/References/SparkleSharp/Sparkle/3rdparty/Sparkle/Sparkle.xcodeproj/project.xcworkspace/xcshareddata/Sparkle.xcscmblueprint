@@ -1,0 +1,32 @@
+{
+  "DVTSourceControlWorkspaceBlueprintPrimaryRemoteRepositoryKey" : "EF1CF5E1F342919DE309B5C9DAEDDCF1D12D0402",
+  "DVTSourceControlWorkspaceBlueprintWorkingCopyRepositoryLocationsKey" : {
+
+  },
+  "DVTSourceControlWorkspaceBlueprintWorkingCopyStatesKey" : {
+    "EF1CF5E1F342919DE309B5C9DAEDDCF1D12D0402" : 9223372036854775807,
+    "B6C544E9E7604F4FA02EB7076513AAFB6E9DC7D4" : 9223372036854775807,
+    "04DCF5217829185F8E548B6A52056C241A5EA0F2" : 9223372036854775807
+  },
+  "DVTSourceControlWorkspaceBlueprintIdentifierKey" : "E5ED3B60-751F-4164-A608-9949A853E1CA",
+  "DVTSourceControlWorkspaceBlueprintWorkingCopyPathsKey" : {
+    "EF1CF5E1F342919DE309B5C9DAEDDCF1D12D0402" : "Sparkle\/",
+    "B6C544E9E7604F4FA02EB7076513AAFB6E9DC7D4" : "..\/..",
+    "04DCF5217829185F8E548B6A52056C241A5EA0F2" : "..\/..\/..\/.."
+  },
+  "DVTSourceControlWorkspaceBlueprintNameKey" : "Sparkle",
+  "DVTSourceControlWorkspaceBlueprintVersion" : 204,
+  "DVTSourceControlWorkspaceBlueprintRelativePathToProjectKey" : "Sparkle.xcodeproj",
+  "DVTSourceControlWorkspaceBlueprintRemoteRepositoriesKey" : [
+    {
+      "DVTSourceControlWorkspaceBlueprintRemoteRepositoryURLKey" : "https:\/\/github.com\/rainycape\/SparkleSharp.git",
+      "DVTSourceControlWorkspaceBlueprintRemoteRepositorySystemKey" : "com.apple.dt.Xcode.sourcecontrol.Git",
+      "DVTSourceControlWorkspaceBlueprintRemoteRepositoryIdentifierKey" : "B6C544E9E7604F4FA02EB7076513AAFB6E9DC7D4"
+    },
+    {
+      "DVTSourceControlWorkspaceBlueprintRemoteRepositoryURLKey" : "https:\/\/github.com\/sparkle-project\/Sparkle.git",
+      "DVTSourceControlWorkspaceBlueprintRemoteRepositorySystemKey" : "com.apple.dt.Xcode.sourcecontrol.Git",
+      "DVTSourceControlWorkspaceBlueprintRemoteRepositoryIdentifierKey" : "EF1CF5E1F342919DE309B5C9DAEDDCF1D12D0402"
+    }
+  ]
+}

@@ -1,0 +1,853 @@
+﻿<Project DefaultTargets="Build" ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProductVersion>8.0.30703</ProductVersion>
+    <SchemaVersion>2.0</SchemaVersion>
+    <ProjectGuid>{93EA81DD-FB63-46D7-89F6-59F20C93A4F3}</ProjectGuid>
+    <ProjectTypeGuids>{A3F8F2AB-B479-4A4A-A458-A89E7DC349F1};{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}</ProjectTypeGuids>
+    <OutputType>Exe</OutputType>
+    <RootNamespace>IVPN</RootNamespace>
+    <MonoMacResourcePrefix>Resources</MonoMacResourcePrefix>
+    <AssemblyName>IVPN</AssemblyName>
+    <UseXamMacFullFramework>true</UseXamMacFullFramework>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>bin\Debug</OutputPath>
+    <DefineConstants>DEBUG;</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+    <ConsolePause>false</ConsolePause>
+    <UseSGen>false</UseSGen>
+    <IncludeMonoRuntime>false</IncludeMonoRuntime>
+    <EnablePackageSigning>false</EnablePackageSigning>
+    <CodeSigningKey></CodeSigningKey>
+    <EnableCodeSigning>false</EnableCodeSigning>
+    <CreatePackage>false</CreatePackage>
+    <PackageSigningKey>Developer ID Installer</PackageSigningKey>
+    <UseRefCounting>false</UseRefCounting>
+    <Profiling>false</Profiling>
+    <HttpClientHandler>HttpClientHandler</HttpClientHandler>
+    <TlsProvider>Default</TlsProvider>
+    <LinkMode>None</LinkMode>
+    <AOTMode>None</AOTMode>
+    <CustomCommands>
+      <CustomCommands>
+        <Command>
+          <type>BeforeBuild</type>
+          <command>run-before-build.sh</command>
+          <workingdir>${ProjectDir}</workingdir>
+        </Command>
+        <Command>
+          <type>AfterBuild</type>
+          <command>run-after-build.sh ${TargetDir}</command>
+          <workingdir>${ProjectDir}</workingdir>
+        </Command>
+      </CustomCommands>
+    </CustomCommands>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <Optimize>true</Optimize>
+    <OutputPath>bin\Release</OutputPath>
+    <DefineConstants></DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+    <ConsolePause>false</ConsolePause>
+    <UseSGen>false</UseSGen>
+    <IncludeMonoRuntime>true</IncludeMonoRuntime>
+    <EnablePackageSigning>false</EnablePackageSigning>
+    <CodeSigningKey>Mac Developer</CodeSigningKey>
+    <EnableCodeSigning>false</EnableCodeSigning>
+    <CreatePackage>false</CreatePackage>
+    <UseHardenedRuntime>true</UseHardenedRuntime>
+    <PackageSigningKey>Developer ID Installer</PackageSigningKey>
+    <UseRefCounting>false</UseRefCounting>
+    <LinkMode>None</LinkMode>
+    <Profiling>false</Profiling>
+    <HttpClientHandler>HttpClientHandler</HttpClientHandler>
+    <TlsProvider>Default</TlsProvider>
+    <AOTMode>None</AOTMode>
+    <CustomCommands>
+      <CustomCommands>
+        <Command>
+          <type>BeforeBuild</type>
+          <command>run-before-build.sh</command>
+          <workingdir>${ProjectDir}</workingdir>
+        </Command>
+        <Command>
+          <type>AfterBuild</type>
+          <command>run-after-build.sh ${TargetDir}</command>
+          <workingdir>${ProjectDir}</workingdir>
+        </Command>
+      </CustomCommands>
+    </CustomCommands>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'AppStore|AnyCPU' ">
+    <DebugType>full</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>bin\AppStore</OutputPath>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+    <ConsolePause>false</ConsolePause>
+    <LinkMode>None</LinkMode>
+    <UseSGen>false</UseSGen>
+    <IncludeMonoRuntime>true</IncludeMonoRuntime>
+    <PackageSigningKey>3rd Party Mac Developer Installer</PackageSigningKey>
+    <CreatePackage>true</CreatePackage>
+    <CodeSigningKey>3rd Party Mac Developer Application</CodeSigningKey>
+    <EnableCodeSigning>true</EnableCodeSigning>
+    <EnablePackageSigning>true</EnablePackageSigning>
+    <UseRefCounting>false</UseRefCounting>
+    <Profiling>false</Profiling>
+    <HttpClientHandler>HttpClientHandler</HttpClientHandler>
+    <TlsProvider>Default</TlsProvider>
+    <AOTMode>None</AOTMode>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="System" />
+    <Reference Include="System.Xml" />
+    <Reference Include="System.Core" />
+    <Reference Include="System.Xml.Linq" />
+    <Reference Include="Mono.Security" />
+    <Reference Include="System.Security" />
+    <Reference Include="Xamarin.Mac" />
+  </ItemGroup>
+  <ItemGroup>
+    <Folder Include="Resources\" />
+    <Folder Include="Views\" />
+    <Folder Include="en.lproj\" />
+    <Folder Include="Implementations\" />
+    <Folder Include="ModelAdapters\" />
+    <Folder Include="ValueTransformers\" />
+    <Folder Include="Controls\" />
+    <Folder Include="GuiHelpers\" />
+    <Folder Include="Updater\" />
+    <Folder Include="Windows\" />
+    <Folder Include="MediaResourcesFlags.xcassets\hu.imageset\" />
+    <Folder Include="MediaResourcesFlags.xcassets\nl.imageset\" />
+    <Folder Include="MediaResourcesFlags.xcassets\uk.imageset\" />
+    <Folder Include="MediaResourcesFlags.xcassets\ua.imageset\" />
+    <Folder Include="MediaResourcesFlags.xcassets\us.imageset\" />
+    <Folder Include="MediaResourcesFlags.xcassets\ro.imageset\" />
+    <Folder Include="MediaResourcesFlags.xcassets\hk.imageset\" />
+    <Folder Include="MediaResourcesFlags.xcassets\it.imageset\" />
+    <Folder Include="MediaResourcesFlags.xcassets\fr.imageset\" />
+    <Folder Include="MediaResourcesFlags.xcassets\es.imageset\" />
+    <Folder Include="MediaResourcesFlags.xcassets\ch.imageset\" />
+    <Folder Include="MediaResourcesFlags.xcassets\se.imageset\" />
+    <Folder Include="MediaResourcesFlags.xcassets\ca.imageset\" />
+    <Folder Include="MediaResourcesFlags.xcassets\is.imageset\" />
+    <Folder Include="MediaResourcesFlags.xcassets\de.imageset\" />
+    <Folder Include="MediaResourcesImages.xcassets\iconStatusGood.imageset\" />
+    <Folder Include="MediaResourcesImages.xcassets\iconStatusModerate.imageset\" />
+    <Folder Include="MediaResourcesImages.xcassets\iconStatusBad.imageset\" />
+    <Folder Include="MediaResourcesImages.xcassets\iconSelected.imageset\" />
+    <Folder Include="MediaResourcesImages.xcassets\logoStatusbar.imageset\" />
+    <Folder Include="MediaResourcesImages.xcassets\iconStartfreetrialBluebg.imageset\" />
+    <Folder Include="MediaResourcesImages.xcassets\iconStartfreetrialWhitebg.imageset\" />
+    <Folder Include="MediaResourcesImages.xcassets\logoLogin.imageset\" />
+    <Folder Include="MediaResourcesImages.xcassets\iconPreferences.imageset\" />
+    <Folder Include="MediaResourcesImages.xcassets\buttonConnect.imageset\" />
+    <Folder Include="MediaResourcesImages.xcassets\buttonConnecting.imageset\" />
+    <Folder Include="MediaResourcesImages.xcassets\buttonConnected.imageset\" />
+    <Folder Include="Views\ViewControls\" />
+    <Folder Include="MediaResourcesImages.xcassets\iconArrowLeft.imageset\" />
+    <Folder Include="MediaResourcesImages.xcassets\iconStatusBack.imageset\" />
+    <Folder Include="MediaResourcesImages.xcassets\iconInformation.imageset\" />
+    <Folder Include="MediaResourcesImages.xcassets\iconInformationTint.imageset\" />
+    <Folder Include="MediaResourcesImages.xcassets\iconLogo.imageset\" />
+    <Folder Include="MediaResourcesImages.xcassets\iconPreferencesConnection.imageset\" />
+    <Folder Include="MediaResourcesImages.xcassets\iconPreferencesOpenvpn.imageset\" />
+    <Folder Include="MediaResourcesImages.xcassets\iconPreferencesFirewall.imageset\" />
+    <Folder Include="MediaResourcesImages.xcassets\iconPreferencesGeneral.imageset\" />
+    <Folder Include="MediaResourcesFlags.xcassets\Pl.imageset\" />
+    <Folder Include="MediaResourcesFlags.xcassets\cz.imageset\" />
+    <Folder Include="MediaResourcesFlags.xcassets\pl.imageset\" />
+    <Folder Include="MediaResourcesFlags.xcassets\at.imageset\" />
+    <Folder Include="MediaResourcesFlags.xcassets\au.imageset\" />
+    <Folder Include="MediaResourcesFlags.xcassets\be.imageset\" />
+    <Folder Include="MediaResourcesFlags.xcassets\bg.imageset\" />
+    <Folder Include="MediaResourcesFlags.xcassets\br.imageset\" />
+    <Folder Include="MediaResourcesFlags.xcassets\dk.imageset\" />
+    <Folder Include="MediaResourcesFlags.xcassets\fi.imageset\" />
+    <Folder Include="MediaResourcesFlags.xcassets\jp.imageset\" />
+    <Folder Include="MediaResourcesFlags.xcassets\no.imageset\" />
+    <Folder Include="MediaResourcesFlags.xcassets\pt.imageset\" />
+    <Folder Include="MediaResourcesFlags.xcassets\sg.imageset\" />
+    <Folder Include="MediaResourcesFlags.xcassets\il.imageset\" />
+    <Folder Include="MediaResourcesFlags.xcassets\lu.imageset\" />
+    <Folder Include="MediaResourcesImages.xcassets\iconAutomaticServer.imageset\" />
+    <Folder Include="MediaResourcesImages.xcassets\iconAutomaticServerSelection.imageset\" />
+    <Folder Include="MediaResourcesImages.xcassets\iconWiFi.imageset\" />
+    <Folder Include="GuiHelpers\Delegates\" />
+    <Folder Include="MediaResourcesFlags.xcassets\sk.imageset\" />
+    <Folder Include="MediaResourcesImages.xcassets\iconWiFiSmallBlue.imageset\" />
+    <Folder Include="MediaResourcesImages.xcassets\iconWiFiSmallRed.imageset\" />
+    <Folder Include="MediaResourcesFlags.xcassets\rs.imageset\" />
+    <Folder Include="MediaResourcesImages.xcassets\iconPlay.imageset\" />
+    <Folder Include="MediaResourcesImages.xcassets\iconAdd.imageset\" />
+    <Folder Include="MediaResourcesImages.xcassets\iconPlayWhite.imageset\" />
+    <Folder Include="MediaResourcesImages.xcassets\iconPause.imageset\" />
+    <Folder Include="MediaResourcesImages.xcassets\iconStop.imageset\" />
+    <Folder Include="MediaResourcesImages.xcassets\iconPreferencesAntiTracker.imageset\" />
+    <Folder Include="MediaResourcesImages.xcassets\iconPreferencesDNS.imageset\" />
+    <Folder Include="MediaResourcesImages.xcassets\iconInformation2.imageset\" />
+    <Folder Include="MediaResourcesImages.xcassets\imageLaptop.imageset\" />
+    <Folder Include="MediaResourcesImages.xcassets\buttonConnectDark.imageset\" />
+    <Folder Include="MediaResourcesImages.xcassets\buttonPauseLight.imageset\" />
+    <Folder Include="MediaResourcesImages.xcassets\buttonPauseDark.imageset\" />
+    <Folder Include="MediaResourcesImages.xcassets\buttonStopLight.imageset\" />
+    <Folder Include="MediaResourcesImages.xcassets\buttonStopDark.imageset\" />
+    <Folder Include="MediaResourcesImages.xcassets\iconStartfreetrialDarkbg.imageset\" />
+    <Folder Include="MediaResourcesImages.xcassets\iconLogoDark.imageset\" />
+    <Folder Include="MediaResourcesImages.xcassets\imageLaptopIVPN.imageset\" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="MainWindow.cs" />
+    <Compile Include="MainWindowController.cs" />
+    <Compile Include="MainWindow.designer.cs">
+      <DependentUpon>MainWindow.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Main.cs" />
+    <Compile Include="AppDelegate.cs" />
+    <Compile Include="AppDelegate.designer.cs">
+      <DependentUpon>AppDelegate.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Views\InitView.cs" />
+    <Compile Include="Views\InitViewController.cs" />
+    <Compile Include="Views\InitView.designer.cs">
+      <DependentUpon>InitView.cs</DependentUpon>
+    </Compile>
+    <Compile Include="MarginControl.cs" />
+    <Compile Include="ViewStacker.cs" />
+    <Compile Include="Implementations\SettingsProvider.cs" />
+    <Compile Include="Implementations\ApplicationServices.cs" />
+    <Compile Include="ModelAdapters\ConnectionInfoAdapter.cs" />
+    <Compile Include="KeyChain.cs" />
+    <Compile Include="PreferencesWindow.cs" />
+    <Compile Include="PreferencesWindowController.cs" />
+    <Compile Include="PreferencesWindow.designer.cs">
+      <DependentUpon>PreferencesWindow.cs</DependentUpon>
+    </Compile>
+    <Compile Include="ModelAdapters\ObservableObject.cs" />
+    <Compile Include="ModelAdapters\AppSettingsAdapter.cs" />
+    <Compile Include="UIUtils.cs" />
+    <Compile Include="ModelAdapters\MainViewModelAdapter.cs" />
+    <Compile Include="ValueTransformers\FormVisibilityTransformer.cs" />
+    <Compile Include="ValueTransformers\IsConnectingFormHiddenTransformer.cs" />
+    <Compile Include="ValueTransformers\IsLoginFormHiddenTransformer.cs" />
+    <Compile Include="ValueTransformers\IsConnectedFormHiddenTransformer.cs" />
+    <Compile Include="ValueTransformers\IsConnectingFormVisibleTransformer.cs" />
+    <Compile Include="ValueTransformers\IsConnectedFormVisibleTransformer.cs" />
+    <Compile Include="ValueTransformers\IsLoginFormVisibleTransformer.cs" />
+    <Compile Include="Implementations\AppNotifications.cs" />
+    <Compile Include="Controls\PageView.cs" />
+    <Compile Include="Controls\ColorView.cs" />
+    <Compile Include="ValueTransformers\IsCancelConnectionEnabledTransformer.cs" />
+    <Compile Include="LoginItems.cs" />
+    <Compile Include="FirewallNotificationWindow.cs" />
+    <Compile Include="FirewallNotificationWindow.designer.cs">
+      <DependentUpon>FirewallNotificationWindow.cs</DependentUpon>
+    </Compile>
+    <Compile Include="FirewallNotificationWindowController.cs" />
+    <Compile Include="FirewallNotificationWindowController.designer.cs">
+      <DependentUpon>FirewallNotificationWindowController.cs</DependentUpon>
+    </Compile>
+    <Compile Include="GuiHelpers\IClickDetectable.cs" />
+    <Compile Include="GuiHelpers\ClickDetection.cs" />
+    <Compile Include="Updater\IVPNUpdater.cs" />
+    <Compile Include="Windows\ExceptionWindow.cs" />
+    <Compile Include="Windows\ExceptionWindow.designer.cs">
+      <DependentUpon>ExceptionWindow.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Windows\ExceptionWindowController.cs" />
+    <Compile Include="Windows\ExceptionWindowController.designer.cs">
+      <DependentUpon>ExceptionWindowController.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Views\LogInView.cs" />
+    <Compile Include="Views\LogInViewController.cs" />
+    <Compile Include="Views\LogInView.designer.cs">
+      <DependentUpon>LogInView.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Views\LogInViewController.designer.cs">
+      <DependentUpon>LogInViewController.cs</DependentUpon>
+    </Compile>
+    <Compile Include="GuiHelpers\Alert.cs" />
+    <Compile Include="Controls\CustomTextFieldSecure.cs" />
+    <Compile Include="Controls\CustomTextFieldCell.cs" />
+    <Compile Include="Controls\CustomButton.cs" />
+    <Compile Include="Controls\CustomTextField.cs" />
+    <Compile Include="GuiHelpers\EnableView.cs" />
+    <Compile Include="Views\ServersView.cs" />
+    <Compile Include="Views\ServersViewController.cs" />
+    <Compile Include="Views\ServersView.designer.cs">
+      <DependentUpon>ServersView.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Views\ServersViewController.designer.cs">
+      <DependentUpon>ServersViewController.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Controls\ServerSelectionButton.cs" />
+    <Compile Include="Controls\CustomSwitchControl.cs" />
+    <Compile Include="Views\MainPageView.cs" />
+    <Compile Include="Views\MainPageViewController.cs" />
+    <Compile Include="Views\MainPageView.designer.cs">
+      <DependentUpon>MainPageView.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Views\MainPageViewController.designer.cs">
+      <DependentUpon>MainPageViewController.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Views\ViewControls\ServerSelectionView.cs" />
+    <Compile Include="Views\ViewControls\ServerSelectionViewController.cs" />
+    <Compile Include="Views\ViewControls\ServerSelectionView.designer.cs">
+      <DependentUpon>ServerSelectionView.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Views\ViewControls\ServerSelectionViewController.designer.cs">
+      <DependentUpon>ServerSelectionViewController.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Views\ViewControls\ConnectButtonView.cs" />
+    <Compile Include="Views\ViewControls\ConnectButtonViewController.cs" />
+    <Compile Include="Views\ViewControls\ConnectButtonView.designer.cs">
+      <DependentUpon>ConnectButtonView.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Views\ViewControls\ConnectButtonViewController.designer.cs">
+      <DependentUpon>ConnectButtonViewController.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Windows\SubscriptionWillExpireWindow.cs" />
+    <Compile Include="Windows\SubscriptionWillExpireWindow.designer.cs">
+      <DependentUpon>SubscriptionWillExpireWindow.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Windows\SubscriptionWillExpireWindowController.cs" />
+    <Compile Include="Windows\SubscriptionWillExpireWindowController.designer.cs">
+      <DependentUpon>SubscriptionWillExpireWindowController.cs</DependentUpon>
+    </Compile>
+    <Compile Include="GuiHelpers\AttributedString.cs" />
+    <Compile Include="MainWindowController_Introduction.cs" />
+    <Compile Include="Windows\PrivateEmailManageWindow.cs" />
+    <Compile Include="Windows\PrivateEmailManageWindow.designer.cs">
+      <DependentUpon>PrivateEmailManageWindow.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Windows\PrivateEmailManageWindowController.cs" />
+    <Compile Include="Windows\PrivateEmailManageWindowController.designer.cs">
+      <DependentUpon>PrivateEmailManageWindowController.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Windows\PrivateEmailGeneratedWindow.cs" />
+    <Compile Include="Windows\PrivateEmailGeneratedWindow.designer.cs">
+      <DependentUpon>PrivateEmailGeneratedWindow.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Windows\PrivateEmailGeneratedWindowController.cs" />
+    <Compile Include="Windows\PrivateEmailGeneratedWindowController.designer.cs">
+      <DependentUpon>PrivateEmailGeneratedWindowController.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Controls\CustomTextFieldCellSecure.cs" />
+    <Compile Include="LocalizedStrings.cs" />
+    <Compile Include="Controls\PopoverContentView.cs" />
+    <Compile Include="Controls\ServerFastestSelectionButton.cs" />
+    <Compile Include="Implementations\MacWiFiWrapper.cs" />
+    <Compile Include="Controls\NetworkActionButton.cs" />
+    <Compile Include="GuiHelpers\Delegates\MenuDelegateInvertHighlitedItem.cs" />
+    <Compile Include="GuiHelpers\NumberFormatterForTextField.cs" />
+    <Compile Include="Views\LogOutView.cs" />
+    <Compile Include="Views\LogOutViewController.cs" />
+    <Compile Include="Views\LogOutView.designer.cs">
+      <DependentUpon>LogOutView.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Views\LogOutViewController.designer.cs">
+      <DependentUpon>LogOutViewController.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Controls\ServerSelectionButtonBase.cs" />
+    <Compile Include="Views\FastestServerConfigView.cs" />
+    <Compile Include="Views\FastestServerConfigViewController.cs" />
+    <Compile Include="Views\FastestServerConfigView.designer.cs">
+      <DependentUpon>FastestServerConfigView.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Views\FastestServerConfigViewController.designer.cs">
+      <DependentUpon>FastestServerConfigViewController.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Controls\ServerCheckButton.cs" />
+    <Compile Include="ModelAdapters\ProofsViewModelAdapter.cs" />
+    <Compile Include="GuiHelpers\CountryCodeToImage.cs" />
+    <Compile Include="Controls\CustomHyperLinkButton.cs" />
+    <Compile Include="Views\SessionLimitView.cs" />
+    <Compile Include="Views\SessionLimitViewController.cs" />
+    <Compile Include="Views\SessionLimitView.designer.cs">
+      <DependentUpon>SessionLimitView.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Views\SessionLimitViewController.designer.cs">
+      <DependentUpon>SessionLimitViewController.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Colors.cs" />
+    <Compile Include="Views\BaseView.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Info.plist" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\..\common\IVPN Core\IVPN Core.csproj">
+      <Project>{39E0BA44-DFA6-4460-81A7-9E21CB1E28DE}</Project>
+      <Name>IVPN Core</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\..\common\IVPN Common\IVPN Common.csproj">
+      <Project>{DFFBDD32-B3F8-45C2-93AA-4FE3D8DEAAF4}</Project>
+      <Name>IVPN Common</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\MacLib\MacLib.csproj">
+      <Project>{D155A612-4585-4416-BF6C-593EDCB5C638}</Project>
+      <Name>MacLib</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\..\common\IVPN Helpers\IVPN Helpers.csproj">
+      <Project>{F57EEEF1-22F7-4A6D-9445-659F2DF24D05}</Project>
+      <Name>IVPN Helpers</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\References\SparkleSharp\Sparkle\Sparkle.csproj">
+      <Project>{5B22F6E9-3675-42B5-9CAA-090BA39A5407}</Project>
+      <Name>Sparkle</Name>
+    </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <InterfaceDefinition Include="MainMenu.xib" />
+    <InterfaceDefinition Include="MainWindow.xib" />
+    <InterfaceDefinition Include="Views\InitView.xib" />
+    <InterfaceDefinition Include="PreferencesWindow.xib" />
+    <InterfaceDefinition Include="SettingsProvider.xib" />
+    <InterfaceDefinition Include="FirewallNotificationWindow.xib" />
+    <InterfaceDefinition Include="Windows\ExceptionWindow.xib" />
+    <InterfaceDefinition Include="Views\LogInView.xib" />
+    <InterfaceDefinition Include="Views\ServersView.xib" />
+    <InterfaceDefinition Include="Views\MainPageView.xib" />
+    <InterfaceDefinition Include="Views\ViewControls\ServerSelectionView.xib" />
+    <InterfaceDefinition Include="Views\ViewControls\ConnectButtonView.xib" />
+    <InterfaceDefinition Include="Windows\SubscriptionWillExpireWindow.xib" />
+    <InterfaceDefinition Include="Windows\PrivateEmailManageWindow.xib" />
+    <InterfaceDefinition Include="Windows\PrivateEmailGeneratedWindow.xib" />
+    <InterfaceDefinition Include="Views\LogOutView.xib" />
+    <InterfaceDefinition Include="Views\FastestServerConfigView.xib" />
+    <InterfaceDefinition Include="Views\SessionLimitView.xib" />
+  </ItemGroup>
+  <ItemGroup>
+    <BundleResource Include="Resources\IVPN.icns" />
+    <BundleResource Include="Resources\dsa_pub.pem" />
+    <BundleResource Include="Resources\icon-connected.png" />
+    <BundleResource Include="Resources\icon-connected%402x.png" />
+    <BundleResource Include="Resources\icon-disconnected.png" />
+    <BundleResource Include="Resources\icon-disconnected%402x.png" />
+    <BundleResource Include="Resources\icon-2.png" />
+    <BundleResource Include="Resources\icon-1.png" />
+    <BundleResource Include="Resources\icon-3.png" />
+    <BundleResource Include="Resources\icon-4.png" />
+    <BundleResource Include="Resources\icon-1%402x.png" />
+    <BundleResource Include="Resources\icon-2%402x.png" />
+    <BundleResource Include="Resources\icon-3%402x.png" />
+    <BundleResource Include="Resources\icon-4%402x.png" />
+    <BundleResource Include="Resources\Fonts\SF-Pro-Text-Medium.otf" />
+    <BundleResource Include="Resources\Fonts\SF-Pro-Text-Regular.otf" />
+    <BundleResource Include="Resources\flags\48\ad.png" />
+    <BundleResource Include="Resources\flags\48\ae.png" />
+    <BundleResource Include="Resources\flags\48\af.png" />
+    <BundleResource Include="Resources\flags\48\ag.png" />
+    <BundleResource Include="Resources\flags\48\ai.png" />
+    <BundleResource Include="Resources\flags\48\al.png" />
+    <BundleResource Include="Resources\flags\48\am.png" />
+    <BundleResource Include="Resources\flags\48\an.png" />
+    <BundleResource Include="Resources\flags\48\ao.png" />
+    <BundleResource Include="Resources\flags\48\aq.png" />
+    <BundleResource Include="Resources\flags\48\ar.png" />
+    <BundleResource Include="Resources\flags\48\as.png" />
+    <BundleResource Include="Resources\flags\48\at.png" />
+    <BundleResource Include="Resources\flags\48\au.png" />
+    <BundleResource Include="Resources\flags\48\aw.png" />
+    <BundleResource Include="Resources\flags\48\ax.png" />
+    <BundleResource Include="Resources\flags\48\az.png" />
+    <BundleResource Include="Resources\flags\48\ba.png" />
+    <BundleResource Include="Resources\flags\48\bb.png" />
+    <BundleResource Include="Resources\flags\48\bd.png" />
+    <BundleResource Include="Resources\flags\48\be.png" />
+    <BundleResource Include="Resources\flags\48\bf.png" />
+    <BundleResource Include="Resources\flags\48\bg.png" />
+    <BundleResource Include="Resources\flags\48\bh.png" />
+    <BundleResource Include="Resources\flags\48\bi.png" />
+    <BundleResource Include="Resources\flags\48\bj.png" />
+    <BundleResource Include="Resources\flags\48\bl.png" />
+    <BundleResource Include="Resources\flags\48\bm.png" />
+    <BundleResource Include="Resources\flags\48\bn.png" />
+    <BundleResource Include="Resources\flags\48\bo.png" />
+    <BundleResource Include="Resources\flags\48\bq.png" />
+    <BundleResource Include="Resources\flags\48\br.png" />
+    <BundleResource Include="Resources\flags\48\bs.png" />
+    <BundleResource Include="Resources\flags\48\bt.png" />
+    <BundleResource Include="Resources\flags\48\bv.png" />
+    <BundleResource Include="Resources\flags\48\bw.png" />
+    <BundleResource Include="Resources\flags\48\by.png" />
+    <BundleResource Include="Resources\flags\48\bz.png" />
+    <BundleResource Include="Resources\flags\48\ca.png" />
+    <BundleResource Include="Resources\flags\48\cc.png" />
+    <BundleResource Include="Resources\flags\48\cd.png" />
+    <BundleResource Include="Resources\flags\48\cf.png" />
+    <BundleResource Include="Resources\flags\48\cg.png" />
+    <BundleResource Include="Resources\flags\48\ch.png" />
+    <BundleResource Include="Resources\flags\48\ci.png" />
+    <BundleResource Include="Resources\flags\48\ck.png" />
+    <BundleResource Include="Resources\flags\48\cl.png" />
+    <BundleResource Include="Resources\flags\48\cm.png" />
+    <BundleResource Include="Resources\flags\48\cn.png" />
+    <BundleResource Include="Resources\flags\48\co.png" />
+    <BundleResource Include="Resources\flags\48\cr.png" />
+    <BundleResource Include="Resources\flags\48\cu.png" />
+    <BundleResource Include="Resources\flags\48\cv.png" />
+    <BundleResource Include="Resources\flags\48\cw.png" />
+    <BundleResource Include="Resources\flags\48\cx.png" />
+    <BundleResource Include="Resources\flags\48\cy.png" />
+    <BundleResource Include="Resources\flags\48\cz.png" />
+    <BundleResource Include="Resources\flags\48\de.png" />
+    <BundleResource Include="Resources\flags\48\dj.png" />
+    <BundleResource Include="Resources\flags\48\dk.png" />
+    <BundleResource Include="Resources\flags\48\dm.png" />
+    <BundleResource Include="Resources\flags\48\do.png" />
+    <BundleResource Include="Resources\flags\48\dz.png" />
+    <BundleResource Include="Resources\flags\48\ec.png" />
+    <BundleResource Include="Resources\flags\48\ee.png" />
+    <BundleResource Include="Resources\flags\48\eg.png" />
+    <BundleResource Include="Resources\flags\48\eh.png" />
+    <BundleResource Include="Resources\flags\48\er.png" />
+    <BundleResource Include="Resources\flags\48\es.png" />
+    <BundleResource Include="Resources\flags\48\et.png" />
+    <BundleResource Include="Resources\flags\48\fi.png" />
+    <BundleResource Include="Resources\flags\48\fj.png" />
+    <BundleResource Include="Resources\flags\48\fk.png" />
+    <BundleResource Include="Resources\flags\48\fm.png" />
+    <BundleResource Include="Resources\flags\48\fo.png" />
+    <BundleResource Include="Resources\flags\48\fr.png" />
+    <BundleResource Include="Resources\flags\48\ga.png" />
+    <BundleResource Include="Resources\flags\48\gb.png" />
+    <BundleResource Include="Resources\flags\48\gd.png" />
+    <BundleResource Include="Resources\flags\48\ge.png" />
+    <BundleResource Include="Resources\flags\48\gf.png" />
+    <BundleResource Include="Resources\flags\48\gg.png" />
+    <BundleResource Include="Resources\flags\48\gh.png" />
+    <BundleResource Include="Resources\flags\48\gi.png" />
+    <BundleResource Include="Resources\flags\48\gl.png" />
+    <BundleResource Include="Resources\flags\48\gm.png" />
+    <BundleResource Include="Resources\flags\48\gn.png" />
+    <BundleResource Include="Resources\flags\48\gp.png" />
+    <BundleResource Include="Resources\flags\48\gq.png" />
+    <BundleResource Include="Resources\flags\48\gr.png" />
+    <BundleResource Include="Resources\flags\48\gs.png" />
+    <BundleResource Include="Resources\flags\48\gt.png" />
+    <BundleResource Include="Resources\flags\48\gu.png" />
+    <BundleResource Include="Resources\flags\48\gw.png" />
+    <BundleResource Include="Resources\flags\48\gy.png" />
+    <BundleResource Include="Resources\flags\48\hk.png" />
+    <BundleResource Include="Resources\flags\48\hm.png" />
+    <BundleResource Include="Resources\flags\48\hn.png" />
+    <BundleResource Include="Resources\flags\48\hr.png" />
+    <BundleResource Include="Resources\flags\48\ht.png" />
+    <BundleResource Include="Resources\flags\48\hu.png" />
+    <BundleResource Include="Resources\flags\48\id.png" />
+    <BundleResource Include="Resources\flags\48\ie.png" />
+    <BundleResource Include="Resources\flags\48\il.png" />
+    <BundleResource Include="Resources\flags\48\im.png" />
+    <BundleResource Include="Resources\flags\48\in.png" />
+    <BundleResource Include="Resources\flags\48\io.png" />
+    <BundleResource Include="Resources\flags\48\iq.png" />
+    <BundleResource Include="Resources\flags\48\ir.png" />
+    <BundleResource Include="Resources\flags\48\is.png" />
+    <BundleResource Include="Resources\flags\48\it.png" />
+    <BundleResource Include="Resources\flags\48\je.png" />
+    <BundleResource Include="Resources\flags\48\jm.png" />
+    <BundleResource Include="Resources\flags\48\jo.png" />
+    <BundleResource Include="Resources\flags\48\jp.png" />
+    <BundleResource Include="Resources\flags\48\ke.png" />
+    <BundleResource Include="Resources\flags\48\kg.png" />
+    <BundleResource Include="Resources\flags\48\kh.png" />
+    <BundleResource Include="Resources\flags\48\ki.png" />
+    <BundleResource Include="Resources\flags\48\km.png" />
+    <BundleResource Include="Resources\flags\48\kn.png" />
+    <BundleResource Include="Resources\flags\48\kp.png" />
+    <BundleResource Include="Resources\flags\48\kr.png" />
+    <BundleResource Include="Resources\flags\48\kw.png" />
+    <BundleResource Include="Resources\flags\48\ky.png" />
+    <BundleResource Include="Resources\flags\48\kz.png" />
+    <BundleResource Include="Resources\flags\48\la.png" />
+    <BundleResource Include="Resources\flags\48\lb.png" />
+    <BundleResource Include="Resources\flags\48\lc.png" />
+    <BundleResource Include="Resources\flags\48\li.png" />
+    <BundleResource Include="Resources\flags\48\lk.png" />
+    <BundleResource Include="Resources\flags\48\lr.png" />
+    <BundleResource Include="Resources\flags\48\ls.png" />
+    <BundleResource Include="Resources\flags\48\lt.png" />
+    <BundleResource Include="Resources\flags\48\lu.png" />
+    <BundleResource Include="Resources\flags\48\lv.png" />
+    <BundleResource Include="Resources\flags\48\ly.png" />
+    <BundleResource Include="Resources\flags\48\ma.png" />
+    <BundleResource Include="Resources\flags\48\mc.png" />
+    <BundleResource Include="Resources\flags\48\md.png" />
+    <BundleResource Include="Resources\flags\48\me.png" />
+    <BundleResource Include="Resources\flags\48\mf.png" />
+    <BundleResource Include="Resources\flags\48\mg.png" />
+    <BundleResource Include="Resources\flags\48\mh.png" />
+    <BundleResource Include="Resources\flags\48\mk.png" />
+    <BundleResource Include="Resources\flags\48\ml.png" />
+    <BundleResource Include="Resources\flags\48\mm.png" />
+    <BundleResource Include="Resources\flags\48\mn.png" />
+    <BundleResource Include="Resources\flags\48\mo.png" />
+    <BundleResource Include="Resources\flags\48\mp.png" />
+    <BundleResource Include="Resources\flags\48\mq.png" />
+    <BundleResource Include="Resources\flags\48\mr.png" />
+    <BundleResource Include="Resources\flags\48\ms.png" />
+    <BundleResource Include="Resources\flags\48\mt.png" />
+    <BundleResource Include="Resources\flags\48\mu.png" />
+    <BundleResource Include="Resources\flags\48\mv.png" />
+    <BundleResource Include="Resources\flags\48\mw.png" />
+    <BundleResource Include="Resources\flags\48\mx.png" />
+    <BundleResource Include="Resources\flags\48\my.png" />
+    <BundleResource Include="Resources\flags\48\mz.png" />
+    <BundleResource Include="Resources\flags\48\na.png" />
+    <BundleResource Include="Resources\flags\48\nc.png" />
+    <BundleResource Include="Resources\flags\48\ne.png" />
+    <BundleResource Include="Resources\flags\48\nf.png" />
+    <BundleResource Include="Resources\flags\48\ng.png" />
+    <BundleResource Include="Resources\flags\48\ni.png" />
+    <BundleResource Include="Resources\flags\48\nl.png" />
+    <BundleResource Include="Resources\flags\48\no.png" />
+    <BundleResource Include="Resources\flags\48\np.png" />
+    <BundleResource Include="Resources\flags\48\nr.png" />
+    <BundleResource Include="Resources\flags\48\nu.png" />
+    <BundleResource Include="Resources\flags\48\nz.png" />
+    <BundleResource Include="Resources\flags\48\om.png" />
+    <BundleResource Include="Resources\flags\48\pa.png" />
+    <BundleResource Include="Resources\flags\48\pe.png" />
+    <BundleResource Include="Resources\flags\48\pf.png" />
+    <BundleResource Include="Resources\flags\48\pg.png" />
+    <BundleResource Include="Resources\flags\48\ph.png" />
+    <BundleResource Include="Resources\flags\48\pk.png" />
+    <BundleResource Include="Resources\flags\48\pl.png" />
+    <BundleResource Include="Resources\flags\48\pm.png" />
+    <BundleResource Include="Resources\flags\48\pn.png" />
+    <BundleResource Include="Resources\flags\48\pr.png" />
+    <BundleResource Include="Resources\flags\48\ps.png" />
+    <BundleResource Include="Resources\flags\48\pt.png" />
+    <BundleResource Include="Resources\flags\48\pw.png" />
+    <BundleResource Include="Resources\flags\48\py.png" />
+    <BundleResource Include="Resources\flags\48\qa.png" />
+    <BundleResource Include="Resources\flags\48\re.png" />
+    <BundleResource Include="Resources\flags\48\ro.png" />
+    <BundleResource Include="Resources\flags\48\rs.png" />
+    <BundleResource Include="Resources\flags\48\ru.png" />
+    <BundleResource Include="Resources\flags\48\rw.png" />
+    <BundleResource Include="Resources\flags\48\sa.png" />
+    <BundleResource Include="Resources\flags\48\sb.png" />
+    <BundleResource Include="Resources\flags\48\sc.png" />
+    <BundleResource Include="Resources\flags\48\sd.png" />
+    <BundleResource Include="Resources\flags\48\se.png" />
+    <BundleResource Include="Resources\flags\48\sg.png" />
+    <BundleResource Include="Resources\flags\48\sh.png" />
+    <BundleResource Include="Resources\flags\48\si.png" />
+    <BundleResource Include="Resources\flags\48\sj.png" />
+    <BundleResource Include="Resources\flags\48\sk.png" />
+    <BundleResource Include="Resources\flags\48\sl.png" />
+    <BundleResource Include="Resources\flags\48\sm.png" />
+    <BundleResource Include="Resources\flags\48\sn.png" />
+    <BundleResource Include="Resources\flags\48\so.png" />
+    <BundleResource Include="Resources\flags\48\sr.png" />
+    <BundleResource Include="Resources\flags\48\ss.png" />
+    <BundleResource Include="Resources\flags\48\st.png" />
+    <BundleResource Include="Resources\flags\48\sv.png" />
+    <BundleResource Include="Resources\flags\48\sx.png" />
+    <BundleResource Include="Resources\flags\48\sy.png" />
+    <BundleResource Include="Resources\flags\48\sz.png" />
+    <BundleResource Include="Resources\flags\48\tc.png" />
+    <BundleResource Include="Resources\flags\48\td.png" />
+    <BundleResource Include="Resources\flags\48\tf.png" />
+    <BundleResource Include="Resources\flags\48\tg.png" />
+    <BundleResource Include="Resources\flags\48\th.png" />
+    <BundleResource Include="Resources\flags\48\tj.png" />
+    <BundleResource Include="Resources\flags\48\tk.png" />
+    <BundleResource Include="Resources\flags\48\tl.png" />
+    <BundleResource Include="Resources\flags\48\tm.png" />
+    <BundleResource Include="Resources\flags\48\tn.png" />
+    <BundleResource Include="Resources\flags\48\to.png" />
+    <BundleResource Include="Resources\flags\48\tr.png" />
+    <BundleResource Include="Resources\flags\48\tt.png" />
+    <BundleResource Include="Resources\flags\48\tv.png" />
+    <BundleResource Include="Resources\flags\48\tw.png" />
+    <BundleResource Include="Resources\flags\48\tz.png" />
+    <BundleResource Include="Resources\flags\48\ua.png" />
+    <BundleResource Include="Resources\flags\48\ug.png" />
+    <BundleResource Include="Resources\flags\48\um.png" />
+    <BundleResource Include="Resources\flags\48\us.png" />
+    <BundleResource Include="Resources\flags\48\uy.png" />
+    <BundleResource Include="Resources\flags\48\uz.png" />
+    <BundleResource Include="Resources\flags\48\va.png" />
+    <BundleResource Include="Resources\flags\48\vc.png" />
+    <BundleResource Include="Resources\flags\48\ve.png" />
+    <BundleResource Include="Resources\flags\48\vg.png" />
+    <BundleResource Include="Resources\flags\48\vi.png" />
+    <BundleResource Include="Resources\flags\48\vn.png" />
+    <BundleResource Include="Resources\flags\48\vu.png" />
+    <BundleResource Include="Resources\flags\48\wf.png" />
+    <BundleResource Include="Resources\flags\48\ws.png" />
+    <BundleResource Include="Resources\flags\48\ye.png" />
+    <BundleResource Include="Resources\flags\48\yt.png" />
+    <BundleResource Include="Resources\flags\48\za.png" />
+    <BundleResource Include="Resources\flags\48\zm.png" />
+    <BundleResource Include="Resources\flags\48\zw.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="en.lproj\Localizable.strings" />
+  </ItemGroup>
+  <ItemGroup>
+    <NativeReference Include="..\libivpn\libivpn.dylib">
+      <Kind>Dynamic</Kind>
+      <SmartLink>False</SmartLink>
+    </NativeReference>
+  </ItemGroup>
+  <ItemGroup>
+    <ImageAsset Include="MediaResourcesFlags.xcassets\Contents.json" />
+    <ImageAsset Include="MediaResourcesFlags.xcassets\hu.imageset\Contents.json" />
+    <ImageAsset Include="MediaResourcesFlags.xcassets\nl.imageset\Contents.json" />
+    <ImageAsset Include="MediaResourcesFlags.xcassets\uk.imageset\Contents.json" />
+    <ImageAsset Include="MediaResourcesFlags.xcassets\ua.imageset\Contents.json" />
+    <ImageAsset Include="MediaResourcesFlags.xcassets\us.imageset\Contents.json" />
+    <ImageAsset Include="MediaResourcesFlags.xcassets\ro.imageset\Contents.json" />
+    <ImageAsset Include="MediaResourcesFlags.xcassets\hk.imageset\Contents.json" />
+    <ImageAsset Include="MediaResourcesFlags.xcassets\it.imageset\Contents.json" />
+    <ImageAsset Include="MediaResourcesFlags.xcassets\fr.imageset\Contents.json" />
+    <ImageAsset Include="MediaResourcesFlags.xcassets\es.imageset\Contents.json" />
+    <ImageAsset Include="MediaResourcesFlags.xcassets\ch.imageset\Contents.json" />
+    <ImageAsset Include="MediaResourcesFlags.xcassets\se.imageset\Contents.json" />
+    <ImageAsset Include="MediaResourcesFlags.xcassets\ca.imageset\Contents.json" />
+    <ImageAsset Include="MediaResourcesFlags.xcassets\is.imageset\Contents.json" />
+    <ImageAsset Include="MediaResourcesFlags.xcassets\de.imageset\Contents.json" />
+    <ImageAsset Include="MediaResourcesFlags.xcassets\hu.imageset\hu.pdf" />
+    <ImageAsset Include="MediaResourcesFlags.xcassets\nl.imageset\nl.pdf" />
+    <ImageAsset Include="MediaResourcesFlags.xcassets\uk.imageset\uk.pdf" />
+    <ImageAsset Include="MediaResourcesFlags.xcassets\ua.imageset\ua.pdf" />
+    <ImageAsset Include="MediaResourcesFlags.xcassets\us.imageset\us.pdf" />
+    <ImageAsset Include="MediaResourcesFlags.xcassets\ro.imageset\ro.pdf" />
+    <ImageAsset Include="MediaResourcesFlags.xcassets\hk.imageset\hk.pdf" />
+    <ImageAsset Include="MediaResourcesFlags.xcassets\it.imageset\it.pdf" />
+    <ImageAsset Include="MediaResourcesFlags.xcassets\fr.imageset\fr.pdf" />
+    <ImageAsset Include="MediaResourcesFlags.xcassets\es.imageset\es.pdf" />
+    <ImageAsset Include="MediaResourcesFlags.xcassets\ch.imageset\ch.pdf" />
+    <ImageAsset Include="MediaResourcesFlags.xcassets\se.imageset\se.pdf" />
+    <ImageAsset Include="MediaResourcesFlags.xcassets\ca.imageset\ca.pdf" />
+    <ImageAsset Include="MediaResourcesFlags.xcassets\is.imageset\is.pdf" />
+    <ImageAsset Include="MediaResourcesFlags.xcassets\de.imageset\de.pdf" />
+    <ImageAsset Include="MediaResourcesImages.xcassets\Contents.json" />
+    <ImageAsset Include="MediaResourcesImages.xcassets\iconStatusGood.imageset\Contents.json" />
+    <ImageAsset Include="MediaResourcesImages.xcassets\iconStatusModerate.imageset\Contents.json" />
+    <ImageAsset Include="MediaResourcesImages.xcassets\iconStatusBad.imageset\Contents.json" />
+    <ImageAsset Include="MediaResourcesImages.xcassets\iconSelected.imageset\Contents.json" />
+    <ImageAsset Include="MediaResourcesImages.xcassets\iconSelected.imageset\iconSelected.pdf" />
+    <ImageAsset Include="MediaResourcesImages.xcassets\logoStatusbar.imageset\Contents.json" />
+    <ImageAsset Include="MediaResourcesImages.xcassets\logoStatusbar.imageset\logoStatusbar.pdf" />
+    <ImageAsset Include="MediaResourcesImages.xcassets\iconStartfreetrialBluebg.imageset\Contents.json" />
+    <ImageAsset Include="MediaResourcesImages.xcassets\iconStartfreetrialBluebg.imageset\iconStartfreetrialBluebg.pdf" />
+    <ImageAsset Include="MediaResourcesImages.xcassets\iconStartfreetrialWhitebg.imageset\Contents.json" />
+    <ImageAsset Include="MediaResourcesImages.xcassets\iconStartfreetrialWhitebg.imageset\iconStartfreetrialWhitebg.pdf" />
+    <ImageAsset Include="MediaResourcesImages.xcassets\logoLogin.imageset\Contents.json" />
+    <ImageAsset Include="MediaResourcesImages.xcassets\logoLogin.imageset\logoLogin.pdf" />
+    <ImageAsset Include="MediaResourcesImages.xcassets\iconPreferences.imageset\Contents.json" />
+    <ImageAsset Include="MediaResourcesImages.xcassets\iconPreferences.imageset\iconPreferences.pdf" />
+    <ImageAsset Include="MediaResourcesImages.xcassets\iconStatusBad.imageset\iconStatusBad.pdf" />
+    <ImageAsset Include="MediaResourcesImages.xcassets\iconStatusGood.imageset\iconStatusGood.pdf" />
+    <ImageAsset Include="MediaResourcesImages.xcassets\iconStatusModerate.imageset\iconStatusModerate.pdf" />
+    <ImageAsset Include="MediaResourcesImages.xcassets\buttonConnect.imageset\Contents.json" />
+    <ImageAsset Include="MediaResourcesImages.xcassets\buttonConnecting.imageset\Contents.json" />
+    <ImageAsset Include="MediaResourcesImages.xcassets\buttonConnected.imageset\Contents.json" />
+    <ImageAsset Include="MediaResourcesImages.xcassets\buttonConnect.imageset\buttonConnect.pdf" />
+    <ImageAsset Include="MediaResourcesImages.xcassets\buttonConnecting.imageset\buttonConnecting.pdf" />
+    <ImageAsset Include="MediaResourcesImages.xcassets\buttonConnected.imageset\buttonConnected.pdf" />
+    <ImageAsset Include="MediaResourcesImages.xcassets\iconArrowLeft.imageset\Contents.json" />
+    <ImageAsset Include="MediaResourcesImages.xcassets\iconArrowLeft.imageset\iconArrowLeft.pdf" />
+    <ImageAsset Include="MediaResourcesImages.xcassets\iconStatusBack.imageset\Contents.json" />
+    <ImageAsset Include="MediaResourcesImages.xcassets\iconStatusBack.imageset\iconStatusBack.pdf" />
+    <ImageAsset Include="MediaResourcesImages.xcassets\iconInformation.imageset\Contents.json" />
+    <ImageAsset Include="MediaResourcesImages.xcassets\iconInformation.imageset\iconInformation.pdf" />
+    <ImageAsset Include="MediaResourcesImages.xcassets\iconInformationTint.imageset\Contents.json" />
+    <ImageAsset Include="MediaResourcesImages.xcassets\iconInformationTint.imageset\iconInformationTint.pdf" />
+    <ImageAsset Include="MediaResourcesImages.xcassets\iconLogo.imageset\Contents.json" />
+    <ImageAsset Include="MediaResourcesImages.xcassets\iconLogo.imageset\iconLogo.pdf" />
+    <ImageAsset Include="MediaResourcesImages.xcassets\iconPreferencesConnection.imageset\Contents.json" />
+    <ImageAsset Include="MediaResourcesImages.xcassets\iconPreferencesConnection.imageset\iconPreferencesConnection.pdf" />
+    <ImageAsset Include="MediaResourcesImages.xcassets\iconPreferencesOpenvpn.imageset\Contents.json" />
+    <ImageAsset Include="MediaResourcesImages.xcassets\iconPreferencesOpenvpn.imageset\iconPreferencesOpenvpn.pdf" />
+    <ImageAsset Include="MediaResourcesImages.xcassets\iconPreferencesFirewall.imageset\Contents.json" />
+    <ImageAsset Include="MediaResourcesImages.xcassets\iconPreferencesFirewall.imageset\iconPreferencesFirewall.pdf" />
+    <ImageAsset Include="MediaResourcesImages.xcassets\iconPreferencesGeneral.imageset\Contents.json" />
+    <ImageAsset Include="MediaResourcesImages.xcassets\iconPreferencesGeneral.imageset\iconPreferencesGeneral.pdf" />
+    <ImageAsset Include="MediaResourcesFlags.xcassets\cz.imageset\Contents.json" />
+    <ImageAsset Include="MediaResourcesFlags.xcassets\pl.imageset\Contents.json" />
+    <ImageAsset Include="MediaResourcesFlags.xcassets\at.imageset\Contents.json" />
+    <ImageAsset Include="MediaResourcesFlags.xcassets\au.imageset\Contents.json" />
+    <ImageAsset Include="MediaResourcesFlags.xcassets\be.imageset\Contents.json" />
+    <ImageAsset Include="MediaResourcesFlags.xcassets\bg.imageset\Contents.json" />
+    <ImageAsset Include="MediaResourcesFlags.xcassets\br.imageset\Contents.json" />
+    <ImageAsset Include="MediaResourcesFlags.xcassets\dk.imageset\Contents.json" />
+    <ImageAsset Include="MediaResourcesFlags.xcassets\fi.imageset\Contents.json" />
+    <ImageAsset Include="MediaResourcesFlags.xcassets\jp.imageset\Contents.json" />
+    <ImageAsset Include="MediaResourcesFlags.xcassets\no.imageset\Contents.json" />
+    <ImageAsset Include="MediaResourcesFlags.xcassets\pt.imageset\Contents.json" />
+    <ImageAsset Include="MediaResourcesFlags.xcassets\sg.imageset\Contents.json" />
+    <ImageAsset Include="MediaResourcesFlags.xcassets\il.imageset\Contents.json" />
+    <ImageAsset Include="MediaResourcesFlags.xcassets\lu.imageset\Contents.json" />
+    <ImageAsset Include="MediaResourcesFlags.xcassets\cz.imageset\iconCountryflagCz.pdf" />
+    <ImageAsset Include="MediaResourcesFlags.xcassets\pl.imageset\iconCountryflagPl.pdf" />
+    <ImageAsset Include="MediaResourcesFlags.xcassets\at.imageset\iconCountryflagAt.pdf" />
+    <ImageAsset Include="MediaResourcesFlags.xcassets\au.imageset\iconCountryflagAu.pdf" />
+    <ImageAsset Include="MediaResourcesFlags.xcassets\be.imageset\iconCountryflagBe.pdf" />
+    <ImageAsset Include="MediaResourcesFlags.xcassets\bg.imageset\iconCountryflagBg.pdf" />
+    <ImageAsset Include="MediaResourcesFlags.xcassets\br.imageset\iconCountryflagBr.pdf" />
+    <ImageAsset Include="MediaResourcesFlags.xcassets\dk.imageset\iconCountryflagDk.pdf" />
+    <ImageAsset Include="MediaResourcesFlags.xcassets\fi.imageset\iconCountryflagFi.pdf" />
+    <ImageAsset Include="MediaResourcesFlags.xcassets\jp.imageset\iconCountryflagJp.pdf" />
+    <ImageAsset Include="MediaResourcesFlags.xcassets\no.imageset\iconCountryflagNo.pdf" />
+    <ImageAsset Include="MediaResourcesFlags.xcassets\pt.imageset\iconCountryflagPt.pdf" />
+    <ImageAsset Include="MediaResourcesFlags.xcassets\sg.imageset\iconCountryflagSg.pdf" />
+    <ImageAsset Include="MediaResourcesFlags.xcassets\il.imageset\iconCountryflagIl.pdf" />
+    <ImageAsset Include="MediaResourcesFlags.xcassets\lu.imageset\iconCountryflagLu.pdf" />
+    <ImageAsset Include="MediaResourcesImages.xcassets\iconAutomaticServerSelection.imageset\Contents.json" />
+    <ImageAsset Include="MediaResourcesImages.xcassets\iconAutomaticServerSelection.imageset\FastestServer.pdf" />
+    <ImageAsset Include="MediaResourcesImages.xcassets\iconWiFi.imageset\Contents.json" />
+    <ImageAsset Include="MediaResourcesImages.xcassets\iconWiFi.imageset\wifi.pdf" />
+    <ImageAsset Include="MediaResourcesFlags.xcassets\sk.imageset\Contents.json" />
+    <ImageAsset Include="MediaResourcesFlags.xcassets\sk.imageset\iconCountryflagSl.pdf" />
+    <ImageAsset Include="MediaResourcesImages.xcassets\iconWiFiSmallBlue.imageset\Contents.json" />
+    <ImageAsset Include="MediaResourcesImages.xcassets\iconWiFiSmallBlue.imageset\wifiBlue.pdf" />
+    <ImageAsset Include="MediaResourcesImages.xcassets\iconWiFiSmallRed.imageset\Contents.json" />
+    <ImageAsset Include="MediaResourcesImages.xcassets\iconWiFiSmallRed.imageset\wifiRed.pdf" />
+    <ImageAsset Include="MediaResourcesFlags.xcassets\rs.imageset\Contents.json" />
+    <ImageAsset Include="MediaResourcesFlags.xcassets\rs.imageset\iconCountryflagSr.pdf" />
+    <ImageAsset Include="MediaResourcesImages.xcassets\iconAdd.imageset\Contents.json" />
+    <ImageAsset Include="MediaResourcesImages.xcassets\iconAdd.imageset\add-icon.pdf" />
+    <ImageAsset Include="MediaResourcesImages.xcassets\iconPlayWhite.imageset\Contents.json" />
+    <ImageAsset Include="MediaResourcesImages.xcassets\iconPlayWhite.imageset\play_white.pdf" />
+    <ImageAsset Include="MediaResourcesImages.xcassets\iconPreferencesAntiTracker.imageset\Contents.json" />
+    <ImageAsset Include="MediaResourcesImages.xcassets\iconPreferencesDNS.imageset\Contents.json" />
+    <ImageAsset Include="MediaResourcesImages.xcassets\iconPreferencesAntiTracker.imageset\anti-tracker.pdf" />
+    <ImageAsset Include="MediaResourcesImages.xcassets\iconInformation2.imageset\Contents.json" />
+    <ImageAsset Include="MediaResourcesImages.xcassets\iconInformation2.imageset\info-icon.pdf" />
+    <ImageAsset Include="MediaResourcesImages.xcassets\iconPreferencesDNS.imageset\dns.pdf" />
+    <ImageAsset Include="MediaResourcesImages.xcassets\imageLaptop.imageset\Contents.json" />
+    <ImageAsset Include="MediaResourcesImages.xcassets\imageLaptop.imageset\laptop.pdf" />
+    <ImageAsset Include="MediaResourcesImages.xcassets\buttonConnectDark.imageset\Contents.json" />
+    <ImageAsset Include="MediaResourcesImages.xcassets\buttonConnectDark.imageset\buttonConnect.pdf" />
+    <ImageAsset Include="MediaResourcesImages.xcassets\buttonPauseLight.imageset\Contents.json" />
+    <ImageAsset Include="MediaResourcesImages.xcassets\buttonPauseDark.imageset\Contents.json" />
+    <ImageAsset Include="MediaResourcesImages.xcassets\buttonStopLight.imageset\Contents.json" />
+    <ImageAsset Include="MediaResourcesImages.xcassets\buttonStopDark.imageset\Contents.json" />
+    <ImageAsset Include="MediaResourcesImages.xcassets\buttonPauseLight.imageset\pauseLight.pdf" />
+    <ImageAsset Include="MediaResourcesImages.xcassets\buttonPauseDark.imageset\pauseDark.pdf" />
+    <ImageAsset Include="MediaResourcesImages.xcassets\buttonStopLight.imageset\stopLight.pdf" />
+    <ImageAsset Include="MediaResourcesImages.xcassets\buttonStopDark.imageset\stopDark.pdf" />
+    <ImageAsset Include="MediaResourcesImages.xcassets\iconStartfreetrialDarkbg.imageset\Contents.json" />
+    <ImageAsset Include="MediaResourcesImages.xcassets\iconStartfreetrialDarkbg.imageset\shieldDark.pdf" />
+    <ImageAsset Include="MediaResourcesImages.xcassets\iconLogoDark.imageset\Contents.json" />
+    <ImageAsset Include="MediaResourcesImages.xcassets\iconLogoDark.imageset\iconTrialLogoDark.pdf" />
+    <ImageAsset Include="MediaResourcesImages.xcassets\imageLaptopIVPN.imageset\Contents.json" />
+    <ImageAsset Include="MediaResourcesImages.xcassets\imageLaptopIVPN.imageset\graphic devices2.pdf" />
+  </ItemGroup>
+  <Import Project="$(MSBuildExtensionsPath)\Xamarin\Mac\Xamarin.Mac.CSharp.targets" />
+</Project>

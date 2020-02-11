@@ -1,0 +1,120 @@
+﻿<ResourceDictionary xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+                    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+                    xmlns:s="clr-namespace:System;assembly=mscorlib">
+
+    <s:String x:Key="ErrorCaption_CannotConnectoToService">Error connecting to IVPN Windows Service</s:String>
+    <s:String x:Key="Error_ConnectionClosed">Connection with IVPN Service was closed</s:String>
+    
+    <s:String x:Key="ErrorCaption_IVPNServiceCouldNotStart">IVPN Service could not be started</s:String>
+    <s:String x:Key="Starting_Service_Progress">Starting IVPN Service...</s:String>
+    <s:String x:Key="Connecting_Service_Progress">Connecting to IVPN Service...</s:String>
+
+    <s:String x:Key="Exiting_will_stop_vpn">Exiting will disconnect you from the VPN. Are you sure you want to exit?</s:String>
+    <s:String x:Key="Exiting_will_stop_vpn_killswitch_persistent">Exiting will disconnect you from the VPN.\nDue to parameter 'Firewall Aways-On', all trafic will be blocked.\n\nAre you sure you want to exit?</s:String>
+    <s:String x:Key="Exiting_will_stop_vpn_Caption">Disconnect and Exit</s:String>
+
+    <s:String x:Key="Crash_SentSuccessfully">Error report was sent successfully.</s:String>
+    <s:String x:Key="Crash_SentSuccessfullyHeader">Report was sent</s:String>
+    <s:String x:Key="Crash_SentErrorHeader">Failed to send report</s:String>
+    <s:String x:Key="Crash_ServiceCrashedText">Looks like IVPN Windows service was crashed some time ago</s:String>
+
+    <s:String x:Key="Progress_Connecting">Connecting...</s:String>
+    <s:String x:Key="Progress_Disconnecting">Disconnecting...</s:String>
+
+    <s:String x:Key="Title">IVPN</s:String>
+
+    <s:String x:Key="Diagnostics_GeneratingLogs">Generating logs...</s:String>
+    <s:String x:Key="Diagnostics_SubmittingLogs">Submitting logs...</s:String>
+
+    <s:String x:Key="Diagnostics_SubmittingLogs_NoUsername">Username is empty. Please enter your Username in the main window and try again.</s:String>
+    <s:String x:Key="Diagnostics_SubmittingLogs_NoUsername_Caption">Username is not specified</s:String>
+    <s:String x:Key="Diagnostics_SubmittingLogs_InputDescriptionText">Please write a description of the problem you are experiencing</s:String>
+
+    <s:String x:Key="Error_HTTPProxyWithUDP">Cannot connect to selected server using HTTP proxy. Select another server or disable HTTP proxy setting.</s:String>
+
+    <s:String x:Key="Initializing">Initializing...</s:String>
+
+    <s:String x:Key="CheckSettings">Please, check settings.</s:String>
+    <s:String x:Key="OpenVPNParamsNotSupported">Some OpenVPN additional parameters are not supported.</s:String>
+
+
+    <s:String x:Key="Error_EmailIsEmpty">Please enter your email address</s:String>
+    <s:String x:Key="Error_EmailNotValid">Email adress is not valid</s:String>
+    <s:String x:Key="Error_UserNameIsEmpty">Please enter your account ID</s:String>
+    <s:String x:Key="Error_PasswordIsEmpty">Please enter your password</s:String>
+    <s:String x:Key="Error_Authentication">The account ID you entered was incorrect. Please try again.</s:String>
+    <s:String x:Key="Error_AuthenticationGoToLogInPage">Incorrect username or password.\n\nYou have been redirected to the login page to re-enter your credentials.</s:String>
+    <s:String x:Key="Error_RestServer_Communication">Server communication error</s:String>
+    <s:String x:Key="Error_RestServer_ConnectionError">There was an error communicating with our servers. Please check your internet connection and try again.</s:String>
+    <s:String x:Key="Error_RestServer_ConnectionError_Title">Server communication error</s:String>
+    <s:String x:Key="Error_SingUpFailed">Signup failed</s:String>
+    <s:String x:Key="Error_UserNotActive">Account not active</s:String>
+    <s:String x:Key="Error_AccountIsExists">Account already exists</s:String>
+    <s:String x:Key="Error_ConnectionError">Unable to connect to VPN server</s:String>
+    <s:String x:Key="Error_ConnectionError_AccountExpiredOrWrongPassword">Either your password is incorrect or your account is suspended due to non-payment.\n\nIf you have changed your password please logout and login with new credentials.</s:String>
+    <s:String x:Key="Error_ApiRequestTimeout">Operation timeout. Please check your internet connection and try again.</s:String>
+    <s:String x:Key="Error_ApiRequestTimeoutBecauseFirewall">Operation timeout because of blocked by IVPN Firewall. Please, connect to IVPN to restore connectivity.</s:String>
+    <s:String x:Key="Error_ApiPasswordResetError">Unsuccessful password reset operation.</s:String>
+    
+    <s:String x:Key="Mesage_CannotSelectServerSameCountry">Entry and exit servers cannot be in the same country</s:String>
+    <s:String x:Key="Mesage_CannotSelectServerSameCountry_Description">When using multihop you must select entry and exit servers in different countries. Please select a different entry or exit server.</s:String>
+    <s:String x:Key="Message_InvalidUsername">You entered an invalid account ID</s:String>
+    <s:String x:Key="Message_InvalidUsername_Description">Your account ID starts with the letters 'ivpn' and can be found in the welcome email sent to you on signup. You cannot use your email address.</s:String>
+    <s:String x:Key="Message_PasswordResetSuccessInstructions">Please check your email, we have sent instructions to reset your password.</s:String>
+
+    <s:String x:Key="Meggase_ResetAllNetworkActionsCaption">Reset all settings to default values</s:String>
+    <s:String x:Key="Meggase_ResetAllNetworkActionsText">Are you sure you want to reset the trust status for all networks and actions to the default settings?</s:String>
+
+    <s:String x:Key="Message_LogOut_question">Do you really want to log out?</s:String>
+    <s:String x:Key="Message_LogOut_actioninfo_firewall">Firewall will be disabled.</s:String>
+    <s:String x:Key="Message_LogOut_actioninfo_connection">VPN connection will be closed.</s:String>
+    <s:String x:Key="Message_LogOut_actioninfo_firewall_and_connection">Firewall will be disabled and VPN connection will be closed.</s:String>
+    
+    <s:String x:Key="Error_MessageboxTitle">Error</s:String>
+
+    <s:String x:Key="Button_Cancel">Cancel</s:String>
+    <s:String x:Key="Button_LogIn">Log In</s:String>
+    <s:String x:Key="Button_ResetPassword">Reset your password</s:String>
+    <s:String x:Key="Button_LoginSkipAndContinue">Skip and continue</s:String>
+    <s:String x:Key="Button_LoginTryAgain">Try again</s:String>
+    <s:String x:Key="Button_Send">Send</s:String>
+
+    <s:String x:Key="Button_ContinueTrial">Close</s:String>
+    <s:String x:Key="Button_GetSubscription">Subscribe</s:String>
+    <s:String x:Key="Button_RenewSubscription">Renew</s:String>
+
+    <s:String x:Key="Label_FreeTrialExpired">Your free trial has expired.</s:String>
+    <s:String x:Key="Label_SubscriptionExpired">Your subscription has expired.</s:String>
+    <s:String x:Key="Label_AccountExpiredUpgradeNow">Upgrade now.</s:String>
+    
+    <s:String x:Key="Label_FreeTrialDaysLeft_LastDay">Your free trial expires today</s:String>
+    <s:String x:Key="Label_FreeTrialDaysLeft_OneDay">Your free trial expires in 1 day</s:String>
+    <s:String x:Key="Label_FreeTrialDaysLeft_PARAMETRIZED">Your free trial expires in {0} days</s:String>
+
+    <s:String x:Key="Label_AccountDaysLeft_LastDay">Your account expires today</s:String>
+    <s:String x:Key="Label_AccountDaysLeft_OneDay">Your account expires in 1 day</s:String>
+    <s:String x:Key="Label_AccountDaysLeft_PARAMETRIZED">Your account expires in {0} days</s:String>
+
+    <s:String x:Key="Label_TrialDaysLeftTitle_LastDay">Your trial will expire </s:String>
+    <s:String x:Key="Label_TrialDaysLeftTitle_OneDay">Your trial will expire in </s:String>
+    <s:String x:Key="Label_TrialDaysLeftTitle_PARAMETRIZED">Your trial will expire in </s:String>
+
+    <s:String x:Key="Label_AccountDaysLeftTitle_LastDay">Your account will expire</s:String>
+    <s:String x:Key="Label_AccountDaysLeftTitle_OneDay">Your account will expire in</s:String>
+    <s:String x:Key="Label_AccountDaysLeftTitle_PARAMETRIZED">Your account will expire in</s:String>
+
+    <s:String x:Key="Days_Today">today</s:String>
+    <s:String x:Key="Days_OneDay">one day</s:String>
+    <s:String x:Key="Days_Days_PARAMETRIZED">{0} days</s:String>
+
+    <s:String x:Key="Label_TrialDaysLeftDescription_LastDay">Today is the last day of your trial account. Please upgrade your account to remain secured.</s:String>
+    <s:String x:Key="Label_TrialDaysLeftDescription_OneDay">You have 1 day left of your trial account. Please upgrade your account to remain secured.</s:String>
+    <s:String x:Key="Label_TrialDaysLeftDescription_PARAMETRIZED">You have {0} days left of your trial account. Please upgrade your account to remain secured.</s:String>
+    <s:String x:Key="Label_TrialDaysLeftDescription_Expired">Please upgrade your account to remain secured.</s:String>
+
+    <s:String x:Key="Label_AccountDaysLeftDescription_LastDay">Today is the last day of your account. Please renew your account to remain secured.</s:String>
+    <s:String x:Key="Label_AccountDaysLeftDescription_OneDay">You have 1 day left of your account. Please renew your account to remain secured.</s:String>
+    <s:String x:Key="Label_AccountDaysLeftDescription_PARAMETRIZED">You have {0} days left of your account. Please renew your account to remain secured.</s:String>
+    <s:String x:Key="Label_AccountDaysLeftDescription_Expired">Please renew your account to remain secured.</s:String>
+
+</ResourceDictionary>

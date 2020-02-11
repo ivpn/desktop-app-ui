@@ -1,0 +1,216 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<document type="com.apple.InterfaceBuilder3.Cocoa.XIB" version="3.0" toolsVersion="14113" targetRuntime="MacOSX.Cocoa" propertyAccessControl="none">
+    <dependencies>
+        <deployment identifier="macosx"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.CocoaPlugin" version="14113"/>
+        <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
+    </dependencies>
+    <objects>
+        <customObject id="-2" userLabel="File's Owner" customClass="FirewallNotificationWindowController">
+            <connections>
+                <outlet property="CloseButton" destination="iYZ-86-tAR" id="gnN-98-kWR"/>
+                <outlet property="FirewallLabel" destination="c1W-aG-KmC" id="1ff-i0-a8i"/>
+                <outlet property="FirewallStatusLabel" destination="PI0-xb-2hL" id="nbr-HD-j0o"/>
+                <outlet property="GuiPausePopoverView" destination="tTK-84-Fph" id="8yK-1i-YJu"/>
+                <outlet property="ImageLogo" destination="9c0-W2-pc3" id="hiB-vc-KRt"/>
+                <outlet property="PauseAddButton" destination="Nsn-e9-bAI" id="uMl-og-cWc"/>
+                <outlet property="PauseTimeLeftLabel" destination="WXe-iy-Fd6" id="NnS-HF-gOc"/>
+                <outlet property="ResumeBtn" destination="OSa-K7-OBl" id="A4w-og-Fpp"/>
+                <outlet property="ResumeInLabel" destination="1Ui-na-nAO" id="Teu-Wd-e1Q"/>
+                <outlet property="VPNLabel" destination="hme-tj-Dja" id="2cM-NS-r3d"/>
+                <outlet property="VPNStatusLabel" destination="slh-sN-tMP" id="VeF-k3-27U"/>
+                <outlet property="window" destination="2" id="6"/>
+            </connections>
+        </customObject>
+        <customObject id="-1" userLabel="First Responder" customClass="FirstResponder"/>
+        <customObject id="-3" userLabel="Application" customClass="NSObject"/>
+        <window title="Window" allowsToolTipsWhenApplicationIsInactive="NO" autorecalculatesKeyViewLoop="NO" oneShot="NO" showsToolbarButton="NO" visibleAtLaunch="NO" animationBehavior="documentWindow" id="2" customClass="FirewallNotificationWindow">
+            <windowStyleMask key="styleMask" fullSizeContentView="YES"/>
+            <rect key="contentRect" x="131" y="74" width="303" height="74"/>
+            <rect key="screenRect" x="0.0" y="0.0" width="1280" height="777"/>
+            <view key="contentView" misplaced="YES" id="3">
+                <rect key="frame" x="0.0" y="0.0" width="303" height="74"/>
+                <autoresizingMask key="autoresizingMask"/>
+                <subviews>
+                    <imageView misplaced="YES" id="9c0-W2-pc3">
+                        <rect key="frame" x="12" y="29" width="32" height="32"/>
+                        <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
+                        <imageCell key="cell" refusesFirstResponder="YES" alignment="left" animates="YES" imageScaling="proportionallyDown" image="iconLogo" id="v1N-4Q-V4E"/>
+                    </imageView>
+                    <textField horizontalHuggingPriority="251" verticalHuggingPriority="750" misplaced="YES" id="hme-tj-Dja">
+                        <rect key="frame" x="53" y="50" width="71" height="17"/>
+                        <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
+                        <textFieldCell key="cell" scrollable="YES" lineBreakMode="clipping" sendsActionOnEndEditing="YES" alignment="right" title="VPN:" id="NEC-uE-TjJ">
+                            <font key="font" metaFont="system"/>
+                            <color key="textColor" name="labelColor" catalog="System" colorSpace="catalog"/>
+                            <color key="backgroundColor" name="controlColor" catalog="System" colorSpace="catalog"/>
+                        </textFieldCell>
+                    </textField>
+                    <textField horizontalHuggingPriority="251" verticalHuggingPriority="750" misplaced="YES" id="c1W-aG-KmC">
+                        <rect key="frame" x="53" y="29" width="71" height="17"/>
+                        <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
+                        <textFieldCell key="cell" scrollable="YES" lineBreakMode="clipping" sendsActionOnEndEditing="YES" alignment="right" title="Firewall:" id="coy-B5-crM">
+                            <font key="font" metaFont="system"/>
+                            <color key="textColor" name="labelColor" catalog="System" colorSpace="catalog"/>
+                            <color key="backgroundColor" name="controlColor" catalog="System" colorSpace="catalog"/>
+                        </textFieldCell>
+                    </textField>
+                    <textField horizontalHuggingPriority="251" verticalHuggingPriority="750" misplaced="YES" id="slh-sN-tMP">
+                        <rect key="frame" x="128" y="50" width="157" height="17"/>
+                        <autoresizingMask key="autoresizingMask" flexibleMinY="YES"/>
+                        <textFieldCell key="cell" scrollable="YES" lineBreakMode="clipping" sendsActionOnEndEditing="YES" title="VPN status" id="PbT-Om-60g">
+                            <font key="font" metaFont="system"/>
+                            <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
+                            <color key="backgroundColor" name="controlColor" catalog="System" colorSpace="catalog"/>
+                        </textFieldCell>
+                    </textField>
+                    <textField horizontalHuggingPriority="251" verticalHuggingPriority="750" misplaced="YES" id="PI0-xb-2hL">
+                        <rect key="frame" x="128" y="29" width="157" height="17"/>
+                        <autoresizingMask key="autoresizingMask" flexibleMinY="YES"/>
+                        <textFieldCell key="cell" scrollable="YES" lineBreakMode="clipping" sendsActionOnEndEditing="YES" alignment="left" title="Firewall status" usesSingleLineMode="YES" id="QOe-Lz-mys">
+                            <font key="font" metaFont="system"/>
+                            <color key="textColor" name="labelColor" catalog="System" colorSpace="catalog"/>
+                            <color key="backgroundColor" name="controlColor" catalog="System" colorSpace="catalog"/>
+                        </textFieldCell>
+                    </textField>
+                    <textField horizontalHuggingPriority="251" verticalHuggingPriority="750" misplaced="YES" id="1Ui-na-nAO">
+                        <rect key="frame" x="53" y="9" width="71" height="17"/>
+                        <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                        <textFieldCell key="cell" scrollable="YES" lineBreakMode="clipping" sendsActionOnEndEditing="YES" title="Resume in:" id="svh-Dp-ipQ">
+                            <font key="font" metaFont="system"/>
+                            <color key="textColor" name="labelColor" catalog="System" colorSpace="catalog"/>
+                            <color key="backgroundColor" name="controlColor" catalog="System" colorSpace="catalog"/>
+                        </textFieldCell>
+                    </textField>
+                    <textField horizontalHuggingPriority="251" verticalHuggingPriority="750" misplaced="YES" id="WXe-iy-Fd6">
+                        <rect key="frame" x="128" y="9" width="67" height="17"/>
+                        <autoresizingMask key="autoresizingMask" flexibleMaxY="YES"/>
+                        <textFieldCell key="cell" scrollable="YES" lineBreakMode="clipping" sendsActionOnEndEditing="YES" alignment="left" title="00:00:00" id="MdR-1s-f2r">
+                            <font key="font" metaFont="system"/>
+                            <color key="textColor" name="labelColor" catalog="System" colorSpace="catalog"/>
+                            <color key="backgroundColor" name="controlColor" catalog="System" colorSpace="catalog"/>
+                        </textFieldCell>
+                    </textField>
+                    <button verticalHuggingPriority="750" misplaced="YES" id="iYZ-86-tAR">
+                        <rect key="frame" x="279" y="50" width="24" height="24"/>
+                        <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
+                        <buttonCell key="cell" type="bevel" bezelStyle="rounded" image="NSStopProgressFreestandingTemplate" imagePosition="overlaps" alignment="center" imageScaling="proportionallyDown" inset="2" id="twc-fT-qwI">
+                            <behavior key="behavior" lightByContents="YES"/>
+                            <font key="font" metaFont="system"/>
+                        </buttonCell>
+                        <connections>
+                            <action selector="OnCloseButton:" target="-2" id="YMy-Ch-2vy"/>
+                        </connections>
+                    </button>
+                    <button verticalHuggingPriority="750" misplaced="YES" id="Nsn-e9-bAI">
+                        <rect key="frame" x="194" y="10" width="15" height="15"/>
+                        <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                        <buttonCell key="cell" type="bevel" bezelStyle="circular" image="iconAdd" imagePosition="overlaps" alignment="center" imageScaling="proportionallyDown" inset="2" id="KZ9-LM-BD1">
+                            <behavior key="behavior" lightByContents="YES"/>
+                            <font key="font" metaFont="system" size="16"/>
+                        </buttonCell>
+                        <connections>
+                            <action selector="OnButtonPauseAddPressed:" target="-2" id="U75-TA-zYK"/>
+                        </connections>
+                    </button>
+                    <customView misplaced="YES" id="OSa-K7-OBl" customClass="CustomButton">
+                        <rect key="frame" x="227" y="9" width="70" height="17"/>
+                        <autoresizingMask key="autoresizingMask" flexibleMinX="YES" flexibleMaxY="YES"/>
+                        <connections>
+                            <action selector="OnResumeButtonPressed:" target="-2" id="M9N-Ix-UW3"/>
+                        </connections>
+                    </customView>
+                </subviews>
+            </view>
+            <point key="canvasLocation" x="1886.5" y="248"/>
+        </window>
+        <userDefaultsController representsSharedInstance="YES" id="DXk-As-zRt"/>
+        <customView id="tTK-84-Fph">
+            <rect key="frame" x="0.0" y="0.0" width="222" height="191"/>
+            <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
+            <subviews>
+                <button verticalHuggingPriority="750" tag="1800" id="cXQ-8y-83B">
+                    <rect key="frame" x="0.0" y="112" width="222" height="42"/>
+                    <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
+                    <buttonCell key="cell" type="squareTextured" title="Add 30 min." bezelStyle="texturedSquare" alignment="center" imageScaling="proportionallyDown" inset="2" id="DcR-2Y-3cv">
+                        <behavior key="behavior" lightByBackground="YES" lightByGray="YES"/>
+                        <font key="font" metaFont="system"/>
+                    </buttonCell>
+                    <connections>
+                        <action selector="PauseMenuItemButtonPressed:" target="-2" id="OFx-Oa-sgG"/>
+                    </connections>
+                </button>
+                <box verticalHuggingPriority="750" boxType="separator" id="e1g-t1-jG4">
+                    <rect key="frame" x="0.0" y="150" width="222" height="5"/>
+                    <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
+                </box>
+                <button verticalHuggingPriority="750" tag="300" id="HCZ-J6-esu">
+                    <rect key="frame" x="0.0" y="150" width="222" height="42"/>
+                    <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
+                    <buttonCell key="cell" type="squareTextured" title="Add 5 min." bezelStyle="texturedSquare" alignment="center" imageScaling="proportionallyDown" inset="2" id="sfz-pE-Wrx">
+                        <behavior key="behavior" pushIn="YES" lightByBackground="YES" lightByGray="YES"/>
+                        <font key="font" metaFont="system"/>
+                    </buttonCell>
+                    <connections>
+                        <action selector="PauseMenuItemButtonPressed:" target="-2" id="7ZC-EH-b6a"/>
+                    </connections>
+                </button>
+                <box verticalHuggingPriority="750" boxType="separator" id="7wm-1v-c27">
+                    <rect key="frame" x="0.0" y="112" width="222" height="5"/>
+                    <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
+                </box>
+                <box verticalHuggingPriority="750" boxType="separator" id="ZV3-AV-e7c">
+                    <rect key="frame" x="0.0" y="74" width="222" height="5"/>
+                    <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
+                </box>
+                <box verticalHuggingPriority="750" boxType="separator" id="GBs-Xg-ACB">
+                    <rect key="frame" x="0.0" y="36" width="222" height="5"/>
+                    <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
+                </box>
+                <button verticalHuggingPriority="750" tag="3600" id="sRt-9K-n4G">
+                    <rect key="frame" x="0.0" y="74" width="222" height="42"/>
+                    <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
+                    <buttonCell key="cell" type="squareTextured" title="Add 1 hour" bezelStyle="texturedSquare" alignment="center" imageScaling="proportionallyDown" inset="2" id="bVe-8q-jui">
+                        <behavior key="behavior" lightByBackground="YES" lightByGray="YES"/>
+                        <font key="font" metaFont="system"/>
+                    </buttonCell>
+                    <connections>
+                        <action selector="PauseMenuItemButtonPressed:" target="-2" id="j5U-Li-uma"/>
+                    </connections>
+                </button>
+                <button verticalHuggingPriority="750" tag="10800" id="UEd-oO-Zov">
+                    <rect key="frame" x="0.0" y="36" width="222" height="42"/>
+                    <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
+                    <buttonCell key="cell" type="squareTextured" title="Add 3 hours" bezelStyle="texturedSquare" alignment="center" imageScaling="proportionallyDown" inset="2" id="ddm-06-dfj">
+                        <behavior key="behavior" lightByBackground="YES" lightByGray="YES"/>
+                        <font key="font" metaFont="system"/>
+                    </buttonCell>
+                    <connections>
+                        <action selector="PauseMenuItemButtonPressed:" target="-2" id="89X-vz-Ecu"/>
+                    </connections>
+                </button>
+                <button verticalHuggingPriority="750" id="UCR-ot-Qn4">
+                    <rect key="frame" x="0.0" y="-2" width="222" height="42"/>
+                    <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
+                    <buttonCell key="cell" type="squareTextured" title="Pause for a custom time..." bezelStyle="texturedSquare" alignment="center" imageScaling="proportionallyDown" inset="2" id="QhR-jT-lM2">
+                        <behavior key="behavior" lightByBackground="YES" lightByGray="YES"/>
+                        <font key="font" metaFont="system"/>
+                    </buttonCell>
+                    <connections>
+                        <action selector="PauseMenuItemButtonPressed:" target="-2" id="dq8-fF-S4i"/>
+                    </connections>
+                </button>
+                <box verticalHuggingPriority="750" boxType="separator" id="Nqi-If-1Ce">
+                    <rect key="frame" x="0.0" y="-2" width="222" height="5"/>
+                    <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
+                </box>
+            </subviews>
+            <point key="canvasLocation" x="1846" y="434"/>
+        </customView>
+    </objects>
+    <resources>
+        <image name="NSStopProgressFreestandingTemplate" width="14" height="14"/>
+        <image name="iconAdd" width="64" height="64"/>
+        <image name="iconLogo" width="128" height="128"/>
+    </resources>
+</document>

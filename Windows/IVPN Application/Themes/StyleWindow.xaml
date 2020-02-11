@@ -1,0 +1,219 @@
+﻿<ResourceDictionary xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+                    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+                    xmlns:sw="clr-namespace:WpfStyleableWindow.StyleableWindow">
+
+
+    <!--the brushes used in the template (use these to customize the window look along with the window style (see the bottom of this file)-->
+    <Color x:Key="MainWindowColor" A="#FF" R="#F5" G="#F9" B="#FC"/>
+
+    <SolidColorBrush x:Key="WindowColor" Color="{StaticResource MainWindowColor}"/>
+    <SolidColorBrush x:Key="WindowBackColor" Color="{StaticResource MainWindowColor}"/>
+    <SolidColorBrush x:Key="WindowForeColor" Color="WhiteSmoke"/>
+    <SolidColorBrush x:Key="WindowBorderColor" Color="#86c4f1" />
+    <SolidColorBrush x:Key="WindowTitleTextColor" Color="#26394d"/>
+    <SolidColorBrush x:Key="WindowForeHighlightColor" Color="WhiteSmoke"/>
+    <SolidColorBrush x:Key="WindowButtonColor" Color="{StaticResource MainWindowColor}"/>
+    <SolidColorBrush x:Key="WindowButtonOverColor" Color="LightBlue"/>
+    <SolidColorBrush x:Key="WindowButtonPressedColor" Color="DarkGray"/>
+
+    <!--The window template and it's components -->
+
+    <sw:WindowMinimizeCommand x:Key="MinimizeCommand"></sw:WindowMinimizeCommand>
+    <sw:WindowMaximizeCommand x:Key="MaximizeCommand"></sw:WindowMaximizeCommand>
+    <sw:WindowCloseCommand x:Key="CloseCommand"></sw:WindowCloseCommand>
+
+    <Style TargetType="{x:Type Button}" x:Key="WindowButton">
+        <Setter Property="Height" Value="32"/>
+        <Setter Property="Width" Value="48"/>
+        <Setter Property="Background" Value="Transparent"/>
+        <!--
+        <Setter Property="Background" Value="{StaticResource WindowButtonColor}"/>
+        -->
+        <Setter Property="Foreground" Value="{StaticResource WindowForeColor}"/>
+        <Setter Property="Template">
+            <Setter.Value>
+                <ControlTemplate TargetType="{x:Type Button}">
+                    <Border Background="{TemplateBinding Background}">
+                        <ContentPresenter HorizontalAlignment="Center" VerticalAlignment="Center" />
+                    </Border>
+                    <ControlTemplate.Triggers>
+                        <Trigger Property="IsEnabled" Value="False">
+                            <Setter Property="Background" Value="{StaticResource WindowButtonColor}"/>
+                            <Setter Property="Foreground" Value="{StaticResource WindowColor}"/>
+                        </Trigger>
+                        <Trigger Property="IsMouseOver" Value="True">
+                            <Setter Property="Background" Value="{StaticResource WindowButtonOverColor}"/>
+                            <Setter Property="Foreground" Value="{StaticResource WindowForeHighlightColor}"/>
+                        </Trigger>
+                        <Trigger Property="IsPressed" Value="True">
+                            <Setter Property="Background" Value="{StaticResource WindowButtonPressedColor}"/>
+                            <Setter Property="Foreground" Value="{StaticResource WindowForeColor}"/>
+                        </Trigger>
+                    </ControlTemplate.Triggers>
+                </ControlTemplate>
+            </Setter.Value>
+        </Setter>
+    </Style>
+
+    <Style TargetType="{x:Type Image}" x:Key="WindowIcon">
+        <Setter Property="Height" Value="25"/>
+        <Setter Property="Width" Value="25"/>
+    </Style>
+
+    <ControlTemplate x:Key="WindowTemplate" TargetType="{x:Type Window}">
+       <Grid>
+            <!-- window border -->
+            <Border BorderBrush="{TemplateBinding BorderBrush}" BorderThickness="{TemplateBinding BorderThickness}" Background="{TemplateBinding Background}" Margin="14">
+                <Border.Effect>
+                    <DropShadowEffect Color="#000000" Opacity="0.2" BlurRadius="14" Direction="-90"/>
+                </Border.Effect>
+                
+                <Grid>
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="Auto"/>
+                        <RowDefinition Height="*"/>
+                    </Grid.RowDefinitions>
+
+                    <!-- title area -->
+                    <Grid Grid.Row="0" Margin="0,0,0,0">
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="auto"/>
+                            <ColumnDefinition Width="*"/>
+                            <ColumnDefinition Width="Auto"/>
+                        </Grid.ColumnDefinitions>
+                    
+                        <!--
+                        We do not need window icon in top left corner
+                        <Label Grid.Column="0"                                           
+                                        sw:ControlDoubleClickBehavior.ExecuteCommand="{StaticResource CloseCommand}"                                               
+                                        sw:ControlDoubleClickBehavior.ExecuteCommandParameter="{Binding RelativeSource={RelativeSource Mode=FindAncestor, AncestorType={x:Type Window}}}" Padding="0">
+                            <Image DockPanel.Dock="Left" Style="{StaticResource WindowIcon}" Source="{Binding RelativeSource={RelativeSource Mode=FindAncestor, AncestorType={x:Type Window}},Path=Icon}"                                         
+                                        Width="16"                                           
+                                        sw:ShowSystemMenuBehavior.TargetWindow="{Binding RelativeSource={RelativeSource Mode=FindAncestor, AncestorType={x:Type Window}}}"                                           
+                                        sw:ShowSystemMenuBehavior.LeftButtonShowAt="{Binding ElementName=WindowContent}"/>
+                        </Label>
+                        -->
+                        <Button Name="GuiTemplateButtonBackInTitle"  Style="{StaticResource WindowButton}" Visibility="Collapsed">
+                            <Button.Content>
+                                <StackPanel>
+                                    <Image Source="/IVPN Client;component/Resources/Buttons/iconBack.png" />
+                                </StackPanel>
+                            </Button.Content>
+                        </Button>
+
+                        <Label Grid.Column="1" DockPanel.Dock="Left" Content="{TemplateBinding Property=Title}" Margin="7,0,3,0"                                                                                 
+                                        HorizontalContentAlignment="Left"
+                                        VerticalContentAlignment="Center"
+                                        HorizontalAlignment="Stretch"
+                                        VerticalAlignment="Stretch"
+                                        Foreground="{StaticResource WindowTitleTextColor}"                                           
+                                        FontSize="16"
+                                        sw:WindowDragBehavior.LeftMouseButtonDrag="{Binding RelativeSource={RelativeSource Mode=FindAncestor, AncestorType={x:Type Window}}}"
+                                        sw:ControlDoubleClickBehavior.ExecuteCommand="{StaticResource MaximizeCommand}"
+                                        sw:ControlDoubleClickBehavior.ExecuteCommandParameter="{Binding RelativeSource={RelativeSource Mode=FindAncestor, AncestorType={x:Type Window}}}"
+                                        sw:ShowSystemMenuBehavior.TargetWindow="{Binding RelativeSource={RelativeSource Mode=FindAncestor, AncestorType={x:Type Window}}}"
+                                        sw:ShowSystemMenuBehavior.RightButtonShow="true">
+                        </Label>
+                    
+                        <StackPanel Grid.Column="2" Orientation="Horizontal" HorizontalAlignment="Right">
+                            <Button  Style="{StaticResource WindowButton}" 
+                                     Name="GuiTemplateButtonMinimizeInTitle"
+                                     Command="{StaticResource MinimizeCommand}" 
+                                     CommandParameter="{Binding RelativeSource={RelativeSource Mode=FindAncestor, AncestorType={x:Type Window}}}">
+                                <Button.Content>
+                                    <StackPanel>
+                                        <Image Source="/IVPN Client;component/Resources/Buttons/iconHide.png" />
+                                    </StackPanel>
+                                </Button.Content>
+                            </Button>
+                            <!--<Button DockPanel.Dock="Right" Style="{StaticResource WindowButton}" Command="{StaticResource MaximizeCommand}" CommandParameter="{Binding RelativeSource={RelativeSource Mode=FindAncestor, AncestorType={x:Type Window}}}">+</Button>-->
+                            <Button  Style="{StaticResource WindowButton}" 
+                                     Name="GuiTemplateButtonCloseInTitle"
+                                     Command="{StaticResource CloseCommand}" 
+                                     CommandParameter="{Binding RelativeSource={RelativeSource Mode=FindAncestor, AncestorType={x:Type Window}}}">
+                                <Button.Content>
+                                    <StackPanel>
+                                        <Image Source="/IVPN Client;component/Resources/Buttons/iconClose.png" />
+                                    </StackPanel>
+                                </Button.Content>
+                            </Button>
+                        </StackPanel>
+                    </Grid>
+                
+                    <!-- client area -->
+                    <Grid Grid.Row="1">
+                        <AdornerDecorator>
+                            <ContentPresenter x:Name="WindowContent"/>
+                        </AdornerDecorator>
+                        <ResizeGrip  x:Name="WindowResizeGrip" HorizontalAlignment="Right" IsTabStop="false" Visibility="Collapsed" VerticalAlignment="Bottom"/>
+                    </Grid>
+                </Grid>
+            </Border>
+            
+            <Thumb x:Name="ThumbTop" Visibility="Collapsed" Height="6" Margin="14,0" VerticalAlignment="Top" Cursor="SizeNS"  Opacity="0" sw:WindowResizeBehavior.TopResize="{Binding RelativeSource={RelativeSource Mode=FindAncestor, AncestorType={x:Type Window}}}"/>
+            <Thumb x:Name="ThumbTopLeft" Visibility="Collapsed" Height="6" Width="6" VerticalAlignment="Top" HorizontalAlignment="Left" Cursor="SizeNWSE"  Opacity="0" sw:WindowResizeBehavior.TopLeftResize="{Binding RelativeSource={RelativeSource Mode=FindAncestor, AncestorType={x:Type Window}}}"/>
+            <Thumb x:Name="ThumbBottom" Visibility="Collapsed" Height="6" Margin="14,0" VerticalAlignment="Bottom" Cursor="SizeNS" Opacity="0" sw:WindowResizeBehavior.BottomResize="{Binding RelativeSource={RelativeSource Mode=FindAncestor, AncestorType={x:Type Window}}}"/>
+            <Thumb x:Name="ThumbTopRight" Visibility="Collapsed" Height="6" Width="6" VerticalAlignment="Top" HorizontalAlignment="Right" Cursor="SizeNESW"  Opacity="0" sw:WindowResizeBehavior.TopRightResize="{Binding RelativeSource={RelativeSource Mode=FindAncestor, AncestorType={x:Type Window}}}"/>
+            <Thumb x:Name="ThumbRight" Visibility="Collapsed" HorizontalAlignment="Right" Margin="0,14" Width="6" Cursor="SizeWE"  Opacity="0" sw:WindowResizeBehavior.RightResize="{Binding RelativeSource={RelativeSource Mode=FindAncestor, AncestorType={x:Type Window}}}"/>
+            <Thumb x:Name="ThumbBottomRight" Visibility="Collapsed" Height="6" Width="6" VerticalAlignment="Bottom" HorizontalAlignment="Right" Cursor="SizeNWSE"  Opacity="0" sw:WindowResizeBehavior.BottomRightResize="{Binding RelativeSource={RelativeSource Mode=FindAncestor, AncestorType={x:Type Window}}}"/>
+            <Thumb x:Name="ThumbLeft" Visibility="Collapsed" HorizontalAlignment="Left" Margin="0,14" Width="6" Cursor="SizeWE"  Opacity="0" sw:WindowResizeBehavior.LeftResize="{Binding RelativeSource={RelativeSource Mode=FindAncestor, AncestorType={x:Type Window}}}"/>
+            <Thumb x:Name="ThumbBottomLeft" Visibility="Collapsed" Height="6" Width="6" VerticalAlignment="Bottom" HorizontalAlignment="Left" Cursor="SizeNESW"  Opacity="0" sw:WindowResizeBehavior.BottomLeftResize="{Binding RelativeSource={RelativeSource Mode=FindAncestor, AncestorType={x:Type Window}}}"/>
+        
+        </Grid>
+        <ControlTemplate.Triggers>
+
+            <MultiTrigger>
+                <MultiTrigger.Conditions>
+                    <Condition Property="ResizeMode" Value="CanResizeWithGrip"/>
+                    <Condition Property="WindowState" Value="Normal"/>
+                </MultiTrigger.Conditions>
+                <Setter Property="Visibility" TargetName="WindowResizeGrip" Value="Visible"/>
+            </MultiTrigger>
+
+            <MultiTrigger>
+                <MultiTrigger.Conditions>
+                    <Condition Property="ResizeMode" Value="CanResizeWithGrip"/>
+                    <Condition Property="WindowState" Value="Normal"/>
+                </MultiTrigger.Conditions>
+                <Setter Property="Visibility" TargetName="ThumbTop" Value="Visible"/>
+                <Setter Property="Visibility" TargetName="ThumbTopLeft" Value="Visible"/>
+                <Setter Property="Visibility" TargetName="ThumbBottom" Value="Visible"/>
+                <Setter Property="Visibility" TargetName="ThumbTopRight" Value="Visible"/>
+                <Setter Property="Visibility" TargetName="ThumbRight" Value="Visible"/>
+                <Setter Property="Visibility" TargetName="ThumbBottomRight" Value="Visible"/>
+                <Setter Property="Visibility" TargetName="ThumbLeft" Value="Visible"/>
+                <Setter Property="Visibility" TargetName="ThumbBottomLeft" Value="Visible"/>
+            </MultiTrigger>
+
+            <MultiTrigger>
+                <MultiTrigger.Conditions>
+                    <Condition Property="ResizeMode" Value="CanResize"/>
+                    <Condition Property="WindowState" Value="Normal"/>
+                </MultiTrigger.Conditions>
+                <Setter Property="Visibility" TargetName="ThumbTop" Value="Visible"/>
+                <Setter Property="Visibility" TargetName="ThumbTopLeft" Value="Visible"/>
+                <Setter Property="Visibility" TargetName="ThumbBottom" Value="Visible"/>
+                <Setter Property="Visibility" TargetName="ThumbTopRight" Value="Visible"/>
+                <Setter Property="Visibility" TargetName="ThumbRight" Value="Visible"/>
+                <Setter Property="Visibility" TargetName="ThumbBottomRight" Value="Visible"/>
+                <Setter Property="Visibility" TargetName="ThumbLeft" Value="Visible"/>
+                <Setter Property="Visibility" TargetName="ThumbBottomLeft" Value="Visible"/>
+            </MultiTrigger>
+        </ControlTemplate.Triggers>
+        
+    </ControlTemplate>
+
+    <!-- the custom window style and the window template 
+        Here you can customize the look of the window without having to touch the control template 
+        or comment out the brushes and create a new style (see the red style below)-->
+
+    <Style x:Key="FlatWindowStyle" TargetType="{x:Type Window}">
+        <Setter Property="WindowStyle" Value="None"/>
+        <Setter Property="AllowsTransparency" Value="True"/>
+        <Setter Property="Background" Value="{StaticResource WindowColor}"/>
+        <Setter Property="BorderBrush" Value="{StaticResource WindowBorderColor}"/>
+        <Setter Property="BorderThickness" Value="1"/>
+        <Setter Property="Foreground" Value="{StaticResource WindowColor}"/>
+        <Setter Property="Template" Value="{StaticResource WindowTemplate}"/>
+    </Style>
+</ResourceDictionary>

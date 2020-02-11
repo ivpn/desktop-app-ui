@@ -1,0 +1,99 @@
+﻿<Window x:Class="AppUpdater.Gui.UpdateAvailableDialog"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+             mc:Ignorable="d" Height="410" Width="660" Title="Software update" x:ClassModifier="internal" Background="{DynamicResource {x:Static SystemColors.ControlBrushKey}}" Topmost="True" WindowStartupLocation="CenterOwner" Closing="Window_Closing" ResizeMode="NoResize" 
+             
+        >
+    <Window.Resources>
+        <Style x:Key="TextBlockHeader" TargetType="{x:Type TextBlock}">
+            <Setter Property="Margin" Value="3" />
+            <Setter Property="FontSize" Value="18" />
+            <Setter Property="FontWeight" Value="Bold" />
+            <Setter Property="TextWrapping" Value="Wrap" />
+        </Style>
+
+        <Style x:Key="TextBlockVersionText" TargetType="{x:Type TextBlock}">
+            <Setter Property="Margin" Value="3" />
+            <Setter Property="FontSize" Value="12" />
+            <Setter Property="TextWrapping" Value="Wrap" />
+        </Style>
+
+        <Style x:Key="TextBlockRelNotesText" TargetType="{x:Type TextBlock}">
+            <Setter Property="Margin" Value="3" />
+            <Setter Property="FontSize" Value="14" />
+            <Setter Property="FontWeight" Value="Bold" />
+            <Setter Property="TextWrapping" Value="Wrap" />
+        </Style>
+    </Window.Resources>
+    
+    <Grid Margin="10,10,18,18">
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="*"/>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="Auto"/>
+        </Grid.RowDefinitions>
+        
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="Auto"/>
+            <ColumnDefinition Width="*"/>
+        </Grid.ColumnDefinitions>
+        
+        <Image Grid.Row="0" Grid.Column="0" Grid.RowSpan="5" Width="64" Height="64" Name="GuiImage" VerticalAlignment="Top" HorizontalAlignment="Center" Margin="10,20,20,20"/>
+
+        <TextBlock Grid.Row="0" Grid.Column="1" Style="{StaticResource TextBlockHeader}">
+            <TextBlock.Text>
+                <MultiBinding StringFormat="{}A new version of {0} is available!">
+                    <Binding Path="AppName"/>
+                </MultiBinding>
+            </TextBlock.Text>    
+        </TextBlock>
+        
+        <TextBlock Grid.Row="1" Grid.Column="1" Style="{StaticResource TextBlockVersionText}">
+            <TextBlock.Text>
+                <MultiBinding StringFormat="{}{0} v{1} is now available - you have v{2}. Would you like to download it now?">
+                    <Binding Path="AppName"/>
+                    <Binding Path="NewVersion"/>
+                    <Binding Path="CurVersion"/>
+                </MultiBinding>
+            </TextBlock.Text>
+        </TextBlock>
+        
+        <TextBlock Grid.Row="2" Grid.Column="1" Style="{StaticResource TextBlockRelNotesText}">Release notes:</TextBlock>
+        <Border Grid.Row="3" Grid.Column="1" BorderThickness="1" BorderBrush="{DynamicResource {x:Static SystemColors.ControlDarkBrushKey}}">
+            <WebBrowser Name="GuiWebBrowser" Navigating="GuiWebBrowser_Navigating" />
+        </Border>
+
+
+        <Grid Grid.Row="5" Grid.Column="1" Margin="0,10,0,0">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="*"/>
+                <ColumnDefinition Width="*"/>
+                <ColumnDefinition Width="*"/>
+                <ColumnDefinition Width="*"/>
+            </Grid.ColumnDefinitions>
+            <Button Grid.Column="0" Margin="0,0,5,0" Name="GuiButtonSkipThisVersion" Click="GuiButtonSkipThisVersion_Click">
+                <Button.Content>
+                    <TextBlock Margin="3">Skip This Version</TextBlock>
+                </Button.Content>
+            </Button>
+
+            <Button Grid.Column="2" Margin="0,0,5,0" Name="GuiButtonRemindMeLater" Click="GuiButtonRemindMeLater_Click">
+                <Button.Content>
+                    <TextBlock Margin="3">Remind Me Later</TextBlock>
+                </Button.Content>
+            </Button>
+
+            <Button Grid.Column="3" Margin="5,0,0,0" Name="GuiButtonInstallUpdate" Click="GuiButtonInstallUpdate_Click" IsDefault="True">
+                <Button.Content>
+                    <TextBlock Margin="3">Install Update</TextBlock>
+                </Button.Content>
+            </Button>
+        </Grid>
+    </Grid>
+</Window>
+

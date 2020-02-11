@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+	<key>CFBundleDisplayName</key>
+	<string>IVPN</string>
+	<key>CFBundleIconFile</key>
+	<string>IVPN</string>
+	<key>CFBundleIdentifier</key>
+	<string>net.ivpn.client.IVPN</string>
+	<key>CFBundleName</key>
+	<string>IVPN</string>
+	<key>CFBundleShortVersionString</key>
+	<string>2.6.3</string>
+	<key>CFBundleVersion</key>
+	<string>2.6.3</string>
+	<key>LSMinimumSystemVersion</key>
+	<string>10.10</string>
+	<key>LSUIElement</key>
+	<true/>
+	<key>NSMainNibFile</key>
+	<string>MainMenu</string>
+	<key>NSPrincipalClass</key>
+	<string>NSApplication</string>
+
+	<key>SUFeedURL</key>
+	<string>https://www.ivpn.net/updates/mac/sparkle/ivpn_mac_appcast.xml</string>
+	<key>SUPublicDSAKeyFile</key>
+	<string>dsa_pub.pem</string>
+
+	<key>ATSApplicationFontsPath</key>
+	<string>Fonts</string>
+
+	<key>SMPrivilegedExecutables</key>
+	<dict>
+		<key>net.ivpn.client.Helper</key>
+		<string>identifier net.ivpn.client.Helper and certificate leaf[subject.OU] = HERE_SHOULD_BE_DEVELOPERID_CERTIFICATE</string>
+	</dict>
+</dict>
+</plist>

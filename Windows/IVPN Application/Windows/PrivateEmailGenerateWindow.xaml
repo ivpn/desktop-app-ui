@@ -1,0 +1,152 @@
+﻿<Window x:Class="IVPN.Windows.PrivateEmailGenerateWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        Style="{StaticResource FlatWindowStyle}"
+        mc:Ignorable="d"
+        Height="423" Width="560"
+        Background="White"
+        Loaded="PrivateEmailGenerateWindow_OnLoaded" 
+        ResizeMode="NoResize" 
+        WindowStartupLocation="CenterScreen" Topmost="True"
+        Title="IVPN E-mail">
+
+    <Window.Resources>
+        <Style TargetType="TextBlock">
+            <Setter Property="Foreground" Value="Black"></Setter>
+        </Style>
+    </Window.Resources>
+
+    <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="*"/>
+        </Grid.RowDefinitions>
+
+        <Grid Name="MainView" Grid.Row="1">
+            <Grid.RowDefinitions>
+                <RowDefinition Height="*"/>
+                <RowDefinition Height="Auto"/>
+                <RowDefinition Height="Auto"/>
+            </Grid.RowDefinitions>
+
+            <Grid Grid.Row="0" Margin="32,34,32,0">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="Auto"/>
+                    <ColumnDefinition Width="*"/>
+                </Grid.ColumnDefinitions>
+
+                <Image Grid.Column="0" Source="../Resources/iconMailbox.png" Stretch="None" VerticalAlignment="Top"/>
+
+                <Grid Grid.Column="1" Margin="34,0,0,0">
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="Auto"/>
+                        <RowDefinition Height="Auto"/>
+                        <RowDefinition Height="Auto"/>
+                        <RowDefinition Height="*"/>
+                        <RowDefinition Height="Auto"/>
+                    </Grid.RowDefinitions>
+
+                    <TextBlock Grid.Row="0" Foreground="#26394D" FontSize="15">
+                        Generated e-mail
+                    </TextBlock>
+
+                    <Grid Grid.Row="1" Background="#1626394D" Margin="0,7,0,0" Height="42">
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="*"/>
+                            <ColumnDefinition Width="Auto"/>
+                        </Grid.ColumnDefinitions>
+                        
+                        <TextBox Grid.Column="0" Margin="8,0,0,0" VerticalAlignment="Center"
+                                 Text="{Binding Email.Email, Mode=OneWay}" 
+                                 FontWeight="DemiBold"
+                                 BorderThickness="0" 
+                                 Background="Transparent" 
+                                 IsReadOnly="True"
+                                 FontSize="20"
+                                 Foreground="#172533"/>
+
+                        <Button Grid.Column="1" Margin="3" Background="Transparent" 
+                                VerticalAlignment="Center"
+                                BorderThickness="0"
+                                Name="GuiButtonCopy"
+                                Click="GuiButtonCopy_OnClick">
+                            <Button.Content>
+                                <Image Source="../Resources/iconCopy.png" Stretch="None"/>
+                            </Button.Content>
+                        </Button>
+                    </Grid>
+
+                    <TextBlock Grid.Row="2" Margin="0,20,0,7" Foreground="#26394D" FontSize="15">
+                        Add a note (optional)
+                    </TextBlock>
+
+                    <TextBlock Grid.Row="3" Margin="9,6,4,4" FontSize="15">E.g. "Netflix"</TextBlock>
+                    <TextBox Grid.Row="3"  Text="{Binding Email.Notes, Mode=OneWay}" AcceptsReturn="True"
+                             Background="White"
+                             Style="{StaticResource TextBoxDefault}" 
+                             VerticalAlignment="Stretch"
+                             VerticalContentAlignment="Top"
+                             Padding="5,5,5,5"
+                             Name="GuiTextBoxNotes"/>
+
+                    <TextBlock Grid.Row="4" Margin="0,20,0,5" TextWrapping="Wrap" Opacity="0.6" FontSize="13">
+                        Emails sent to this address will be forwarded to your registered e-mail.
+                    </TextBlock>
+                </Grid>
+            </Grid>
+
+            <Rectangle Grid.Row="1" Height="2" Fill="#26394D" Stroke="#26394D" Opacity="0.1"  Margin="0,20,0,20" HorizontalAlignment="Stretch" />
+
+            <Grid Grid.Row="2" Height="32" Margin="32,0,32,20">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="Auto"/>
+                    <ColumnDefinition/>
+                    <ColumnDefinition/>
+                    <ColumnDefinition Width="Auto"/>
+                </Grid.ColumnDefinitions>
+
+                <Button Grid.Column="0" Width="120"
+                        Style="{StaticResource ButtonSecondary}"
+                        Name="GuiButtonDiscard"
+                        Click="GuiButtonDiscard_OnClick">
+                    <Button.Content>
+                        <TextBlock Name="GuiDiscardButtonText">Discard</TextBlock>
+                    </Button.Content>
+                </Button>
+
+                <Button Grid.Column="3" Width="120"
+                        Style="{StaticResource ButtonMain}"
+                        Name="GuiButtonSave"
+                        Click="GuiButtonSave_OnClick">
+                    <Button.Content>
+                        <TextBlock Name="GuiRenewButtonText"
+                                   Foreground="White">
+                            Save
+                        </TextBlock>
+                    </Button.Content>
+                </Button>
+            </Grid>
+        </Grid>
+
+        <Grid Name="ProgressView" Grid.Row="1" VerticalAlignment="Center" >
+            <Grid.RowDefinitions>
+                <RowDefinition Height="Auto"/>
+                <RowDefinition Height="Auto"/>
+            </Grid.RowDefinitions>
+
+            <TextBlock Grid.Row="0" FontSize="20" 
+                       Foreground="#26394D"
+                       FontWeight="DemiBold" 
+                       HorizontalAlignment="Center" 
+                       Name="GuiProgressText">
+                Generating e-mail address
+            </TextBlock>
+
+            <ProgressBar Name="UIProgressBar" Width="250" Margin="15" Grid.Row="1" Foreground="#178FE6"/>
+            
+        </Grid>
+
+    </Grid>
+</Window>

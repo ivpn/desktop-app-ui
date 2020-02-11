@@ -1,0 +1,730 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProjectGuid>{83D06D39-78E1-4DDD-9ABB-B521A68C6A0D}</ProjectGuid>
+    <OutputType>WinExe</OutputType>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <RootNamespace>IVPN</RootNamespace>
+    <AssemblyName>IVPN Client</AssemblyName>
+    <TargetFrameworkVersion>v4.5</TargetFrameworkVersion>
+    <FileAlignment>512</FileAlignment>
+    <ProjectTypeGuids>{60dc8134-eba5-43b8-bcc9-bb4bc16c2548};{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}</ProjectTypeGuids>
+    <WarningLevel>4</WarningLevel>
+    <TargetFrameworkProfile>
+    </TargetFrameworkProfile>
+    <IsWebBootstrapper>false</IsWebBootstrapper>
+    <PublishUrl>publish\</PublishUrl>
+    <Install>true</Install>
+    <InstallFrom>Disk</InstallFrom>
+    <UpdateEnabled>false</UpdateEnabled>
+    <UpdateMode>Foreground</UpdateMode>
+    <UpdateInterval>7</UpdateInterval>
+    <UpdateIntervalUnits>Days</UpdateIntervalUnits>
+    <UpdatePeriodically>false</UpdatePeriodically>
+    <UpdateRequired>false</UpdateRequired>
+    <MapFileExtensions>true</MapFileExtensions>
+    <ApplicationRevision>0</ApplicationRevision>
+    <ApplicationVersion>1.0.0.%2a</ApplicationVersion>
+    <UseApplicationTrust>false</UseApplicationTrust>
+    <BootstrapperEnabled>true</BootstrapperEnabled>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <PlatformTarget>AnyCPU</PlatformTarget>
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>bin\Debug\</OutputPath>
+    <DefineConstants>TRACE;DEBUG;OS_WINDOWS</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+    <Prefer32Bit>true</Prefer32Bit>
+    <UseVSHostingProcess>true</UseVSHostingProcess>
+    <AllowUnsafeBlocks>false</AllowUnsafeBlocks>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <PlatformTarget>x86</PlatformTarget>
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>bin\Release\</OutputPath>
+    <DefineConstants>TRACE;OS_WINDOWS</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+    <Prefer32Bit>true</Prefer32Bit>
+    <UseVSHostingProcess>false</UseVSHostingProcess>
+  </PropertyGroup>
+  <PropertyGroup>
+    <StartupObject>IVPN.App</StartupObject>
+  </PropertyGroup>
+  <PropertyGroup>
+    <ApplicationIcon>Resources\application.ico</ApplicationIcon>
+  </PropertyGroup>
+  <PropertyGroup />
+  <PropertyGroup />
+  <PropertyGroup>
+    <ApplicationManifest>app.manifest</ApplicationManifest>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="PresentationUI, Version=3.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+    </Reference>
+    <Reference Include="System" />
+    <Reference Include="System.Configuration" />
+    <Reference Include="System.Data" />
+    <Reference Include="System.Drawing" />
+    <Reference Include="System.Net" />
+    <Reference Include="System.Runtime.Remoting" />
+    <Reference Include="System.Security" />
+    <Reference Include="System.ServiceProcess" />
+    <Reference Include="System.Windows.Forms" />
+    <Reference Include="System.Xaml" />
+    <Reference Include="System.Xml" />
+    <Reference Include="System.Core" />
+    <Reference Include="System.Xml.Linq" />
+    <Reference Include="WindowsBase" />
+    <Reference Include="PresentationCore" />
+    <Reference Include="PresentationFramework" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="AutoUpdate\Updater.cs" />
+    <Compile Include="Controls\NotificationWindow.cs" />
+    <Compile Include="Converters\BoolToVisiblityConverter.cs" />
+    <Compile Include="Converters\EnumBooleanConverter.cs" />
+    <Compile Include="Converters\InvertVisibilityConverter.cs" />
+    <Compile Include="Converters\NegateConverter.cs" />
+    <Compile Include="Converters\PingStatusToImageConverter.cs" />
+    <Compile Include="Converters\SingleLineStringConverter.cs" />
+    <Compile Include="GuiUtils.cs" />
+    <Compile Include="Implementations\ApplicationServices.cs" />
+    <Compile Include="Converters\PingTimeRelativeToBrushConverter.cs" />
+    <Compile Include="Converters\PingTimeToTextConverter.cs" />
+    <Compile Include="Converters\CountryCodeToFlagFileConverter.cs" />
+    <Compile Include="Implementations\SettingsProvider.cs" />
+    <Compile Include="Implementations\WindowsWiFiWrapper.cs" />
+    <Compile Include="Themes\StyleableWindow\ControlDoubleClickBehavior.cs" />
+    <Compile Include="Themes\StyleableWindow\ShowSystemMenuBehavior.cs" />
+    <Compile Include="Themes\StyleableWindow\SystemMenuManager.cs" />
+    <Compile Include="Themes\StyleableWindow\WindowCloseCommand.cs" />
+    <Compile Include="Themes\StyleableWindow\WindowDragBehavior.cs" />
+    <Compile Include="Themes\StyleableWindow\WindowMaximizeCommand.cs" />
+    <Compile Include="Themes\StyleableWindow\WindowMinimizeCommand.cs" />
+    <Compile Include="Themes\StyleableWindow\WindowResizeBehavior.cs" />
+    <Compile Include="Views\wp_FastestServerConfig.xaml.cs">
+      <DependentUpon>wp_FastestServerConfig.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Views\wp_Login.xaml.cs">
+      <DependentUpon>wp_Login.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Views\wp_LogOut.xaml.cs">
+      <DependentUpon>wp_LogOut.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Views\wp_MainPage.xaml.cs">
+      <DependentUpon>wp_MainPage.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Views\wp_ServersList.xaml.cs">
+      <DependentUpon>wp_ServersList.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Views\wp_Init.xaml.cs">
+      <DependentUpon>wp_Init.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Views\wp_SessionLimit.xaml.cs">
+      <DependentUpon>wp_SessionLimit.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Windows\FloatingOverlayWindow.xaml.cs">
+      <DependentUpon>FloatingOverlayWindow.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Windows\MainWindow.xaml.cs">
+      <DependentUpon>MainWindow.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Windows\ExceptionWindow.xaml.cs">
+      <DependentUpon>ExceptionWindow.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="StringUtils.cs" />
+    <Compile Include="Windows\NavigationRequest.cs" />
+    <Compile Include="Windows\PrivateEmailGenerateWindow.xaml.cs">
+      <DependentUpon>PrivateEmailGenerateWindow.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Windows\PrivateEmailManager.xaml.cs">
+      <DependentUpon>PrivateEmailManager.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Windows\SettingsWindow.xaml.cs">
+      <DependentUpon>SettingsWindow.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="UriHelpers.cs" />
+    <Compile Include="Windows\FirewallAlwaysOnNotification.xaml.cs">
+      <DependentUpon>FirewallAlwaysOnNotification.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Windows\SubscriptionExpireWindow.xaml.cs">
+      <DependentUpon>SubscriptionExpireWindow.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Windows\TimeIntervalDialog.xaml.cs">
+      <DependentUpon>TimeIntervalDialog.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Windows\WireguardSettingsWindow.xaml.cs">
+      <DependentUpon>WireguardSettingsWindow.xaml</DependentUpon>
+    </Compile>
+    <Page Include="App.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Compile Include="SingleInstance.cs" />
+    <Page Include="Converters\Converters.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Themes\StyleControls.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Themes\StyleWindow.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Views\wp_FastestServerConfig.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Views\wp_Login.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Views\wp_LogOut.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Views\wp_MainPage.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Views\wp_ServersList.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Views\wp_Init.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Views\wp_SessionLimit.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Windows\ExceptionWindow.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Windows\FloatingOverlayWindow.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Windows\MainWindow.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Compile Include="App.xaml.cs">
+      <DependentUpon>App.xaml</DependentUpon>
+      <SubType>Code</SubType>
+    </Compile>
+    <Page Include="Strings.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Themes\Controls.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Themes\Icons.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Windows\PrivateEmailGenerateWindow.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Windows\PrivateEmailManager.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Windows\SettingsWindow.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Windows\FirewallAlwaysOnNotification.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Windows\SubscriptionExpireWindow.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Windows\TimeIntervalDialog.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Windows\WireguardSettingsWindow.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="Properties\AssemblyInfo.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Properties\Resources.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>Resources.resx</DependentUpon>
+    </Compile>
+    <Compile Include="Properties\Settings.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DependentUpon>Settings.settings</DependentUpon>
+      <DesignTimeSharedInput>True</DesignTimeSharedInput>
+    </Compile>
+    <EmbeddedResource Include="Properties\Resources.resx">
+      <Generator>ResXFileCodeGenerator</Generator>
+      <LastGenOutput>Resources.Designer.cs</LastGenOutput>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <None Include="app.config" />
+    <None Include="app.manifest" />
+    <None Include="Properties\Settings.settings">
+      <Generator>SettingsSingleFileGenerator</Generator>
+      <LastGenOutput>Settings.Designer.cs</LastGenOutput>
+    </None>
+    <AppDesigner Include="Properties\" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\dsa_pub.pem" />
+    <None Include="Resources\logo.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\..\common\IVPN Core\IVPN Core.csproj">
+      <Project>{39e0ba44-dfa6-4460-81a7-9e21cb1e28de}</Project>
+      <Name>IVPN Core</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\..\common\IVPN Common\IVPN Common.csproj">
+      <Project>{dffbdd32-b3f8-45c2-93aa-4fe3d8deaaf4}</Project>
+      <Name>IVPN Common</Name>
+      <Private>True</Private>
+    </ProjectReference>
+    <ProjectReference Include="..\..\common\IVPN Helpers\IVPN Helpers.csproj">
+      <Project>{f57eeef1-22f7-4a6d-9445-659f2df24d05}</Project>
+      <Name>IVPN Helpers</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\AppUpdater\AppUpdater.csproj">
+      <Project>{d78a3de8-1ccc-4898-9a5d-1442dbf49ed4}</Project>
+      <Name>AppUpdater</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\ManagedWifi\ManagedWifi.csproj">
+      <Project>{6aa425c9-ea6a-4b01-aaed-5ff122e8b663}</Project>
+      <Name>ManagedWifi</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\NetworkHelpers\NetworkHelpers.csproj">
+      <Project>{2aee63d3-bbb3-42b1-9526-7129fa96a85e}</Project>
+      <Name>NetworkHelpers</Name>
+    </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <BootstrapperPackage Include=".NETFramework,Version=v4.5">
+      <Visible>False</Visible>
+      <ProductName>Microsoft .NET Framework 4.5 %28x86 and x64%29</ProductName>
+      <Install>true</Install>
+    </BootstrapperPackage>
+    <BootstrapperPackage Include="Microsoft.Net.Client.3.5">
+      <Visible>False</Visible>
+      <ProductName>.NET Framework 3.5 SP1 Client Profile</ProductName>
+      <Install>false</Install>
+    </BootstrapperPackage>
+    <BootstrapperPackage Include="Microsoft.Net.Framework.3.5.SP1">
+      <Visible>False</Visible>
+      <ProductName>.NET Framework 3.5 SP1</ProductName>
+      <Install>false</Install>
+    </BootstrapperPackage>
+  </ItemGroup>
+  <ItemGroup>
+    <WCFMetadata Include="Service References\" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Resources\application.ico" />
+    <Resource Include="Resources\connected.ico" />
+    <Resource Include="Resources\connecting.ico" />
+    <Resource Include="Resources\disconnected.ico" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Resources\logoIvpn.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Resources\iconStatusBad.png" />
+    <Resource Include="Resources\iconStatusGood.png" />
+    <Resource Include="Resources\iconStatusModerate.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Resources\Buttons\iconBack.png" />
+    <Resource Include="Resources\Buttons\iconClose.png" />
+    <Resource Include="Resources\Buttons\iconHide.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Resources\iconInformation.png" />
+    <Resource Include="Resources\iconSettings.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Resources\flags\ca.png" />
+    <Resource Include="Resources\flags\ch.png" />
+    <Resource Include="Resources\flags\de.png" />
+    <Resource Include="Resources\flags\es.png" />
+    <Resource Include="Resources\flags\fr.png" />
+    <Resource Include="Resources\flags\gb.png" />
+    <Resource Include="Resources\flags\hk.png" />
+    <Resource Include="Resources\flags\hu.png" />
+    <Resource Include="Resources\flags\is.png" />
+    <Resource Include="Resources\flags\it.png" />
+    <Resource Include="Resources\flags\nl.png" />
+    <Resource Include="Resources\flags\ro.png" />
+    <Resource Include="Resources\flags\se.png" />
+    <Resource Include="Resources\flags\ua.png" />
+    <Resource Include="Resources\flags\uk.png" />
+    <Resource Include="Resources\flags\unk.png" />
+    <Resource Include="Resources\flags\us.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Resources\logo_circle_128.png" />
+    <Resource Include="Resources\logo_circle_64.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Resources\iconCopy.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Resources\iconAdd.png" />
+    <Resource Include="Resources\iconDelete.png" />
+    <Resource Include="Resources\iconEmail.png" />
+    <Resource Include="Resources\iconEmailActive.png" />
+    <Resource Include="Resources\iconInformationActive.png" />
+    <Resource Include="Resources\iconRefresh.png" />
+    <Resource Include="Resources\iconSettingsActive.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Resources\iconMailbox.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Resources\AutomaticServer.png" />
+    <Resource Include="Resources\flags\At.png" />
+    <Resource Include="Resources\flags\Au.png" />
+    <Resource Include="Resources\flags\Be.png" />
+    <Resource Include="Resources\flags\Bg.png" />
+    <Resource Include="Resources\flags\Br.png" />
+    <Resource Include="Resources\flags\Cz.png" />
+    <Resource Include="Resources\flags\Dk.png" />
+    <Resource Include="Resources\flags\Fi.png" />
+    <Resource Include="Resources\flags\Il.png" />
+    <Resource Include="Resources\flags\Jp.png" />
+    <Resource Include="Resources\flags\Lu.png" />
+    <Resource Include="Resources\flags\No.png" />
+    <Resource Include="Resources\flags\Pl.png" />
+    <Resource Include="Resources\flags\Pt.png" />
+    <Resource Include="Resources\flags\Sg.png" />
+    <Resource Include="Resources\flags\Sk.png" />
+    <Resource Include="Resources\flags\Rs.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Resources\iconWiFi.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Resources\iconWiFiBlue.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Resources\iconWiFiRed.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Resources\Buttons\pause.png" />
+    <Resource Include="Resources\Buttons\stop.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Resources\Buttons\resume.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Resources\Buttons\close-window.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Resources\Buttons\resume_white.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Resources\Buttons\add-plus-white.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Resources\flags\all\24\ad.png" />
+    <Resource Include="Resources\flags\all\24\ae.png" />
+    <Resource Include="Resources\flags\all\24\af.png" />
+    <Resource Include="Resources\flags\all\24\ag.png" />
+    <Resource Include="Resources\flags\all\24\ai.png" />
+    <Resource Include="Resources\flags\all\24\al.png" />
+    <Resource Include="Resources\flags\all\24\am.png" />
+    <Resource Include="Resources\flags\all\24\an.png" />
+    <Resource Include="Resources\flags\all\24\ao.png" />
+    <Resource Include="Resources\flags\all\24\aq.png" />
+    <Resource Include="Resources\flags\all\24\ar.png" />
+    <Resource Include="Resources\flags\all\24\as.png" />
+    <Resource Include="Resources\flags\all\24\at.png" />
+    <Resource Include="Resources\flags\all\24\au.png" />
+    <Resource Include="Resources\flags\all\24\aw.png" />
+    <Resource Include="Resources\flags\all\24\ax.png" />
+    <Resource Include="Resources\flags\all\24\az.png" />
+    <Resource Include="Resources\flags\all\24\ba.png" />
+    <Resource Include="Resources\flags\all\24\bb.png" />
+    <Resource Include="Resources\flags\all\24\bd.png" />
+    <Resource Include="Resources\flags\all\24\be.png" />
+    <Resource Include="Resources\flags\all\24\bf.png" />
+    <Resource Include="Resources\flags\all\24\bg.png" />
+    <Resource Include="Resources\flags\all\24\bh.png" />
+    <Resource Include="Resources\flags\all\24\bi.png" />
+    <Resource Include="Resources\flags\all\24\bj.png" />
+    <Resource Include="Resources\flags\all\24\bl.png" />
+    <Resource Include="Resources\flags\all\24\bm.png" />
+    <Resource Include="Resources\flags\all\24\bn.png" />
+    <Resource Include="Resources\flags\all\24\bo.png" />
+    <Resource Include="Resources\flags\all\24\bq.png" />
+    <Resource Include="Resources\flags\all\24\br.png" />
+    <Resource Include="Resources\flags\all\24\bs.png" />
+    <Resource Include="Resources\flags\all\24\bt.png" />
+    <Resource Include="Resources\flags\all\24\bv.png" />
+    <Resource Include="Resources\flags\all\24\bw.png" />
+    <Resource Include="Resources\flags\all\24\by.png" />
+    <Resource Include="Resources\flags\all\24\bz.png" />
+    <Resource Include="Resources\flags\all\24\ca.png" />
+    <Resource Include="Resources\flags\all\24\cc.png" />
+    <Resource Include="Resources\flags\all\24\cd.png" />
+    <Resource Include="Resources\flags\all\24\cf.png" />
+    <Resource Include="Resources\flags\all\24\cg.png" />
+    <Resource Include="Resources\flags\all\24\ch.png" />
+    <Resource Include="Resources\flags\all\24\ci.png" />
+    <Resource Include="Resources\flags\all\24\ck.png" />
+    <Resource Include="Resources\flags\all\24\cl.png" />
+    <Resource Include="Resources\flags\all\24\cm.png" />
+    <Resource Include="Resources\flags\all\24\cn.png" />
+    <Resource Include="Resources\flags\all\24\co.png" />
+    <Resource Include="Resources\flags\all\24\cr.png" />
+    <Resource Include="Resources\flags\all\24\cu.png" />
+    <Resource Include="Resources\flags\all\24\cv.png" />
+    <Resource Include="Resources\flags\all\24\cw.png" />
+    <Resource Include="Resources\flags\all\24\cx.png" />
+    <Resource Include="Resources\flags\all\24\cy.png" />
+    <Resource Include="Resources\flags\all\24\cz.png" />
+    <Resource Include="Resources\flags\all\24\de.png" />
+    <Resource Include="Resources\flags\all\24\dj.png" />
+    <Resource Include="Resources\flags\all\24\dk.png" />
+    <Resource Include="Resources\flags\all\24\dm.png" />
+    <Resource Include="Resources\flags\all\24\do.png" />
+    <Resource Include="Resources\flags\all\24\dz.png" />
+    <Resource Include="Resources\flags\all\24\ec.png" />
+    <Resource Include="Resources\flags\all\24\ee.png" />
+    <Resource Include="Resources\flags\all\24\eg.png" />
+    <Resource Include="Resources\flags\all\24\eh.png" />
+    <Resource Include="Resources\flags\all\24\er.png" />
+    <Resource Include="Resources\flags\all\24\es.png" />
+    <Resource Include="Resources\flags\all\24\et.png" />
+    <Resource Include="Resources\flags\all\24\fi.png" />
+    <Resource Include="Resources\flags\all\24\fj.png" />
+    <Resource Include="Resources\flags\all\24\fk.png" />
+    <Resource Include="Resources\flags\all\24\fm.png" />
+    <Resource Include="Resources\flags\all\24\fo.png" />
+    <Resource Include="Resources\flags\all\24\fr.png" />
+    <Resource Include="Resources\flags\all\24\ga.png" />
+    <Resource Include="Resources\flags\all\24\gb.png" />
+    <Resource Include="Resources\flags\all\24\gd.png" />
+    <Resource Include="Resources\flags\all\24\ge.png" />
+    <Resource Include="Resources\flags\all\24\gf.png" />
+    <Resource Include="Resources\flags\all\24\gg.png" />
+    <Resource Include="Resources\flags\all\24\gh.png" />
+    <Resource Include="Resources\flags\all\24\gi.png" />
+    <Resource Include="Resources\flags\all\24\gl.png" />
+    <Resource Include="Resources\flags\all\24\gm.png" />
+    <Resource Include="Resources\flags\all\24\gn.png" />
+    <Resource Include="Resources\flags\all\24\gp.png" />
+    <Resource Include="Resources\flags\all\24\gq.png" />
+    <Resource Include="Resources\flags\all\24\gr.png" />
+    <Resource Include="Resources\flags\all\24\gs.png" />
+    <Resource Include="Resources\flags\all\24\gt.png" />
+    <Resource Include="Resources\flags\all\24\gu.png" />
+    <Resource Include="Resources\flags\all\24\gw.png" />
+    <Resource Include="Resources\flags\all\24\gy.png" />
+    <Resource Include="Resources\flags\all\24\hk.png" />
+    <Resource Include="Resources\flags\all\24\hm.png" />
+    <Resource Include="Resources\flags\all\24\hn.png" />
+    <Resource Include="Resources\flags\all\24\hr.png" />
+    <Resource Include="Resources\flags\all\24\ht.png" />
+    <Resource Include="Resources\flags\all\24\hu.png" />
+    <Resource Include="Resources\flags\all\24\id.png" />
+    <Resource Include="Resources\flags\all\24\ie.png" />
+    <Resource Include="Resources\flags\all\24\il.png" />
+    <Resource Include="Resources\flags\all\24\im.png" />
+    <Resource Include="Resources\flags\all\24\in.png" />
+    <Resource Include="Resources\flags\all\24\io.png" />
+    <Resource Include="Resources\flags\all\24\iq.png" />
+    <Resource Include="Resources\flags\all\24\ir.png" />
+    <Resource Include="Resources\flags\all\24\is.png" />
+    <Resource Include="Resources\flags\all\24\it.png" />
+    <Resource Include="Resources\flags\all\24\je.png" />
+    <Resource Include="Resources\flags\all\24\jm.png" />
+    <Resource Include="Resources\flags\all\24\jo.png" />
+    <Resource Include="Resources\flags\all\24\jp.png" />
+    <Resource Include="Resources\flags\all\24\ke.png" />
+    <Resource Include="Resources\flags\all\24\kg.png" />
+    <Resource Include="Resources\flags\all\24\kh.png" />
+    <Resource Include="Resources\flags\all\24\ki.png" />
+    <Resource Include="Resources\flags\all\24\km.png" />
+    <Resource Include="Resources\flags\all\24\kn.png" />
+    <Resource Include="Resources\flags\all\24\kp.png" />
+    <Resource Include="Resources\flags\all\24\kr.png" />
+    <Resource Include="Resources\flags\all\24\kw.png" />
+    <Resource Include="Resources\flags\all\24\ky.png" />
+    <Resource Include="Resources\flags\all\24\kz.png" />
+    <Resource Include="Resources\flags\all\24\la.png" />
+    <Resource Include="Resources\flags\all\24\lb.png" />
+    <Resource Include="Resources\flags\all\24\lc.png" />
+    <Resource Include="Resources\flags\all\24\li.png" />
+    <Resource Include="Resources\flags\all\24\lk.png" />
+    <Resource Include="Resources\flags\all\24\lr.png" />
+    <Resource Include="Resources\flags\all\24\ls.png" />
+    <Resource Include="Resources\flags\all\24\lt.png" />
+    <Resource Include="Resources\flags\all\24\lu.png" />
+    <Resource Include="Resources\flags\all\24\lv.png" />
+    <Resource Include="Resources\flags\all\24\ly.png" />
+    <Resource Include="Resources\flags\all\24\ma.png" />
+    <Resource Include="Resources\flags\all\24\mc.png" />
+    <Resource Include="Resources\flags\all\24\md.png" />
+    <Resource Include="Resources\flags\all\24\me.png" />
+    <Resource Include="Resources\flags\all\24\mf.png" />
+    <Resource Include="Resources\flags\all\24\mg.png" />
+    <Resource Include="Resources\flags\all\24\mh.png" />
+    <Resource Include="Resources\flags\all\24\mk.png" />
+    <Resource Include="Resources\flags\all\24\ml.png" />
+    <Resource Include="Resources\flags\all\24\mm.png" />
+    <Resource Include="Resources\flags\all\24\mn.png" />
+    <Resource Include="Resources\flags\all\24\mo.png" />
+    <Resource Include="Resources\flags\all\24\mp.png" />
+    <Resource Include="Resources\flags\all\24\mq.png" />
+    <Resource Include="Resources\flags\all\24\mr.png" />
+    <Resource Include="Resources\flags\all\24\ms.png" />
+    <Resource Include="Resources\flags\all\24\mt.png" />
+    <Resource Include="Resources\flags\all\24\mu.png" />
+    <Resource Include="Resources\flags\all\24\mv.png" />
+    <Resource Include="Resources\flags\all\24\mw.png" />
+    <Resource Include="Resources\flags\all\24\mx.png" />
+    <Resource Include="Resources\flags\all\24\my.png" />
+    <Resource Include="Resources\flags\all\24\mz.png" />
+    <Resource Include="Resources\flags\all\24\na.png" />
+    <Resource Include="Resources\flags\all\24\nc.png" />
+    <Resource Include="Resources\flags\all\24\ne.png" />
+    <Resource Include="Resources\flags\all\24\nf.png" />
+    <Resource Include="Resources\flags\all\24\ng.png" />
+    <Resource Include="Resources\flags\all\24\ni.png" />
+    <Resource Include="Resources\flags\all\24\nl.png" />
+    <Resource Include="Resources\flags\all\24\no.png" />
+    <Resource Include="Resources\flags\all\24\np.png" />
+    <Resource Include="Resources\flags\all\24\nr.png" />
+    <Resource Include="Resources\flags\all\24\nu.png" />
+    <Resource Include="Resources\flags\all\24\nz.png" />
+    <Resource Include="Resources\flags\all\24\om.png" />
+    <Resource Include="Resources\flags\all\24\pa.png" />
+    <Resource Include="Resources\flags\all\24\pe.png" />
+    <Resource Include="Resources\flags\all\24\pf.png" />
+    <Resource Include="Resources\flags\all\24\pg.png" />
+    <Resource Include="Resources\flags\all\24\ph.png" />
+    <Resource Include="Resources\flags\all\24\pk.png" />
+    <Resource Include="Resources\flags\all\24\pl.png" />
+    <Resource Include="Resources\flags\all\24\pm.png" />
+    <Resource Include="Resources\flags\all\24\pn.png" />
+    <Resource Include="Resources\flags\all\24\pr.png" />
+    <Resource Include="Resources\flags\all\24\ps.png" />
+    <Resource Include="Resources\flags\all\24\pt.png" />
+    <Resource Include="Resources\flags\all\24\pw.png" />
+    <Resource Include="Resources\flags\all\24\py.png" />
+    <Resource Include="Resources\flags\all\24\qa.png" />
+    <Resource Include="Resources\flags\all\24\re.png" />
+    <Resource Include="Resources\flags\all\24\ro.png" />
+    <Resource Include="Resources\flags\all\24\rs.png" />
+    <Resource Include="Resources\flags\all\24\ru.png" />
+    <Resource Include="Resources\flags\all\24\rw.png" />
+    <Resource Include="Resources\flags\all\24\sa.png" />
+    <Resource Include="Resources\flags\all\24\sb.png" />
+    <Resource Include="Resources\flags\all\24\sc.png" />
+    <Resource Include="Resources\flags\all\24\sd.png" />
+    <Resource Include="Resources\flags\all\24\se.png" />
+    <Resource Include="Resources\flags\all\24\sg.png" />
+    <Resource Include="Resources\flags\all\24\sh.png" />
+    <Resource Include="Resources\flags\all\24\si.png" />
+    <Resource Include="Resources\flags\all\24\sj.png" />
+    <Resource Include="Resources\flags\all\24\sk.png" />
+    <Resource Include="Resources\flags\all\24\sl.png" />
+    <Resource Include="Resources\flags\all\24\sm.png" />
+    <Resource Include="Resources\flags\all\24\sn.png" />
+    <Resource Include="Resources\flags\all\24\so.png" />
+    <Resource Include="Resources\flags\all\24\sr.png" />
+    <Resource Include="Resources\flags\all\24\ss.png" />
+    <Resource Include="Resources\flags\all\24\st.png" />
+    <Resource Include="Resources\flags\all\24\sv.png" />
+    <Resource Include="Resources\flags\all\24\sx.png" />
+    <Resource Include="Resources\flags\all\24\sy.png" />
+    <Resource Include="Resources\flags\all\24\sz.png" />
+    <Resource Include="Resources\flags\all\24\tc.png" />
+    <Resource Include="Resources\flags\all\24\td.png" />
+    <Resource Include="Resources\flags\all\24\tf.png" />
+    <Resource Include="Resources\flags\all\24\tg.png" />
+    <Resource Include="Resources\flags\all\24\th.png" />
+    <Resource Include="Resources\flags\all\24\tj.png" />
+    <Resource Include="Resources\flags\all\24\tk.png" />
+    <Resource Include="Resources\flags\all\24\tl.png" />
+    <Resource Include="Resources\flags\all\24\tm.png" />
+    <Resource Include="Resources\flags\all\24\tn.png" />
+    <Resource Include="Resources\flags\all\24\to.png" />
+    <Resource Include="Resources\flags\all\24\tr.png" />
+    <Resource Include="Resources\flags\all\24\tt.png" />
+    <Resource Include="Resources\flags\all\24\tv.png" />
+    <Resource Include="Resources\flags\all\24\tw.png" />
+    <Resource Include="Resources\flags\all\24\tz.png" />
+    <Resource Include="Resources\flags\all\24\ua.png" />
+    <Resource Include="Resources\flags\all\24\ug.png" />
+    <Resource Include="Resources\flags\all\24\um.png" />
+    <Resource Include="Resources\flags\all\24\us.png" />
+    <Resource Include="Resources\flags\all\24\uy.png" />
+    <Resource Include="Resources\flags\all\24\uz.png" />
+    <Resource Include="Resources\flags\all\24\va.png" />
+    <Resource Include="Resources\flags\all\24\vc.png" />
+    <Resource Include="Resources\flags\all\24\ve.png" />
+    <Resource Include="Resources\flags\all\24\vg.png" />
+    <Resource Include="Resources\flags\all\24\vi.png" />
+    <Resource Include="Resources\flags\all\24\vn.png" />
+    <Resource Include="Resources\flags\all\24\vu.png" />
+    <Resource Include="Resources\flags\all\24\wf.png" />
+    <Resource Include="Resources\flags\all\24\ws.png" />
+    <Resource Include="Resources\flags\all\24\ye.png" />
+    <Resource Include="Resources\flags\all\24\yt.png" />
+    <Resource Include="Resources\flags\all\24\za.png" />
+    <Resource Include="Resources\flags\all\24\zm.png" />
+    <Resource Include="Resources\flags\all\24\zw.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Resources\imageLaptop.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="icon.ico">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Resource Include="Resources\imageLaptopDarkBackground.png" />
+    <Resource Include="Resources\imageLaptopDark.png" />
+  </ItemGroup>
+  <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+  <PropertyGroup>
+    <PostBuildEvent>
+    </PostBuildEvent>
+  </PropertyGroup>
+  <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
+       Other similar extension points exist, see Microsoft.Common.targets.
+  <Target Name="BeforeBuild">
+  </Target>
+  <Target Name="AfterBuild">
+  </Target>
+  -->
+</Project>

@@ -1,0 +1,252 @@
+﻿<Window x:Class="IVPN.Windows.FloatingOverlayWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        Loaded="Window_Loaded" SizeToContent="WidthAndHeight" ResizeMode="NoResize" Topmost="True"
+        ShowInTaskbar="False" Icon="/IVPN Client;component/Resources/application.ico" WindowStyle="None" AllowsTransparency="True" MouseDown="Window_MouseDown" MouseDoubleClick="Window_MouseDoubleClick"
+        Background="Transparent">
+
+    <Window.Resources>
+        <Storyboard x:Key="StoryboardShowAnimation">
+            <DoubleAnimation Duration="0:0:0.3" From="0.0" To="0.9" Storyboard.TargetProperty="Opacity"/>
+        </Storyboard>
+
+        <Storyboard x:Key="StoryboardHideAnimation" Completed="StoryboardAnimationHide_OnCompleted">
+            <DoubleAnimation Duration="0:0:1" From="0.9" To="0.0" Storyboard.TargetProperty="Opacity"/>
+        </Storyboard>
+
+        <SolidColorBrush x:Key="EnabledColor" Color="#178FE6"/>
+
+        <Style x:Key="AddTimeButtonStyle" TargetType="Button">
+
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="Button">
+                        <Grid>
+                            <Ellipse 
+                                x:Name="GuiConnectBtnEllipse"
+                                Stroke="Black"
+                                Opacity="0.9"
+                                StrokeThickness="0" 
+                                Fill="SlateGray">
+                            </Ellipse>
+
+                            <Image Source="../Resources/Buttons/add-plus-white.png" Width="12" Name="BtnImage" Opacity="0.9"/>
+
+                            <ContentPresenter HorizontalAlignment="Center"
+                                              VerticalAlignment="Center"/>
+                        </Grid>
+
+                        <ControlTemplate.Triggers>
+
+
+                            <Trigger Property="IsMouseOver" Value="True">
+                                <Setter TargetName="BtnImage"  Property="Opacity" Value="1"/>
+                                <Setter TargetName="GuiConnectBtnEllipse"  Property="Opacity" Value="1"/>
+                            </Trigger>
+
+                            <Trigger Property="IsPressed" Value="True">
+                                <Setter TargetName="BtnImage"  Property="Opacity" Value="0.4"/>
+                                <Setter TargetName="GuiConnectBtnEllipse"  Property="Opacity" Value="0.4"/>
+                            </Trigger>
+
+                        </ControlTemplate.Triggers>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+        </Style>
+
+        <Style x:Key="MenuItemButtonStyle"  TargetType="Button" BasedOn="{StaticResource ButtonMouseOverBackgroundChangeble}">
+            <Setter Property="Background" Value="Transparent"/>
+            <Setter Property="Foreground" Value="White"/>
+            <Setter Property="FontSize" Value="15"/>
+            <Setter Property="HorizontalContentAlignment" Value="Left"/>
+            <Setter Property="Margin" Value="8,8,16,8"/>
+            <Setter Property="BorderBrush" Value="Transparent"/>
+            <Setter Property="BorderThickness" Value="1"/>
+
+            <Style.Triggers>
+                <Trigger Property="IsMouseOver" Value="True">
+                    <Setter Property="BorderBrush" Value="#178FE6"></Setter>
+                </Trigger>
+            </Style.Triggers>
+        </Style>
+
+    </Window.Resources>
+    
+    
+    <Window.Style>
+
+        <Style TargetType="Window">
+
+            <Style.Triggers>
+
+                <DataTrigger Binding="{Binding Path=ViewModel.Visible}" Value="True">
+
+                    <DataTrigger.EnterActions>
+                        <BeginStoryboard Storyboard="{StaticResource StoryboardShowAnimation}"/>
+                    </DataTrigger.EnterActions>
+
+                    <DataTrigger.ExitActions>
+                        <BeginStoryboard Storyboard="{StaticResource StoryboardHideAnimation}"/>
+                    </DataTrigger.ExitActions>
+
+                </DataTrigger>
+
+            </Style.Triggers>
+        </Style>
+    </Window.Style>
+
+    <Border Background="#26394D" MinWidth="280">
+
+        <Grid>
+            <Button Height="12" Width="12" HorizontalAlignment="Right" VerticalAlignment="Top" BorderThickness="0" Name="GuiButtonClosePauseNotifocation" Click="GuiButtonClosePauseNotifocation_OnClick"
+                    Margin="5">
+                
+                <Button.Style>
+                    <Style TargetType="Button">
+                        <Setter Property="Opacity" Value="0.4"/>
+                        <Setter Property="Background" Value="Transparent"/>
+
+                        <Style.Triggers>
+                            <Trigger Property="IsMouseOver" Value="True">
+                                <Setter Property="Opacity" Value="1"/>
+                                <Setter Property="Background" Value="Transparent"/>
+                                <Setter Property="Foreground" Value="Transparent"/>
+                            </Trigger>
+                        </Style.Triggers>
+                    </Style>
+                </Button.Style>
+
+                <Button.Content>
+                    <Image Source="../Resources/Buttons/close-window.png" ></Image>
+                </Button.Content>
+            </Button>
+
+            <Grid Margin="8" >
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="Auto"/>
+                    <RowDefinition Height="Auto"/>
+                    <RowDefinition Height="Auto"/>
+                </Grid.RowDefinitions>
+
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="Auto"/>
+                    <ColumnDefinition Width="Auto"/>
+                    <ColumnDefinition Width="*"/>
+                    <ColumnDefinition Width="Auto"/>
+                </Grid.ColumnDefinitions>
+
+                <!-- FIREWALL-->
+                <Image Grid.Row="0" Grid.Column="0" Grid.RowSpan="3" Width="32" Height="32" Margin="5" Source="../Resources/logo_circle_64.png"/>
+
+                <TextBlock Grid.Row="0" Grid.Column="1" VerticalAlignment="Center" FontWeight="SemiBold" FontSize="13" Foreground="#DFDFDF" Margin="5,0,5,0" HorizontalAlignment="Right">VPN:</TextBlock>
+                <TextBlock Grid.Row="0" Grid.Column="2" Grid.ColumnSpan="2" VerticalAlignment="Center" FontWeight="Regular" Margin="10,2,10,2" FontSize="13" Foreground="#B4B4B4" Text="{Binding ViewModel.VpnStatus}" />
+
+                <TextBlock Grid.Row="1" Grid.Column="1" VerticalAlignment="Center" FontWeight="SemiBold" FontSize="13" Foreground="#DFDFDF" Margin="5,0,5,0" HorizontalAlignment="Right"
+                           Visibility="{Binding IsVisibleFirewallInfo, Converter={StaticResource BoolToVisiblityConverter}}">Firewall:</TextBlock>
+                <TextBlock Grid.Row="1" Grid.Column="2" Grid.ColumnSpan="2" VerticalAlignment="Center" FontWeight="Regular" Margin="10,2,10,2" FontSize="13"  Text="{Binding ViewModel.FirewallStatus}" 
+                           Visibility="{Binding IsVisibleFirewallInfo, Converter={StaticResource BoolToVisiblityConverter}}">
+                    <TextBlock.Style>
+                        <Style TargetType="TextBlock">
+                            <Style.Triggers>
+                                <DataTrigger Binding="{Binding Path=ViewModel.IsBlockingAllTraffic}" Value="True">
+                                    <Setter Property="Foreground" Value="LimeGreen"/>
+                                </DataTrigger>
+                            </Style.Triggers>
+
+                            <Setter Property="Foreground" Value="#B4B4B4"/>
+
+                        </Style>
+                    </TextBlock.Style>
+                </TextBlock>
+
+                <!-- RESUME -->
+                <TextBlock Grid.Row="2" Grid.Column="1" FontWeight="SemiBold" FontSize="13" Foreground="#DFDFDF" Margin="5,0,5,0" VerticalAlignment="Center"
+                           Visibility="{Binding IsVisiblePauseInfo, Converter={StaticResource BoolToVisiblityConverter}}">Resume in:</TextBlock>
+                
+                <StackPanel Orientation="Horizontal" Grid.Row="2" Grid.Column="2">
+                    <TextBlock FontSize="13" Foreground="#B4B4B4" Margin="10,2,3,2" VerticalAlignment="Center" HorizontalAlignment="Left" Text="{Binding ViewModel.MainViewModel.TimeToResumeLeft}"
+                               Visibility="{Binding IsVisiblePauseInfo, Converter={StaticResource BoolToVisiblityConverter}}"/>
+
+                    <Button Name="GuiButtonAddTime" Height="20" Width="20"
+                            Click="GuiButtonAddTime_OnClick"
+                            Background="Transparent" HorizontalAlignment="Right" VerticalAlignment="Center" BorderThickness="0" 
+                            Visibility="{Binding IsVisiblePauseInfo, Converter={StaticResource BoolToVisiblityConverter}}"
+                            Style="{StaticResource AddTimeButtonStyle}"/>
+                </StackPanel>
+
+                <Button Grid.Row="2" Grid.Column="3" Height="21" Background="SlateGray" 
+                        Command="{Binding ViewModel.MainViewModel.ResumeCommand}"
+                        Visibility="{Binding IsVisiblePauseInfo, Converter={StaticResource BoolToVisiblityConverter}}"
+                        >
+                    <Button.Style>
+                        <Style TargetType="Button" BasedOn="{StaticResource RoundButtonTemplate}">
+                            <Setter Property="Opacity" Value="0.9"/>
+                            <Style.Triggers>
+
+                                <Trigger Property="IsMouseOver" Value="True">
+                                    <Setter Property="Opacity" Value="1"/>
+                                </Trigger>
+
+                                <Trigger Property="IsPressed" Value="True">
+                                    <Setter Property="Opacity" Value="0.4"/>
+                                </Trigger>
+
+                            </Style.Triggers>
+                        </Style>
+                        
+                    </Button.Style>
+                    
+                    <Button.Content>
+
+                        <StackPanel Orientation="Horizontal">
+                            <TextBlock Foreground="White" Margin="6,0,0,0">Resume</TextBlock>
+                            <Image Source="../Resources/Buttons/resume_white.png" Height="12" Margin="0,0,2,0"/>
+                        </StackPanel>
+                    </Button.Content>
+                </Button>
+            </Grid>
+
+            <Popup Name="GuiPauseAddTimeMenuPopup"  Placement="Bottom" PlacementTarget="{Binding ElementName=GuiButtonAddTime}"  HorizontalAlignment="Right" StaysOpen="False" PopupAnimation="Fade" AllowsTransparency="True">
+                <Border BorderBrush="#86c4f1" BorderThickness="0" Background="#ffdde5eb" Opacity="1" >
+                    <Grid>
+
+                        <Grid.Resources>
+                            <Style TargetType="Button" BasedOn="{StaticResource MenuItemButtonStyle}"/>
+                        </Grid.Resources>
+
+                        <Grid.RowDefinitions>
+                            <RowDefinition Height="Auto"/>
+                            <RowDefinition Height="Auto"/>
+                            <RowDefinition Height="Auto"/>
+                            <RowDefinition Height="Auto"/>
+                            <RowDefinition Height="Auto"/>
+                            <RowDefinition Height="Auto"/>
+                        </Grid.RowDefinitions>
+
+                        <Button Grid.Row="0" Tag="300" Click="GuiButtonPause_OnClick">
+                            <TextBlock Margin="3" Foreground="Black">Add 5 minutes</TextBlock>
+                        </Button>
+
+                        <Button Grid.Row="1" Tag="1800" Click="GuiButtonPause_OnClick">
+                            <TextBlock Margin="3" Foreground="Black">Add 30 minutes</TextBlock>
+                        </Button>
+
+                        <Button Grid.Row="2" Tag="3600" Click="GuiButtonPause_OnClick">
+                            <TextBlock Margin="3" Foreground="Black">Add 1 hour</TextBlock>
+                        </Button>
+
+                        <Button Grid.Row="3" Tag="10800" Click="GuiButtonPause_OnClick">
+                            <TextBlock Margin="3" Foreground="Black">Add 3 hours</TextBlock>
+                        </Button>
+
+                        <Button Grid.Row="4" Tag="0" Click="GuiButtonPause_OnClick">
+                            <TextBlock Margin="3" Foreground="Black">Pause for a custom time...</TextBlock>
+                        </Button>
+
+                    </Grid>
+                </Border>
+            </Popup>
+        </Grid>
+    </Border>
+</Window>

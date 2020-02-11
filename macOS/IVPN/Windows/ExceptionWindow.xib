@@ -1,0 +1,218 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<document type="com.apple.InterfaceBuilder3.Cocoa.XIB" version="3.0" toolsVersion="14313.18" targetRuntime="MacOSX.Cocoa" propertyAccessControl="none">
+    <dependencies>
+        <deployment identifier="macosx"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.CocoaPlugin" version="14313.18"/>
+        <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
+    </dependencies>
+    <objects>
+        <customObject id="-2" userLabel="File's Owner" customClass="ExceptionWindowController">
+            <connections>
+                <outlet property="CommentsTextField" destination="YiT-D5-B2t" id="l7p-gR-F7q"/>
+                <outlet property="DiagnosticLogs" destination="MHF-9c-3Ti" id="tYO-Ms-A3Y"/>
+                <outlet property="DiagnosticLogsTextView" destination="P9h-q3-0py" id="bRd-ym-K0n"/>
+                <outlet property="DiagnosticLogsView" destination="xJs-G0-tc9" id="MYP-OI-UUP"/>
+                <outlet property="GuiButtonViewReport" destination="5dF-u5-0pm" id="SWZ-E5-uid"/>
+                <outlet property="GuiViewForPopover" destination="weP-Kg-PXt" id="WnK-zh-TDr"/>
+                <outlet property="ProgressIndicator" destination="Ahc-S3-dgQ" id="XSn-QU-S4X"/>
+                <outlet property="ReportButton" destination="1x2-Zb-mjM" id="cJm-uh-Z5z"/>
+                <outlet property="TextHeader" destination="d7g-Sz-OEm" id="a0Z-BM-3az"/>
+                <outlet property="window" destination="2" id="6"/>
+            </connections>
+        </customObject>
+        <customObject id="-1" userLabel="First Responder" customClass="FirstResponder"/>
+        <customObject id="-3" userLabel="Application" customClass="NSObject"/>
+        <window title="Problem report for IVPN" allowsToolTipsWhenApplicationIsInactive="NO" autorecalculatesKeyViewLoop="NO" animationBehavior="default" id="2" customClass="ExceptionWindow">
+            <windowStyleMask key="styleMask" titled="YES" closable="YES" resizable="YES"/>
+            <rect key="contentRect" x="131" y="74" width="573" height="301"/>
+            <rect key="screenRect" x="0.0" y="0.0" width="1280" height="777"/>
+            <value key="minSize" type="size" width="573" height="326"/>
+            <view key="contentView" id="3">
+                <rect key="frame" x="0.0" y="0.0" width="573" height="301"/>
+                <autoresizingMask key="autoresizingMask"/>
+                <subviews>
+                    <textField verticalHuggingPriority="750" horizontalCompressionResistancePriority="250" id="d7g-Sz-OEm">
+                        <rect key="frame" x="102" y="260" width="453" height="21"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" flexibleMinY="YES"/>
+                        <textFieldCell key="cell" sendsActionOnEndEditing="YES" title="IVPN Application quit unexpectedly." id="54Y-OU-BeA">
+                            <font key="font" metaFont="systemSemibold" size="17"/>
+                            <color key="textColor" name="labelColor" catalog="System" colorSpace="catalog"/>
+                            <color key="backgroundColor" name="controlColor" catalog="System" colorSpace="catalog"/>
+                        </textFieldCell>
+                    </textField>
+                    <textField verticalHuggingPriority="750" horizontalCompressionResistancePriority="250" id="hfm-6i-mWS">
+                        <rect key="frame" x="102" y="183" width="453" height="58"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" flexibleMinY="YES" heightSizable="YES"/>
+                        <textFieldCell key="cell" sendsActionOnEndEditing="YES" title="To help us improve IVPN Client, we have created an error report for you to sent us." id="9Ia-JT-tjR">
+                            <font key="font" metaFont="system"/>
+                            <color key="textColor" name="labelColor" catalog="System" colorSpace="catalog"/>
+                            <color key="backgroundColor" name="controlColor" catalog="System" colorSpace="catalog"/>
+                        </textFieldCell>
+                    </textField>
+                    <button verticalHuggingPriority="750" id="1x2-Zb-mjM">
+                        <rect key="frame" x="315" y="13" width="122" height="32"/>
+                        <autoresizingMask key="autoresizingMask" flexibleMinX="YES" flexibleMaxY="YES"/>
+                        <buttonCell key="cell" type="push" title="Send Report" bezelStyle="rounded" alignment="center" borderStyle="border" imageScaling="proportionallyDown" inset="2" id="yH7-t2-My7">
+                            <behavior key="behavior" pushIn="YES" lightByBackground="YES" lightByGray="YES"/>
+                            <font key="font" metaFont="system"/>
+                        </buttonCell>
+                        <connections>
+                            <action selector="OnSendReport:" target="-2" id="RRJ-6E-cKo"/>
+                        </connections>
+                    </button>
+                    <button verticalHuggingPriority="750" id="Xef-lg-pgR">
+                        <rect key="frame" x="437" y="13" width="122" height="32"/>
+                        <autoresizingMask key="autoresizingMask" flexibleMinX="YES" flexibleMaxY="YES"/>
+                        <buttonCell key="cell" type="push" title="Cancel" bezelStyle="rounded" alignment="center" borderStyle="border" imageScaling="proportionallyDown" inset="2" id="I8M-ND-9Xr">
+                            <behavior key="behavior" pushIn="YES" lightByBackground="YES" lightByGray="YES"/>
+                            <font key="font" metaFont="system"/>
+                            <string key="keyEquivalent" base64-UTF8="YES">
+Gw
+</string>
+                        </buttonCell>
+                        <connections>
+                            <action selector="OnCancel:" target="-2" id="w8y-bZ-WlA"/>
+                        </connections>
+                    </button>
+                    <progressIndicator wantsLayer="YES" horizontalHuggingPriority="750" verticalHuggingPriority="750" maxValue="100" displayedWhenStopped="NO" bezeled="NO" indeterminate="YES" controlSize="small" style="spinning" id="Ahc-S3-dgQ">
+                        <rect key="frame" x="297" y="23" width="16" height="16"/>
+                        <autoresizingMask key="autoresizingMask" flexibleMinX="YES" flexibleMaxY="YES"/>
+                    </progressIndicator>
+                    <button verticalHuggingPriority="750" id="5dF-u5-0pm">
+                        <rect key="frame" x="14" y="13" width="122" height="32"/>
+                        <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                        <buttonCell key="cell" type="push" title="View Report" bezelStyle="rounded" alignment="center" borderStyle="border" imageScaling="proportionallyDown" inset="2" id="Ug7-JW-1RE">
+                            <behavior key="behavior" pushIn="YES" lightByBackground="YES" lightByGray="YES"/>
+                            <font key="font" metaFont="system"/>
+                        </buttonCell>
+                        <connections>
+                            <action selector="OnViewReport:" target="-2" id="mtF-Dl-Ukv"/>
+                        </connections>
+                    </button>
+                    <imageView id="FdB-J3-KA0">
+                        <rect key="frame" x="20" y="217" width="64" height="64"/>
+                        <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
+                        <imageCell key="cell" refusesFirstResponder="YES" alignment="left" animates="YES" imageScaling="proportionallyDown" image="IVPN" id="Bye-Lf-zLo"/>
+                    </imageView>
+                    <textField horizontalHuggingPriority="251" verticalHuggingPriority="750" id="lPr-Lz-nNl">
+                        <rect key="frame" x="102" y="174" width="453" height="17"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" flexibleMinY="YES"/>
+                        <textFieldCell key="cell" scrollable="YES" lineBreakMode="clipping" sendsActionOnEndEditing="YES" title="Comments:" id="TpK-Eg-alQ">
+                            <font key="font" metaFont="systemSemibold" size="13"/>
+                            <color key="textColor" name="labelColor" catalog="System" colorSpace="catalog"/>
+                            <color key="backgroundColor" name="controlColor" catalog="System" colorSpace="catalog"/>
+                        </textFieldCell>
+                    </textField>
+                    <scrollView wantsLayer="YES" horizontalLineScroll="10" horizontalPageScroll="10" verticalLineScroll="10" verticalPageScroll="10" hasHorizontalScroller="NO" usesPredominantAxisScrolling="NO" id="lnC-hE-0Sw">
+                        <rect key="frame" x="104" y="61" width="442" height="88"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <clipView key="contentView" drawsBackground="NO" id="8ZF-kN-ZlJ">
+                            <rect key="frame" x="1" y="1" width="440" height="86"/>
+                            <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                            <subviews>
+                                <textView importsGraphics="NO" verticallyResizable="YES" usesFontPanel="YES" findStyle="panel" continuousSpellChecking="YES" allowsUndo="YES" usesRuler="YES" allowsNonContiguousLayout="YES" quoteSubstitution="YES" dashSubstitution="YES" smartInsertDelete="YES" id="YiT-D5-B2t">
+                                    <rect key="frame" x="0.0" y="0.0" width="440" height="86"/>
+                                    <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                                    <color key="textColor" name="textColor" catalog="System" colorSpace="catalog"/>
+                                    <color key="backgroundColor" name="textBackgroundColor" catalog="System" colorSpace="catalog"/>
+                                    <size key="minSize" width="440" height="86"/>
+                                    <size key="maxSize" width="463" height="10000000"/>
+                                    <color key="insertionPointColor" name="controlTextColor" catalog="System" colorSpace="catalog"/>
+                                </textView>
+                            </subviews>
+                        </clipView>
+                        <scroller key="horizontalScroller" hidden="YES" verticalHuggingPriority="750" doubleValue="1" horizontal="YES" id="f6V-pw-4G2">
+                            <rect key="frame" x="-100" y="-100" width="87" height="18"/>
+                            <autoresizingMask key="autoresizingMask"/>
+                        </scroller>
+                        <scroller key="verticalScroller" verticalHuggingPriority="750" doubleValue="1" horizontal="NO" id="I12-3J-JN5">
+                            <rect key="frame" x="425" y="1" width="16" height="86"/>
+                            <autoresizingMask key="autoresizingMask"/>
+                        </scroller>
+                    </scrollView>
+                    <textField horizontalHuggingPriority="251" verticalHuggingPriority="750" id="yHx-MW-gVK">
+                        <rect key="frame" x="102" y="153" width="446" height="17"/>
+                        <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
+                        <textFieldCell key="cell" scrollable="YES" lineBreakMode="clipping" sendsActionOnEndEditing="YES" alignment="left" title="Provide any steps necessary to reproduce an issue" id="WRL-zd-0q2">
+                            <font key="font" metaFont="smallSystem"/>
+                            <color key="textColor" red="0.29803922770000002" green="0.29803922770000002" blue="0.29803922770000002" alpha="1" colorSpace="calibratedRGB"/>
+                            <color key="backgroundColor" name="controlColor" catalog="System" colorSpace="catalog"/>
+                        </textFieldCell>
+                    </textField>
+                </subviews>
+            </view>
+            <point key="canvasLocation" x="133.5" y="-71.5"/>
+        </window>
+        <window title="Diagnostic Logs" allowsToolTipsWhenApplicationIsInactive="NO" autorecalculatesKeyViewLoop="NO" hidesOnDeactivate="YES" visibleAtLaunch="NO" animationBehavior="default" id="MHF-9c-3Ti">
+            <windowStyleMask key="styleMask" titled="YES" resizable="YES"/>
+            <rect key="contentRect" x="132" y="74" width="650" height="400"/>
+            <rect key="screenRect" x="0.0" y="0.0" width="1280" height="777"/>
+            <view key="contentView" id="L6O-rf-Sxf">
+                <rect key="frame" x="0.0" y="0.0" width="650" height="400"/>
+                <autoresizingMask key="autoresizingMask"/>
+                <subviews>
+                    <scrollView horizontalLineScroll="10" horizontalPageScroll="10" verticalLineScroll="10" verticalPageScroll="10" hasHorizontalScroller="NO" usesPredominantAxisScrolling="NO" id="xJs-G0-tc9">
+                        <rect key="frame" x="20" y="61" width="610" height="319"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <clipView key="contentView" drawsBackground="NO" id="8VC-Lc-7Yf">
+                            <rect key="frame" x="1" y="1" width="608" height="317"/>
+                            <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                            <subviews>
+                                <textView importsGraphics="NO" verticallyResizable="YES" usesFontPanel="YES" findStyle="panel" continuousSpellChecking="YES" allowsUndo="YES" usesRuler="YES" allowsNonContiguousLayout="YES" quoteSubstitution="YES" dashSubstitution="YES" smartInsertDelete="YES" id="P9h-q3-0py">
+                                    <rect key="frame" x="0.0" y="0.0" width="608" height="317"/>
+                                    <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                                    <color key="textColor" name="textColor" catalog="System" colorSpace="catalog"/>
+                                    <color key="backgroundColor" name="textBackgroundColor" catalog="System" colorSpace="catalog"/>
+                                    <size key="minSize" width="608" height="317"/>
+                                    <size key="maxSize" width="620" height="10000000"/>
+                                    <color key="insertionPointColor" name="controlTextColor" catalog="System" colorSpace="catalog"/>
+                                </textView>
+                            </subviews>
+                        </clipView>
+                        <scroller key="horizontalScroller" hidden="YES" verticalHuggingPriority="750" doubleValue="1" horizontal="YES" id="5Vu-QE-8gV">
+                            <rect key="frame" x="-100" y="-100" width="87" height="18"/>
+                            <autoresizingMask key="autoresizingMask"/>
+                        </scroller>
+                        <scroller key="verticalScroller" verticalHuggingPriority="750" doubleValue="1" horizontal="NO" id="Vl7-2B-xQB">
+                            <rect key="frame" x="593" y="1" width="16" height="317"/>
+                            <autoresizingMask key="autoresizingMask"/>
+                        </scroller>
+                    </scrollView>
+                    <button verticalHuggingPriority="750" id="qKJ-j2-sIx">
+                        <rect key="frame" x="555" y="13" width="81" height="32"/>
+                        <autoresizingMask key="autoresizingMask" flexibleMinX="YES" flexibleMaxY="YES"/>
+                        <buttonCell key="cell" type="push" title="Close" bezelStyle="rounded" alignment="center" borderStyle="border" imageScaling="proportionallyDown" inset="2" id="i94-5W-1Mq">
+                            <behavior key="behavior" pushIn="YES" lightByBackground="YES" lightByGray="YES"/>
+                            <font key="font" metaFont="system"/>
+                        </buttonCell>
+                        <connections>
+                            <action selector="CloseDiagnosticLogs:" target="-2" id="IY1-eV-c4p"/>
+                        </connections>
+                    </button>
+                </subviews>
+            </view>
+            <point key="canvasLocation" x="172" y="332"/>
+        </window>
+        <customView id="weP-Kg-PXt">
+            <rect key="frame" x="0.0" y="0.0" width="410" height="124"/>
+            <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
+            <subviews>
+                <textField verticalHuggingPriority="750" horizontalCompressionResistancePriority="250" id="FNz-W6-nTR">
+                    <rect key="frame" x="18" y="0.0" width="374" height="107"/>
+                    <autoresizingMask key="autoresizingMask" flexibleMinX="YES" widthSizable="YES" flexibleMaxX="YES" flexibleMinY="YES" heightSizable="YES" flexibleMaxY="YES"/>
+                    <textFieldCell key="cell" selectable="YES" id="PJ6-Ng-7Ff">
+                        <font key="font" usesAppearanceFont="YES"/>
+                        <string key="title">You can enable logging in the application preferences to help us better understand the reason application crashed in the future.
+You will be able to review logs before submitting them together with crash report.</string>
+                        <color key="textColor" name="labelColor" catalog="System" colorSpace="catalog"/>
+                        <color key="backgroundColor" name="textBackgroundColor" catalog="System" colorSpace="catalog"/>
+                    </textFieldCell>
+                </textField>
+            </subviews>
+            <point key="canvasLocation" x="223" y="653"/>
+        </customView>
+    </objects>
+    <resources>
+        <image name="IVPN" width="512" height="512"/>
+    </resources>
+</document>

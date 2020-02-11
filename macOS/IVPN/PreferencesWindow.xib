@@ -1,0 +1,1507 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<document type="com.apple.InterfaceBuilder3.Cocoa.XIB" version="3.0" toolsVersion="14490.70" targetRuntime="MacOSX.Cocoa" propertyAccessControl="none">
+    <dependencies>
+        <deployment identifier="macosx"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.CocoaPlugin" version="14490.70"/>
+        <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
+    </dependencies>
+    <objects>
+        <customObject id="-2" userLabel="File's Owner" customClass="PreferencesWindowController">
+            <connections>
+                <outlet property="AntiTrackerSettings" destination="3Ji-8C-Mwz" id="Rn7-6T-XW0"/>
+                <outlet property="ConnectionSettingsView" destination="75" id="170"/>
+                <outlet property="DnsSettings" destination="8OQ-Q7-jzF" id="wwi-vC-OyP"/>
+                <outlet property="FirewallSettingsView" destination="82" id="171"/>
+                <outlet property="GeneralSettingsView" destination="64" id="169"/>
+                <outlet property="GuiBtnFirewallTypeAlwaysOn" destination="BCg-sg-uMe" id="buo-9u-qOF"/>
+                <outlet property="GuiBtnFirewallTypeOnDemand" destination="6hC-Qy-kMd" id="kJp-la-6UP"/>
+                <outlet property="GuiBtnLaunchAtLogin" destination="65" id="bc6-VD-ezS"/>
+                <outlet property="GuiBtnProtocolTypeOpenVPN" destination="prz-eJ-eMK" id="AQP-qF-NKa"/>
+                <outlet property="GuiBtnProtocolTypeWireGuard" destination="HeH-eE-QoO" id="z9f-0e-5Vr"/>
+                <outlet property="GuiButtonOpenvpnTooltip" destination="bGf-d5-IJR" id="ZlN-MS-lOR"/>
+                <outlet property="GuiPanelOpenvpnTooltip" destination="PqD-Oi-UEv" id="HKn-Cc-O53"/>
+                <outlet property="GuiPanelWireguardConfigDetails" destination="Ub4-KR-MaY" id="tHF-CT-gQT"/>
+                <outlet property="GuiProgressViewWireguardKeysGeneration" destination="Vvx-nJ-Xc1" id="JxE-3B-Sxu"/>
+                <outlet property="GuiProgressWireguardKeysGeneration" destination="95a-lP-FF3" id="H95-Df-Owi"/>
+                <outlet property="GuiProtocolsConfigTabView" destination="bLr-1Y-F2K" id="1Wf-HC-SDP"/>
+                <outlet property="GuiTabConfigOpenVPN" destination="M8l-Ro-Ctk" id="7a6-AQ-gru"/>
+                <outlet property="GuiTabConfigWireGuard" destination="E95-3s-Dlh" id="A3l-Oc-S35"/>
+                <outlet property="GuiViewWireguardConfig" destination="82z-gM-6Hz" id="gLp-Pq-vmh"/>
+                <outlet property="GuiWireGuardDescription" destination="xFK-vj-5yB" id="K6E-jG-B8I"/>
+                <outlet property="GuiWireguardConfigDetailsProgressIndicator" destination="U2i-bj-VqZ" id="5rm-kD-ZPk"/>
+                <outlet property="GuiWireguardConfigDetailsView" destination="PMC-ER-FDp" id="vh7-se-NPl"/>
+                <outlet property="GuiWireguardConfigDetailsViewProgress" destination="h5U-VJ-qyr" id="odD-VS-cN3"/>
+                <outlet property="GuiWireguardConfigView" destination="1oz-KW-RAo" id="Rvn-oW-ldh"/>
+                <outlet property="NetworksDefaultActionBtn" destination="vcg-e9-2yZ" id="iaY-2O-qZr"/>
+                <outlet property="NetworksSettings" destination="0UW-e9-Oh9" id="pj5-UR-K5S"/>
+                <outlet property="NetworksView" destination="IhW-jE-gqj" id="jMw-r3-xUE"/>
+                <outlet property="OpenVPNSettings" destination="KIt-0M-8fk" id="tVN-lw-VhS"/>
+                <outlet property="OpenVpnViewExtraParameters" destination="Nm9-pC-wzw" id="e7Q-Sk-BuW"/>
+                <outlet property="SettingsView" destination="105" id="182"/>
+                <outlet property="Toolbar" destination="54" id="184"/>
+                <outlet property="window" destination="2" id="6"/>
+            </connections>
+        </customObject>
+        <customObject id="-1" userLabel="First Responder" customClass="FirstResponder"/>
+        <customObject id="-3" userLabel="Application" customClass="NSObject"/>
+        <window title="Preferences" allowsToolTipsWhenApplicationIsInactive="NO" autorecalculatesKeyViewLoop="NO" animationBehavior="default" id="2" customClass="PreferencesWindow">
+            <windowStyleMask key="styleMask" titled="YES" closable="YES"/>
+            <windowPositionMask key="initialPositionMask" leftStrut="YES" rightStrut="YES" topStrut="YES" bottomStrut="YES"/>
+            <rect key="contentRect" x="131" y="74" width="562" height="577"/>
+            <rect key="screenRect" x="0.0" y="0.0" width="1440" height="877"/>
+            <view key="contentView" id="3">
+                <rect key="frame" x="0.0" y="0.0" width="562" height="577"/>
+                <autoresizingMask key="autoresizingMask"/>
+                <subviews>
+                    <customView id="105">
+                        <rect key="frame" x="0.0" y="0.0" width="562" height="577"/>
+                        <autoresizingMask key="autoresizingMask" flexibleMinY="YES"/>
+                    </customView>
+                </subviews>
+            </view>
+            <toolbar key="toolbar" implicitIdentifier="786DFDB5-F1ED-4B19-88F9-C9210695E187" autosavesConfiguration="NO" allowsUserCustomization="NO" displayMode="iconAndLabel" sizeMode="regular" id="54">
+                <allowedToolbarItems>
+                    <toolbarItem implicitItemIdentifier="A40C3E0A-F727-4785-9209-A0A1AD83C6B5" explicitItemIdentifier="generalSettings" label="General" paletteLabel="General" tag="-1" image="iconPreferencesGeneral" selectable="YES" id="60">
+                        <connections>
+                            <action selector="ShowGeneralSettings:" target="-2" id="168"/>
+                        </connections>
+                    </toolbarItem>
+                    <toolbarItem implicitItemIdentifier="91F71B9C-181D-401A-B220-3A7ADF6C2E58" explicitItemIdentifier="connectionSettings" label="Connection" paletteLabel="Connection" tag="-1" image="iconPreferencesConnection" selectable="YES" id="61">
+                        <connections>
+                            <action selector="ShowConnectionSettings:" target="-2" id="165"/>
+                        </connections>
+                    </toolbarItem>
+                    <toolbarItem implicitItemIdentifier="38AB5291-6DF3-42D1-9282-EC8F854A976F" explicitItemIdentifier="firewallSettings" label="IVPN Firewall" paletteLabel="IVPN Firewall" tag="-1" image="iconPreferencesFirewall" selectable="YES" id="62">
+                        <connections>
+                            <action selector="ShowFirewallSettings:" target="-2" id="166"/>
+                        </connections>
+                    </toolbarItem>
+                    <toolbarItem implicitItemIdentifier="08747609-9B95-458F-8B82-1D3E43556EC3" explicitItemIdentifier="giagnosticsSettings" label="Diagnostics" paletteLabel="Diagnostics" tag="-1" image="toolbar-log" selectable="YES" id="63">
+                        <connections>
+                            <action selector="ShowDiagnosticsSettings:" target="-2" id="167"/>
+                        </connections>
+                    </toolbarItem>
+                    <toolbarItem implicitItemIdentifier="73732EFE-6325-4BDE-BC7A-9B6B255ADD3A" explicitItemIdentifier="openVPN" label="OpenVPN" paletteLabel="OpenVpn" tag="-1" image="iconPreferencesOpenvpn" selectable="YES" id="Nm9-pC-wzw">
+                        <connections>
+                            <action selector="ShowOpenVPNSettings:" target="-2" id="pXj-bl-cXj"/>
+                        </connections>
+                    </toolbarItem>
+                    <toolbarItem implicitItemIdentifier="7EB5453B-2AD4-48B9-B36C-CDE53478B5F7" label="Networks" paletteLabel="Networks" tag="-1" image="iconWiFi" selectable="YES" id="fvG-H0-3jB">
+                        <nil key="toolTip"/>
+                        <connections>
+                            <action selector="ShowNetworksSettings:" target="-2" id="ad4-yA-eaA"/>
+                        </connections>
+                    </toolbarItem>
+                    <toolbarItem implicitItemIdentifier="E9672DB5-CBD1-458D-A4BA-75837E23F93A" label="AntiTracker" paletteLabel="AntiTracker" tag="-1" image="iconPreferencesAntiTracker" selectable="YES" id="4dT-ko-xEj">
+                        <connections>
+                            <action selector="ShowAntitrackerSettings:" target="-2" id="1Gq-Oe-ZgW"/>
+                        </connections>
+                    </toolbarItem>
+                    <toolbarItem implicitItemIdentifier="13EE10B6-BA0C-4BC0-9BAD-CD3625BD6126" label="DNS" paletteLabel="DNS" tag="-1" image="iconPreferencesDNS" selectable="YES" id="wHR-W9-HOT">
+                        <connections>
+                            <action selector="ShowDnsSettings:" target="-2" id="nTx-rY-a12"/>
+                        </connections>
+                    </toolbarItem>
+                </allowedToolbarItems>
+                <defaultToolbarItems>
+                    <toolbarItem reference="60"/>
+                    <toolbarItem reference="61"/>
+                    <toolbarItem reference="62"/>
+                    <toolbarItem reference="fvG-H0-3jB"/>
+                    <toolbarItem reference="Nm9-pC-wzw"/>
+                    <toolbarItem reference="4dT-ko-xEj"/>
+                    <toolbarItem reference="wHR-W9-HOT"/>
+                </defaultToolbarItems>
+            </toolbar>
+            <connections>
+                <outlet property="delegate" destination="-2" id="254"/>
+            </connections>
+            <point key="canvasLocation" x="173" y="437.5"/>
+        </window>
+        <customView id="64" userLabel="General">
+            <rect key="frame" x="0.0" y="0.0" width="562" height="342"/>
+            <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
+            <subviews>
+                <button id="65">
+                    <rect key="frame" x="137" y="234" width="395" height="18"/>
+                    <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
+                    <buttonCell key="cell" type="check" title="Launch at login" bezelStyle="regularSquare" imagePosition="left" state="on" inset="2" id="74">
+                        <behavior key="behavior" changeContents="YES" doesNotDimImage="YES" lightByContents="YES"/>
+                        <font key="font" size="13" name="SFProText-Regular"/>
+                    </buttonCell>
+                    <connections>
+                        <action selector="OnLaunchAtLoginChanged:" target="-2" id="Oas-OE-eMS"/>
+                    </connections>
+                </button>
+                <button id="66">
+                    <rect key="frame" x="137" y="210" width="395" height="18"/>
+                    <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
+                    <buttonCell key="cell" type="check" title="Show main window on launch" bezelStyle="regularSquare" imagePosition="left" state="on" inset="2" id="73">
+                        <behavior key="behavior" changeContents="YES" doesNotDimImage="YES" lightByContents="YES"/>
+                        <font key="font" size="13" name="SFProText-Regular"/>
+                    </buttonCell>
+                    <connections>
+                        <binding destination="-2" name="value" keyPath="settings.LaunchMinimized" id="219">
+                            <dictionary key="options">
+                                <string key="NSValueTransformerName">NSNegateBoolean</string>
+                            </dictionary>
+                        </binding>
+                    </connections>
+                </button>
+                <button id="67">
+                    <rect key="frame" x="137" y="275" width="395" height="18"/>
+                    <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
+                    <buttonCell key="cell" type="check" title="When joining insecure WiFi networks" bezelStyle="regularSquare" imagePosition="left" state="on" inset="2" id="72">
+                        <behavior key="behavior" changeContents="YES" doesNotDimImage="YES" lightByContents="YES"/>
+                        <font key="font" size="13" name="SFProText-Regular"/>
+                    </buttonCell>
+                    <connections>
+                        <binding destination="-2" name="value" keyPath="settings.ServiceConnectOnInsecureWifi" id="227"/>
+                    </connections>
+                </button>
+                <textField horizontalHuggingPriority="251" verticalHuggingPriority="750" id="68">
+                    <rect key="frame" x="18" y="302" width="116" height="17"/>
+                    <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
+                    <textFieldCell key="cell" scrollable="YES" lineBreakMode="clipping" sendsActionOnEndEditing="YES" alignment="right" title="Autoconnect:" id="71">
+                        <font key="font" size="14" name="SFProText-Medium"/>
+                        <color key="textColor" name="labelColor" catalog="System" colorSpace="catalog"/>
+                        <color key="backgroundColor" name="textBackgroundColor" catalog="System" colorSpace="catalog"/>
+                    </textFieldCell>
+                </textField>
+                <textField horizontalHuggingPriority="251" verticalHuggingPriority="750" id="8ed-Fy-TDT">
+                    <rect key="frame" x="18" y="237" width="116" height="17"/>
+                    <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
+                    <textFieldCell key="cell" scrollable="YES" lineBreakMode="clipping" sendsActionOnEndEditing="YES" alignment="right" title="On launch:" id="mnl-EJ-IcI">
+                        <font key="font" size="14" name="SFProText-Medium"/>
+                        <color key="textColor" name="labelColor" catalog="System" colorSpace="catalog"/>
+                        <color key="backgroundColor" name="textBackgroundColor" catalog="System" colorSpace="catalog"/>
+                    </textFieldCell>
+                </textField>
+                <button id="69">
+                    <rect key="frame" x="137" y="299" width="395" height="18"/>
+                    <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
+                    <buttonCell key="cell" type="check" title="On launch" bezelStyle="regularSquare" imagePosition="left" state="on" inset="2" id="70">
+                        <behavior key="behavior" changeContents="YES" doesNotDimImage="YES" lightByContents="YES"/>
+                        <font key="font" size="13" name="SFProText-Regular"/>
+                    </buttonCell>
+                    <connections>
+                        <binding destination="-2" name="value" keyPath="settings.AutoConnectOnStart" id="223"/>
+                    </connections>
+                </button>
+                <button verticalHuggingPriority="750" id="JfB-3l-wko">
+                    <rect key="frame" x="137" y="186" width="395" height="18"/>
+                    <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
+                    <buttonCell key="cell" type="check" title="Show application icon in system dock" bezelStyle="regularSquare" imagePosition="left" state="on" inset="2" id="5hj-7s-zO9">
+                        <behavior key="behavior" changeContents="YES" doesNotDimImage="YES" lightByContents="YES"/>
+                        <font key="font" size="13" name="SFProText-Regular"/>
+                    </buttonCell>
+                    <connections>
+                        <binding destination="-2" name="value" keyPath="settings.MacIsShowIconInSystemDock" id="KrW-qp-Wgg"/>
+                    </connections>
+                </button>
+                <button id="bec-lz-z1R">
+                    <rect key="frame" x="137" y="124" width="395" height="42"/>
+                    <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
+                    <buttonCell key="cell" type="check" bezelStyle="regularSquare" imagePosition="left" alignment="left" state="on" inset="2" id="g7L-ES-HLS">
+                        <behavior key="behavior" changeContents="YES" doesNotDimImage="YES" lightByContents="YES"/>
+                        <string key="title">Disconnect and quit without confirmation when closing 
+application</string>
+                        <font key="font" size="13" name="SFProText-Regular"/>
+                    </buttonCell>
+                    <connections>
+                        <binding destination="-2" name="value" keyPath="settings.DoNotShowDialogOnAppClose" id="68C-Wo-IIn"/>
+                    </connections>
+                </button>
+                <textField horizontalHuggingPriority="251" verticalHuggingPriority="750" id="DXO-Q2-VDZ">
+                    <rect key="frame" x="18" y="148" width="116" height="17"/>
+                    <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
+                    <textFieldCell key="cell" scrollable="YES" lineBreakMode="clipping" sendsActionOnEndEditing="YES" alignment="right" title="On exit:" id="fkz-AH-kdq">
+                        <font key="font" size="14" name="SFProText-Medium"/>
+                        <color key="textColor" name="labelColor" catalog="System" colorSpace="catalog"/>
+                        <color key="backgroundColor" name="textBackgroundColor" catalog="System" colorSpace="catalog"/>
+                    </textFieldCell>
+                </textField>
+                <button verticalHuggingPriority="750" id="Ope-L2-z0z">
+                    <rect key="frame" x="137" y="104" width="395" height="18"/>
+                    <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
+                    <buttonCell key="cell" type="check" title="Stop IVPN Agent when application is not running" bezelStyle="regularSquare" imagePosition="left" state="on" inset="2" id="hbJ-dV-FMw">
+                        <behavior key="behavior" changeContents="YES" doesNotDimImage="YES" lightByContents="YES"/>
+                        <font key="font" size="13" name="SFProText-Regular"/>
+                    </buttonCell>
+                    <connections>
+                        <binding destination="-2" name="value" keyPath="settings.StopServerOnClientDisconnect" id="gLg-Kk-YoG"/>
+                    </connections>
+                </button>
+                <box boxType="custom" cornerRadius="4" title="Box" id="4Cr-Ol-PAB">
+                    <rect key="frame" x="22" y="20" width="520" height="62"/>
+                    <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
+                    <view key="contentView" id="ZPB-zm-Hah">
+                        <rect key="frame" x="1" y="1" width="518" height="60"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <subviews>
+                            <button id="360">
+                                <rect key="frame" x="114" y="22" width="368" height="18"/>
+                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
+                                <buttonCell key="cell" type="check" title="Create log files" bezelStyle="regularSquare" imagePosition="left" state="on" inset="2" id="361">
+                                    <behavior key="behavior" changeContents="YES" doesNotDimImage="YES" lightByContents="YES"/>
+                                    <font key="font" size="13" name="SFProText-Regular"/>
+                                </buttonCell>
+                                <connections>
+                                    <binding destination="-2" name="value" keyPath="settings.IsLoggingEnabled" id="365"/>
+                                </connections>
+                            </button>
+                            <textField horizontalHuggingPriority="251" verticalHuggingPriority="750" id="PhX-VF-kBi">
+                                <rect key="frame" x="18" y="22" width="94" height="19"/>
+                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
+                                <textFieldCell key="cell" scrollable="YES" lineBreakMode="clipping" sendsActionOnEndEditing="YES" alignment="right" title="Diagnostics:" id="8iu-pA-M3m">
+                                    <font key="font" size="14" name="SFProText-Medium"/>
+                                    <color key="textColor" name="labelColor" catalog="System" colorSpace="catalog"/>
+                                    <color key="backgroundColor" name="textBackgroundColor" catalog="System" colorSpace="catalog"/>
+                                </textFieldCell>
+                            </textField>
+                        </subviews>
+                    </view>
+                    <color key="borderColor" name="gridColor" catalog="System" colorSpace="catalog"/>
+                </box>
+            </subviews>
+            <point key="canvasLocation" x="770" y="-64"/>
+        </customView>
+        <customView id="75" userLabel="Connection">
+            <rect key="frame" x="0.0" y="0.0" width="562" height="577"/>
+            <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
+            <subviews>
+                <textField horizontalHuggingPriority="251" verticalHuggingPriority="750" id="Ke8-CA-pLV">
+                    <rect key="frame" x="18" y="537" width="514" height="19"/>
+                    <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
+                    <textFieldCell key="cell" scrollable="YES" lineBreakMode="clipping" sendsActionOnEndEditing="YES" title="VPN protocol:" id="Pj0-H8-R2v">
+                        <font key="font" size="14" name="SFProText-Medium"/>
+                        <color key="textColor" name="labelColor" catalog="System" colorSpace="catalog"/>
+                        <color key="backgroundColor" name="controlColor" catalog="System" colorSpace="catalog"/>
+                    </textFieldCell>
+                </textField>
+                <button verticalHuggingPriority="750" id="prz-eJ-eMK">
+                    <rect key="frame" x="47" y="507" width="81" height="19"/>
+                    <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
+                    <buttonCell key="cell" type="radio" title="OpenVPN" bezelStyle="regularSquare" imagePosition="left" alignment="left" inset="2" id="Xwd-j2-EwN">
+                        <behavior key="behavior" changeContents="YES" doesNotDimImage="YES" lightByContents="YES"/>
+                        <font key="font" size="13" name="SFProText-Regular"/>
+                    </buttonCell>
+                    <connections>
+                        <action selector="OnProtocolChangedOpenVPN:" target="-2" id="1Mb-rp-o0m"/>
+                    </connections>
+                </button>
+                <button verticalHuggingPriority="750" id="HeH-eE-QoO">
+                    <rect key="frame" x="47" y="478" width="88" height="19"/>
+                    <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
+                    <buttonCell key="cell" type="radio" title="WireGuard" bezelStyle="regularSquare" imagePosition="left" alignment="left" inset="2" id="HVm-RQ-Ksx">
+                        <behavior key="behavior" changeContents="YES" doesNotDimImage="YES" lightByContents="YES"/>
+                        <font key="font" size="13" name="SFProText-Regular"/>
+                    </buttonCell>
+                    <connections>
+                        <action selector="OnProtocolChangedWireGuard:" target="-2" id="eAI-0U-zIM"/>
+                    </connections>
+                </button>
+                <textField verticalHuggingPriority="750" horizontalCompressionResistancePriority="250" setsMaxLayoutWidthAtFirstLayout="YES" id="xFK-vj-5yB">
+                    <rect key="frame" x="71" y="400" width="464" height="73"/>
+                    <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
+                    <textFieldCell key="cell" sendsActionOnEndEditing="YES" id="Z5L-bd-7mU">
+                        <font key="font" size="12" name="SFProText-Regular"/>
+                        <string key="title">The WireGuard protocol is currently under development and should be considered as experimental. Review the Wireguard project for more information. We do not recommend Wireguard except for testing or in situations where security is not critical.</string>
+                        <color key="textColor" name="secondaryLabelColor" catalog="System" colorSpace="catalog"/>
+                        <color key="backgroundColor" name="controlColor" catalog="System" colorSpace="catalog"/>
+                    </textFieldCell>
+                </textField>
+                <tabView id="bLr-1Y-F2K">
+                    <rect key="frame" x="13" y="10" width="536" height="375"/>
+                    <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
+                    <font key="font" metaFont="system"/>
+                    <tabViewItems>
+                        <tabViewItem label="OpenVPN configuration" identifier="" id="M8l-Ro-Ctk">
+                            <view key="view" id="Xcj-Gl-cT3">
+                                <rect key="frame" x="10" y="33" width="516" height="329"/>
+                                <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                                <subviews>
+                                    <textField horizontalHuggingPriority="251" verticalHuggingPriority="750" id="341">
+                                        <rect key="frame" x="14" y="295" width="166" height="19"/>
+                                        <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
+                                        <textFieldCell key="cell" scrollable="YES" lineBreakMode="clipping" sendsActionOnEndEditing="YES" alignment="right" title="Preferred protocol/port:" id="342">
+                                            <font key="font" size="14" name="SFProText-Medium"/>
+                                            <color key="textColor" name="labelColor" catalog="System" colorSpace="catalog"/>
+                                            <color key="backgroundColor" name="controlColor" catalog="System" colorSpace="catalog"/>
+                                        </textFieldCell>
+                                    </textField>
+                                    <popUpButton verticalHuggingPriority="750" id="346">
+                                        <rect key="frame" x="185" y="289" width="192" height="26"/>
+                                        <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
+                                        <popUpButtonCell key="cell" type="push" title="Item 1" bezelStyle="rounded" alignment="left" lineBreakMode="truncatingTail" state="on" borderStyle="borderAndBezel" imageScaling="proportionallyDown" inset="2" selectedItem="351" id="347">
+                                            <behavior key="behavior" lightByBackground="YES" lightByGray="YES"/>
+                                            <font key="font" size="13" name="SFProText-Regular"/>
+                                            <menu key="menu" id="348">
+                                                <items>
+                                                    <menuItem title="Item 1" state="on" id="351"/>
+                                                    <menuItem title="Item 2" id="350"/>
+                                                    <menuItem title="Item 3" id="349"/>
+                                                </items>
+                                            </menu>
+                                            <connections>
+                                                <binding destination="-2" name="contentValues" keyPath="settings.PreferedPortValues" id="355"/>
+                                                <binding destination="-2" name="selectedIndex" keyPath="settings.PreferredPortIndex" previousBinding="355" id="358"/>
+                                            </connections>
+                                        </popUpButtonCell>
+                                    </popUpButton>
+                                    <button verticalHuggingPriority="750" id="ltY-me-RZN">
+                                        <rect key="frame" x="185" y="268" width="328" height="18"/>
+                                        <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
+                                        <buttonCell key="cell" type="check" title="Automatically change port on connection error" bezelStyle="regularSquare" imagePosition="left" state="on" inset="2" id="MaQ-Cc-vuA">
+                                            <behavior key="behavior" changeContents="YES" doesNotDimImage="YES" lightByContents="YES"/>
+                                            <font key="font" size="13" name="SFProText-Regular"/>
+                                        </buttonCell>
+                                        <connections>
+                                            <binding destination="-2" name="value" keyPath="settings.IsAutoPortSelection" id="q5A-u5-fg7"/>
+                                        </connections>
+                                    </button>
+                                    <box boxType="custom" cornerRadius="4" title="Box" id="gwY-MT-6G6">
+                                        <rect key="frame" x="17" y="70" width="482" height="187"/>
+                                        <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
+                                        <view key="contentView" id="Nzd-BG-dKx">
+                                            <rect key="frame" x="1" y="1" width="480" height="185"/>
+                                            <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                                            <subviews>
+                                                <textField horizontalHuggingPriority="251" verticalHuggingPriority="750" id="194">
+                                                    <rect key="frame" x="3" y="152" width="145" height="19"/>
+                                                    <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
+                                                    <textFieldCell key="cell" scrollable="YES" lineBreakMode="clipping" sendsActionOnEndEditing="YES" alignment="right" title="Network proxy:" id="195">
+                                                        <font key="font" size="14" name="SFProText-Medium"/>
+                                                        <color key="textColor" name="labelColor" catalog="System" colorSpace="catalog"/>
+                                                        <color key="backgroundColor" name="controlColor" catalog="System" colorSpace="catalog"/>
+                                                    </textFieldCell>
+                                                </textField>
+                                                <matrix verticalHuggingPriority="750" allowsEmptySelection="NO" autorecalculatesCellSize="YES" id="185">
+                                                    <rect key="frame" x="165" y="151" width="260" height="18"/>
+                                                    <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
+                                                    <color key="backgroundColor" name="controlColor" catalog="System" colorSpace="catalog"/>
+                                                    <size key="cellSize" width="62" height="18"/>
+                                                    <size key="intercellSpacing" width="4" height="2"/>
+                                                    <buttonCell key="prototype" type="radio" title="Radio" imagePosition="left" alignment="left" inset="2" id="204">
+                                                        <behavior key="behavior" changeContents="YES" doesNotDimImage="YES" lightByContents="YES"/>
+                                                        <font key="font" size="13" name="SFProText-Regular"/>
+                                                    </buttonCell>
+                                                    <cells>
+                                                        <column>
+                                                            <buttonCell type="radio" title="None" imagePosition="left" alignment="left" state="on" tag="1" inset="2" id="205">
+                                                                <behavior key="behavior" changeContents="YES" doesNotDimImage="YES" lightByContents="YES"/>
+                                                                <font key="font" size="13" name="SFProText-Regular"/>
+                                                            </buttonCell>
+                                                        </column>
+                                                        <column>
+                                                            <buttonCell type="radio" title="Auto" imagePosition="left" alignment="left" tag="2" inset="2" id="206">
+                                                                <behavior key="behavior" changeContents="YES" doesNotDimImage="YES" lightByContents="YES"/>
+                                                                <font key="font" size="13" name="SFProText-Regular"/>
+                                                            </buttonCell>
+                                                        </column>
+                                                        <column>
+                                                            <buttonCell type="radio" title="HTTP" imagePosition="left" alignment="left" tag="3" inset="2" id="207">
+                                                                <behavior key="behavior" changeContents="YES" doesNotDimImage="YES" lightByContents="YES"/>
+                                                                <font key="font" size="13" name="SFProText-Regular"/>
+                                                            </buttonCell>
+                                                        </column>
+                                                        <column>
+                                                            <buttonCell type="radio" title="Socks" imagePosition="left" alignment="left" tag="4" inset="2" id="208">
+                                                                <behavior key="behavior" changeContents="YES" doesNotDimImage="YES" lightByContents="YES"/>
+                                                                <font key="font" size="13" name="SFProText-Regular"/>
+                                                            </buttonCell>
+                                                        </column>
+                                                    </cells>
+                                                    <connections>
+                                                        <binding destination="-2" name="selectedIndex" keyPath="settings.ProxyTypeId" id="249"/>
+                                                    </connections>
+                                                </matrix>
+                                                <textField verticalHuggingPriority="750" id="186">
+                                                    <rect key="frame" x="238" y="49" width="186" height="21"/>
+                                                    <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
+                                                    <textFieldCell key="cell" scrollable="YES" lineBreakMode="clipping" selectable="YES" editable="YES" sendsActionOnEndEditing="YES" state="on" borderStyle="bezel" drawsBackground="YES" id="203">
+                                                        <font key="font" metaFont="system"/>
+                                                        <color key="textColor" name="controlTextColor" catalog="System" colorSpace="catalog"/>
+                                                        <color key="backgroundColor" name="textBackgroundColor" catalog="System" colorSpace="catalog"/>
+                                                    </textFieldCell>
+                                                    <connections>
+                                                        <binding destination="-2" name="enabled" keyPath="settings.IsProxyEditable" id="265"/>
+                                                        <binding destination="-2" name="value" keyPath="settings.ProxyUsername" id="239"/>
+                                                    </connections>
+                                                </textField>
+                                                <textField verticalHuggingPriority="750" id="187">
+                                                    <rect key="frame" x="238" y="113" width="186" height="21"/>
+                                                    <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
+                                                    <textFieldCell key="cell" scrollable="YES" lineBreakMode="clipping" selectable="YES" editable="YES" sendsActionOnEndEditing="YES" state="on" borderStyle="bezel" drawsBackground="YES" id="202">
+                                                        <font key="font" metaFont="system"/>
+                                                        <color key="textColor" name="controlTextColor" catalog="System" colorSpace="catalog"/>
+                                                        <color key="backgroundColor" name="textBackgroundColor" catalog="System" colorSpace="catalog"/>
+                                                    </textFieldCell>
+                                                    <connections>
+                                                        <binding destination="-2" name="enabled" keyPath="settings.IsProxyEditable" id="259"/>
+                                                        <binding destination="-2" name="value" keyPath="settings.ProxyServer" id="231"/>
+                                                    </connections>
+                                                </textField>
+                                                <textField horizontalHuggingPriority="251" verticalHuggingPriority="750" id="188">
+                                                    <rect key="frame" x="139" y="48" width="88" height="19"/>
+                                                    <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
+                                                    <textFieldCell key="cell" scrollable="YES" lineBreakMode="clipping" sendsActionOnEndEditing="YES" alignment="right" title="Login:" id="201">
+                                                        <font key="font" size="14" name="SFProText-Regular"/>
+                                                        <color key="textColor" name="controlTextColor" catalog="System" colorSpace="catalog"/>
+                                                        <color key="backgroundColor" name="controlColor" catalog="System" colorSpace="catalog"/>
+                                                    </textFieldCell>
+                                                </textField>
+                                                <textField horizontalHuggingPriority="251" verticalHuggingPriority="750" id="189">
+                                                    <rect key="frame" x="139" y="81" width="88" height="17"/>
+                                                    <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
+                                                    <textFieldCell key="cell" scrollable="YES" lineBreakMode="clipping" sendsActionOnEndEditing="YES" alignment="right" title="Port:" id="200">
+                                                        <font key="font" size="14" name="SFProText-Regular"/>
+                                                        <color key="textColor" name="controlTextColor" catalog="System" colorSpace="catalog"/>
+                                                        <color key="backgroundColor" name="controlColor" catalog="System" colorSpace="catalog"/>
+                                                    </textFieldCell>
+                                                </textField>
+                                                <textField verticalHuggingPriority="750" id="190">
+                                                    <rect key="frame" x="238" y="81" width="186" height="21"/>
+                                                    <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
+                                                    <textFieldCell key="cell" scrollable="YES" lineBreakMode="clipping" selectable="YES" editable="YES" sendsActionOnEndEditing="YES" state="on" borderStyle="bezel" drawsBackground="YES" id="199">
+                                                        <font key="font" metaFont="system"/>
+                                                        <color key="textColor" name="controlTextColor" catalog="System" colorSpace="catalog"/>
+                                                        <color key="backgroundColor" name="textBackgroundColor" catalog="System" colorSpace="catalog"/>
+                                                    </textFieldCell>
+                                                    <connections>
+                                                        <binding destination="-2" name="enabled" keyPath="settings.IsProxyEditable" id="262"/>
+                                                        <binding destination="-2" name="value" keyPath="settings.ProxyPort" id="235"/>
+                                                    </connections>
+                                                </textField>
+                                                <secureTextField verticalHuggingPriority="750" id="191">
+                                                    <rect key="frame" x="238" y="17" width="186" height="21"/>
+                                                    <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
+                                                    <secureTextFieldCell key="cell" scrollable="YES" lineBreakMode="clipping" selectable="YES" editable="YES" sendsActionOnEndEditing="YES" borderStyle="bezel" drawsBackground="YES" usesSingleLineMode="YES" id="198">
+                                                        <font key="font" metaFont="system"/>
+                                                        <color key="textColor" name="controlTextColor" catalog="System" colorSpace="catalog"/>
+                                                        <color key="backgroundColor" name="textBackgroundColor" catalog="System" colorSpace="catalog"/>
+                                                        <allowedInputSourceLocales>
+                                                            <string>NSAllRomanInputSourcesLocaleIdentifier</string>
+                                                        </allowedInputSourceLocales>
+                                                    </secureTextFieldCell>
+                                                    <connections>
+                                                        <binding destination="-2" name="enabled" keyPath="settings.IsProxyEditable" id="268"/>
+                                                        <binding destination="-2" name="value" keyPath="settings.ProxyUnsafePassword" id="305"/>
+                                                    </connections>
+                                                </secureTextField>
+                                                <textField horizontalHuggingPriority="251" verticalHuggingPriority="750" id="193">
+                                                    <rect key="frame" x="139" y="115" width="88" height="17"/>
+                                                    <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
+                                                    <textFieldCell key="cell" scrollable="YES" lineBreakMode="clipping" sendsActionOnEndEditing="YES" alignment="right" title="Server:" id="196">
+                                                        <font key="font" size="14" name="SFProText-Regular"/>
+                                                        <color key="textColor" name="controlTextColor" catalog="System" colorSpace="catalog"/>
+                                                        <color key="backgroundColor" name="controlColor" catalog="System" colorSpace="catalog"/>
+                                                    </textFieldCell>
+                                                </textField>
+                                                <textField horizontalHuggingPriority="251" verticalHuggingPriority="750" id="192">
+                                                    <rect key="frame" x="127" y="19" width="100" height="17"/>
+                                                    <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
+                                                    <textFieldCell key="cell" scrollable="YES" lineBreakMode="clipping" sendsActionOnEndEditing="YES" alignment="right" title="Password:" id="197">
+                                                        <font key="font" size="14" name="SFProText-Regular"/>
+                                                        <color key="textColor" name="controlTextColor" catalog="System" colorSpace="catalog"/>
+                                                        <color key="backgroundColor" name="controlColor" catalog="System" colorSpace="catalog"/>
+                                                    </textFieldCell>
+                                                </textField>
+                                            </subviews>
+                                        </view>
+                                        <color key="borderColor" name="gridColor" catalog="System" colorSpace="catalog"/>
+                                    </box>
+                                    <textField horizontalHuggingPriority="251" verticalHuggingPriority="750" id="5Y6-rG-VBG">
+                                        <rect key="frame" x="11" y="42" width="158" height="17"/>
+                                        <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
+                                        <textFieldCell key="cell" scrollable="YES" lineBreakMode="clipping" sendsActionOnEndEditing="YES" alignment="right" title="Advanced:" id="rKW-mk-yme">
+                                            <font key="font" size="14" name="SFProText-Medium"/>
+                                            <color key="textColor" name="labelColor" catalog="System" colorSpace="catalog"/>
+                                            <color key="backgroundColor" name="controlColor" catalog="System" colorSpace="catalog"/>
+                                        </textFieldCell>
+                                    </textField>
+                                    <button id="77">
+                                        <rect key="frame" x="185" y="38" width="243" height="18"/>
+                                        <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
+                                        <buttonCell key="cell" type="check" title="Use obfsproxy" bezelStyle="regularSquare" imagePosition="left" state="on" inset="2" id="80">
+                                            <behavior key="behavior" changeContents="YES" doesNotDimImage="YES" lightByContents="YES"/>
+                                            <font key="font" size="13" name="SFProText-Regular"/>
+                                        </buttonCell>
+                                        <connections>
+                                            <binding destination="-2" name="value" keyPath="settings.ServiceUseObfsProxy" id="272"/>
+                                        </connections>
+                                    </button>
+                                    <textField horizontalHuggingPriority="251" verticalHuggingPriority="750" id="78">
+                                        <rect key="frame" x="185" y="14" width="275" height="18"/>
+                                        <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
+                                        <textFieldCell key="cell" scrollable="YES" lineBreakMode="clipping" sendsActionOnEndEditing="YES" title="Only enable if you have trouble connecting" id="79">
+                                            <font key="font" size="12" name="SFProText-Regular"/>
+                                            <color key="textColor" name="secondaryLabelColor" catalog="System" colorSpace="catalog"/>
+                                            <color key="backgroundColor" name="textBackgroundColor" catalog="System" colorSpace="catalog"/>
+                                        </textFieldCell>
+                                    </textField>
+                                </subviews>
+                            </view>
+                        </tabViewItem>
+                        <tabViewItem label="WireGuard configuration" identifier="" id="E95-3s-Dlh">
+                            <view key="view" id="1oz-KW-RAo">
+                                <rect key="frame" x="10" y="33" width="516" height="329"/>
+                                <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                                <subviews>
+                                    <customView id="Vvx-nJ-Xc1">
+                                        <rect key="frame" x="-3" y="107" width="522" height="97"/>
+                                        <autoresizingMask key="autoresizingMask" flexibleMinY="YES"/>
+                                        <subviews>
+                                            <textField horizontalHuggingPriority="251" verticalHuggingPriority="750" id="kas-g9-mfF">
+                                                <rect key="frame" x="16" y="53" width="479" height="24"/>
+                                                <autoresizingMask key="autoresizingMask" flexibleMinY="YES"/>
+                                                <textFieldCell key="cell" lineBreakMode="clipping" alignment="center" title="Registering new keys..." id="flo-7M-tEw">
+                                                    <font key="font" size="13" name="SFProText-Regular"/>
+                                                    <color key="textColor" name="labelColor" catalog="System" colorSpace="catalog"/>
+                                                    <color key="backgroundColor" name="textBackgroundColor" catalog="System" colorSpace="catalog"/>
+                                                </textFieldCell>
+                                                <connections>
+                                                    <binding destination="-2" name="value" keyPath="WireguardSettingsViewModel.ProgressStatus" id="7u4-Gg-ZUG"/>
+                                                </connections>
+                                            </textField>
+                                            <progressIndicator wantsLayer="YES" horizontalHuggingPriority="750" verticalHuggingPriority="750" maxValue="100" bezeled="NO" indeterminate="YES" controlSize="small" style="spinning" id="95a-lP-FF3">
+                                                <rect key="frame" x="247" y="28" width="16" height="16"/>
+                                                <autoresizingMask key="autoresizingMask" flexibleMinY="YES"/>
+                                            </progressIndicator>
+                                        </subviews>
+                                    </customView>
+                                    <customView id="82z-gM-6Hz">
+                                        <rect key="frame" x="-3" y="-46" width="522" height="370"/>
+                                        <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
+                                        <subviews>
+                                            <popUpButton verticalHuggingPriority="750" id="ZR1-tB-hSP">
+                                                <rect key="frame" x="188" y="335" width="192" height="26"/>
+                                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
+                                                <popUpButtonCell key="cell" type="push" title="Item 1" bezelStyle="rounded" alignment="left" lineBreakMode="truncatingTail" state="on" borderStyle="borderAndBezel" imageScaling="proportionallyDown" inset="2" selectedItem="acL-dG-zoq" id="qG2-SZ-V3p">
+                                                    <behavior key="behavior" lightByBackground="YES" lightByGray="YES"/>
+                                                    <font key="font" size="13" name="SFProText-Regular"/>
+                                                    <menu key="menu" id="aFR-Hk-wB6">
+                                                        <items>
+                                                            <menuItem title="Item 1" state="on" id="acL-dG-zoq"/>
+                                                            <menuItem title="Item 2" id="o5h-sM-RD6"/>
+                                                            <menuItem title="Item 3" id="thy-ca-tjr"/>
+                                                        </items>
+                                                    </menu>
+                                                    <connections>
+                                                        <binding destination="-2" name="contentValues" keyPath="settings.WireGuardPreferedPortValues" id="80T-Oe-ELf"/>
+                                                        <binding destination="-2" name="selectedIndex" keyPath="settings.WireGuardPreferredPortIndex" previousBinding="80T-Oe-ELf" id="hER-mX-Mmz"/>
+                                                    </connections>
+                                                </popUpButtonCell>
+                                            </popUpButton>
+                                            <textField horizontalHuggingPriority="251" verticalHuggingPriority="750" id="fsn-6c-Qq8">
+                                                <rect key="frame" x="25" y="341" width="158" height="19"/>
+                                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
+                                                <textFieldCell key="cell" scrollable="YES" lineBreakMode="clipping" sendsActionOnEndEditing="YES" alignment="right" title="Preferred port:" id="a5d-89-a52">
+                                                    <font key="font" size="14" name="SFProText-Medium"/>
+                                                    <color key="textColor" name="labelColor" catalog="System" colorSpace="catalog"/>
+                                                    <color key="backgroundColor" name="controlColor" catalog="System" colorSpace="catalog"/>
+                                                </textFieldCell>
+                                            </textField>
+                                            <textField horizontalHuggingPriority="251" verticalHuggingPriority="750" id="3IG-ar-7Li">
+                                                <rect key="frame" x="6" y="305" width="177" height="19"/>
+                                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
+                                                <textFieldCell key="cell" scrollable="YES" lineBreakMode="clipping" sendsActionOnEndEditing="YES" alignment="right" title="Regenerate key every" id="2aX-Kp-grq">
+                                                    <font key="font" size="14" name="SFProText-Medium"/>
+                                                    <color key="textColor" name="labelColor" catalog="System" colorSpace="catalog"/>
+                                                    <color key="backgroundColor" name="controlColor" catalog="System" colorSpace="catalog"/>
+                                                </textFieldCell>
+                                            </textField>
+                                            <popUpButton verticalHuggingPriority="750" id="2Bk-P7-D76">
+                                                <rect key="frame" x="188" y="301" width="60" height="26"/>
+                                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
+                                                <popUpButtonCell key="cell" type="push" title="7" bezelStyle="rounded" alignment="left" lineBreakMode="truncatingTail" state="on" borderStyle="borderAndBezel" tag="7" imageScaling="proportionallyDown" inset="2" selectedItem="G0l-ID-773" id="8mT-5B-SjW">
+                                                    <behavior key="behavior" lightByBackground="YES" lightByGray="YES"/>
+                                                    <font key="font" size="13" name="SFProText-Regular"/>
+                                                    <menu key="menu" id="sRR-eM-r5K">
+                                                        <items>
+                                                            <menuItem title="1" tag="1" id="7eJ-WF-SSr">
+                                                                <modifierMask key="keyEquivalentModifierMask"/>
+                                                            </menuItem>
+                                                            <menuItem title="2" tag="2" id="zue-fT-ELE">
+                                                                <modifierMask key="keyEquivalentModifierMask"/>
+                                                            </menuItem>
+                                                            <menuItem title="3" tag="3" id="RGi-Ix-phW">
+                                                                <modifierMask key="keyEquivalentModifierMask"/>
+                                                            </menuItem>
+                                                            <menuItem title="4" tag="4" id="EQ1-1v-omO">
+                                                                <modifierMask key="keyEquivalentModifierMask"/>
+                                                            </menuItem>
+                                                            <menuItem title="5" tag="5" id="Cgj-fC-Efe">
+                                                                <modifierMask key="keyEquivalentModifierMask"/>
+                                                            </menuItem>
+                                                            <menuItem title="6" tag="6" id="Tcc-CZ-2G1">
+                                                                <modifierMask key="keyEquivalentModifierMask"/>
+                                                            </menuItem>
+                                                            <menuItem title="7" state="on" tag="7" id="G0l-ID-773">
+                                                                <modifierMask key="keyEquivalentModifierMask"/>
+                                                            </menuItem>
+                                                            <menuItem title="8" tag="8" id="EiL-BR-Zig">
+                                                                <modifierMask key="keyEquivalentModifierMask"/>
+                                                            </menuItem>
+                                                            <menuItem title="9" tag="9" id="5ll-s1-Bbl">
+                                                                <modifierMask key="keyEquivalentModifierMask"/>
+                                                            </menuItem>
+                                                            <menuItem title="10" tag="10" id="jTl-xp-9rh">
+                                                                <modifierMask key="keyEquivalentModifierMask"/>
+                                                            </menuItem>
+                                                            <menuItem title="11" tag="11" id="WNT-es-l0P">
+                                                                <modifierMask key="keyEquivalentModifierMask"/>
+                                                            </menuItem>
+                                                            <menuItem title="12" tag="12" id="szl-Me-aK2">
+                                                                <modifierMask key="keyEquivalentModifierMask"/>
+                                                            </menuItem>
+                                                            <menuItem title="13" tag="13" id="vDi-kc-5Cx">
+                                                                <modifierMask key="keyEquivalentModifierMask"/>
+                                                            </menuItem>
+                                                            <menuItem title="14" tag="14" id="gw1-lk-8AG">
+                                                                <modifierMask key="keyEquivalentModifierMask"/>
+                                                            </menuItem>
+                                                            <menuItem title="15" tag="15" id="sjy-7v-4Jo">
+                                                                <modifierMask key="keyEquivalentModifierMask"/>
+                                                            </menuItem>
+                                                            <menuItem title="16" tag="16" id="Srz-jO-wGF">
+                                                                <modifierMask key="keyEquivalentModifierMask"/>
+                                                            </menuItem>
+                                                            <menuItem title="17" tag="17" id="XoH-gi-zY7">
+                                                                <modifierMask key="keyEquivalentModifierMask"/>
+                                                            </menuItem>
+                                                            <menuItem title="18" tag="18" id="IR5-wi-6ez">
+                                                                <modifierMask key="keyEquivalentModifierMask"/>
+                                                            </menuItem>
+                                                            <menuItem title="19" tag="19" id="1Zp-Ha-BiZ">
+                                                                <modifierMask key="keyEquivalentModifierMask"/>
+                                                            </menuItem>
+                                                            <menuItem title="20" tag="20" id="Wku-ba-85v">
+                                                                <modifierMask key="keyEquivalentModifierMask"/>
+                                                            </menuItem>
+                                                            <menuItem title="21" tag="21" id="KIR-by-NV3">
+                                                                <modifierMask key="keyEquivalentModifierMask"/>
+                                                            </menuItem>
+                                                            <menuItem title="22" tag="22" id="Ezs-oL-6R4">
+                                                                <modifierMask key="keyEquivalentModifierMask"/>
+                                                            </menuItem>
+                                                            <menuItem title="23" tag="23" id="yQt-ne-Nzq">
+                                                                <modifierMask key="keyEquivalentModifierMask"/>
+                                                            </menuItem>
+                                                            <menuItem title="24" tag="24" id="AS7-K8-o3V">
+                                                                <modifierMask key="keyEquivalentModifierMask"/>
+                                                            </menuItem>
+                                                            <menuItem title="25" tag="25" id="Gv1-zq-0G7">
+                                                                <modifierMask key="keyEquivalentModifierMask"/>
+                                                            </menuItem>
+                                                            <menuItem title="26" tag="26" id="BpK-U4-o0F">
+                                                                <modifierMask key="keyEquivalentModifierMask"/>
+                                                            </menuItem>
+                                                            <menuItem title="27" tag="27" id="I67-UN-PVh">
+                                                                <modifierMask key="keyEquivalentModifierMask"/>
+                                                            </menuItem>
+                                                            <menuItem title="28" tag="28" id="MB9-Oq-eoT">
+                                                                <modifierMask key="keyEquivalentModifierMask"/>
+                                                            </menuItem>
+                                                            <menuItem title="29" tag="29" id="g4i-pI-3eF">
+                                                                <modifierMask key="keyEquivalentModifierMask"/>
+                                                            </menuItem>
+                                                            <menuItem title="30" tag="30" id="W3q-Qo-yHK">
+                                                                <modifierMask key="keyEquivalentModifierMask"/>
+                                                            </menuItem>
+                                                        </items>
+                                                    </menu>
+                                                    <connections>
+                                                        <binding destination="-2" name="selectedTag" keyPath="WireguardSettingsViewModel.RegenerationIntervalDays" id="z0K-BW-JEB"/>
+                                                    </connections>
+                                                </popUpButtonCell>
+                                            </popUpButton>
+                                            <textField verticalHuggingPriority="750" horizontalCompressionResistancePriority="250" setsMaxLayoutWidthAtFirstLayout="YES" id="WqZ-g5-00g">
+                                                <rect key="frame" x="188" y="248" width="328" height="48"/>
+                                                <autoresizingMask key="autoresizingMask" flexibleMinX="YES" flexibleMaxX="YES" flexibleMinY="YES"/>
+                                                <textFieldCell key="cell" sendsActionOnEndEditing="YES" alignment="left" title="Keys regeneration will start automatically in the defined interval. It will also change the internal IP address." id="p0x-1e-wic">
+                                                    <font key="font" size="12" name="SFProText-Regular"/>
+                                                    <color key="textColor" name="secondaryLabelColor" catalog="System" colorSpace="catalog"/>
+                                                    <color key="backgroundColor" name="controlColor" catalog="System" colorSpace="catalog"/>
+                                                </textFieldCell>
+                                            </textField>
+                                            <textField horizontalHuggingPriority="251" verticalHuggingPriority="750" id="Hva-LF-ZuX">
+                                                <rect key="frame" x="252" y="305" width="177" height="19"/>
+                                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
+                                                <textFieldCell key="cell" scrollable="YES" lineBreakMode="clipping" sendsActionOnEndEditing="YES" alignment="left" title="days." id="EFd-7F-5eT">
+                                                    <font key="font" size="14" name="SFProText-Medium"/>
+                                                    <color key="textColor" name="labelColor" catalog="System" colorSpace="catalog"/>
+                                                    <color key="backgroundColor" name="controlColor" catalog="System" colorSpace="catalog"/>
+                                                </textFieldCell>
+                                            </textField>
+                                            <box boxType="secondary" title="Box" titlePosition="noTitle" id="E9B-og-lLT">
+                                                <rect key="frame" x="17" y="57" width="488" height="94"/>
+                                                <autoresizingMask key="autoresizingMask" flexibleMaxY="YES"/>
+                                                <view key="contentView" id="Lyd-Nh-NCS">
+                                                    <rect key="frame" x="3" y="3" width="482" height="88"/>
+                                                    <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                                                    <subviews>
+                                                        <textField verticalHuggingPriority="750" horizontalCompressionResistancePriority="250" setsMaxLayoutWidthAtFirstLayout="YES" id="278-Zd-2Og">
+                                                            <rect key="frame" x="4" y="8" width="460" height="40"/>
+                                                            <autoresizingMask key="autoresizingMask" flexibleMinX="YES" flexibleMaxY="YES"/>
+                                                            <textFieldCell key="cell" sendsActionOnEndEditing="YES" alignment="right" id="aza-Bo-bOp">
+                                                                <font key="font" size="12" name="SFProText-Regular"/>
+                                                                <string key="title">View detailed WireGuard configuration parameters or generate new Wireguard keys (If you manually deleted them from the client area for example).</string>
+                                                                <color key="textColor" name="labelColor" catalog="System" colorSpace="catalog"/>
+                                                                <color key="backgroundColor" name="controlColor" catalog="System" colorSpace="catalog"/>
+                                                            </textFieldCell>
+                                                        </textField>
+                                                        <button verticalHuggingPriority="750" id="lEo-rw-wld">
+                                                            <rect key="frame" x="345" y="49" width="126" height="32"/>
+                                                            <autoresizingMask key="autoresizingMask" flexibleMinX="YES" flexibleMaxY="YES"/>
+                                                            <buttonCell key="cell" type="push" title="Configuration" bezelStyle="rounded" alignment="center" borderStyle="border" imageScaling="proportionallyDown" inset="2" id="WCY-wt-UhI">
+                                                                <behavior key="behavior" pushIn="YES" lightByBackground="YES" lightByGray="YES"/>
+                                                                <font key="font" size="13" name="SFProText-Medium"/>
+                                                            </buttonCell>
+                                                            <connections>
+                                                                <action selector="ShowWireguardConfigDetails:" target="-2" id="SfK-Ug-NaI"/>
+                                                            </connections>
+                                                        </button>
+                                                    </subviews>
+                                                </view>
+                                            </box>
+                                        </subviews>
+                                    </customView>
+                                </subviews>
+                            </view>
+                        </tabViewItem>
+                    </tabViewItems>
+                </tabView>
+                <button id="bGf-d5-IJR">
+                    <rect key="frame" x="134" y="510" width="12" height="12"/>
+                    <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
+                    <buttonCell key="cell" type="square" bezelStyle="shadowlessSquare" image="iconInformation2" imagePosition="only" alignment="center" imageScaling="proportionallyUpOrDown" inset="2" id="4Lz-uB-LDc">
+                        <behavior key="behavior" pushIn="YES" lightByBackground="YES" lightByGray="YES"/>
+                        <font key="font" metaFont="system"/>
+                    </buttonCell>
+                    <connections>
+                        <action selector="OnGuiBtnOpenvpnTooltip:" target="-2" id="Cd8-fC-DBS"/>
+                    </connections>
+                </button>
+            </subviews>
+            <point key="canvasLocation" x="770" y="437.5"/>
+        </customView>
+        <customView id="82" userLabel="Firewall">
+            <rect key="frame" x="0.0" y="0.0" width="560" height="493"/>
+            <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
+            <subviews>
+                <textField horizontalHuggingPriority="251" verticalHuggingPriority="750" id="135">
+                    <rect key="frame" x="18" y="455" width="434" height="19"/>
+                    <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
+                    <textFieldCell key="cell" scrollable="YES" lineBreakMode="clipping" sendsActionOnEndEditing="YES" title="Non-VPN traffic blocking:" id="136">
+                        <font key="font" size="14" name="SFProText-Medium"/>
+                        <color key="textColor" name="labelColor" catalog="System" colorSpace="catalog"/>
+                        <color key="backgroundColor" name="controlColor" catalog="System" colorSpace="catalog"/>
+                    </textFieldCell>
+                </textField>
+                <textField verticalHuggingPriority="750" horizontalCompressionResistancePriority="250" setsMaxLayoutWidthAtFirstLayout="YES" id="155">
+                    <rect key="frame" x="61" y="258" width="433" height="61"/>
+                    <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
+                    <textFieldCell key="cell" sendsActionOnEndEditing="YES" id="156">
+                        <font key="font" size="12" name="SFProText-Regular"/>
+                        <string key="title">When this option is enabled the IVPN Firewall is started during system boot time before any other process. IVPN Firewall will always be active even when IVPN Client is not running.</string>
+                        <color key="textColor" name="secondaryLabelColor" catalog="System" colorSpace="catalog"/>
+                        <color key="backgroundColor" name="controlColor" catalog="System" colorSpace="catalog"/>
+                    </textFieldCell>
+                </textField>
+                <button id="158">
+                    <rect key="frame" x="40" y="114" width="412" height="18"/>
+                    <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
+                    <buttonCell key="cell" type="check" title="Allow LAN traffic when IVPN Firewall is enabled" bezelStyle="regularSquare" imagePosition="left" state="on" inset="2" id="159">
+                        <behavior key="behavior" changeContents="YES" doesNotDimImage="YES" lightByContents="YES"/>
+                        <font key="font" size="13" name="SFProText-Regular"/>
+                    </buttonCell>
+                    <connections>
+                        <binding destination="-2" name="value" keyPath="settings.FirewallAllowLAN" id="303"/>
+                    </connections>
+                </button>
+                <button id="174">
+                    <rect key="frame" x="40" y="176" width="412" height="18"/>
+                    <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
+                    <buttonCell key="cell" type="check" title="Deactivate IVPN Firewall on IVPN Client exit" bezelStyle="regularSquare" imagePosition="left" state="on" inset="2" id="175">
+                        <behavior key="behavior" changeContents="YES" doesNotDimImage="YES" lightByContents="YES"/>
+                        <font key="font" size="13" name="SFProText-Regular"/>
+                    </buttonCell>
+                    <connections>
+                        <binding destination="-2" name="value" keyPath="settings.FirewallDeactivationOnExit" id="298"/>
+                        <binding destination="-2" name="enabled" keyPath="settings.IsManualFirewall" id="309"/>
+                    </connections>
+                </button>
+                <textField horizontalHuggingPriority="251" verticalHuggingPriority="750" id="178">
+                    <rect key="frame" x="18" y="227" width="434" height="17"/>
+                    <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
+                    <textFieldCell key="cell" scrollable="YES" lineBreakMode="clipping" sendsActionOnEndEditing="YES" title="On-demand Firewall:" id="179">
+                        <font key="font" size="14" name="SFProText-Medium"/>
+                        <color key="textColor" name="labelColor" catalog="System" colorSpace="catalog"/>
+                        <color key="backgroundColor" name="controlColor" catalog="System" colorSpace="catalog"/>
+                    </textFieldCell>
+                    <connections>
+                        <binding destination="-2" name="enabled" keyPath="settings.IsManualFirewall" id="310"/>
+                    </connections>
+                </textField>
+                <textField horizontalHuggingPriority="251" verticalHuggingPriority="750" id="180">
+                    <rect key="frame" x="18" y="136" width="373" height="19"/>
+                    <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
+                    <textFieldCell key="cell" scrollable="YES" lineBreakMode="clipping" sendsActionOnEndEditing="YES" title="LAN settings:" id="181">
+                        <font key="font" size="14" name="SFProText-Medium"/>
+                        <color key="textColor" name="labelColor" catalog="System" colorSpace="catalog"/>
+                        <color key="backgroundColor" name="controlColor" catalog="System" colorSpace="catalog"/>
+                    </textFieldCell>
+                </textField>
+                <button id="172">
+                    <rect key="frame" x="40" y="195" width="446" height="31"/>
+                    <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
+                    <buttonCell key="cell" type="check" title="Activate on connect to VPN and deactivate on disconnect" bezelStyle="regularSquare" imagePosition="left" alignment="left" state="on" inset="2" id="177">
+                        <behavior key="behavior" changeContents="YES" doesNotDimImage="YES" lightByContents="YES"/>
+                        <font key="font" size="13" name="SFProText-Regular"/>
+                    </buttonCell>
+                    <connections>
+                        <binding destination="-2" name="value" keyPath="settings.FirewallAutoOnOff" id="295"/>
+                        <binding destination="-2" name="enabled" keyPath="settings.IsManualFirewall" id="po4-Iv-wl3"/>
+                    </connections>
+                </button>
+                <button id="152-YF-xvM">
+                    <rect key="frame" x="40" y="89" width="412" height="18"/>
+                    <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
+                    <buttonCell key="cell" type="check" title="Allow Multicast when LAN traffic is allowed" bezelStyle="regularSquare" imagePosition="left" state="on" inset="2" id="txC-h4-jYB">
+                        <behavior key="behavior" changeContents="YES" doesNotDimImage="YES" lightByContents="YES"/>
+                        <font key="font" size="13" name="SFProText-Regular"/>
+                    </buttonCell>
+                    <connections>
+                        <binding destination="-2" name="enabled" keyPath="settings.FirewallAllowLAN" id="CaX-TY-7pq"/>
+                        <binding destination="-2" name="value" keyPath="settings.FirewallAllowLANMulticast" id="ouv-yM-SQv"/>
+                    </connections>
+                </button>
+                <textField horizontalHuggingPriority="251" verticalHuggingPriority="750" id="j8X-yr-V9q">
+                    <rect key="frame" x="18" y="51" width="373" height="17"/>
+                    <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
+                    <textFieldCell key="cell" scrollable="YES" lineBreakMode="clipping" sendsActionOnEndEditing="YES" title="Miscellaneous:" id="LpF-Vk-Wmf">
+                        <font key="font" size="14" name="SFProText-Medium"/>
+                        <color key="textColor" name="labelColor" catalog="System" colorSpace="catalog"/>
+                        <color key="backgroundColor" name="controlColor" catalog="System" colorSpace="catalog"/>
+                    </textFieldCell>
+                </textField>
+                <button id="Qwt-lq-hOw">
+                    <rect key="frame" x="40" y="25" width="412" height="18"/>
+                    <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
+                    <buttonCell key="cell" type="check" title="Do not show IVPN Firewall notification window" bezelStyle="regularSquare" imagePosition="left" inset="2" id="lPV-ey-3IS">
+                        <behavior key="behavior" changeContents="YES" doesNotDimImage="YES" lightByContents="YES"/>
+                        <font key="font" size="13" name="SFProText-Regular"/>
+                    </buttonCell>
+                    <connections>
+                        <binding destination="-2" name="value" keyPath="settings.DisableFirewallNotificationWindow" id="vNL-Wg-7U7"/>
+                    </connections>
+                </button>
+                <button verticalHuggingPriority="750" id="BCg-sg-uMe">
+                    <rect key="frame" x="41" y="324" width="199" height="18"/>
+                    <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
+                    <buttonCell key="cell" type="radio" title="Always-on Firewall" bezelStyle="regularSquare" imagePosition="left" alignment="left" inset="2" id="w4B-7H-Yei">
+                        <behavior key="behavior" changeContents="YES" doesNotDimImage="YES" lightByContents="YES"/>
+                        <font key="font" size="13" name="SFProText-Regular"/>
+                    </buttonCell>
+                    <connections>
+                        <action selector="OnFirewallTypeChanged:" target="-2" id="tZy-Cn-oxY"/>
+                    </connections>
+                </button>
+                <button verticalHuggingPriority="750" id="6hC-Qy-kMd">
+                    <rect key="frame" x="41" y="424" width="245" height="18"/>
+                    <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
+                    <buttonCell key="cell" type="radio" title="On-demand" bezelStyle="regularSquare" imagePosition="left" alignment="left" inset="2" id="eVg-04-yWB">
+                        <behavior key="behavior" changeContents="YES" doesNotDimImage="YES" lightByContents="YES"/>
+                        <font key="font" size="13" name="SFProText-Regular"/>
+                    </buttonCell>
+                    <connections>
+                        <action selector="OnFirewallTypeChanged:" target="-2" id="EWw-JD-MGK"/>
+                    </connections>
+                </button>
+                <textField verticalHuggingPriority="750" horizontalCompressionResistancePriority="250" setsMaxLayoutWidthAtFirstLayout="YES" id="tZn-JS-L7F">
+                    <rect key="frame" x="61" y="356" width="433" height="61"/>
+                    <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
+                    <textFieldCell key="cell" sendsActionOnEndEditing="YES" id="RKs-o1-h3e">
+                        <font key="font" size="12" name="SFProText-Regular"/>
+                        <string key="title">When this option is enabled the IVPN Firewall can be either manually activated or automatically activated when the VPN connection is established - see On-demand Firewall options below.</string>
+                        <color key="textColor" name="secondaryLabelColor" catalog="System" colorSpace="catalog"/>
+                        <color key="backgroundColor" name="textBackgroundColor" catalog="System" colorSpace="catalog"/>
+                    </textFieldCell>
+                </textField>
+            </subviews>
+            <point key="canvasLocation" x="771" y="1130.5"/>
+        </customView>
+        <userDefaultsController representsSharedInstance="YES" id="209"/>
+        <customView id="KIt-0M-8fk" userLabel="OpenVPN">
+            <rect key="frame" x="0.0" y="0.0" width="562" height="214"/>
+            <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
+            <subviews>
+                <textField horizontalHuggingPriority="251" verticalHuggingPriority="750" id="f1q-Zk-F8H">
+                    <rect key="frame" x="18" y="173" width="434" height="19"/>
+                    <autoresizingMask key="autoresizingMask" flexibleMinY="YES"/>
+                    <textFieldCell key="cell" scrollable="YES" lineBreakMode="clipping" sendsActionOnEndEditing="YES" title="OpenVPN additional configuration parameters:" id="Qmq-rf-74l">
+                        <font key="font" size="14" name="SFProText-Medium"/>
+                        <color key="textColor" name="labelColor" catalog="System" colorSpace="catalog"/>
+                        <color key="backgroundColor" name="textBackgroundColor" catalog="System" colorSpace="catalog"/>
+                    </textFieldCell>
+                </textField>
+                <textField verticalHuggingPriority="750" horizontalCompressionResistancePriority="250" id="Bid-Xs-k70">
+                    <rect key="frame" x="18" y="112" width="526" height="55"/>
+                    <autoresizingMask key="autoresizingMask" flexibleMinY="YES"/>
+                    <textFieldCell key="cell" sendsActionOnEndEditing="YES" alignment="left" id="Osz-wS-aRA">
+                        <font key="font" size="12" name="SFProText-Regular"/>
+                        <string key="title">Please be aware that adding parameters may affect the proper functioning of the VPN tunnel. Only add parameters if you understand what you are doing or have been requested to do so by IVPN support.</string>
+                        <color key="textColor" name="secondaryLabelColor" catalog="System" colorSpace="catalog"/>
+                        <color key="backgroundColor" name="controlColor" catalog="System" colorSpace="catalog"/>
+                    </textFieldCell>
+                </textField>
+                <scrollView wantsLayer="YES" horizontalLineScroll="10" horizontalPageScroll="10" verticalLineScroll="10" verticalPageScroll="10" usesPredominantAxisScrolling="NO" id="DV0-rh-oWK">
+                    <rect key="frame" x="20" y="22" width="522" height="76"/>
+                    <autoresizingMask key="autoresizingMask" flexibleMaxY="YES"/>
+                    <clipView key="contentView" drawsBackground="NO" id="AX3-D8-LjV">
+                        <rect key="frame" x="1" y="1" width="520" height="74"/>
+                        <autoresizingMask key="autoresizingMask"/>
+                        <subviews>
+                            <textView importsGraphics="NO" richText="NO" verticallyResizable="YES" usesFontPanel="YES" findStyle="panel" allowsUndo="YES" usesRuler="YES" allowsNonContiguousLayout="YES" textCompletion="NO" id="rKT-DC-ZFe">
+                                <rect key="frame" x="0.0" y="0.0" width="505" height="74"/>
+                                <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                                <color key="textColor" name="textColor" catalog="System" colorSpace="catalog"/>
+                                <color key="backgroundColor" name="textBackgroundColor" catalog="System" colorSpace="catalog"/>
+                                <size key="minSize" width="505" height="74"/>
+                                <size key="maxSize" width="558" height="10000000"/>
+                                <color key="insertionPointColor" name="controlTextColor" catalog="System" colorSpace="catalog"/>
+                                <connections>
+                                    <binding destination="-2" name="value" keyPath="settings.OpenVPNExtraParameters" id="Qk7-tg-GT3"/>
+                                </connections>
+                            </textView>
+                        </subviews>
+                    </clipView>
+                    <scroller key="horizontalScroller" wantsLayer="YES" verticalHuggingPriority="750" doubleValue="1" horizontal="YES" id="zpv-Qv-AtG">
+                        <rect key="frame" x="1" y="59" width="520" height="16"/>
+                        <autoresizingMask key="autoresizingMask"/>
+                    </scroller>
+                    <scroller key="verticalScroller" wantsLayer="YES" verticalHuggingPriority="750" horizontal="NO" id="drQ-7R-AOK">
+                        <rect key="frame" x="505" y="1" width="16" height="74"/>
+                        <autoresizingMask key="autoresizingMask"/>
+                    </scroller>
+                </scrollView>
+            </subviews>
+            <point key="canvasLocation" x="770" y="2124"/>
+        </customView>
+        <customView id="0UW-e9-Oh9" userLabel="Networks">
+            <rect key="frame" x="0.0" y="0.0" width="562" height="453"/>
+            <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
+            <subviews>
+                <button verticalHuggingPriority="750" id="7yZ-0r-g4L">
+                    <rect key="frame" x="18" y="411" width="514" height="18"/>
+                    <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
+                    <buttonCell key="cell" type="check" title="Trusted / Untrusted networks control" bezelStyle="regularSquare" imagePosition="left" state="on" inset="2" id="3oh-Qd-txv">
+                        <behavior key="behavior" changeContents="YES" doesNotDimImage="YES" lightByContents="YES"/>
+                        <font key="font" size="13" name="SFProText-Medium"/>
+                    </buttonCell>
+                    <connections>
+                        <binding destination="-2" name="value" keyPath="settings.IsNetworkActionsEnabled" id="cZF-rI-vFG"/>
+                    </connections>
+                </button>
+                <textField verticalHuggingPriority="750" horizontalCompressionResistancePriority="250" id="x5P-Dd-iEX">
+                    <rect key="frame" x="38" y="361" width="494" height="45"/>
+                    <autoresizingMask key="autoresizingMask" flexibleMinY="YES"/>
+                    <textFieldCell key="cell" sendsActionOnEndEditing="YES" alignment="left" title="By enabling this feature you can define a network as trusted or untrusted  and what actions to take when joining the network" id="7S2-bV-X14">
+                        <font key="font" size="12" name="SFProText-Regular"/>
+                        <color key="textColor" name="secondaryLabelColor" catalog="System" colorSpace="catalog"/>
+                        <color key="backgroundColor" name="controlColor" catalog="System" colorSpace="catalog"/>
+                    </textFieldCell>
+                </textField>
+                <tabView id="2xc-bv-I0F">
+                    <rect key="frame" x="13" y="10" width="536" height="341"/>
+                    <autoresizingMask key="autoresizingMask" flexibleMaxY="YES"/>
+                    <font key="font" metaFont="system"/>
+                    <tabViewItems>
+                        <tabViewItem label="WiFi networks" identifier="" id="1zM-0x-LkU">
+                            <view key="view" id="NQu-Bi-pxF">
+                                <rect key="frame" x="10" y="33" width="516" height="295"/>
+                                <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                                <subviews>
+                                    <popUpButton id="vcg-e9-2yZ">
+                                        <rect key="frame" x="299" y="255" width="203" height="31"/>
+                                        <autoresizingMask key="autoresizingMask" flexibleMinX="YES" flexibleMinY="YES"/>
+                                        <popUpButtonCell key="cell" type="push" title="No action" bezelStyle="rounded" alignment="center" lineBreakMode="truncatingTail" state="on" borderStyle="border" imageScaling="proportionallyDown" inset="2" selectedItem="6mU-Qr-Mz0" id="g1r-vi-5pf">
+                                            <behavior key="behavior" pushIn="YES" lightByBackground="YES" lightByGray="YES"/>
+                                            <font key="font" size="13" name="SFProText-Medium"/>
+                                            <menu key="menu" id="3PY-qb-bqb">
+                                                <items>
+                                                    <menuItem title="No action" state="on" id="6mU-Qr-Mz0"/>
+                                                    <menuItem title="Untrusted" id="HNq-nw-3TF"/>
+                                                    <menuItem title="Trusted" id="Nfw-W0-6Cj"/>
+                                                </items>
+                                            </menu>
+                                        </popUpButtonCell>
+                                        <connections>
+                                            <action selector="OnNetworksDefaultActionChanged:" target="-2" id="8Wf-Z2-zKl"/>
+                                        </connections>
+                                    </popUpButton>
+                                    <textField horizontalHuggingPriority="251" verticalHuggingPriority="750" id="YIV-Qz-J1R">
+                                        <rect key="frame" x="15" y="262" width="279" height="19"/>
+                                        <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
+                                        <textFieldCell key="cell" scrollable="YES" lineBreakMode="clipping" sendsActionOnEndEditing="YES" title="Default trust status for undefined networks:" id="8Ky-ws-pmp">
+                                            <font key="font" size="13" name="SFProText-Medium"/>
+                                            <color key="textColor" name="labelColor" catalog="System" colorSpace="catalog"/>
+                                            <color key="backgroundColor" name="controlColor" catalog="System" colorSpace="catalog"/>
+                                        </textFieldCell>
+                                    </textField>
+                                    <scrollView horizontalLineScroll="10" horizontalPageScroll="10" verticalLineScroll="10" verticalPageScroll="10" usesPredominantAxisScrolling="NO" id="SYS-ug-7wy">
+                                        <rect key="frame" x="17" y="61" width="482" height="176"/>
+                                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                                        <clipView key="contentView" id="9d7-k6-HGz">
+                                            <rect key="frame" x="1" y="1" width="480" height="174"/>
+                                            <autoresizingMask key="autoresizingMask"/>
+                                            <subviews>
+                                                <view id="IhW-jE-gqj" userLabel="NetworksView">
+                                                    <rect key="frame" x="0.0" y="0.0" width="450" height="144"/>
+                                                    <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                                                </view>
+                                            </subviews>
+                                        </clipView>
+                                        <scroller key="horizontalScroller" wantsLayer="YES" verticalHuggingPriority="750" horizontal="YES" id="X4d-lv-2yA">
+                                            <rect key="frame" x="1" y="159" width="480" height="16"/>
+                                            <autoresizingMask key="autoresizingMask"/>
+                                        </scroller>
+                                        <scroller key="verticalScroller" wantsLayer="YES" verticalHuggingPriority="750" doubleValue="1" horizontal="NO" id="rRO-R4-wqO">
+                                            <rect key="frame" x="465" y="1" width="16" height="174"/>
+                                            <autoresizingMask key="autoresizingMask"/>
+                                        </scroller>
+                                    </scrollView>
+                                    <button verticalHuggingPriority="750" id="FHA-cK-t1h">
+                                        <rect key="frame" x="15" y="22" width="163" height="19"/>
+                                        <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                        <buttonCell key="cell" type="check" title="Show all WiFi networks" bezelStyle="regularSquare" imagePosition="left" state="on" inset="2" id="mHu-xW-5R6">
+                                            <behavior key="behavior" changeContents="YES" doesNotDimImage="YES" lightByContents="YES"/>
+                                            <font key="font" size="13" name="SFProText-Regular"/>
+                                        </buttonCell>
+                                        <connections>
+                                            <binding destination="-2" name="value" keyPath="NetworksViewModel.IsShowAllNetworks" id="hus-WN-63Z"/>
+                                        </connections>
+                                    </button>
+                                    <button verticalHuggingPriority="750" id="0eo-E1-oi1" userLabel="Button_AllNetworksToDefault">
+                                        <rect key="frame" x="295" y="13" width="210" height="32"/>
+                                        <autoresizingMask key="autoresizingMask" flexibleMinX="YES" flexibleMaxY="YES"/>
+                                        <buttonCell key="cell" type="push" title="Reset to default settings" bezelStyle="rounded" alignment="center" borderStyle="border" imageScaling="proportionallyDown" inset="2" id="Gc2-U8-Zgf">
+                                            <behavior key="behavior" pushIn="YES" lightByBackground="YES" lightByGray="YES"/>
+                                            <font key="font" size="13" name="SFProText-Medium"/>
+                                        </buttonCell>
+                                        <connections>
+                                            <action selector="SetAllNetworksToDefaultAction:" target="-2" id="Qjs-Fx-yNO"/>
+                                        </connections>
+                                    </button>
+                                </subviews>
+                            </view>
+                        </tabViewItem>
+                        <tabViewItem label="Actions" identifier="" id="p2c-hh-9it">
+                            <view key="view" id="iIS-gM-1TF">
+                                <rect key="frame" x="10" y="33" width="516" height="295"/>
+                                <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                                <subviews>
+                                    <textField horizontalHuggingPriority="251" verticalHuggingPriority="750" id="Igc-JN-HTa">
+                                        <rect key="frame" x="15" y="274" width="201" height="18"/>
+                                        <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
+                                        <textFieldCell key="cell" scrollable="YES" lineBreakMode="clipping" sendsActionOnEndEditing="YES" title="Actions for Untrusted WiFi" id="Usk-Ve-wyd">
+                                            <font key="font" metaFont="systemMedium" size="14"/>
+                                            <color key="textColor" name="labelColor" catalog="System" colorSpace="catalog"/>
+                                            <color key="backgroundColor" name="controlColor" catalog="System" colorSpace="catalog"/>
+                                        </textFieldCell>
+                                    </textField>
+                                    <textField horizontalHuggingPriority="251" verticalHuggingPriority="750" id="RZv-oZ-Yyi">
+                                        <rect key="frame" x="15" y="194" width="201" height="18"/>
+                                        <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
+                                        <textFieldCell key="cell" scrollable="YES" lineBreakMode="clipping" sendsActionOnEndEditing="YES" title="Actions for Trusted WiFi" id="g2F-4T-bHM">
+                                            <font key="font" metaFont="systemMedium" size="14"/>
+                                            <color key="textColor" name="labelColor" catalog="System" colorSpace="catalog"/>
+                                            <color key="backgroundColor" name="controlColor" catalog="System" colorSpace="catalog"/>
+                                        </textFieldCell>
+                                    </textField>
+                                    <button verticalHuggingPriority="750" id="hla-Jf-c6l">
+                                        <rect key="frame" x="35" y="250" width="181" height="18"/>
+                                        <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
+                                        <buttonCell key="cell" type="check" title="Connect to VPN" bezelStyle="regularSquare" imagePosition="left" state="on" inset="2" id="9g8-0I-KQP">
+                                            <behavior key="behavior" changeContents="YES" doesNotDimImage="YES" lightByContents="YES"/>
+                                            <font key="font" metaFont="system"/>
+                                        </buttonCell>
+                                        <connections>
+                                            <binding destination="-2" name="value" keyPath="NetworkActions.UnTrustedConnectToVPN" id="Pvb-6f-ol4"/>
+                                        </connections>
+                                    </button>
+                                    <button verticalHuggingPriority="750" id="4gm-s9-Idw">
+                                        <rect key="frame" x="35" y="225" width="181" height="18"/>
+                                        <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
+                                        <buttonCell key="cell" type="check" title="Enable firewall" bezelStyle="regularSquare" imagePosition="left" state="on" inset="2" id="hVy-3l-NBn">
+                                            <behavior key="behavior" changeContents="YES" doesNotDimImage="YES" lightByContents="YES"/>
+                                            <font key="font" metaFont="system"/>
+                                        </buttonCell>
+                                        <connections>
+                                            <binding destination="-2" name="value" keyPath="NetworkActions.UnTrustedEnableKillSwitch" id="Kpz-Cy-T0a"/>
+                                        </connections>
+                                    </button>
+                                    <button verticalHuggingPriority="750" id="C3D-Aw-yXo">
+                                        <rect key="frame" x="35" y="170" width="181" height="18"/>
+                                        <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
+                                        <buttonCell key="cell" type="check" title="Disconnect from VPN" bezelStyle="regularSquare" imagePosition="left" state="on" inset="2" id="tBi-10-Kkx">
+                                            <behavior key="behavior" changeContents="YES" doesNotDimImage="YES" lightByContents="YES"/>
+                                            <font key="font" metaFont="system"/>
+                                        </buttonCell>
+                                        <connections>
+                                            <binding destination="-2" name="value" keyPath="NetworkActions.TrustedDisconnectFromVPN" id="Kxr-Xg-7tx"/>
+                                        </connections>
+                                    </button>
+                                    <button verticalHuggingPriority="750" id="XwW-7F-l86">
+                                        <rect key="frame" x="35" y="145" width="181" height="18"/>
+                                        <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
+                                        <buttonCell key="cell" type="check" title="Disable firewall" bezelStyle="regularSquare" imagePosition="left" state="on" inset="2" id="Beh-jt-yhj">
+                                            <behavior key="behavior" changeContents="YES" doesNotDimImage="YES" lightByContents="YES"/>
+                                            <font key="font" metaFont="system"/>
+                                        </buttonCell>
+                                        <connections>
+                                            <binding destination="-2" name="value" keyPath="NetworkActions.TrustedDisableKillSwitch" id="SL6-gY-xAD"/>
+                                        </connections>
+                                    </button>
+                                </subviews>
+                            </view>
+                        </tabViewItem>
+                    </tabViewItems>
+                </tabView>
+            </subviews>
+            <point key="canvasLocation" x="770" y="1743.5"/>
+        </customView>
+        <window title="WireGuard configuration parameters" allowsToolTipsWhenApplicationIsInactive="NO" autorecalculatesKeyViewLoop="NO" releasedWhenClosed="NO" visibleAtLaunch="NO" frameAutosaveName="" animationBehavior="default" id="Ub4-KR-MaY" customClass="NSPanel">
+            <windowStyleMask key="styleMask" titled="YES" closable="YES"/>
+            <windowPositionMask key="initialPositionMask" leftStrut="YES" rightStrut="YES" topStrut="YES" bottomStrut="YES"/>
+            <rect key="contentRect" x="-2288" y="172" width="363" height="256"/>
+            <rect key="screenRect" x="-2560" y="0.0" width="2560" height="1417"/>
+            <view key="contentView" id="kZu-Ie-I8Q">
+                <rect key="frame" x="0.0" y="0.0" width="363" height="256"/>
+                <autoresizingMask key="autoresizingMask"/>
+                <subviews>
+                    <customView id="PMC-ER-FDp">
+                        <rect key="frame" x="0.0" y="0.0" width="363" height="256"/>
+                        <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
+                        <subviews>
+                            <textField horizontalHuggingPriority="251" verticalHuggingPriority="750" id="gFa-ip-LWE">
+                                <rect key="frame" x="6" y="189" width="94" height="19"/>
+                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
+                                <textFieldCell key="cell" scrollable="YES" lineBreakMode="clipping" sendsActionOnEndEditing="YES" alignment="right" title="Public key:" id="rt6-rQ-qj3">
+                                    <font key="font" size="14" name="SFProText-Medium"/>
+                                    <color key="textColor" name="controlTextColor" catalog="System" colorSpace="catalog"/>
+                                    <color key="backgroundColor" name="controlColor" catalog="System" colorSpace="catalog"/>
+                                </textFieldCell>
+                            </textField>
+                            <textField verticalHuggingPriority="750" id="jeb-qk-Efb">
+                                <rect key="frame" x="106" y="153" width="240" height="54"/>
+                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
+                                <textFieldCell key="cell" lineBreakMode="charWrapping" selectable="YES" sendsActionOnEndEditing="YES" state="on" borderStyle="bezel" alignment="left" drawsBackground="YES" id="NNX-ms-3eW">
+                                    <font key="font" metaFont="cellTitle"/>
+                                    <color key="textColor" name="disabledControlTextColor" catalog="System" colorSpace="catalog"/>
+                                    <color key="backgroundColor" name="textBackgroundColor" catalog="System" colorSpace="catalog"/>
+                                </textFieldCell>
+                                <connections>
+                                    <binding destination="-2" name="value" keyPath="WireguardSettingsViewModel.WireGuardClientPublicKey" id="Bn2-Wv-tlf"/>
+                                </connections>
+                            </textField>
+                            <textField horizontalHuggingPriority="251" verticalHuggingPriority="750" id="kuH-Og-IXP">
+                                <rect key="frame" x="18" y="219" width="83" height="18"/>
+                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
+                                <textFieldCell key="cell" scrollable="YES" lineBreakMode="clipping" sendsActionOnEndEditing="YES" alignment="right" title="Local IP:" id="fei-LH-Nqc">
+                                    <font key="font" size="14" name="SFProText-Medium"/>
+                                    <color key="textColor" name="controlTextColor" catalog="System" colorSpace="catalog"/>
+                                    <color key="backgroundColor" name="controlColor" catalog="System" colorSpace="catalog"/>
+                                </textFieldCell>
+                            </textField>
+                            <textField verticalHuggingPriority="750" id="L4Q-hK-Wmc">
+                                <rect key="frame" x="107" y="215" width="134" height="21"/>
+                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
+                                <textFieldCell key="cell" scrollable="YES" lineBreakMode="clipping" selectable="YES" sendsActionOnEndEditing="YES" state="on" borderStyle="bezel" alignment="left" title="0.0.0.0" drawsBackground="YES" id="UW0-kR-q9P">
+                                    <font key="font" metaFont="cellTitle"/>
+                                    <color key="textColor" name="disabledControlTextColor" catalog="System" colorSpace="catalog"/>
+                                    <color key="backgroundColor" name="textBackgroundColor" catalog="System" colorSpace="catalog"/>
+                                </textFieldCell>
+                                <connections>
+                                    <binding destination="-2" name="value" keyPath="WireguardSettingsViewModel.WireGuardClientInternalIp" id="9rW-7g-tvA"/>
+                                </connections>
+                            </textField>
+                            <box title="Key date info" titlePosition="noTitle" id="Ebv-Mm-MiY">
+                                <rect key="frame" x="17" y="47" width="332" height="92"/>
+                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
+                                <view key="contentView" id="hdX-QP-hvl">
+                                    <rect key="frame" x="3" y="3" width="326" height="86"/>
+                                    <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                                    <subviews>
+                                        <textField horizontalHuggingPriority="251" verticalHuggingPriority="750" id="Qkn-nf-lde">
+                                            <rect key="frame" x="63" y="36" width="157" height="18"/>
+                                            <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
+                                            <textFieldCell key="cell" scrollable="YES" lineBreakMode="clipping" sendsActionOnEndEditing="YES" alignment="right" title="Expiration date:" id="KRO-bx-gnC">
+                                                <font key="font" size="13" name="SFProText-Regular"/>
+                                                <color key="textColor" name="controlTextColor" catalog="System" colorSpace="catalog"/>
+                                                <color key="backgroundColor" name="controlColor" catalog="System" colorSpace="catalog"/>
+                                            </textFieldCell>
+                                        </textField>
+                                        <textField horizontalHuggingPriority="251" verticalHuggingPriority="750" id="jCh-A3-iEr">
+                                            <rect key="frame" x="-2" y="10" width="222" height="18"/>
+                                            <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
+                                            <textFieldCell key="cell" sendsActionOnEndEditing="YES" alignment="right" title="Will be automatically regenerated:" id="u94-LL-bKa">
+                                                <font key="font" size="13" name="SFProText-Regular"/>
+                                                <color key="textColor" name="controlTextColor" catalog="System" colorSpace="catalog"/>
+                                                <color key="backgroundColor" name="controlColor" catalog="System" colorSpace="catalog"/>
+                                            </textFieldCell>
+                                        </textField>
+                                        <textField horizontalHuggingPriority="251" verticalHuggingPriority="750" id="8qm-BH-MPi">
+                                            <rect key="frame" x="70" y="62" width="150" height="18"/>
+                                            <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
+                                            <textFieldCell key="cell" scrollable="YES" lineBreakMode="clipping" sendsActionOnEndEditing="YES" alignment="right" title="Generated:" id="cCY-9u-q2C">
+                                                <font key="font" size="13" name="SFProText-Regular"/>
+                                                <color key="textColor" name="controlTextColor" catalog="System" colorSpace="catalog"/>
+                                                <color key="backgroundColor" name="controlColor" catalog="System" colorSpace="catalog"/>
+                                            </textFieldCell>
+                                        </textField>
+                                        <textField horizontalHuggingPriority="251" verticalHuggingPriority="750" id="MzD-tJ-8iT">
+                                            <rect key="frame" x="224" y="62" width="86" height="18"/>
+                                            <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
+                                            <textFieldCell key="cell" scrollable="YES" lineBreakMode="clipping" sendsActionOnEndEditing="YES" alignment="left" title="2019.02.10" id="CC3-Dc-B0X">
+                                                <font key="font" size="13" name="SFProText-Regular"/>
+                                                <color key="textColor" name="controlTextColor" catalog="System" colorSpace="catalog"/>
+                                                <color key="backgroundColor" name="controlColor" catalog="System" colorSpace="catalog"/>
+                                            </textFieldCell>
+                                            <connections>
+                                                <binding destination="-2" name="value" keyPath="WireguardSettingsViewModel.Generated" id="03S-Wr-4Hv"/>
+                                            </connections>
+                                        </textField>
+                                        <textField horizontalHuggingPriority="251" verticalHuggingPriority="750" id="3AL-7t-9Cm">
+                                            <rect key="frame" x="222" y="36" width="88" height="18"/>
+                                            <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
+                                            <textFieldCell key="cell" scrollable="YES" lineBreakMode="clipping" sendsActionOnEndEditing="YES" alignment="left" title="2019.03.20" id="XSF-OR-lbc">
+                                                <font key="font" size="13" name="SFProText-Regular"/>
+                                                <color key="textColor" name="controlTextColor" catalog="System" colorSpace="catalog"/>
+                                                <color key="backgroundColor" name="controlColor" catalog="System" colorSpace="catalog"/>
+                                            </textFieldCell>
+                                            <connections>
+                                                <binding destination="-2" name="value" keyPath="WireguardSettingsViewModel.ExpirationDate" id="WVk-Yh-Gqw"/>
+                                            </connections>
+                                        </textField>
+                                        <textField horizontalHuggingPriority="251" verticalHuggingPriority="750" id="wst-h7-stg">
+                                            <rect key="frame" x="222" y="10" width="88" height="18"/>
+                                            <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
+                                            <textFieldCell key="cell" scrollable="YES" lineBreakMode="clipping" sendsActionOnEndEditing="YES" alignment="left" title="2019.03.10" id="yhl-vr-djV">
+                                                <font key="font" size="13" name="SFProText-Regular"/>
+                                                <color key="textColor" name="controlTextColor" catalog="System" colorSpace="catalog"/>
+                                                <color key="backgroundColor" name="controlColor" catalog="System" colorSpace="catalog"/>
+                                            </textFieldCell>
+                                            <connections>
+                                                <binding destination="-2" name="value" keyPath="WireguardSettingsViewModel.AutoRegenerationDate" id="cGs-Tc-pvS"/>
+                                            </connections>
+                                        </textField>
+                                    </subviews>
+                                </view>
+                                <font key="titleFont" metaFont="systemMedium" size="14"/>
+                            </box>
+                            <button verticalHuggingPriority="750" id="HTp-ZU-jfd">
+                                <rect key="frame" x="236" y="13" width="113" height="32"/>
+                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
+                                <buttonCell key="cell" type="push" title="Regenerate" bezelStyle="rounded" alignment="center" borderStyle="border" imageScaling="proportionallyDown" inset="2" id="o27-4S-uwC">
+                                    <behavior key="behavior" pushIn="YES" lightByBackground="YES" lightByGray="YES"/>
+                                    <font key="font" size="13" name="SFProText-Medium"/>
+                                </buttonCell>
+                                <connections>
+                                    <action selector="GenerateWireguardKeysBtn:" target="-2" id="3BH-qm-9yX"/>
+                                </connections>
+                            </button>
+                        </subviews>
+                    </customView>
+                </subviews>
+            </view>
+            <point key="canvasLocation" x="1267" y="417"/>
+        </window>
+        <customView id="h5U-VJ-qyr">
+            <rect key="frame" x="0.0" y="0.0" width="363" height="256"/>
+            <autoresizingMask key="autoresizingMask" flexibleMinY="YES"/>
+            <subviews>
+                <textField horizontalHuggingPriority="251" verticalHuggingPriority="750" id="ikS-yS-4Rq">
+                    <rect key="frame" x="-2" y="144" width="367" height="24"/>
+                    <autoresizingMask key="autoresizingMask" widthSizable="YES" flexibleMinY="YES"/>
+                    <textFieldCell key="cell" lineBreakMode="clipping" alignment="center" title="Registering new keys..." id="Zh1-s4-lkx">
+                        <font key="font" size="13" name="SFProText-Regular"/>
+                        <color key="textColor" name="labelColor" catalog="System" colorSpace="catalog"/>
+                        <color key="backgroundColor" name="textBackgroundColor" catalog="System" colorSpace="catalog"/>
+                    </textFieldCell>
+                    <connections>
+                        <binding destination="-2" name="value" keyPath="WireguardSettingsViewModel.ProgressStatus" id="rk6-oP-NC1"/>
+                    </connections>
+                </textField>
+                <progressIndicator wantsLayer="YES" horizontalHuggingPriority="750" verticalHuggingPriority="750" maxValue="100" bezeled="NO" indeterminate="YES" controlSize="small" style="spinning" id="U2i-bj-VqZ">
+                    <rect key="frame" x="173" y="120" width="16" height="16"/>
+                    <autoresizingMask key="autoresizingMask" flexibleMinY="YES"/>
+                </progressIndicator>
+            </subviews>
+            <point key="canvasLocation" x="1267" y="721"/>
+        </customView>
+        <customView id="3Ji-8C-Mwz">
+            <rect key="frame" x="0.0" y="0.0" width="562" height="189"/>
+            <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
+            <subviews>
+                <button verticalHuggingPriority="750" id="TtV-vk-RaB">
+                    <rect key="frame" x="22" y="89" width="119" height="19"/>
+                    <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
+                    <buttonCell key="cell" type="check" title="Hardcore Mode" bezelStyle="regularSquare" imagePosition="left" state="on" inset="2" id="wbm-2y-TJR">
+                        <behavior key="behavior" changeContents="YES" doesNotDimImage="YES" lightByContents="YES"/>
+                        <font key="font" size="13" name="SFProText-Medium"/>
+                    </buttonCell>
+                    <connections>
+                        <binding destination="-2" name="value" keyPath="settings.IsAntiTrackerHardcore" id="fXt-vg-Y9D"/>
+                    </connections>
+                </button>
+                <textField verticalHuggingPriority="750" horizontalCompressionResistancePriority="250" id="mDk-0I-Xew">
+                    <rect key="frame" x="40" y="48" width="490" height="36"/>
+                    <autoresizingMask key="autoresizingMask" flexibleMinY="YES"/>
+                    <textFieldCell key="cell" sendsActionOnEndEditing="YES" alignment="left" title="Hardcore mode blocks the leading companies with business models relying on user surveillance (currently: Google and Facebook)." id="SgO-WH-2UO">
+                        <font key="font" size="12" name="SFProText-Regular"/>
+                        <color key="textColor" name="labelColor" catalog="System" colorSpace="catalog"/>
+                        <color key="backgroundColor" name="controlColor" catalog="System" colorSpace="catalog"/>
+                    </textFieldCell>
+                </textField>
+                <textField verticalHuggingPriority="750" horizontalCompressionResistancePriority="250" id="4TZ-dU-Aej">
+                    <rect key="frame" x="22" y="134" width="542" height="32"/>
+                    <autoresizingMask key="autoresizingMask" flexibleMinY="YES"/>
+                    <textFieldCell key="cell" sendsActionOnEndEditing="YES" alignment="left" title="IVPN blocks ads, malicious websites, and third-party trackers  using our private DNS servers." id="nET-ru-t3x">
+                        <font key="font" size="12" name="SFProText-Regular"/>
+                        <color key="textColor" name="labelColor" catalog="System" colorSpace="catalog"/>
+                        <color key="backgroundColor" name="controlColor" catalog="System" colorSpace="catalog"/>
+                    </textFieldCell>
+                </textField>
+                <textField verticalHuggingPriority="750" horizontalCompressionResistancePriority="250" id="Frc-Ix-ooT">
+                    <rect key="frame" x="91" y="115" width="420" height="32"/>
+                    <autoresizingMask key="autoresizingMask" flexibleMinY="YES"/>
+                    <textFieldCell key="cell" sendsActionOnEndEditing="YES" alignment="left" title="about how IVPN AntiTracker is implemented. " id="hFC-jk-LZZ">
+                        <font key="font" size="12" name="SFProText-Regular"/>
+                        <color key="textColor" name="labelColor" catalog="System" colorSpace="catalog"/>
+                        <color key="backgroundColor" name="controlColor" catalog="System" colorSpace="catalog"/>
+                    </textFieldCell>
+                </textField>
+                <button verticalHuggingPriority="750" id="ihK-VQ-HvT" customClass="CustomHyperLinkButton">
+                    <rect key="frame" x="22" y="127" width="70" height="21"/>
+                    <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
+                    <buttonCell key="cell" type="bevel" title="Learn more" alternateTitle="https://www.ivpn.net/antitracker" bezelStyle="rounded" alignment="left" imageScaling="proportionallyDown" inset="2" id="bhy-Xy-Cy7">
+                        <behavior key="behavior" pushIn="YES" lightByBackground="YES" lightByGray="YES"/>
+                        <font key="font" size="12" name="SFProText-Medium"/>
+                    </buttonCell>
+                </button>
+                <textField verticalHuggingPriority="750" horizontalCompressionResistancePriority="250" id="x0d-rp-SDm">
+                    <rect key="frame" x="40" y="17" width="319" height="20"/>
+                    <autoresizingMask key="autoresizingMask" flexibleMinY="YES"/>
+                    <textFieldCell key="cell" sendsActionOnEndEditing="YES" alignment="left" title="To better understand the impact please see our page on" id="6dB-0G-RgP">
+                        <font key="font" size="12" name="SFProText-Regular"/>
+                        <color key="textColor" name="labelColor" catalog="System" colorSpace="catalog"/>
+                        <color key="backgroundColor" name="controlColor" catalog="System" colorSpace="catalog"/>
+                    </textFieldCell>
+                </textField>
+                <button verticalHuggingPriority="750" id="SoT-sr-xZi" customClass="CustomHyperLinkButton">
+                    <rect key="frame" x="312" y="17" width="92" height="21"/>
+                    <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
+                    <buttonCell key="cell" type="bevel" title="hardcore mode" alternateTitle="https://www.ivpn.net/antitracker/hardcore" bezelStyle="rounded" alignment="left" imageScaling="proportionallyDown" inset="2" id="eeA-5y-Mfa">
+                        <behavior key="behavior" pushIn="YES" lightByBackground="YES" lightByGray="YES"/>
+                        <font key="font" size="12" name="SFProText-Medium"/>
+                    </buttonCell>
+                </button>
+                <textField verticalHuggingPriority="750" horizontalCompressionResistancePriority="250" id="9nz-px-RcP">
+                    <rect key="frame" x="400" y="19" width="26" height="18"/>
+                    <autoresizingMask key="autoresizingMask" flexibleMinY="YES"/>
+                    <textFieldCell key="cell" sendsActionOnEndEditing="YES" alignment="left" title="." id="TaM-5D-uYM">
+                        <font key="font" size="12" name="SFProText-Regular"/>
+                        <color key="textColor" name="labelColor" catalog="System" colorSpace="catalog"/>
+                        <color key="backgroundColor" name="controlColor" catalog="System" colorSpace="catalog"/>
+                    </textFieldCell>
+                </textField>
+            </subviews>
+            <point key="canvasLocation" x="770" y="2378.5"/>
+        </customView>
+        <customView id="8OQ-Q7-jzF">
+            <rect key="frame" x="0.0" y="0.0" width="562" height="153"/>
+            <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
+            <subviews>
+                <button verticalHuggingPriority="750" id="2O6-Zy-wan">
+                    <rect key="frame" x="18" y="111" width="514" height="18"/>
+                    <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
+                    <buttonCell key="cell" type="check" title="Use custom DNS server when connected to IVPN" bezelStyle="regularSquare" imagePosition="left" state="on" inset="2" id="IgZ-9u-tuf">
+                        <behavior key="behavior" changeContents="YES" doesNotDimImage="YES" lightByContents="YES"/>
+                        <font key="font" size="13" name="SFProText-Medium"/>
+                    </buttonCell>
+                    <connections>
+                        <binding destination="-2" name="value" keyPath="settings.IsCustomDns" id="oqu-5Q-cE4"/>
+                    </connections>
+                </button>
+                <textField verticalHuggingPriority="750" horizontalCompressionResistancePriority="250" id="Vw1-S3-LOb">
+                    <rect key="frame" x="35" y="74" width="497" height="16"/>
+                    <autoresizingMask key="autoresizingMask" flexibleMinY="YES"/>
+                    <textFieldCell key="cell" sendsActionOnEndEditing="YES" alignment="left" title="IP address:" id="51c-n5-iT4">
+                        <font key="font" size="13" name="SFProText-Regular"/>
+                        <color key="textColor" name="labelColor" catalog="System" colorSpace="catalog"/>
+                        <color key="backgroundColor" name="controlColor" catalog="System" colorSpace="catalog"/>
+                    </textFieldCell>
+                </textField>
+                <textField verticalHuggingPriority="750" id="Xiw-YA-NdR">
+                    <rect key="frame" x="37" y="42" width="170" height="22"/>
+                    <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
+                    <textFieldCell key="cell" scrollable="YES" lineBreakMode="clipping" selectable="YES" editable="YES" sendsActionOnEndEditing="YES" borderStyle="bezel" placeholderString="0.0.0.0" drawsBackground="YES" id="WEv-UB-QMI">
+                        <font key="font" metaFont="system"/>
+                        <color key="textColor" name="controlTextColor" catalog="System" colorSpace="catalog"/>
+                        <color key="backgroundColor" name="textBackgroundColor" catalog="System" colorSpace="catalog"/>
+                    </textFieldCell>
+                    <connections>
+                        <binding destination="-2" name="value" keyPath="settings.CustomDns" id="BHl-v1-KAv">
+                            <dictionary key="options">
+                                <string key="NSMultipleValuesPlaceholder">0.0.0.0</string>
+                                <string key="NSNoSelectionPlaceholder">0.0.0.0</string>
+                                <string key="NSNullPlaceholder">0.0.0.0</string>
+                            </dictionary>
+                        </binding>
+                        <binding destination="-2" name="enabled" keyPath="settings.IsCustomDns" id="N9Q-Jn-Jiv"/>
+                    </connections>
+                </textField>
+                <textField verticalHuggingPriority="750" horizontalCompressionResistancePriority="250" id="NPy-rb-8Go">
+                    <rect key="frame" x="35" y="20" width="497" height="16"/>
+                    <autoresizingMask key="autoresizingMask" flexibleMinY="YES"/>
+                    <textFieldCell key="cell" sendsActionOnEndEditing="YES" alignment="left" title="AntiTracker will override the custom DNS when enabled." id="2mv-xA-ySd">
+                        <font key="font" size="12" name="SFProText-Regular"/>
+                        <color key="textColor" name="secondaryLabelColor" catalog="System" colorSpace="catalog"/>
+                        <color key="backgroundColor" name="controlColor" catalog="System" colorSpace="catalog"/>
+                    </textFieldCell>
+                </textField>
+            </subviews>
+            <point key="canvasLocation" x="771" y="2593.5"/>
+        </customView>
+        <customView id="PqD-Oi-UEv">
+            <rect key="frame" x="0.0" y="0.0" width="485" height="99"/>
+            <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
+            <subviews>
+                <textField verticalHuggingPriority="750" horizontalCompressionResistancePriority="250" setsMaxLayoutWidthAtFirstLayout="YES" id="Ggv-vJ-LLb">
+                    <rect key="frame" x="18" y="20" width="449" height="59"/>
+                    <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                    <textFieldCell key="cell" sendsActionOnEndEditing="YES" id="HV3-H6-20L">
+                        <font key="font" size="12" name="SFProText-Regular"/>
+                        <string key="title">OpenVPN is a mature open-source VPN protocol utilizing the OpenSSL crypto library. The security of the protocol has been extensively reviewed and is the protocol we currently recommend and enable by default.</string>
+                        <color key="textColor" name="labelColor" catalog="System" colorSpace="catalog"/>
+                        <color key="backgroundColor" name="controlColor" catalog="System" colorSpace="catalog"/>
+                    </textFieldCell>
+                </textField>
+            </subviews>
+            <point key="canvasLocation" x="1328" y="178"/>
+        </customView>
+    </objects>
+    <resources>
+        <image name="iconInformation2" width="11" height="12"/>
+        <image name="iconPreferencesAntiTracker" width="30" height="30"/>
+        <image name="iconPreferencesConnection" width="32" height="32"/>
+        <image name="iconPreferencesDNS" width="30" height="31"/>
+        <image name="iconPreferencesFirewall" width="32" height="32"/>
+        <image name="iconPreferencesGeneral" width="32" height="32"/>
+        <image name="iconPreferencesOpenvpn" width="32" height="32"/>
+        <image name="iconWiFi" width="96" height="96"/>
+        <image name="toolbar-log" width="32" height="32"/>
+    </resources>
+</document>

@@ -1,0 +1,81 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<document type="com.apple.InterfaceBuilder3.Cocoa.XIB" version="3.0" toolsVersion="13529" targetRuntime="MacOSX.Cocoa" propertyAccessControl="none">
+    <dependencies>
+        <deployment identifier="macosx"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.CocoaPlugin" version="13529"/>
+        <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
+    </dependencies>
+    <objects>
+        <customObject id="-2" userLabel="File's Owner" customClass="SubscriptionWillExpireWindowController">
+            <connections>
+                <outlet property="GuiButtonCancel" destination="AOx-Hn-i89" id="ZV4-Go-6iJ"/>
+                <outlet property="GuiButtonGoToAccount" destination="tdl-3t-7ea" id="M1y-Em-dOK"/>
+                <outlet property="GuiButtonGoToAccountPressed" destination="tdl-3t-7ea" id="itO-Ig-tQ0"/>
+                <outlet property="GuiLabelDescriptionText" destination="tZk-Zr-tcf" id="9os-T4-GCS"/>
+                <outlet property="GuiLabelTitleText" destination="hul-mG-dul" id="Fod-3Q-Gaq"/>
+                <outlet property="GuiProgressIndicator" destination="nWg-9W-o56" id="L9f-xy-vfP"/>
+                <outlet property="OnGuiButtonCancelPressed" destination="AOx-Hn-i89" id="thT-1C-F6M"/>
+                <outlet property="window" destination="2" id="6"/>
+            </connections>
+        </customObject>
+        <customObject id="-1" userLabel="First Responder" customClass="FirstResponder"/>
+        <customObject id="-3" userLabel="Application" customClass="NSObject"/>
+        <window title="Window" allowsToolTipsWhenApplicationIsInactive="NO" autorecalculatesKeyViewLoop="NO" oneShot="NO" animationBehavior="default" id="2" customClass="SubscriptionWillExpireWindow">
+            <windowStyleMask key="styleMask" titled="YES" closable="YES" miniaturizable="YES" fullSizeContentView="YES"/>
+            <rect key="contentRect" x="131" y="74" width="510" height="244"/>
+            <rect key="screenRect" x="0.0" y="0.0" width="1280" height="778"/>
+            <value key="minSize" type="size" width="510" height="244"/>
+            <value key="maxSize" type="size" width="510" height="244"/>
+            <view key="contentView" id="3">
+                <rect key="frame" x="0.0" y="0.0" width="510" height="244"/>
+                <autoresizingMask key="autoresizingMask"/>
+                <subviews>
+                    <imageView misplaced="YES" id="f7D-rh-fhn">
+                        <rect key="frame" x="13" y="80" width="128" height="128"/>
+                        <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
+                        <imageCell key="cell" refusesFirstResponder="YES" alignment="left" animates="YES" imageScaling="proportionallyDown" image="iconLogo" id="pMA-N4-N6A"/>
+                    </imageView>
+                    <textField horizontalHuggingPriority="251" verticalHuggingPriority="750" misplaced="YES" id="hul-mG-dul">
+                        <rect key="frame" x="165" y="176" width="327" height="30"/>
+                        <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
+                        <textFieldCell key="cell" scrollable="YES" lineBreakMode="clipping" sendsActionOnEndEditing="YES" title="Your trial will expire in 3 days." id="iN3-ZS-YBS">
+                            <font key="font" metaFont="system" size="20"/>
+                            <color key="textColor" name="labelColor" catalog="System" colorSpace="catalog"/>
+                            <color key="backgroundColor" name="controlColor" catalog="System" colorSpace="catalog"/>
+                        </textFieldCell>
+                    </textField>
+                    <textField verticalHuggingPriority="750" horizontalCompressionResistancePriority="250" misplaced="YES" id="tZk-Zr-tcf">
+                        <rect key="frame" x="165" y="124" width="327" height="44"/>
+                        <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
+                        <textFieldCell key="cell" sendsActionOnEndEditing="YES" title="You have 3 days left in your Trial account. Please upgrade your account to stay safe and secured." id="6ab-xq-RYl">
+                            <font key="font" metaFont="cellTitle"/>
+                            <color key="textColor" name="labelColor" catalog="System" colorSpace="catalog"/>
+                            <color key="backgroundColor" name="controlColor" catalog="System" colorSpace="catalog"/>
+                        </textFieldCell>
+                    </textField>
+                    <customView misplaced="YES" id="tdl-3t-7ea" customClass="CustomButton">
+                        <rect key="frame" x="350" y="21" width="140" height="20"/>
+                        <autoresizingMask key="autoresizingMask" flexibleMinX="YES" flexibleMaxY="YES"/>
+                        <connections>
+                            <action selector="GuiButtonGoToAccountPressed:" target="-2" id="PG5-o4-lDq"/>
+                        </connections>
+                    </customView>
+                    <customView misplaced="YES" id="AOx-Hn-i89" customClass="CustomButton">
+                        <rect key="frame" x="20" y="21" width="140" height="20"/>
+                        <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                        <connections>
+                            <action selector="OnGuiButtonCancelPressed:" target="-2" id="cwF-Pp-7tD"/>
+                        </connections>
+                    </customView>
+                    <progressIndicator wantsLayer="YES" misplaced="YES" maxValue="100" style="bar" id="nWg-9W-o56">
+                        <rect key="frame" x="167" y="97" width="323" height="20"/>
+                        <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
+                    </progressIndicator>
+                </subviews>
+            </view>
+        </window>
+    </objects>
+    <resources>
+        <image name="iconLogo" width="128" height="128"/>
+    </resources>
+</document>

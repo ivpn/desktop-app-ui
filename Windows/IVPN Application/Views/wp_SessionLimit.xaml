@@ -1,0 +1,82 @@
+﻿<Page
+      xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+      xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+      xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+      xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+      x:Class="IVPN.Views.wp_SessionLimit"
+      mc:Ignorable="d" 
+      d:DesignHeight="580" d:DesignWidth="300"
+      Width="318"
+      Height="Auto">
+
+    <Grid>
+        <StackPanel Orientation="Vertical">
+            
+            <Image Margin="0,72,0,50" Source="/IVPN Client;component/Resources/imageLaptop.png" Width="200"  SnapsToDevicePixels="True"/>
+
+            <!--
+            <TextBlock Margin="0,0,0,10" Width="272" TextWrapping="Wrap" TextAlignment="Center" FontSize="17" Foreground="#335266">
+                2 devices connected
+            </TextBlock> -->
+
+            <TextBlock Margin="0,0,0,17" Width="272" TextWrapping="Wrap" TextAlignment="Center" FontSize="13" Foreground="#335266">
+                You've reached the maximum number of connected devices.
+            </TextBlock>
+
+            <TextBlock Margin="0,0,0,25" HorizontalAlignment="Center">
+                <Hyperlink
+                    FontSize="15" 
+                    Foreground="#FF0090ED" Click="GuiTryAgain_OnClick" TextDecorations="{x:Null}">
+                    Try again
+                </Hyperlink>
+            </TextBlock>
+
+            <Button Margin="0,0,0,17"
+                    Background="#178FE6"
+                    Height="42" 
+                    Width="272" 
+                    BorderThickness="0"
+                    Name="GuiButtonUpgradePlan"
+                    Click="GuiButtonUpgradePlan_OnClick" IsDefault="True"
+                    Visibility="{Binding IsCanUpgrade, Converter={StaticResource BoolToVisiblityConverter}}"
+                    Style="{StaticResource ButtonMouseOverAndPressedStyle}"
+                    Content="Switch to IVPN Pro plan" FontSize="15" Foreground="White"
+                    >
+            </Button>
+            
+            <Button Margin="0,0,0,17" 
+                    
+                    Height="42" 
+                    Width="272" 
+                    BorderThickness="0"
+                    Click="GuiButtonLogOutAllDevices_OnClick"
+                    Visibility="{Binding IsCanLogOutAllSessions, Converter={StaticResource BoolToVisiblityConverter}}"
+                    Content="Log out from all other devices" FontSize="15">
+                <!-- Depends if GuiButtonUpgradePlan is visible, this button should have style of GuiButtonUpgradePlan OR GuiBtnBack-->
+                <Button.Style>
+                    <Style TargetType="Button" BasedOn="{StaticResource ButtonMouseOverAndPressedStyle}">
+                        <Setter Property="Background" Value="{Binding ElementName=GuiBtnBack, Path=Background}"/>
+                        <Setter Property="Foreground" Value="{Binding ElementName=GuiBtnBack, Path=Foreground}"/>
+                        <Style.Triggers>
+                            <DataTrigger Binding="{Binding IsCanUpgrade}" Value="False">
+                                <Setter Property="Background" Value="{Binding ElementName=GuiButtonUpgradePlan, Path=Background}"/>
+                                <Setter Property="Foreground" Value="{Binding ElementName=GuiButtonUpgradePlan, Path=Foreground}"/>
+                            </DataTrigger>
+                        </Style.Triggers>
+                    </Style>
+                </Button.Style>
+            </Button>
+
+            <Button Margin="0,0,0,25"
+                    Background="#FFC9D0D7"
+                    Height="42" Width="272" BorderThickness="0"
+                    Command="{Binding GoBackCommand}"
+                    Name="GuiBtnBack"
+                    Style="{StaticResource ButtonMouseOverAndPressedStyle}"
+                    Content="Back" FontSize="15" Foreground="#ff385777"
+                    >                
+            </Button>
+            
+        </StackPanel>
+    </Grid>
+</Page>

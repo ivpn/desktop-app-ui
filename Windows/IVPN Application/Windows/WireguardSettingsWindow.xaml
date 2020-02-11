@@ -1,0 +1,98 @@
+﻿<Window x:Class="IVPN.Windows.WireguardSettingsWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        Style="{StaticResource FlatWindowStyle}"
+        mc:Ignorable="d"
+        Title="WireGuard configuration" 
+        Width="450"
+        SizeToContent="Height" 
+        WindowStartupLocation="CenterScreen" 
+        Icon="../Resources/application.ico"
+        FontSize="15" 
+        Foreground="Black"
+        Background="White"
+        >
+    <Grid>
+        <StackPanel Orientation="Vertical" Margin="20,10,20,20">
+            <Grid>
+                <StackPanel Orientation="Vertical" Name="UiMainPanel" Visibility="{Binding ViewModel.IsUpdateInProgress, Converter={StaticResource BoolToVisiblityInvertedConverter}, ConverterParameter=True}">
+
+                    <Grid>
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="Auto"/>
+                            <ColumnDefinition Width="*"/>
+                        </Grid.ColumnDefinitions>
+                        
+                        <Grid.RowDefinitions>
+                            <RowDefinition Height="Auto"/>
+                            <RowDefinition Height="Auto"/>
+                        </Grid.RowDefinitions>
+                        
+                        <TextBlock Grid.Row="0" Grid.Column="0" Margin="3">Local IP:</TextBlock>
+                        <TextBox  Grid.Row="0" Grid.Column="1" Margin="3" Text="{Binding ViewModel.Settings.WireGuardClientInternalIp}" IsReadOnly="True" Background="LightGray"/>
+
+                        <TextBlock Grid.Row="1" Grid.Column="0" Margin="3">Public key:</TextBlock>
+                        <TextBox  Grid.Row="1" Grid.Column="1" Margin="3" Height="50" Text="{Binding ViewModel.Settings.WireGuardClientPublicKey}" TextWrapping="Wrap" IsReadOnly="True" Background="LightGray" TextOptions.TextFormattingMode="Display" AcceptsReturn="True"/>
+                    </Grid>
+
+                    <Button HorizontalAlignment="Right" Style="{StaticResource ButtonSecondary}" Width="120" Height="32" Margin="0,5,3,5" Name="UiButtonRegenerate" Click="UiButtonRegenerate_OnClick">
+                        <Button.Content>
+                            <TextBlock Margin="5,0,5,0" Text="Regenerate"/>
+                        </Button.Content>
+                    </Button>
+
+                    <Rectangle Height="1" Fill="#26394D" Stroke="#26394D" Opacity="0.1"  Margin="0,15,0,5" HorizontalAlignment="Stretch" />
+                    
+                    <Grid>
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="*"/>
+                            <ColumnDefinition Width="Auto"/>
+                        </Grid.ColumnDefinitions>
+
+                        <Grid.RowDefinitions>
+                            <RowDefinition Height="Auto"/>
+                            <RowDefinition Height="Auto"/>
+                            <RowDefinition Height="Auto"/>
+                        </Grid.RowDefinitions>
+
+                        <TextBlock Grid.Row="0" Grid.Column="0" Margin="3" HorizontalAlignment="Right">Generated:</TextBlock>
+                        <TextBlock Grid.Row="0" Grid.Column="1" Margin="3" Text="{Binding ViewModel.Generated}" HorizontalAlignment="Right"/>
+
+                        <TextBlock Grid.Row="1" Grid.Column="0" Margin="3" HorizontalAlignment="Right">Expiration date:</TextBlock>
+                        <TextBlock Grid.Row="1" Grid.Column="1" Margin="3" Text="{Binding ViewModel.ExpirationDate}" HorizontalAlignment="Right"/>
+
+                        <TextBlock Grid.Row="2" Grid.Column="0" Margin="3" HorizontalAlignment="Right">Will be automatically regenerated:</TextBlock>
+                        <TextBlock Grid.Row="2" Grid.Column="1" Margin="3" Text="{Binding ViewModel.AutoRegenerationDate}" HorizontalAlignment="Right"/>
+
+                    </Grid>
+
+                    <Rectangle Height="1" Fill="#26394D" Stroke="#26394D" Opacity="0.1"  Margin="0,10,0,10" HorizontalAlignment="Stretch" />
+
+                </StackPanel>
+
+                <Grid Name="UiStatusPanel" Visibility="{Binding ViewModel.IsUpdateInProgress, Converter={StaticResource BoolToVisiblityConverter}, ConverterParameter=True}">
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="*"/>
+                        <RowDefinition Height="Auto"/>
+                        <RowDefinition Height="*"/>
+                    </Grid.RowDefinitions>
+
+                    <StackPanel Grid.Row="1" Orientation="Vertical" HorizontalAlignment="Center" VerticalAlignment="Center">
+                        <TextBlock HorizontalAlignment="Center" VerticalAlignment="Center" Text="{Binding ViewModel.ProgressStatus}"/>
+                        <ProgressBar Width="250" Margin="15" IsIndeterminate="{Binding ViewModel.IsUpdateInProgress}"/>
+                    </StackPanel>
+                </Grid>
+
+            </Grid>
+
+            <Button HorizontalAlignment="Right" Style="{StaticResource ButtonMain}" Width="120" Height="32" Margin="0,5,0,5" IsCancel="True">
+                <Button.Content>
+                    <TextBlock Margin="5,0,5,0" Text="Close"/>
+                </Button.Content>
+            </Button>
+
+        </StackPanel>
+    </Grid>
+</Window>

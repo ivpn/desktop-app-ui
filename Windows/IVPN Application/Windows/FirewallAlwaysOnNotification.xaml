@@ -1,0 +1,15 @@
+﻿<c:NotificationWindow x:Class="IVPN.Windows.FirewallAlwaysOnNotification"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"                
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:c="clr-namespace:IVPN.Controls"
+        Width="450" SizeToContent="Height">
+    
+    <StackPanel Margin="5">
+        <TextBlock TextWrapping="Wrap" Foreground="Black" FontSize="15" TextAlignment="Center">
+            <Run FontWeight="Bold">Warning</Run> <LineBreak/>
+            By enabling this option all access to the Internet will be blocked unless you have an active VPN connection. 
+            Please remember to connect to the VPN before accessing the Internet.
+        </TextBlock>
+    </StackPanel>
+
+</c:NotificationWindow>

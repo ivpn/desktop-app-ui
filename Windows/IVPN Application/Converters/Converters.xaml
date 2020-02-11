@@ -1,0 +1,15 @@
+﻿<ResourceDictionary xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+                    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+                    xmlns:Converters="clr-namespace:IVPN.Converters">
+    <Converters:CountryCodeToFlagFileConverter x:Key="CountryCodeToFlagFileConverter" />
+    <Converters:PingTimeToTextConverter x:Key="PingTimeToTextConverter"/>
+    <Converters:NegateConverter x:Key="NegateConverter"/>
+    <Converters:PingStatusToImageConverter x:Key="PingStatusToImageConverter"/>
+    <Converters:SingleLineStringConverter x:Key="SingleLineStringConverter"/>
+    <Converters:BoolToVisiblityConverter x:Key="BoolToVisiblityConverter"/>
+    <Converters:BoolToVisiblityInvertedConverter x:Key="BoolToVisiblityInvertedConverter"/>
+    <Converters:InvertVisibilityConverter x:Key="InvertVisibilityConverter"/>
+    <Converters:CountryCodeToFlagFileConverterCanEmpty x:Key="CountryCodeToFlagFileConverterCanEmpty"/>
+    <Converters:CountryCodeToFlagFileConverterAllSet x:Key="CountryCodeToFlagFileConverterAllSet"/>
+    <Converters:EnumBooleanConverter x:Key="EnumBooleanConverter"/>
+</ResourceDictionary>

@@ -1,0 +1,35 @@
+.vs
+.DS_Store
+macOS/scripts/config/devid_certificate.txt
+common/IVPN Common/bin
+common/IVPN Common/obj
+common/IVPN Core/bin
+common/IVPN Core/obj
+common/IVPN Helpers/bin
+common/IVPN Helpers/obj
+macOS/IVPN/bin
+macOS/IVPN/obj
+macOS/MacLib/bin
+macOS/MacLib/obj
+macOS/References/SparkleSharp/Sparkle/3rdparty/Sparkle/build
+macOS/References/SparkleSharp/Sparkle/obj
+macOS/Uninstall/bin
+macOS/Uninstall/obj
+packages
+macOS/References/SparkleSharp/Sparkle/bin
+macOS/IVPN/Info.plist
+macOS/helper/IVPN Helper-Info.plist
+macOS/helper/net.ivpn.client.Helper
+macOS/libivpn/libivpn.dylib
+macOS/scripts/dmg/_compiled
+macOS/scripts/dmg/_image
+Windows/AppUpdater/bin/
+Windows/AppUpdater/obj/
+Windows/IVPN Application/obj/
+Windows/ManagedWifi/bin/
+Windows/ManagedWifi/obj/
+Windows/NetworkHelpers/bin/
+Windows/NetworkHelpers/obj/
+.deps/
+Windows/IVPN Application/bin/
+Windows/References/bin/

@@ -1,0 +1,20 @@
+﻿<ResourceDictionary xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+                    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+                    xmlns:s="clr-namespace:System;assembly=mscorlib">
+
+    <s:String x:Key="application_update_cancelled">Application update cancelled.</s:String>
+    <s:String x:Key="update_cancelled">Update cancelled</s:String>
+
+    <s:String x:Key="failed_to_download_update">Failed to download update.</s:String>
+    <s:String x:Key="update_failed">Update failed</s:String>
+    <s:String x:Key="failed_to_download_update_timeout">Failed to download update (TIMEOUT).\nPlease, check internet connection.</s:String>
+
+    <s:String x:Key="update_successfully_downloaded">Update successfully downloaded.\nDo you want to start installer?</s:String>
+    <s:String x:Key="update_ready">Update ready</s:String>
+
+    <s:String x:Key="installing_update_error">Installing update error</s:String>
+
+    <s:String x:Key="you_have_latest_version">You already have latest version!</s:String>
+
+    <s:String x:Key="nothing_to_update">Nothing to update</s:String>
+</ResourceDictionary>

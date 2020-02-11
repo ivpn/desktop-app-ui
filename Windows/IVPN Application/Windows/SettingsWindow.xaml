@@ -1,0 +1,990 @@
+﻿<Window x:Class="IVPN.Windows.SettingsWindow"          
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:vpnProtocols="clr-namespace:IVPN.VpnProtocols;assembly=IVPN.Core"
+        Icon="../Resources/application.ico"
+        Title="Settings" Width="820" WindowStartupLocation="CenterScreen"
+        SizeToContent="Height"
+        Style="{StaticResource FlatWindowStyle}"
+        Background="White"
+        FontSize="15">
+    <Window.Resources>
+
+        <Style x:Key="DefaultCheckboxStyle" TargetType="CheckBox">
+            <Setter Property="Foreground" Value="Black"/>
+            <Setter Property="BorderThickness" Value="2"/>
+            <Setter Property="BorderBrush" Value="Black"/>
+            <Setter Property="VerticalContentAlignment" Value="Center"/>
+        </Style>
+
+        <Style TargetType="CheckBox" BasedOn="{StaticResource DefaultCheckboxStyle}"/>
+
+        <Style x:Key="DefaultRadioButtonStyle" TargetType="RadioButton">
+            <Setter Property="Foreground" Value="Black"/>
+            <Setter Property="BorderThickness" Value="2"/>
+            <Setter Property="BorderBrush" Value="Black"/>
+            <Setter Property="VerticalContentAlignment" Value="Center"/>
+        </Style>
+
+        <Style TargetType="RadioButton" BasedOn="{StaticResource DefaultRadioButtonStyle}"/>
+
+        <Style x:Key="SecondaryTextStyle" TargetType="TextBlock">
+            <Setter Property="TextWrapping" Value="Wrap"/>
+            <Setter Property="FontSize" Value="13"/>
+            <Setter Property="Foreground" Value="#99000000"/>
+        </Style>
+
+        <Style x:Key="PopupItemButtonStyle"  TargetType="Button" BasedOn="{StaticResource ButtonMouseOverBackgroundChangeble}">
+            <Setter Property="Background" Value="Transparent"/>
+            <!--<Setter Property="Foreground" Value="White"/>-->
+            <Setter Property="FontSize" Value="15"/>
+            <Setter Property="HorizontalContentAlignment" Value="Left"/>
+            <!--<Setter Property="Margin" Value="8,8,16,8"/>-->
+            <Setter Property="Margin" Value="3,3,3,3"/>
+            <Setter Property="BorderBrush" Value="Transparent"/>
+            <Setter Property="BorderThickness" Value="1"/>
+
+            <Style.Triggers>
+                <Trigger Property="IsMouseOver" Value="True">
+                    <Setter Property="BorderBrush" Value="#178FE6"></Setter>
+                </Trigger>
+            </Style.Triggers>
+        </Style>
+
+        <SolidColorBrush x:Key="DefaultNetworkColor" Color="Gray"/>
+        <SolidColorBrush x:Key="NoneNetworkColor" Color="Black"/>
+        <SolidColorBrush x:Key="UntrustedNetworkColor" Color="IndianRed"/>
+        <SolidColorBrush x:Key="TrustedNetworkColor" Color="#178FE6"/>
+
+        <Style x:Key="NetworkActionText" TargetType="TextBlock">
+            <Setter Property="Text" Value="{Binding}"/>
+            <Style.Triggers>
+                <DataTrigger Binding="{Binding}" Value="Untrusted">
+                    <Setter Property="Text" Value="untrusted"/>
+                    <Setter Property="Foreground" Value="{StaticResource UntrustedNetworkColor}"/>
+                </DataTrigger>
+                <DataTrigger Binding="{Binding}" Value="Trusted">
+                    <Setter Property="Text" Value="trusted"/>
+                    <Setter Property="Foreground" Value="{StaticResource TrustedNetworkColor}"/>
+                </DataTrigger>
+                <DataTrigger Binding="{Binding}" Value="None">
+                    <Setter Property="Text" Value="no status"/>
+                    <Setter Property="Foreground" Value="{StaticResource NoneNetworkColor}"/>
+                </DataTrigger>
+
+                <MultiDataTrigger>
+                    <MultiDataTrigger.Conditions>
+                        <Condition Binding="{Binding}" Value="Default"/>
+                        <Condition Binding="{Binding Settings.NetworkActions.DefaultActionType, RelativeSource={RelativeSource AncestorType=Window}}" Value="Untrusted"/>
+                    </MultiDataTrigger.Conditions>
+                    <Setter Property="Text" Value="default: untrusted"/>
+                    <Setter Property="Foreground" Value="{StaticResource DefaultNetworkColor}"/>
+                </MultiDataTrigger>
+                <MultiDataTrigger>
+                    <MultiDataTrigger.Conditions>
+                        <Condition Binding="{Binding}" Value="Default"/>
+                        <Condition Binding="{Binding Settings.NetworkActions.DefaultActionType, RelativeSource={RelativeSource AncestorType=Window}}" Value="Trusted"/>
+                    </MultiDataTrigger.Conditions>
+                    <Setter Property="Text" Value="default: trusted"/>
+                    <Setter Property="Foreground" Value="{StaticResource DefaultNetworkColor}"/>
+                </MultiDataTrigger>
+                <MultiDataTrigger>
+                    <MultiDataTrigger.Conditions>
+                        <Condition Binding="{Binding}" Value="Default"/>
+                        <Condition Binding="{Binding Settings.NetworkActions.DefaultActionType, RelativeSource={RelativeSource AncestorType=Window}}" Value="None"/>
+                    </MultiDataTrigger.Conditions>
+                    <Setter Property="Text" Value="default: no trust status"/>
+                    <Setter Property="Foreground" Value="{StaticResource DefaultNetworkColor}"/>
+                </MultiDataTrigger>
+
+            </Style.Triggers>
+        </Style>
+
+        <Style x:Key="TabItemStyle" TargetType="TabItem">
+
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="TabItem">
+                        <Grid Name="Panel">
+                            <Grid.Resources>
+                                <Style TargetType="Grid">
+                                    <Setter Property="TextElement.FontSize" Value="18"/>
+                                </Style>
+                            </Grid.Resources>
+                            <ContentPresenter x:Name="ContentSite"
+                                              VerticalAlignment="Center"
+                                              HorizontalAlignment="Center"
+                                              ContentSource="Header"
+                                              Margin="0,0,24,0"/>
+                        </Grid>
+
+                        <ControlTemplate.Triggers>
+
+                            <Trigger Property="IsSelected" Value="True">
+                                <Setter Property="TextElement.Foreground" TargetName="Panel" Value="#178FE6"/>
+                            </Trigger>
+                        </ControlTemplate.Triggers>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+        </Style>
+
+    </Window.Resources>
+    <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="*"/>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="Auto"/>
+        </Grid.RowDefinitions>
+
+        <TabControl Grid.Row="0" x:Name="TabPane" Margin="32,0,32,0" BorderThickness="0" Background="Transparent">
+
+            <TabControl.Resources>
+                <Style TargetType="TabItem" BasedOn="{StaticResource TabItemStyle}"/>
+            </TabControl.Resources>
+
+            <TabItem Header="general">
+                <StackPanel Orientation="Vertical" Margin="0,40,0,0">
+                    <CheckBox Content="Start at login" 
+                              Margin="0,0,0,5" IsChecked="{Binding Settings.RunOnLogin}"/>
+
+                    <CheckBox Content="Minimize to tray" Margin="0,5,0,5"
+                              IsChecked="{Binding Settings.MinimizeToTray}" />
+
+                    <CheckBox Content="Start minimized" Margin="0,5,0,5"
+                              IsChecked="{Binding Settings.LaunchMinimized}" />
+
+                    <CheckBox Content="Automatically connect to last server on startup" Margin="0,5,0,5"
+                              IsChecked="{Binding Settings.AutoConnectOnStart}"/>
+
+                    <CheckBox Margin="0,4,0,0"
+                              IsChecked="{Binding Settings.ServiceConnectOnInsecureWifi}">
+                        <CheckBox.Content>
+                            <TextBlock TextWrapping="Wrap" >Automatically connect to last server when <LineBreak/> joining an insecure wireless network</TextBlock>
+                        </CheckBox.Content>
+                    </CheckBox>
+
+                    <CheckBox Content="Stop IVPN Windows service when application is closed" Margin="0,5,0,5"
+                              IsChecked="{Binding Settings.StopServerOnClientDisconnect}"/>
+
+                    <CheckBox Content="Disconnect and quit without confirmation when closing application" Margin="0,5,0,5"
+                              IsChecked="{Binding Settings.DoNotShowDialogOnAppClose}"/>
+
+                    <StackPanel Orientation="Vertical" Margin="0,5,0,5">
+
+                        <CheckBox IsChecked="{Binding Settings.IsLoggingEnabled}" Margin="0,0,0,10" Name="IsLoggingEnabledCheckbox">Enable Logging</CheckBox>
+
+                        <StackPanel Margin="22,0,0,0">
+                            <TextBlock  Style="{StaticResource SecondaryTextStyle}">
+                            If you're having connection problems, use the button below to prepare the IVPN Client log, 
+                            OpenVPN log, and network information for submission to IVPN for further analysis.
+                            </TextBlock>
+
+                            <StackPanel Orientation="Horizontal" Margin="0,10,0,10">
+
+                                <Button Content="Submit logs" Click="SubmitLogsButton_Click" Width="120" Height="32" Margin="0,0,20,0">
+                                    <Button.Style>
+                                        <Style TargetType="Button" BasedOn="{StaticResource ButtonMain}">
+                                            <Style.Triggers>
+                                                <DataTrigger Binding="{Binding IsDiagnosticsInProgress}" Value="true">
+                                                    <Setter Property="IsEnabled" Value="False"/>
+                                                </DataTrigger>
+                                                <DataTrigger Binding="{Binding ElementName=IsLoggingEnabledCheckbox, Path=IsChecked}" Value="False">
+                                                    <Setter Property="IsEnabled" Value="False" />
+                                                </DataTrigger>
+                                            </Style.Triggers>
+                                        </Style>
+                                    </Button.Style>
+                                </Button>
+
+                                <Button Content="View logs" Click="PreviewLogsButton_Click" Width="120" Height="32">
+                                    <Button.Style>
+                                        <Style TargetType="Button" BasedOn="{StaticResource ButtonSecondary}">
+                                            <Style.Triggers>
+                                                <DataTrigger Binding="{Binding IsDiagnosticsInProgress}" Value="true">
+                                                    <Setter Property="IsEnabled" Value="False"/>
+                                                </DataTrigger>
+                                                <DataTrigger Binding="{Binding ElementName=IsLoggingEnabledCheckbox, Path=IsChecked}" Value="False">
+                                                    <Setter Property="IsEnabled" Value="False" />
+
+                                                </DataTrigger>
+
+                                            </Style.Triggers>
+                                        </Style>
+                                    </Button.Style>
+                                </Button>
+                            </StackPanel>
+
+                            <StackPanel Orientation="Horizontal" VerticalAlignment="Center" HorizontalAlignment="Center" >
+
+                                <StackPanel.Style>
+                                    <Style TargetType="StackPanel">
+                                        <Setter Property="Visibility" Value="Collapsed"/>
+                                        <Style.Triggers>
+                                            <DataTrigger Binding="{Binding IsDiagnosticsInProgress}" Value="true">
+                                                <Setter Property="Visibility" Value="Visible"/>
+                                            </DataTrigger>
+                                        </Style.Triggers>
+                                    </Style>
+                                </StackPanel.Style>
+
+                                <StackPanel Orientation="Vertical">
+                                    <TextBlock Text="{Binding LogsProgressString}" Style="{StaticResource SecondaryTextStyle}" HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                                    <ProgressBar Margin="15" Width="250" IsIndeterminate="{Binding IsDiagnosticsInProgress}"/>
+                                </StackPanel>
+
+                            </StackPanel>
+
+                            <StackPanel Orientation="Horizontal" VerticalAlignment="Center">
+                                <TextBlock Style="{StaticResource SecondaryTextStyle}" VerticalAlignment="Center" Text="IVPN Client version: "/>
+                                <TextBlock VerticalAlignment="Center" Foreground="#888888" Text="{Binding AppVersion}">
+                                </TextBlock>
+                            </StackPanel>
+                        </StackPanel>
+                    </StackPanel>
+
+
+                </StackPanel>
+            </TabItem>
+
+            <TabItem Header="account">
+                <StackPanel Margin="0,40,0,0" HorizontalAlignment="Left">
+
+                    <TextBlock FontWeight="DemiBold" Margin="0,0,0,10">Your account ID</TextBlock>
+                    <TextBlock  Margin="0,0,0,20" Style="{StaticResource SecondaryTextStyle}">
+                        To update your account ID please click the logout button and login with your new account ID.                        
+                    </TextBlock>
+
+                    <TextBox HorizontalAlignment="Left" Margin="0,0,0,10" IsReadOnly="True"
+                             Height="36" Width="240"
+                             Style="{StaticResource TextBoxDefault}"  
+                             Text="{Binding Settings.Username}"/>
+
+                    <Button Width="240" Height="36" 
+                            Style="{StaticResource ButtonMain}" 
+                            HorizontalAlignment="Left" 
+                            Name="GuiButtonLogout" Click="GuiButtonLogout_Click">Logout</Button>
+                </StackPanel>
+            </TabItem>
+
+            <TabItem Header="connection">
+                <StackPanel Margin="0,40,0,0">
+
+                    <StackPanel Orientation="Horizontal">
+                        <RadioButton Content="OpenVPN" 
+                                     Name="GuiRadioButtonOpenVpn"
+                                     IsChecked="{Binding VpnProtocolType, Converter={StaticResource EnumBooleanConverter}, ConverterParameter={x:Static vpnProtocols:VpnType.OpenVPN}}"
+                                     Checked="ProtocolTypeBtn_Checked"/>
+
+                        <Button x:Name="BtnOpenvpnPopup" IsTabStop="False" Focusable="False"
+                                Style="{StaticResource {x:Static ToolBar.ButtonStyleKey}}" 
+                                Click="BtnOpenvpnPopup_Click">
+                            <Button.Content>
+                                <Image  Source="/IVPN Client;component/Resources/iconInformation.png" Stretch="None"/>
+                            </Button.Content>
+                        </Button>
+
+                        <Popup x:Name="PopupOpenvpnInfo" 
+                               StaysOpen="False"                               
+                               Placement="Left"
+                               PlacementTarget="{Binding ElementName=GuiRadioButtonOpenVpn}">
+
+                            <Border BorderThickness="1" BorderBrush="#178FE6" Background="White">
+                                <TextBlock Margin="10" Style="{StaticResource SecondaryTextStyle}" Foreground="Black">
+                                    OpenVPN is a mature open-source VPN protocol utilizing the OpenSSL crypto library.<LineBreak/>
+                                    The security of the protocol has been extensively reviewed and is the protocol we currently<LineBreak/>
+                                    recommend and enable by default.</TextBlock>
+                                </Border>
+                        </Popup>
+                    </StackPanel>
+
+                    <RadioButton Margin="0,14,0,0" Content="WireGuard" IsChecked="{Binding VpnProtocolType, Converter={StaticResource EnumBooleanConverter}, ConverterParameter={x:Static vpnProtocols:VpnType.WireGuard}}"
+                                 Checked="ProtocolTypeBtn_Checked"/>
+                    <TextBlock Margin="22,5,0,5" Style="{StaticResource SecondaryTextStyle}" 
+                               Foreground="Black" Opacity="0.6">
+                        <TextBlock Text="WARNING: " Foreground="Red"/>The WireGuard protocol is currently under development and should be considered as experimental.<LineBreak/>
+                        Review the Wireguard project for more information. We do not recommend Wireguard except<LineBreak/>
+                        for testing or in situations where security is not critical.</TextBlock>
+
+                    <GroupBox Margin="22,0,0,0">
+                        <GroupBox.Header>
+                            <TextBlock FontSize="13" Opacity="0.6">WireGuard configuration</TextBlock>
+                        </GroupBox.Header>
+                        <GroupBox.Style>
+                            <Style TargetType="GroupBox">
+                                <Style.Triggers>
+                                    <DataTrigger Binding="{Binding Settings.VpnProtocolType}" Value="{x:Static vpnProtocols:VpnType.OpenVPN}">
+                                        <Setter Property="Visibility" Value="Collapsed"/>
+                                    </DataTrigger>
+                                </Style.Triggers>
+                            </Style>
+                        </GroupBox.Style>
+
+                        <Grid>
+                            <StackPanel Orientation="Vertical" HorizontalAlignment="Stretch" Margin="5"
+                                        Visibility="{Binding WireGuardSettings.IsUpdateInProgress, Converter={StaticResource BoolToVisiblityInvertedConverter}, ConverterParameter=True}">
+
+                            <TextBlock Text="Preferred Protocol/Port" FontWeight="Bold" Margin="0,0,0,10"/>
+
+                            <ListBox Margin="0,0,0,10"
+                                         HorizontalAlignment="Left"
+                                         Width="380"
+                                         MinHeight="50"
+                                         MaxHeight="100"
+                                         Height="150"
+                                         ItemsSource="{Binding Settings.WireGuardPreferredPortsList}"
+                                         SelectedIndex="{Binding Settings.WireGuardPreferredPortIndex}"
+                                         ToolTip="If your connection is blocked or unreliable, select an alternative protocol and port.">
+                                <ListBox.ItemContainerStyle>
+                                    <Style TargetType="ListBoxItem">
+                                        <Style.Triggers>
+                                            <DataTrigger Binding="{Binding IsEnabled}" Value="False">
+                                                <Setter Property="IsEnabled" Value="False" />
+                                            </DataTrigger>
+                                        </Style.Triggers>
+                                    </Style>
+                                </ListBox.ItemContainerStyle>
+                            </ListBox>
+                            
+                            <StackPanel Orientation="Horizontal" VerticalAlignment="Center">
+                                <TextBlock VerticalAlignment="Center">Regenerate key every</TextBlock> 
+                                <ComboBox Name="GuiComboBoxWgKeyRegenerateDays" 
+                                          MinWidth="50" 
+                                          Margin="5,0,5,0"/>
+                                <TextBlock VerticalAlignment="Center">days.</TextBlock>
+                            </StackPanel>
+
+                            <Rectangle Height="1" Fill="#26394D" Stroke="#26394D" Opacity="0.1"  Margin="0,20,0,5" HorizontalAlignment="Stretch" />
+
+                                <Grid>
+                                    <Grid.ColumnDefinitions>
+                                        <ColumnDefinition Width="*"/>
+                                        <ColumnDefinition Width="Auto"/>                                        
+                                    </Grid.ColumnDefinitions>
+                                    
+                                    <TextBlock Grid.Column="0" Margin="0,0,0,5" Opacity="0.6" VerticalAlignment="Center" FontSize="11" >
+                                        View detailed WireGuard configuration parameters or generate new Wireguard <LineBreak/> keys (If you manually deleted them from the client area for example).
+                                    </TextBlock>
+                                    
+                                    <Button Grid.Column="1" VerticalAlignment="Center" Style="{StaticResource ButtonSecondary}" Width="120" Height="32" Margin="0,5,7,5" Click="ButtonWireGuardConfig_Click">
+                                        <Button.Content>
+                                            <TextBlock Margin="5,0,5,0" Text="Configuration"/>
+                                        </Button.Content>
+                                    </Button>                            
+                                </Grid>
+                            </StackPanel>
+
+                            <Grid Name="UiStatusPanel" Visibility="{Binding WireGuardSettings.IsUpdateInProgress, Converter={StaticResource BoolToVisiblityConverter}, ConverterParameter=True}">
+                                <Grid.RowDefinitions>
+                                    <RowDefinition Height="*"/>
+                                    <RowDefinition Height="Auto"/>
+                                    <RowDefinition Height="*"/>
+                                </Grid.RowDefinitions>
+
+                                <StackPanel Grid.Row="1" Orientation="Vertical" HorizontalAlignment="Center" VerticalAlignment="Center" MinWidth="150">
+                                    <TextBlock VerticalAlignment="Center" HorizontalAlignment="Center" Text="{Binding WireGuardSettings.ProgressStatus}"/>
+                                    <ProgressBar Margin="15" Width="250" IsIndeterminate="{Binding WireGuardSettings.IsUpdateInProgress}" />                                    
+                                </StackPanel>
+                            </Grid>
+                        </Grid>
+                    </GroupBox>
+
+                    <GroupBox Margin="22,0,0,0">
+                        <GroupBox.Header>
+                            <TextBlock FontSize="13" Opacity="0.6">OpenVPN configuration</TextBlock>
+                        </GroupBox.Header>
+                        
+                        <GroupBox.Style>
+                            <Style TargetType="GroupBox">
+                                <Style.Triggers>
+                                    <DataTrigger Binding="{Binding Settings.VpnProtocolType}" Value="{x:Static vpnProtocols:VpnType.WireGuard}">
+                                        <Setter Property="Visibility" Value="Collapsed"/>
+                                    </DataTrigger>
+                                </Style.Triggers>
+                            </Style>
+                        </GroupBox.Style>
+
+                        <StackPanel Orientation="Vertical" Margin="5">
+                            <StackPanel Orientation="Vertical" HorizontalAlignment="Stretch">
+                                <TextBlock Text="Preferred Protocol/Port" FontWeight="Bold" Margin="0,0,0,10"/>
+
+                                <ListBox x:Name="cboPreferredProtocolPort" Margin="0,0,0,10"
+                                         HorizontalAlignment="Left"
+                                         Width="380"
+                                         MinHeight="50"
+                                         MaxHeight="100"
+                                         Height="150"
+                                         ItemsSource="{Binding Settings.PreferredPortsList}"
+                                         SelectedIndex="{Binding Settings.PreferredPortIndex}"
+                                         ToolTip="If your connection is blocked or unreliable, select an alternative protocol and port.">
+                                    <ListBox.ItemContainerStyle>
+                                        <Style TargetType="ListBoxItem">
+                                            <Style.Triggers>
+                                                <DataTrigger Binding="{Binding IsEnabled}" Value="False">
+                                                    <Setter Property="IsEnabled" Value="False" />
+                                                </DataTrigger>
+                                            </Style.Triggers>
+                                        </Style>
+                                    </ListBox.ItemContainerStyle>
+                                </ListBox>
+
+                                <CheckBox IsChecked="{Binding Settings.IsAutoPortSelection}" Margin="0,0,0,10">
+                                    <TextBlock>Automatically change port on connection error</TextBlock>
+                                </CheckBox>
+
+                                <CheckBox Content="Use obfsproxy to circumvent censorship" 
+                                              ToolTip="Obfuscate the connection to the VPN server to try to bypass common Internet filtering systems, such as the Great Firewall of China." 
+                                              IsChecked="{Binding Settings.ServiceUseObfsProxy}"
+                                              Name="cbUseObfsProxy" 
+                                           />
+                            </StackPanel>
+                            
+                            <GroupBox Header="Network Proxy" Margin="0,10,0,0" Padding="8,6,8,4" Width="380" HorizontalAlignment="Left">
+                                <GroupBox.Style>
+                                    <Style TargetType="GroupBox">
+                                        <Style.Triggers>
+                                            <DataTrigger Binding="{Binding IsChecked, ElementName=cbUseObfsProxy}" Value="True">
+                                                <Setter Property="IsEnabled" Value="False" />
+                                            </DataTrigger>
+                                        </Style.Triggers>
+                                    </Style>
+                                </GroupBox.Style>
+
+                                <StackPanel>
+                                    <StackPanel Orientation="Horizontal">
+                                        <RadioButton x:Name="rbProxyNone" GroupName="proxy" Content="None" Checked="ProxyType_Changed"/>
+                                        <RadioButton x:Name="rbProxyAuto" GroupName="proxy" Content="Auto-detect" Margin="11,0,0,0" Checked="ProxyType_Changed"/>
+                                        <RadioButton x:Name="rbProxyHTTP" GroupName="proxy" Content="HTTP" Margin="11,0,0,0" Checked="ProxyType_Changed"/>
+                                        <RadioButton x:Name="rbProxySOCKS" GroupName="proxy" Content="SOCKS" Margin="11,0,0,0" Checked="ProxyType_Changed"/>
+                                    </StackPanel>
+                                    <Grid Height="Auto" Margin="0,10,0,0">
+                                        <Grid.Style>
+                                            <Style TargetType="Grid">
+                                                <Style.Triggers>
+                                                    <DataTrigger Binding="{Binding Settings.ProxyType}" Value="None">
+                                                        <Setter Property="Visibility" Value="Collapsed"/>
+                                                    </DataTrigger>
+                                                    <DataTrigger Binding="{Binding Settings.ProxyType}" Value="Auto">
+                                                        <Setter Property="Visibility" Value="Collapsed"/>
+                                                    </DataTrigger>
+                                                </Style.Triggers>
+                                            </Style>
+                                        </Grid.Style>
+                                        <Grid.ColumnDefinitions>
+                                            <ColumnDefinition Width="Auto"/>
+                                            <ColumnDefinition Width="10"/>
+                                            <ColumnDefinition/>
+                                        </Grid.ColumnDefinitions>
+                                        <Grid.RowDefinitions>
+                                            <RowDefinition/>
+                                            <RowDefinition/>
+                                            <RowDefinition/>
+                                            <RowDefinition/>
+                                        </Grid.RowDefinitions>
+                                        <TextBlock Text="Server:" VerticalAlignment="Center" />
+                                        <TextBox x:Name="txtProxyServer" 
+                                                 Grid.Column="2" 
+                                                 VerticalAlignment="Center" 
+                                                 Text="{Binding Settings.ProxyServer, Mode=TwoWay}"
+                                                 Padding="0,2,0,3" 
+                                                 Margin="0,2,0,0"/>
+
+                                        <TextBlock Text="Port:" Grid.Row="1" VerticalAlignment="Center" />
+                                        <TextBox x:Name="txtProxyPort" 
+                                                 PreviewTextInput="txtProxyPort_PreviewTextInput" 
+                                                 MaxLength="5" 
+                                                 Grid.Column="2" Grid.Row="1"                                          
+                                                 Text="{Binding Settings.ProxyPort, Mode=TwoWay}"
+                                                 VerticalAlignment="Center" Padding="0,2,0,3" 
+                                                 HorizontalAlignment="Left" Width="80" Margin="0,4,0,0" />
+
+                                        <TextBlock Text="Login:" Grid.Row="2"                                           
+                                                   VerticalAlignment="Center" />
+
+                                        <TextBox x:Name="txtProxyUsername" Grid.Row="2" 
+                                                 Grid.Column="2"                                          
+                                                 VerticalAlignment="Center" 
+                                                 Text="{Binding Settings.ProxyUsername, Mode=TwoWay}"
+                                                 Padding="0,2,0,3" Margin="0,4,0,0" />
+
+                                        <TextBlock Text="Password:" Grid.RowSpan="2" Grid.Row="3" VerticalAlignment="Center" />
+                                        <PasswordBox x:Name="txtProxyPassword" Grid.Row="3" 
+                                                     Grid.Column="2" VerticalAlignment="Center"                                              
+                                                     Padding="0,2,0,3" 
+                                                     Margin="0,4,0,0" />
+                                    </Grid>
+                                </StackPanel>
+                            </GroupBox>
+                        </StackPanel>
+                    </GroupBox>
+                </StackPanel>
+            </TabItem>
+
+            <TabItem Header="firewall">
+
+                <StackPanel Orientation="Vertical" Margin="0,40,0,0">
+
+                    <TextBlock FontWeight="Bold">The IVPN Firewall blocks all non-VPN traffic</TextBlock>
+
+                    <StackPanel>
+
+                        <RadioButton Margin="0,20,0,15" Name="FirewallOnDemandRadioButton" Checked="UpdateFirewallType" Unchecked="UpdateFirewallType">
+                            <RadioButton.Style>
+                                <Style TargetType="RadioButton" BasedOn="{StaticResource DefaultRadioButtonStyle}">
+                                    <Style.Triggers>
+                                        <DataTrigger Binding="{Binding Settings.FirewallType}" Value="Manual">
+                                            <Setter Property="IsChecked" Value="True" />
+                                        </DataTrigger>
+                                    </Style.Triggers>
+                                </Style>
+                            </RadioButton.Style>
+                            On-demand
+                        </RadioButton>
+
+                        <CheckBox Margin="22,0,0,11" IsChecked="{Binding Settings.FirewallAutoOnOff}">
+                            <CheckBox.Style>
+                                <Style TargetType="CheckBox" BasedOn="{StaticResource DefaultCheckboxStyle}">
+                                    <Style.Triggers>
+                                        <DataTrigger Binding="{Binding IsChecked, ElementName=FirewallOnDemandRadioButton}" Value="False">
+                                            <Setter Property="IsEnabled" Value="False"/>
+                                        </DataTrigger>
+                                    </Style.Triggers>
+                                </Style>
+                            </CheckBox.Style>
+                            <TextBlock TextWrapping="Wrap">
+                                Activate on connect to VPN and deactivate on disconnect
+                            </TextBlock>
+                        </CheckBox>
+
+                        <CheckBox Margin="22,0,0,0" IsChecked="{Binding Settings.FirewallDeactivationOnExit}">
+                            <CheckBox.Style>
+                                <Style TargetType="CheckBox" BasedOn="{StaticResource DefaultCheckboxStyle}">
+                                    <Style.Triggers>
+                                        <DataTrigger Binding="{Binding IsChecked, ElementName=FirewallOnDemandRadioButton}" Value="False">
+                                            <Setter Property="IsEnabled" Value="False"/>
+                                        </DataTrigger>
+                                    </Style.Triggers>
+                                </Style>
+                            </CheckBox.Style>
+                            <TextBlock TextWrapping="Wrap">
+                                Deactivate IVPN Firewall on IVPN Client exit
+                            </TextBlock>
+                        </CheckBox>
+
+                        <RadioButton Margin="0,20,0,11" Name="FirewallPersistent" Checked="UpdateFirewallType" Unchecked="UpdateFirewallType">
+                            <RadioButton.Style>
+                                <Style TargetType="RadioButton" BasedOn="{StaticResource DefaultRadioButtonStyle}">
+                                    <Style.Triggers>
+                                        <DataTrigger Binding="{Binding Settings.FirewallType}" Value="Persistent">
+                                            <Setter Property="IsChecked" Value="True" />
+                                        </DataTrigger>
+                                    </Style.Triggers>
+                                </Style>
+                            </RadioButton.Style>
+                            Always-on Firewall
+                        </RadioButton>
+
+                        <TextBlock Margin="22,0,0,0" Style="{StaticResource SecondaryTextStyle}">
+                            When this option is enabled the IVPN Firewall is started during Windows boot 
+                            time before any other process. The IVPN Firewall will always be active even when the IVPN client is not running.
+                        </TextBlock>
+                    </StackPanel>
+
+                    <TextBlock Margin="0,20,0,20" FontWeight="Bold">IVPN Firewall settings</TextBlock>
+
+                    <CheckBox Margin="0,0,0,11" Content="Allow LAN traffic when IVPN Firewall is enabled" 
+                             IsChecked="{Binding Settings.FirewallAllowLAN}"/>
+
+                    <CheckBox Margin="0,0,0,11" Content="Allow Multicast when LAN traffic is allowed" 
+                             IsChecked="{Binding Settings.FirewallAllowLANMulticast}">
+                        <CheckBox.Style>
+                            <Style TargetType="CheckBox" BasedOn="{StaticResource DefaultCheckboxStyle}">
+                                <Style.Triggers>
+                                    <DataTrigger Binding="{Binding Settings.FirewallAllowLAN}" Value="False">
+                                        <Setter Property="IsEnabled" Value="False" />
+                                    </DataTrigger>
+                                </Style.Triggers>
+                            </Style>
+                        </CheckBox.Style>
+                    </CheckBox>
+
+                    <CheckBox Content="Do not show IVPN Firewall notification window" ToolTip="'Firewall is enabled' window visible on display in case when Firewall is enabled and VPN connection is OFF"
+                             IsChecked="{Binding Settings.DisableFirewallNotificationWindow}"/>
+
+                </StackPanel>
+            </TabItem>
+
+            <TabItem Header="networks" Name="GuiTabItemNetworks">
+                <StackPanel Orientation="Vertical" Margin="0,40,0,0">
+
+                    <CheckBox Margin="0,0,0,0"  Name="GuiCheckBoxTrustedNetworks" IsChecked="{Binding Settings.IsNetworkActionsEnabled}">Trusted / Untrusted networks control</CheckBox>
+                    <TextBlock Margin="22,5,0,0" Style="{StaticResource SecondaryTextStyle}">
+                        By enabling this feature you can define a network as trusted or untrusted<LineBreak/> and what actions to take when joining the network</TextBlock>
+
+                    <Rectangle Height="1" Fill="#26394D" Stroke="#26394D" Opacity="0.1"  Margin="0,20,0,0" HorizontalAlignment="Stretch" />
+
+                    <TabControl Margin="0,10,0,0" BorderThickness="0" IsEnabled="{Binding Settings.IsNetworkActionsEnabled}">
+
+                        <TabItem Header="WiFi networks" >
+                            <Grid Margin="0">
+                                <Grid.RowDefinitions>
+                                    <RowDefinition Height="Auto"/>
+                                    <RowDefinition Height="Auto"/>
+                                    <RowDefinition Height="Auto"/>
+                                    <RowDefinition Height="*"/>
+                                    <RowDefinition Height="Auto"/>
+                                </Grid.RowDefinitions>
+
+                                <Rectangle Grid.Row="0" Height="1" Fill="#26394D" Stroke="#26394D" Opacity="0.1"  Margin="0,10,0,10" HorizontalAlignment="Stretch" />
+
+                                <Grid Grid.Row="1">
+                                    <Grid.ColumnDefinitions>
+                                        <ColumnDefinition Width="167*" />
+                                        <ColumnDefinition Width="147*" />
+                                        <ColumnDefinition Width="20*"/>
+                                    </Grid.ColumnDefinitions>
+                                    <TextBlock Grid.Column="0" VerticalAlignment="Center" Margin="0,3">Default trust status for undefined networks:</TextBlock>
+
+
+                                    <ComboBox Grid.Column="1" VerticalAlignment="Center" VerticalContentAlignment="Center" HorizontalContentAlignment="Center" Height="32" 
+                                              SelectedItem="{Binding Settings.NetworkActions.DefaultActionType}"
+                                              ItemsSource="{Binding NetworkPossibleDefaultActions}" Grid.ColumnSpan="2">
+                                        
+                                        <ComboBox.ItemTemplate>
+                                            <DataTemplate>
+                                                <TextBlock Style="{StaticResource NetworkActionText}" VerticalAlignment="Center" HorizontalAlignment="Center" />
+                                            </DataTemplate>
+                                        </ComboBox.ItemTemplate>
+
+                                    </ComboBox>
+                                </Grid>
+
+                                <Border Grid.Row="3" Margin="0,10,0,0"
+                                    BorderThickness="1" BorderBrush="#4C26394D">
+
+                                    <Grid >
+
+                                        <!-- if no wifi network available -->
+                                        <TextBlock HorizontalAlignment="Center" VerticalAlignment="Center" Foreground="Gray">
+                                        No WiFi networks available
+
+                                            <TextBlock.Style>
+                                                <Style TargetType="TextBlock">
+                                                    <Setter Property="Visibility" Value="Collapsed"/>
+                                                    <Style.Triggers>
+                                                        <DataTrigger Binding="{Binding NetworksSettings.AllNetworkActions.Count}" Value="0">
+                                                            <Setter Property="Visibility" Value="Visible"/>
+                                                        </DataTrigger>
+                                                    </Style.Triggers>
+                                                </Style>
+                                            </TextBlock.Style>
+                                        </TextBlock>
+
+                                        <!-- List of networks -->
+                                        <ScrollViewer Height="220" HorizontalScrollBarVisibility="Hidden" VerticalScrollBarVisibility="Auto">
+                                            <StackPanel Orientation="Vertical">
+                                                <ItemsControl ItemsSource="{Binding NetworksSettings.AllNetworkActions}">
+                                                    <ItemsControl.ItemTemplate>
+                                                        <DataTemplate>
+
+                                                            <!-- Network representation template -->
+                                                            <Border
+                                                                BorderThickness="0"
+                                                                Background="Transparent" 
+                                                                Name="GuiButtonNetwork"
+                                                                Tag="{Binding}" >
+
+                                                                <Grid Margin="10,0,10,0" MinHeight="35">
+                                                                    <Grid.ColumnDefinitions>
+                                                                        <ColumnDefinition Width="Auto"/>
+                                                                        <ColumnDefinition Width="3*"/>
+                                                                        <ColumnDefinition Width="*" />
+                                                                    </Grid.ColumnDefinitions>
+
+                                                                    <Image Grid.Column="0" Source="../Resources/../Resources/iconWiFiBlue.png" Width="16" Margin="10,0,10,0"/>
+
+                                                                    <!--Network name-->
+                                                                    <TextBlock Grid.Column="1" Text="{Binding Network.SSID}" VerticalAlignment="Center">
+                                                                        <TextBlock.Style>
+                                                                            <Style TargetType="TextBlock">
+                                                                                <Style.Triggers>
+                                                                                    <DataTrigger Binding="{Binding Action}" Value="Default">
+                                                                                        <Setter Property="Foreground" Value="{StaticResource DefaultNetworkColor}"/>
+                                                                                    </DataTrigger>
+                                                                                </Style.Triggers>
+                                                                            </Style>
+                                                                        </TextBlock.Style>
+                                                                    </TextBlock>
+
+                                                                    <ComboBox Name="GuiComboBoxNetworkAction"
+                                                                        Grid.Column="2" VerticalAlignment="Center" VerticalContentAlignment="Center" HorizontalContentAlignment="Center" HorizontalAlignment="Center"
+                                                                              Style="{StaticResource ComboBoxTransparent}"
+                                                                              SelectedItem="{Binding Path=Action}"
+                                                                              MinWidth="200"
+                                                                              ItemsSource="{Binding NetworkPossibleActions, RelativeSource={RelativeSource AncestorType=Window}}">
+                                                                        
+                                                                        <ComboBox.ItemTemplate>
+                                                                            <DataTemplate>
+                                                                                <TextBlock HorizontalAlignment="Center" Margin="3" Style="{StaticResource NetworkActionText}"/>
+                                                                            </DataTemplate>
+                                                                        </ComboBox.ItemTemplate>
+
+                                                                    </ComboBox>
+                                                                </Grid>
+
+                                                            </Border>
+                                                        </DataTemplate>
+                                                    </ItemsControl.ItemTemplate>
+                                                </ItemsControl>
+                                            </StackPanel>
+                                        </ScrollViewer>
+
+                                    </Grid>
+                                </Border>
+
+                                <Grid Grid.Row="4" Margin="0,10,0,0">
+                                    <Grid.ColumnDefinitions>
+                                        <ColumnDefinition/>
+                                        <ColumnDefinition/>
+                                    </Grid.ColumnDefinitions>
+
+                                    <CheckBox Grid.Column="0" Content="Show all WiFi networks" IsChecked="{Binding NetworksSettings.IsShowAllNetworks}"/>
+
+                                    <Button Grid.Column="1" Height="32" Style="{StaticResource ButtonSecondary}" Name="GuiButtonNetworksSetAllToDefault" Click="GuiButtonNetworksSetAllToDefault_OnClick">
+                                        <TextBlock Margin="15,0,15,0">Reset to default settings</TextBlock>
+                                    </Button>
+                                </Grid>
+                            </Grid>
+                        </TabItem>
+
+                        <TabItem Header="actions">
+                            <Grid Margin="0">
+                                <Grid.RowDefinitions>
+                                    <RowDefinition Height="Auto"/>
+                                    <RowDefinition Height="Auto"/>
+                                    <RowDefinition Height="Auto"/>
+                                    <RowDefinition Height="Auto"/>
+                                    <RowDefinition Height="Auto"/>
+                                    <RowDefinition Height="Auto"/>
+                                    <RowDefinition Height="Auto"/>
+                                    <RowDefinition Height="Auto"/>
+                                    <RowDefinition Height="Auto"/>
+                                    <RowDefinition Height="*"/>
+                                    <RowDefinition Height="Auto"/>
+                                </Grid.RowDefinitions>
+
+                                <Rectangle Grid.Row="0" Height="1" Fill="#26394D" Stroke="#26394D" Opacity="0.1"  Margin="0,10,0,10" HorizontalAlignment="Stretch" />
+
+                                <TextBlock Grid.Row="3" Margin="0,0,0,10" FontWeight="Bold">Actions for Untrusted WiFi</TextBlock>
+                                <CheckBox Grid.Row="4" Margin="22,0,0,10" IsChecked="{Binding Settings.NetworkActions.UnTrustedConnectToVPN}">Connect to VPN</CheckBox>
+                                <CheckBox Grid.Row="5" Margin="22,0,0,10" IsChecked="{Binding Settings.NetworkActions.UnTrustedEnableKillSwitch}">Enable firewall</CheckBox>
+
+                                <TextBlock Grid.Row="6" Margin="0,0,0,10" FontWeight="Bold">Actions for Trusted WiFi</TextBlock>
+                                <CheckBox Grid.Row="7" Margin="22,0,0,10" IsChecked="{Binding Settings.NetworkActions.TrustedDisconnectFromVPN}">Disconnect from VPN</CheckBox>
+                                <CheckBox Grid.Row="8" Margin="22,0,0,0" IsChecked="{Binding Settings.NetworkActions.TrustedDisableKillSwitch}">Disable firewall</CheckBox>
+                            </Grid>
+
+                        </TabItem>
+
+                    </TabControl>
+                </StackPanel>
+            </TabItem>
+
+            <TabItem Header="openvpn" Name="OpenVPNTab">
+                <TabItem.Style>
+                    <Style TargetType="TabItem" BasedOn="{StaticResource TabItemStyle}">
+                        <Style.Triggers>
+                            <DataTrigger Binding="{Binding Settings.VpnProtocolType}" Value="{x:Static vpnProtocols:VpnType.WireGuard}">
+                                <Setter Property="Visibility" Value="Collapsed"/>
+                            </DataTrigger>
+                        </Style.Triggers>
+                    </Style>
+                </TabItem.Style>
+
+                <Grid Margin="0,40,0,0">
+
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="Auto"/>
+                        <RowDefinition Height="Auto"/>
+                        <RowDefinition Height="*"/>
+                    </Grid.RowDefinitions>
+
+                    <TextBlock Grid.Row="0" Margin="0,0,0,10" >OpenVPN additional configuration parameters:</TextBlock>
+
+                    <TextBlock Grid.Row="1" Margin="0,0,0,10"  
+                               Style="{StaticResource SecondaryTextStyle}">
+                               Be careful when changing these parameters as they can affect OpenVPN stability.<LineBreak/>
+                               Only change them if you understand what you are doing.
+                    </TextBlock>
+
+                    <TextBlock Grid.Row="2" Margin="9,6,4,4" FontSize="15">Write parameters here...</TextBlock>
+                    <TextBox Grid.Row="2"  Height="100"  Background="White"
+                             Text="{Binding Settings.OpenVPNExtraParameters}" 
+                             Style="{StaticResource TextBoxDefault}"
+                             VerticalContentAlignment="Top"
+                             TextWrapping="Wrap" 
+                             AcceptsReturn="True" 
+                             Padding="5,5,5,5"
+                             ScrollViewer.VerticalScrollBarVisibility="Auto" />
+                </Grid>
+            </TabItem>
+
+            <TabItem Header="antitracker">
+                <Grid Margin="0,40,0,0">
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="Auto"/>
+                        <RowDefinition Height="Auto"/>
+                        <RowDefinition Height="Auto"/>
+                        <RowDefinition Height="Auto"/>
+                        <RowDefinition Height="Auto"/>
+                        <RowDefinition Height="Auto"/>
+                    </Grid.RowDefinitions>
+
+                    <StackPanel Grid.Row="0"  Orientation="Vertical">
+                        <TextBlock Style="{StaticResource SecondaryTextStyle}">
+                            IVPN blocks ads, malicious websites, and third-party trackers  using our private DNS servers.<LineBreak/>  
+                            <Hyperlink NavigateUri="https://www.ivpn.net/antitracker" 
+                                       RequestNavigate="GuiHyperlink_OnRequestNavigate">Learn more</Hyperlink>
+                            about how IVPN AntiTracker is implemented.
+                        </TextBlock>
+                    </StackPanel>
+
+                    <CheckBox Grid.Row="3" Margin="0,22,0,0" Content="Hardcore Mode" IsChecked="{Binding Settings.IsAntiTrackerHardcore}"/>
+
+                    <StackPanel Grid.Row="4" Margin="22,10,0,0" Orientation="Vertical">
+                        <TextBlock Style="{StaticResource SecondaryTextStyle}">
+                            Hardcore mode blocks the leading companies with business models relying on user surveillance
+                            <LineBreak/>(currently: Google and Facebook).
+
+                            <LineBreak/>
+                            <LineBreak/>To better understand the impact please see our page on
+
+                            <Hyperlink NavigateUri="https://www.ivpn.net/antitracker/hardcore" 
+                                       RequestNavigate="GuiHyperlink_OnRequestNavigate">hardcore mode</Hyperlink>
+                            .
+                        </TextBlock>
+                    </StackPanel>
+                </Grid>
+            </TabItem>
+
+            <TabItem Header="dns">
+                <Grid Margin="0,40,0,0">
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="Auto"/>
+                        <RowDefinition Height="Auto"/>
+                        <RowDefinition Height="Auto"/>
+                        <RowDefinition Height="Auto"/>
+                        <RowDefinition Height="Auto"/>
+                        <RowDefinition Height="Auto"/>
+                    </Grid.RowDefinitions>
+
+                    <CheckBox Grid.Row="0" Content="Use custom DNS server when connected to IVPN" IsChecked="{Binding Settings.IsCustomDns}"/>
+                    <StackPanel Grid.Row="1" Margin="22,10,0,0" Orientation="Vertical">
+                        <TextBlock Style="{StaticResource SecondaryTextStyle}">IP address:</TextBlock>
+                        <TextBox MinWidth="200" Margin="0,5,0,5" HorizontalAlignment="Left" Text="{Binding Settings.CustomDns}">
+                            <TextBox.Style>
+                                <Style TargetType="TextBox" BasedOn="{StaticResource TextBoxDefault}">
+                                    <Style.Triggers>
+                                        <DataTrigger Binding="{Binding Settings.IsCustomDns}" Value="False">
+                                            <Setter Property="IsEnabled" Value="False"/>
+                                        </DataTrigger>
+                                    </Style.Triggers>
+                                </Style>
+                            </TextBox.Style>
+                        </TextBox>
+
+                        <TextBlock Style="{StaticResource SecondaryTextStyle}">
+                            AntiTracker will override the custom DNS when enabled.
+                        </TextBlock>
+                    </StackPanel>
+                </Grid>
+            </TabItem>
+        </TabControl>
+
+        <Rectangle Grid.Row="1" Height="2" Fill="#26394D" Stroke="#26394D" Opacity="0.1"  Margin="0,20,0,20" HorizontalAlignment="Stretch" />
+
+        <Grid Grid.Row="2" Margin="32,0,32,20">
+
+            <StackPanel Orientation="Horizontal" HorizontalAlignment="Right">
+                <Button Width="120" Height="32" IsCancel="True" Margin="0,0,20,0">
+                    <Button.Style>
+                        <Style TargetType="Button" BasedOn="{StaticResource ButtonSecondary}">
+                            <Style.Triggers>
+                                <DataTrigger Binding="{Binding IsDiagnosticsInProgress}" Value="true">
+                                    <Setter Property="IsEnabled" Value="False"/>
+                                </DataTrigger>
+                            </Style.Triggers>
+                        </Style>
+                    </Button.Style>
+                    Cancel
+                </Button>
+
+                <Button Width="120" Height="32" IsDefault="True" Click="OkClicked" >
+                    <Button.Style>
+                        <Style TargetType="Button" BasedOn="{StaticResource ButtonMain}">
+                            <Style.Triggers>
+                                <DataTrigger Binding="{Binding IsDiagnosticsInProgress}" Value="true">
+                                    <Setter Property="IsEnabled" Value="False"/>
+                                </DataTrigger>
+                            </Style.Triggers>
+                        </Style>
+                    </Button.Style>
+                    Save
+                </Button>
+            </StackPanel>
+
+        </Grid>
+
+
+        <!-- It's important that this is in the end of the XAML as it needs to be on top of everything else! -->
+        <Grid Grid.Row="0" Grid.RowSpan="100" x:Name="GuiInputBox" Visibility="Collapsed">
+            <Grid Background="Black" Opacity="0.1"/>
+            <Border
+                Margin="10"
+                MinWidth="600"
+                Background="White" 
+                BorderBrush="#178FE6" 
+                BorderThickness="1" 
+                HorizontalAlignment="Center" 
+                VerticalAlignment="Center">
+
+                <Grid Margin="10">
+                    <Grid.RowDefinitions>
+                        <RowDefinition/>
+                        <RowDefinition/>
+                        <RowDefinition/>
+                        <RowDefinition/>
+                    </Grid.RowDefinitions>
+
+                    <TextBlock Name="GuiInputBoxCaptionText" Grid.Row="1" Text="Please write a description of the problem you are experiencing" Foreground="Black"/>
+
+                    <TextBox Name="GuiInputBoxText"
+                        Grid.Row="2"  Margin="0,10,0,10" Background="White"
+                             Style="{StaticResource TextBoxDefault}"
+                             VerticalContentAlignment="Top"
+                             TextWrapping="Wrap" 
+                             AcceptsReturn="True" 
+                             Padding="5,5,5,5"
+                             ScrollViewer.VerticalScrollBarVisibility="Auto" />
+
+                    <StackPanel Grid.Row="3" Orientation="Horizontal" HorizontalAlignment="Center">
+                        <Button x:Name="GuiInputBoxYesButton" Content="OK"  Width="120" Height="32" Margin="0,0,20,0">
+                            <Button.Style>
+                                <Style TargetType="Button" BasedOn="{StaticResource ButtonMain}">
+                                    <Style.Triggers>
+                                        <DataTrigger Binding="{Binding ElementName=GuiInputBoxText, Path=Text.Length}" Value="0">
+                                            <Setter Property="IsEnabled" Value="False"/>
+                                        </DataTrigger>
+                                    </Style.Triggers>
+                                </Style>
+                            </Button.Style>
+                        </Button>
+
+                        <Button x:Name="GuiInputBoxNoButton" Style="{StaticResource ButtonSecondary}" Content="Cancel" Width="120" Height="32"/>
+
+                    </StackPanel>
+                </Grid>
+            </Border>
+        </Grid>
+    </Grid>
+</Window>

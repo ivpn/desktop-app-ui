@@ -1,0 +1,61 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 16
+VisualStudioVersion = 16.0.29418.71
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "IVPN Application", "Windows\IVPN Application\IVPN Application.csproj", "{83D06D39-78E1-4DDD-9ABB-B521A68C6A0D}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AppUpdater", "Windows\AppUpdater\AppUpdater.csproj", "{D78A3DE8-1CCC-4898-9A5D-1442DBF49ED4}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ManagedWifi", "Windows\ManagedWifi\ManagedWifi.csproj", "{6AA425C9-EA6A-4B01-AAED-5FF122E8B663}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "NetworkHelpers", "Windows\NetworkHelpers\NetworkHelpers.csproj", "{2AEE63D3-BBB3-42B1-9526-7129FA96A85E}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "IVPN Common", "common\IVPN Common\IVPN Common.csproj", "{DFFBDD32-B3F8-45C2-93AA-4FE3D8DEAAF4}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "IVPN Core", "common\IVPN Core\IVPN Core.csproj", "{39E0BA44-DFA6-4460-81A7-9E21CB1E28DE}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "IVPN Helpers", "common\IVPN Helpers\IVPN Helpers.csproj", "{F57EEEF1-22F7-4A6D-9445-659F2DF24D05}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{83D06D39-78E1-4DDD-9ABB-B521A68C6A0D}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{83D06D39-78E1-4DDD-9ABB-B521A68C6A0D}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{83D06D39-78E1-4DDD-9ABB-B521A68C6A0D}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{83D06D39-78E1-4DDD-9ABB-B521A68C6A0D}.Release|Any CPU.Build.0 = Release|Any CPU
+		{D78A3DE8-1CCC-4898-9A5D-1442DBF49ED4}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{D78A3DE8-1CCC-4898-9A5D-1442DBF49ED4}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{D78A3DE8-1CCC-4898-9A5D-1442DBF49ED4}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{D78A3DE8-1CCC-4898-9A5D-1442DBF49ED4}.Release|Any CPU.Build.0 = Release|Any CPU
+		{6AA425C9-EA6A-4B01-AAED-5FF122E8B663}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{6AA425C9-EA6A-4B01-AAED-5FF122E8B663}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{6AA425C9-EA6A-4B01-AAED-5FF122E8B663}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{6AA425C9-EA6A-4B01-AAED-5FF122E8B663}.Release|Any CPU.Build.0 = Release|Any CPU
+		{2AEE63D3-BBB3-42B1-9526-7129FA96A85E}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{2AEE63D3-BBB3-42B1-9526-7129FA96A85E}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{2AEE63D3-BBB3-42B1-9526-7129FA96A85E}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{2AEE63D3-BBB3-42B1-9526-7129FA96A85E}.Release|Any CPU.Build.0 = Release|Any CPU
+		{DFFBDD32-B3F8-45C2-93AA-4FE3D8DEAAF4}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{DFFBDD32-B3F8-45C2-93AA-4FE3D8DEAAF4}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{DFFBDD32-B3F8-45C2-93AA-4FE3D8DEAAF4}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{DFFBDD32-B3F8-45C2-93AA-4FE3D8DEAAF4}.Release|Any CPU.Build.0 = Release|Any CPU
+		{39E0BA44-DFA6-4460-81A7-9E21CB1E28DE}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{39E0BA44-DFA6-4460-81A7-9E21CB1E28DE}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{39E0BA44-DFA6-4460-81A7-9E21CB1E28DE}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{39E0BA44-DFA6-4460-81A7-9E21CB1E28DE}.Release|Any CPU.Build.0 = Release|Any CPU
+		{F57EEEF1-22F7-4A6D-9445-659F2DF24D05}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{F57EEEF1-22F7-4A6D-9445-659F2DF24D05}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{F57EEEF1-22F7-4A6D-9445-659F2DF24D05}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{F57EEEF1-22F7-4A6D-9445-659F2DF24D05}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {2717EEF7-A5E3-4F3A-A36C-13337EC8076D}
+	EndGlobalSection
+EndGlobal

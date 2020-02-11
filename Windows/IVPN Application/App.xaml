@@ -1,0 +1,22 @@
+﻿<Application x:Class="IVPN.App"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:sys="clr-namespace:System;assembly=mscorlib"
+             StartupUri="Windows/MainWindow.xaml">
+    <Application.Resources>
+        <ResourceDictionary>
+            <ResourceDictionary.MergedDictionaries>
+                <ResourceDictionary Source="Strings.xaml" />
+                <ResourceDictionary Source="Themes/Icons.xaml" />
+                <ResourceDictionary Source="Converters/Converters.xaml" />
+
+                <ResourceDictionary Source="Themes/StyleControls.xaml" />
+                <ResourceDictionary Source="Themes/StyleWindow.xaml" />
+            </ResourceDictionary.MergedDictionaries>
+
+            
+        </ResourceDictionary>
+        
+        
+    </Application.Resources>
+</Application>

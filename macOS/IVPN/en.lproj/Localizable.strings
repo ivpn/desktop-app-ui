@@ -1,0 +1,190 @@
+﻿
+"ErrorCaption_CannotConnectoToService" = "Error connecting to IVPN Agent";
+"Error_ConnectionClosed" = "Connection with IVPN Agent was closed";
+"ErrorCaption_IVPNServiceCouldNotStart" = "IVPN Agent could not be started";
+"Starting_Service_Progress" = "Installing IVPN Agent...";
+"Connecting_Service_Progress" = "Connecting to IVPN Agent...";
+
+"Progress_Connecting" = "Connecting...";
+"Progress_Disconnecting" = "Disconnecting...";
+
+"Error_HTTPProxyWithUDP" = "Cannot connect to selected server using HTTP proxy. Select another server or disable HTTP proxy setting.";
+"Initializing" = "Initializing...";
+
+"Error_UserNameIsEmpty" = "Please enter your account ID";
+"Error_PasswordIsEmpty" = "Please enter your password";
+"Error_Authentication" = "Account ID is incorrect";
+"Error_AuthenticationGoToLogInPage" = "Incorrect username or password.\n\nYou have been redirected to the login page to re-enter your credentials.";
+
+"Error_EmailIsEmpty" = "Please enter your email address";
+"Error_EmailNotValid" = "Email adress is not valid";
+"Error_SingUpFailed" = "Signup failed";
+"Error_UserNotActive" = "Account not active";
+"Error_AccountIsExists" = "Account already exists";
+"Error_OperationFailed" = "Operation failed";
+"Error_ConnectionError" = "Unable to connect to VPN server";
+"Error_SubmittingLogs" = "Error submitting diagnostics logs";
+"Error_RestServer_Communication" = "Server communication error";
+"Error_RestServer_ConnectionError" = "There was an error communicating with our servers. Please check your internet connection and try again.";
+"Error_RestServer_ConnectionError_Title" = "Server communication error";
+"Error_ConnectionError_AccountExpiredOrWrongPassword" = "Either your password is incorrect or your account is suspended due to non-payment.\n\nIf you have changed your password please logout and login with new credentials.";
+"Error_ApiRequestTimeout" = "Operation timeout. Please check your internet connection and try again.";
+"Error_ApiRequestTimeoutBecauseFirewall" = "Operation timeout because of blocked by IVPN Firewall. Please, connect to IVPN to restore connectivity.";
+"Error_ApiPasswordResetError" = "Unsuccessful password reset operation.";
+
+"Button_OK" = "OK";
+"Button_Cancel" = "Cancel";
+"Button_Yes" = "Yes";
+"Button_StartFreeTrial" = "Start my free trial";
+"Button_Back" = "Back";
+"Button_Close" = "Close";
+"Button_SelectServer" = "Select Server";
+"Button_SelectEntryServer" = "Select Entry Server";
+"Button_SelectExitServer" = "Select Exit Server";
+"Button_ResetPassword" = "Reset your password";
+"Button_LogIn" = "Log In";
+"Button_Logout" = "Log out";
+"Button_TryAgain" = "Try again";
+"Button_SkipAndContinue" = "Skip and continue";
+"Button_DoForgotPassword" = "Forgot password?";
+"Button_Connecting" = "Connecting";
+"Button_Disconnecting" = "Disconnecting";
+"Button_Connect" = "Connect";
+"Button_Disconnect" = "Disconnect";
+"Button_Resume" = "Resume";
+"Button_Resuming" = "Resuming";
+"Button_Pausing" = "Pausing";
+
+"Button_ContinueTrial" = "Close";
+"Button_GetSubscription" = "Subscribe";
+"Button_RenewSubscription" = "Renew";
+"Button_Introduction_ShowMe" = "Prove it to me";
+"Button_Introduction_Continue" = "Continue";
+"Button_Introduction_Close" = "Close";
+"Button_Introduction_Connect" = "Connect";
+
+"Button_PrivateEmail_Create" = "Generate new";
+"Button_PrivateEmail_Discard" = "Discard address";
+"Button_PrivateEmail_Delete" = "Delete address";
+"Button_PrivateEmail_Copy" = "Copy to clipboard";
+"Button_PrivateEmail_Notes" = "Update notes";
+
+"Label_ClickToConnect" = "Click to connect";
+"Label_ClickToDisconnect" = "Click to disconnect";
+"Label_ClickToResume" = "Click to resume";
+"Label_ConnectTo" = "Connect to";
+"Label_ConnectedTo" = "Connected to";
+"Label_TestingOurServers" = "Connecting to server...";
+"Label_ClosingConnection" = "Closing connection...";
+"Label_EntryServer" = "Entry server";
+"Label_ExitServer" = "Exit server";
+"Label_SingleHop" = "Single-Hop";
+"Label_MultiHop" = "Multi-Hop";
+
+"Label_ChangeServerOnVpnPopoverTitle" = "You are now connected to IVPN";
+"Label_ChangeServerOnVpnPopoverText" = "You can change server only when IVPN is disconnected.";
+
+"Label_IntroWelcome" = "Welcome. We think IVPN is easy to use";
+"Label_IntroConnectTitle" = "Connect to IVPN";
+"Label_IntroConnectText" = "To connect or disconnect click the big round button";
+"Label_IntroFirewallTitle" = "IVPN firewall";
+"Label_IntroFirewallText" = "The IVPN firewall will block all non-authorized connections, ensuring no leaks and maximum privacy.";
+"Label_IntroServersTitle" = "Select a server";
+"Label_IntroServersText" = "Connect to a single-hop server for maximum speed or multi-hop for maximum privacy.";
+
+"Label_FreeTrialDaysLeft_LastDay" = "Your free trial expires today";
+"Label_FreeTrialDaysLeft_OneDay" = "Your free trial expires in 1 day";
+"Label_FreeTrialDaysLeft_PARAMETRIZED" = "Your free trial expires in {0} days";
+
+"Label_AccountDaysLeft_LastDay" = "Your account expires today";
+"Label_AccountDaysLeft_OneDay" = "Your account expires in 1 day";
+"Label_AccountDaysLeft_PARAMETRIZED" = "Your account expires in {0} days";
+
+"Label_FreeTrialExpired" = "Your free trial has expired";
+"Label_SubscriptionExpired" = "Your subscription has expired";
+"Label_AccountExpiredUpgradeNow" = "Upgrade now";
+
+"Label_SubscriptionDaysLeft_PARAMETRIZED" = "Your subscription expires in {0} days";
+
+"Label_TrialDaysLeftTitle_LastDay_PARAMETRIZED" = "Your trial will expire {0}today.";
+"Label_TrialDaysLeftTitle_OneDay_PARAMETRIZED" = "Your trial will expire in {0} day.";
+"Label_TrialDaysLeftTitle_PARAMETRIZED" = "Your trial will expire in {0} days.";
+"Label_AccountDaysLeftTitle_LastDay_PARAMETRIZED" = "Your account will expire {0}today.";
+"Label_AccountDaysLeftTitle_OneDay_PARAMETRIZED" = "Your account will expire in {0} day.";
+"Label_AccountDaysLeftTitle_PARAMETRIZED" = "Your account will expire in {0} days.";
+
+"Label_TrialDaysLeftDescription_LastDay" = "Today is the last day of your trial account. Please upgrade your account to remain secured.";
+"Label_TrialDaysLeftDescription_OneDay" = "You have 1 day left of your trial account. Please upgrade your account to remain secured.";
+"Label_TrialDaysLeftDescription_PARAMETRIZED" = "You have {0} days left of your trial account. Please upgrade your account to remain secured.";
+"Label_TrialDaysLeftDescription_Expired" = "Please upgrade your account to remain secured.";
+"Label_AccountDaysLeftDescription_LastDay" = "Today is the last day of your account. Please renew your account to remain secured.";
+"Label_AccountDaysLeftDescription_OneDay" = "You have 1 day left of your account. Please renew your account to remain secured.";
+"Label_AccountDaysLeftDescription_PARAMETRIZED" = "You have {0} days left of your account. Please renew your account to remain secured.";
+"Label_AccountDaysLeftDescription_Expired" = "Please renew your account to remain secured.";
+
+"Label_PrivateEmail_UdpatingProgress" = "Updating data...";
+"Label_PrivateEmail_Title" = "IVPN private email";
+"Label_PrivateEmail_NotesDialog_PARAMETRIZED" = "Update notes for {0}";
+"Label_PrivateEmail_AmountOfEmailsTitle_PARAMETRIZED" = "You have {0} active private emails";
+"Label_PrivateEmail_DeleteEmailQuestion_Informative_PARAMETRIZED" = "Are you sure you want to delete {0}? This operation cannot be undone.";
+"Label_PrivateEmail_DeleteEmailQuestion_Header_PARAMETRIZED" = "Delete {0}?";
+
+"Label_NoWiFiConnection" = "No WiFi connection";
+"Label_InsecureWiFiConnection" = "insecure";
+
+"ToolTip_PauseBtn" = "Pause the VPN to temporarily route all traffic through your default unsecured connection.\nThe VPN will be restored after a defined time interval or after manually resuming it.";
+
+"Placeholder_YourEmail" = "Email";
+"Placeholder_Password" = "Password";
+"Placeholder_Username" = "ivpnXXXXXXXX";
+
+"NetworkConfig_Trusted" = "Trusted";
+"NetworkConfig_Untrusted" = "Untrusted";
+"NetworkConfig_Default" = "Default";
+"NetworkConfig_NoAction" = "No status";
+"NetworkConfig_ActionNotSet" = "No trust status set";
+
+"Title_Error" = "Error";
+
+"Mesage_CannotSelectServerSameCountry" = "Entry and exit servers cannot be in the same country";
+"Mesage_CannotSelectServerSameCountry_Description" = "When using multihop you must select entry and exit servers in different countries. Please select a different entry or exit server.";
+"Message_InvalidUsername" = "You entered an invalid account ID";
+"Message_InvalidUsername_Description" = "Your account ID starts with the letters 'ivpn' and can be found in the welcome email sent to you on signup. You cannot use your email address.";
+"Message_LooksLikeAgentWasChashed" = "It appears the IVPN Agent crashed some time ago";
+"Meggase_CapturingLogs" = "Capturing logs, please wait...";
+"Message_PasswordResetSuccessInstructions" = "Please check your email, we have sent instructions to reset your password.";
+
+"Meggase_ResetAllNetworkActionsCaption" = "Reset all settings to default values";
+"Meggase_ResetAllNetworkActionsText" = "Are you sure you want to reset the trust status for all networks and actions to the default settings? ";
+
+"Message_LogOut_question" = "Do you really want to log out?";
+"Message_LogOut_actioninfo_firewall" = "Firewall will be disabled.";
+"Message_LogOut_actioninfo_connection" = "VPN connection will be closed.";
+"Message_LogOut_actioninfo_firewall_and_connection" = "Firewall will be disabled and VPN connection will be closed.";
+
+"Message_DisconnectToSwitchVPNProtocol" = "To switch VPN protocol, please disconnect from the VPN.";
+"WG_Message_DisconnectToRegenerateKeys" = "To regenerate keys for WireGuard protocol, please disconnect from the VPN.";
+
+"WG_Label_KeysDeleting" = "Deleting WireGuard key from IVPN server...";
+"WG_Label_KeysGenerating" = "Generating new keys...";
+"WG_Label_KeysUploading" = "Uploading key to IVPN server...";
+"WG_Error_FailedToInitializeKey" = "Failed to initialize WireGuard keys";
+"WG_Error_FailedToUplodKey" = "Failed to upload key on IVPN server";
+"WG_Error_FailedToDeleteKey" = "Unable to delete WireGuard key from IVPN server";
+"WG_Error_FailedToDeleteKeyOnLogout" = "Failed to delete WireGuard keys from IVPN server";
+
+"WG_Error_Api425_KeyLimitReached" = "Maximum number of WireGuard keys reached. Please delete unused keys using the IVPN Website Client Area.";
+
+"MenuItem_ConnectTo" = "Connect to ";
+"MenuItem_ShowIVPN" = "Show IVPN...";
+"MenuItem_Account" = "Account";
+"MenuItem_AccountUsername" = "Account ID: ";
+"MenuItem_AccountLogOut" = "Logout...";
+"MenuItem_PrivateEmail" = "Private Email";
+"MenuItem_PrivateEmailGenerate" = "Generate new private email...";
+"MenuItem_PrivateEmailManage" = "Manage...";
+"MenuItem_Preferences" = "Preferences...";
+"MenuItem_DiagnosticsLogs" = "Diagnostics Logs...";
+"MenuItem_CheckForUpdates" = "Check for updates...";
+"MenuItem_Disconnect" = "Disconnect";
+"MenuItem_QuitIVPN" = "Quit IVPN";

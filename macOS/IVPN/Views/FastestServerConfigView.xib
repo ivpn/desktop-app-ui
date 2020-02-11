@@ -1,0 +1,69 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<document type="com.apple.InterfaceBuilder3.Cocoa.XIB" version="3.0" toolsVersion="14313.18" targetRuntime="MacOSX.Cocoa" propertyAccessControl="none">
+    <dependencies>
+        <deployment identifier="macosx"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.CocoaPlugin" version="14313.18"/>
+        <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
+    </dependencies>
+    <objects>
+        <customObject id="-2" userLabel="File's Owner" customClass="FastestServerConfigViewController">
+            <connections>
+                <outlet property="UiScrollViewer" destination="X2J-PL-Hb6" id="03A-Sn-Xel"/>
+                <outlet property="UiServersView" destination="mq9-gC-TCX" id="pD1-Ac-gZb"/>
+                <outlet property="view" destination="4" id="17"/>
+            </connections>
+        </customObject>
+        <customObject id="-1" userLabel="First Responder" customClass="FirstResponder"/>
+        <customObject id="-3" userLabel="Application" customClass="NSObject"/>
+        <customView id="4" customClass="FastestServerConfigView">
+            <rect key="frame" x="0.0" y="0.0" width="320" height="508"/>
+            <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
+            <subviews>
+                <box verticalHuggingPriority="750" boxType="separator" id="lxQ-Rd-A0M">
+                    <rect key="frame" x="0.0" y="400" width="320" height="5"/>
+                    <autoresizingMask key="autoresizingMask" flexibleMinY="YES"/>
+                </box>
+                <textField horizontalHuggingPriority="251" verticalHuggingPriority="750" id="6Xw-lF-8TU">
+                    <rect key="frame" x="18" y="447" width="284" height="17"/>
+                    <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
+                    <textFieldCell key="cell" scrollable="YES" lineBreakMode="clipping" sendsActionOnEndEditing="YES" title="Fastest Server Settings" id="pnB-pz-uNV">
+                        <font key="font" metaFont="systemSemibold" size="12"/>
+                        <color key="textColor" red="0.70588235290000001" green="0.75686274509999996" blue="0.80000000000000004" alpha="0.84999999999999998" colorSpace="calibratedRGB"/>
+                        <color key="backgroundColor" name="controlColor" catalog="System" colorSpace="catalog"/>
+                    </textFieldCell>
+                </textField>
+                <scrollView wantsLayer="YES" borderType="none" autohidesScrollers="YES" horizontalLineScroll="10" horizontalPageScroll="10" verticalLineScroll="10" verticalPageScroll="10" hasHorizontalScroller="NO" usesPredominantAxisScrolling="NO" id="X2J-PL-Hb6">
+                    <rect key="frame" x="0.0" y="0.0" width="320" height="402"/>
+                    <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                    <clipView key="contentView" copiesOnScroll="NO" id="m1o-Cd-4qb">
+                        <rect key="frame" x="0.0" y="0.0" width="320" height="402"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <subviews>
+                            <view id="mq9-gC-TCX">
+                                <rect key="frame" x="0.0" y="0.0" width="305" height="387"/>
+                                <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                            </view>
+                        </subviews>
+                    </clipView>
+                    <scroller key="horizontalScroller" hidden="YES" verticalHuggingPriority="750" horizontal="YES" id="EA0-Kh-uat">
+                        <rect key="frame" x="-100" y="-100" width="303" height="15"/>
+                        <autoresizingMask key="autoresizingMask"/>
+                    </scroller>
+                    <scroller key="verticalScroller" hidden="YES" verticalHuggingPriority="750" doubleValue="1" horizontal="NO" id="gPL-3R-ls9">
+                        <rect key="frame" x="304" y="1" width="15" height="437"/>
+                        <autoresizingMask key="autoresizingMask"/>
+                    </scroller>
+                </scrollView>
+                <textField horizontalHuggingPriority="251" verticalHuggingPriority="750" id="vbp-Uo-XLE">
+                    <rect key="frame" x="18" y="410" width="284" height="33"/>
+                    <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
+                    <textFieldCell key="cell" sendsActionOnEndEditing="YES" title="Disable servers you do not want to be chosen as the fastest server" id="Hxm-Wh-Sv4">
+                        <font key="font" metaFont="system" size="12"/>
+                        <color key="textColor" red="0.70588235290000001" green="0.75686274509999996" blue="0.80000000000000004" alpha="0.84999999999999998" colorSpace="calibratedRGB"/>
+                        <color key="backgroundColor" name="controlColor" catalog="System" colorSpace="catalog"/>
+                    </textFieldCell>
+                </textField>
+            </subviews>
+        </customView>
+    </objects>
+</document>

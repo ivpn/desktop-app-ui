@@ -1,0 +1,505 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<document type="com.apple.InterfaceBuilder3.Cocoa.XIB" version="3.0" toolsVersion="14490.70" targetRuntime="MacOSX.Cocoa" propertyAccessControl="none">
+    <dependencies>
+        <deployment identifier="macosx"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.CocoaPlugin" version="14490.70"/>
+        <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
+    </dependencies>
+    <objects>
+        <customObject id="-2" userLabel="File's Owner" customClass="ConnectButtonViewController">
+            <connections>
+                <outlet property="GuiConnectButtonImage" destination="RJ6-tc-2VS" id="yGX-HA-lYr"/>
+                <outlet property="GuiConnectButtonText" destination="izN-eJ-b0r" id="5e6-Wo-sM4"/>
+                <outlet property="GuiGeoLookupCityView" destination="wkU-xk-p0c" id="8Bu-fh-kxU"/>
+                <outlet property="GuiGeoLookupDurationView" destination="Pgh-oj-71G" id="uCG-lQ-o4d"/>
+                <outlet property="GuiGeoLookupErrorView" destination="a9M-9y-Lb4" id="7NH-7v-FDj"/>
+                <outlet property="GuiGeoLookupPublicIpView" destination="mNM-mf-5g6" id="wsm-4c-QWg"/>
+                <outlet property="GuiGeoLookupUpdateView" destination="df8-wg-lZT" id="dxc-l2-MU5"/>
+                <outlet property="GuiGeoLookupView" destination="Hpb-kZ-xG9" id="1Rm-lX-4xD"/>
+                <outlet property="GuiInformationButton" destination="cCQ-pL-asC" id="Div-Iu-LS0"/>
+                <outlet property="GuiLabelToDoDescription" destination="x0r-QS-FkX" id="Eff-wp-EHm"/>
+                <outlet property="GuiNetworkActionPopUpBtn" destination="LaX-Sh-KIM" id="cHQ-rh-afS"/>
+                <outlet property="GuiNotificationButtonBottom" destination="Ugw-ji-tE3" id="UGm-bH-wJy"/>
+                <outlet property="GuiPauseButton" destination="c6P-Jp-IHO" id="aFk-rW-XXq"/>
+                <outlet property="GuiPauseDlgCancelBtn" destination="VZ0-Qb-1M3" id="A5y-aJ-Xce"/>
+                <outlet property="GuiPauseDlgHoursTextBlock" destination="gaJ-gB-fQH" id="u4b-3Y-xum"/>
+                <outlet property="GuiPauseDlgMinutesTextBlock" destination="Wno-UI-nfW" id="XP0-1S-fqk"/>
+                <outlet property="GuiPauseDlgOkBtn" destination="VLA-ix-8yo" id="lq5-8W-Yas"/>
+                <outlet property="GuiPauseLeftTimeText" destination="BfR-ph-CUh" id="tQc-j5-GXU"/>
+                <outlet property="GuiPausePopoverView" destination="oKC-r2-HUJ" id="rpd-lq-jFB"/>
+                <outlet property="GuiPopoverConstLabelDuration" destination="rM4-e7-LOA" id="Wr3-rM-xG5"/>
+                <outlet property="GuiPopoverLabelDuration" destination="x5a-2e-UJr" id="qUX-G5-fLj"/>
+                <outlet property="GuiSetPauseIntervalWindow" destination="qnZ-na-lQc" id="ttC-Gm-szj"/>
+                <outlet property="GuiWiFiButton" destination="0LT-cJ-fTW" id="lAl-KN-TEp"/>
+                <outlet property="view" destination="4" id="17"/>
+            </connections>
+        </customObject>
+        <customObject id="-1" userLabel="First Responder" customClass="FirstResponder"/>
+        <customObject id="-3" userLabel="Application" customClass="NSObject"/>
+        <customView id="4" customClass="ConnectButtonView">
+            <rect key="frame" x="0.0" y="0.0" width="320" height="374"/>
+            <autoresizingMask key="autoresizingMask" flexibleMinY="YES"/>
+            <subviews>
+                <imageView horizontalHuggingPriority="251" verticalHuggingPriority="251" id="RJ6-tc-2VS">
+                    <rect key="frame" x="68" y="94" width="184" height="184"/>
+                    <autoresizingMask key="autoresizingMask" flexibleMinX="YES" flexibleMaxX="YES" flexibleMinY="YES"/>
+                    <imageCell key="cell" refusesFirstResponder="YES" alignment="left" imageScaling="proportionallyDown" image="buttonConnect" id="kVr-b8-rXi"/>
+                </imageView>
+                <textField horizontalHuggingPriority="251" verticalHuggingPriority="750" id="izN-eJ-b0r">
+                    <rect key="frame" x="76" y="171" width="168" height="29"/>
+                    <autoresizingMask key="autoresizingMask" flexibleMinX="YES" flexibleMaxX="YES" flexibleMinY="YES"/>
+                    <textFieldCell key="cell" scrollable="YES" lineBreakMode="clipping" sendsActionOnEndEditing="YES" alignment="center" title="Label" id="zbA-cJ-B9W">
+                        <font key="font" metaFont="systemSemibold" size="24"/>
+                        <color key="textColor" name="labelColor" catalog="System" colorSpace="catalog"/>
+                        <color key="backgroundColor" name="controlColor" catalog="System" colorSpace="catalog"/>
+                    </textFieldCell>
+                </textField>
+                <customView id="Ugw-ji-tE3" customClass="CustomButton">
+                    <rect key="frame" x="20" y="47" width="280" height="24"/>
+                    <autoresizingMask key="autoresizingMask" widthSizable="YES" flexibleMaxY="YES"/>
+                    <connections>
+                        <action selector="GuiNotificationButtonBottomPressed:" target="-2" id="xnV-cs-4Ag"/>
+                    </connections>
+                </customView>
+                <button horizontalHuggingPriority="750" verticalHuggingPriority="750" id="cCQ-pL-asC">
+                    <rect key="frame" x="276" y="15" width="24" height="24"/>
+                    <autoresizingMask key="autoresizingMask" flexibleMinX="YES" flexibleMaxY="YES"/>
+                    <buttonCell key="cell" type="disclosureTriangle" bezelStyle="disclosure" image="iconInformation" imagePosition="above" alignment="left" alternateImage="iconInformationTint" imageScaling="proportionallyDown" inset="2" id="qnm-Ci-Tdo">
+                        <behavior key="behavior" pushIn="YES" changeBackground="YES" changeGray="YES" lightByContents="YES"/>
+                        <font key="font" metaFont="system"/>
+                    </buttonCell>
+                    <connections>
+                        <action selector="GuiInformationButtonPressed:" target="-2" id="iaq-le-lxE"/>
+                    </connections>
+                </button>
+                <button imageHugsTitle="YES" id="0LT-cJ-fTW">
+                    <rect key="frame" x="20" y="338" width="280" height="18"/>
+                    <autoresizingMask key="autoresizingMask" widthSizable="YES" flexibleMinY="YES"/>
+                    <buttonCell key="cell" type="square" title=" WiFi name" bezelStyle="shadowlessSquare" image="iconWiFiSmallBlue" imagePosition="left" alignment="center" imageScaling="proportionallyDown" inset="2" id="oFn-iP-XiP">
+                        <behavior key="behavior" pushIn="YES" lightByBackground="YES" lightByGray="YES"/>
+                        <font key="font" metaFont="systemThin" size="14"/>
+                    </buttonCell>
+                </button>
+                <popUpButton id="LaX-Sh-KIM">
+                    <rect key="frame" x="92" y="316" width="136" height="21"/>
+                    <autoresizingMask key="autoresizingMask" flexibleMinX="YES" widthSizable="YES" flexibleMaxX="YES" flexibleMinY="YES"/>
+                    <popUpButtonCell key="cell" type="bevel" title="Item 1" bezelStyle="regularSquare" alignment="center" lineBreakMode="truncatingTail" state="on" imageScaling="proportionallyDown" inset="2" selectedItem="TBs-Vc-ioa" id="xsY-LM-uKt">
+                        <behavior key="behavior" pushIn="YES" lightByBackground="YES" lightByGray="YES"/>
+                        <font key="font" metaFont="systemThin" size="11"/>
+                        <menu key="menu" id="kKG-t8-ZHU">
+                            <items>
+                                <menuItem title="Item 1" state="on" id="TBs-Vc-ioa"/>
+                                <menuItem title="Item 2" id="XU6-0b-V8m"/>
+                                <menuItem title="Item 3" id="hap-5u-RmR"/>
+                            </items>
+                        </menu>
+                    </popUpButtonCell>
+                </popUpButton>
+                <imageView horizontalHuggingPriority="251" verticalHuggingPriority="251" id="c6P-Jp-IHO">
+                    <rect key="frame" x="227" y="94" width="48" height="48"/>
+                    <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
+                    <imageCell key="cell" refusesFirstResponder="YES" alignment="left" imageScaling="proportionallyDown" image="buttonPauseLight" id="f9h-ih-s3h"/>
+                </imageView>
+                <textField horizontalHuggingPriority="251" verticalHuggingPriority="750" id="BfR-ph-CUh">
+                    <rect key="frame" x="90" y="79" width="140" height="17"/>
+                    <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
+                    <textFieldCell key="cell" scrollable="YES" lineBreakMode="clipping" sendsActionOnEndEditing="YES" alignment="center" title="00:00" id="yPO-5i-hB1">
+                        <font key="font" metaFont="systemThin" size="13"/>
+                        <color key="textColor" name="labelColor" catalog="System" colorSpace="catalog"/>
+                        <color key="backgroundColor" name="controlColor" catalog="System" colorSpace="catalog"/>
+                    </textFieldCell>
+                    <connections>
+                        <binding destination="-2" name="textColor" keyPath="PauseTimeLeftTextColor" id="NFd-jj-wZW"/>
+                    </connections>
+                </textField>
+                <textField horizontalHuggingPriority="251" verticalHuggingPriority="750" id="x0r-QS-FkX">
+                    <rect key="frame" x="18" y="306" width="284" height="17"/>
+                    <autoresizingMask key="autoresizingMask" flexibleMinX="YES" flexibleMaxX="YES" flexibleMinY="YES"/>
+                    <textFieldCell key="cell" scrollable="YES" lineBreakMode="clipping" sendsActionOnEndEditing="YES" alignment="center" title="TODO LABEL" id="VfV-K3-at1">
+                        <font key="font" metaFont="systemThin" size="14"/>
+                        <color key="textColor" name="labelColor" catalog="System" colorSpace="catalog"/>
+                        <color key="backgroundColor" name="controlColor" catalog="System" colorSpace="catalog"/>
+                    </textFieldCell>
+                </textField>
+            </subviews>
+            <point key="canvasLocation" x="122" y="203"/>
+        </customView>
+        <customView id="oKC-r2-HUJ">
+            <rect key="frame" x="0.0" y="0.0" width="222" height="191"/>
+            <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
+            <subviews>
+                <button verticalHuggingPriority="750" tag="1800" id="kQV-Sb-FWG">
+                    <rect key="frame" x="0.0" y="112" width="222" height="42"/>
+                    <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
+                    <buttonCell key="cell" type="squareTextured" title="Pause for 30 min." bezelStyle="texturedSquare" alignment="center" imageScaling="proportionallyDown" inset="2" id="bLt-QW-8Ly">
+                        <behavior key="behavior" lightByBackground="YES" lightByGray="YES"/>
+                        <font key="font" metaFont="system"/>
+                    </buttonCell>
+                    <connections>
+                        <action selector="PauseMenuItemButtonPressed:" target="-2" id="Q8E-a4-0lm"/>
+                    </connections>
+                </button>
+                <box verticalHuggingPriority="750" boxType="separator" id="ygL-r8-KOh">
+                    <rect key="frame" x="0.0" y="150" width="222" height="5"/>
+                    <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
+                </box>
+                <button verticalHuggingPriority="750" tag="300" id="Ocr-g3-ELg">
+                    <rect key="frame" x="0.0" y="150" width="222" height="42"/>
+                    <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
+                    <buttonCell key="cell" type="squareTextured" title="Pause for 5 min." bezelStyle="texturedSquare" alignment="center" imageScaling="proportionallyDown" inset="2" id="BmQ-uW-Rjx">
+                        <behavior key="behavior" pushIn="YES" lightByBackground="YES" lightByGray="YES"/>
+                        <font key="font" metaFont="system"/>
+                    </buttonCell>
+                    <connections>
+                        <action selector="PauseMenuItemButtonPressed:" target="-2" id="54g-Yi-zUc"/>
+                    </connections>
+                </button>
+                <box verticalHuggingPriority="750" boxType="separator" id="8GY-GL-ltv">
+                    <rect key="frame" x="0.0" y="112" width="222" height="5"/>
+                    <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
+                </box>
+                <box verticalHuggingPriority="750" boxType="separator" id="2C2-9Q-c81">
+                    <rect key="frame" x="0.0" y="74" width="222" height="5"/>
+                    <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
+                </box>
+                <box verticalHuggingPriority="750" boxType="separator" id="iIj-tI-UNP">
+                    <rect key="frame" x="0.0" y="36" width="222" height="5"/>
+                    <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
+                </box>
+                <button verticalHuggingPriority="750" tag="3600" id="87c-YH-3NT">
+                    <rect key="frame" x="0.0" y="74" width="222" height="42"/>
+                    <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
+                    <buttonCell key="cell" type="squareTextured" title="Pause for 1 hour" bezelStyle="texturedSquare" alignment="center" imageScaling="proportionallyDown" inset="2" id="Px9-Ct-L5b">
+                        <behavior key="behavior" lightByBackground="YES" lightByGray="YES"/>
+                        <font key="font" metaFont="system"/>
+                    </buttonCell>
+                    <connections>
+                        <action selector="PauseMenuItemButtonPressed:" target="-2" id="L6W-cF-99E"/>
+                    </connections>
+                </button>
+                <button verticalHuggingPriority="750" tag="10800" id="4zt-at-2Hw">
+                    <rect key="frame" x="0.0" y="36" width="222" height="42"/>
+                    <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
+                    <buttonCell key="cell" type="squareTextured" title="Pause for 3 hours" bezelStyle="texturedSquare" alignment="center" imageScaling="proportionallyDown" inset="2" id="sJu-1g-gcz">
+                        <behavior key="behavior" lightByBackground="YES" lightByGray="YES"/>
+                        <font key="font" metaFont="system"/>
+                    </buttonCell>
+                    <connections>
+                        <action selector="PauseMenuItemButtonPressed:" target="-2" id="McQ-xI-1iM"/>
+                    </connections>
+                </button>
+                <button verticalHuggingPriority="750" id="fr1-tv-8cf">
+                    <rect key="frame" x="0.0" y="-2" width="222" height="42"/>
+                    <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
+                    <buttonCell key="cell" type="squareTextured" title="Pause for a custom time..." bezelStyle="texturedSquare" alignment="center" imageScaling="proportionallyDown" inset="2" id="uZu-tK-OJr">
+                        <behavior key="behavior" lightByBackground="YES" lightByGray="YES"/>
+                        <font key="font" metaFont="system"/>
+                    </buttonCell>
+                    <connections>
+                        <action selector="PauseMenuItemButtonPressed:" target="-2" id="MTb-i9-kHL"/>
+                    </connections>
+                </button>
+                <box verticalHuggingPriority="750" boxType="separator" id="nGA-wo-elB">
+                    <rect key="frame" x="0.0" y="-2" width="222" height="5"/>
+                    <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
+                </box>
+            </subviews>
+            <point key="canvasLocation" x="451" y="532"/>
+        </customView>
+        <window title="Pause..." allowsToolTipsWhenApplicationIsInactive="NO" autorecalculatesKeyViewLoop="NO" hidesOnDeactivate="YES" releasedWhenClosed="NO" visibleAtLaunch="NO" frameAutosaveName="" animationBehavior="default" id="qnZ-na-lQc">
+            <windowStyleMask key="styleMask" titled="YES" closable="YES"/>
+            <windowPositionMask key="initialPositionMask" leftStrut="YES" rightStrut="YES" topStrut="YES" bottomStrut="YES"/>
+            <rect key="contentRect" x="-2277" y="-235" width="320" height="163"/>
+            <rect key="screenRect" x="-2560" y="-540" width="2560" height="1417"/>
+            <value key="minSize" type="size" width="320" height="147"/>
+            <view key="contentView" id="t0v-qz-t1X">
+                <rect key="frame" x="0.0" y="0.0" width="320" height="163"/>
+                <autoresizingMask key="autoresizingMask"/>
+                <subviews>
+                    <textField horizontalHuggingPriority="251" verticalHuggingPriority="750" id="KRM-Rc-mne">
+                        <rect key="frame" x="18" y="124" width="284" height="19"/>
+                        <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
+                        <textFieldCell key="cell" scrollable="YES" lineBreakMode="clipping" sendsActionOnEndEditing="YES" alignment="center" title="Time interval to pause connection" id="vtO-PR-NxH">
+                            <font key="font" metaFont="system" size="16"/>
+                            <color key="textColor" name="labelColor" catalog="System" colorSpace="catalog"/>
+                            <color key="backgroundColor" name="controlColor" catalog="System" colorSpace="catalog"/>
+                        </textFieldCell>
+                    </textField>
+                    <textField horizontalHuggingPriority="251" verticalHuggingPriority="750" id="OgO-Kk-3yh">
+                        <rect key="frame" x="155" y="72" width="9" height="19"/>
+                        <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
+                        <textFieldCell key="cell" scrollable="YES" lineBreakMode="clipping" sendsActionOnEndEditing="YES" title=":" id="TMP-st-lEd">
+                            <font key="font" metaFont="system" size="16"/>
+                            <color key="textColor" name="labelColor" catalog="System" colorSpace="catalog"/>
+                            <color key="backgroundColor" name="controlColor" catalog="System" colorSpace="catalog"/>
+                        </textFieldCell>
+                    </textField>
+                    <customView id="Wno-UI-nfW" customClass="CustomTextField">
+                        <rect key="frame" x="170" y="64" width="130" height="36"/>
+                        <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
+                        <connections>
+                            <action selector="OnGuiPauseDlgMinutesTextBlockEnter:" target="-2" id="naM-k2-7qx"/>
+                        </connections>
+                    </customView>
+                    <customView identifier="okBtn" id="VLA-ix-8yo" customClass="CustomButton">
+                        <rect key="frame" x="170" y="20" width="130" height="36"/>
+                        <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
+                        <accessibility identifier="okBtn"/>
+                        <connections>
+                            <action selector="OnGuiPauseDlgOkBtnPressed:" target="-2" id="t8I-Y0-kA4"/>
+                        </connections>
+                    </customView>
+                    <customView id="gaJ-gB-fQH" customClass="CustomTextField">
+                        <rect key="frame" x="20" y="64" width="129" height="36"/>
+                        <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
+                        <connections>
+                            <action selector="OnGuiPauseDlgHoursTextBlockEnter:" target="-2" id="z7a-6S-FDi"/>
+                        </connections>
+                    </customView>
+                    <customView id="VZ0-Qb-1M3" customClass="CustomButton">
+                        <rect key="frame" x="20" y="20" width="129" height="36"/>
+                        <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
+                        <connections>
+                            <action selector="OnGuiPauseDlgCancelBtnPressed:" target="-2" id="8m2-4D-zWx"/>
+                        </connections>
+                    </customView>
+                </subviews>
+            </view>
+            <point key="canvasLocation" x="122" y="545.5"/>
+        </window>
+        <userDefaultsController representsSharedInstance="YES" id="ynq-3o-nXA"/>
+        <customView id="df8-wg-lZT">
+            <rect key="frame" x="0.0" y="0.0" width="280" height="90"/>
+            <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
+            <subviews>
+                <textField horizontalHuggingPriority="251" verticalHuggingPriority="750" id="01p-kc-VQp">
+                    <rect key="frame" x="110" y="48" width="60" height="17"/>
+                    <autoresizingMask key="autoresizingMask" flexibleMinX="YES" flexibleMaxX="YES" flexibleMinY="YES"/>
+                    <textFieldCell key="cell" lineBreakMode="clipping" alignment="center" title="Updating" id="8op-yk-v3Y">
+                        <font key="font" usesAppearanceFont="YES"/>
+                        <color key="textColor" name="labelColor" catalog="System" colorSpace="catalog"/>
+                        <color key="backgroundColor" name="textBackgroundColor" catalog="System" colorSpace="catalog"/>
+                    </textFieldCell>
+                </textField>
+                <progressIndicator wantsLayer="YES" horizontalHuggingPriority="750" verticalHuggingPriority="750" maxValue="100" bezeled="NO" indeterminate="YES" controlSize="small" style="spinning" id="QbE-Vn-cO8">
+                    <rect key="frame" x="132" y="24" width="16" height="16"/>
+                    <autoresizingMask key="autoresizingMask" flexibleMinX="YES" flexibleMaxX="YES" flexibleMinY="YES"/>
+                    <connections>
+                        <binding destination="-2" name="animate" keyPath="ProofsViewModelAdapter.IsProgress" id="bAO-Vq-yjz"/>
+                    </connections>
+                </progressIndicator>
+            </subviews>
+            <point key="canvasLocation" x="794" y="218"/>
+        </customView>
+        <customView id="a9M-9y-Lb4">
+            <rect key="frame" x="0.0" y="0.0" width="280" height="90"/>
+            <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
+            <subviews>
+                <textField verticalHuggingPriority="750" horizontalCompressionResistancePriority="250" id="zaW-ur-6qC">
+                    <rect key="frame" x="18" y="10" width="244" height="60"/>
+                    <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                    <textFieldCell key="cell" selectable="YES" title="Multiline Label" id="hyq-sX-RWR">
+                        <font key="font" usesAppearanceFont="YES"/>
+                        <color key="textColor" name="systemOrangeColor" catalog="System" colorSpace="catalog"/>
+                        <color key="backgroundColor" name="textBackgroundColor" catalog="System" colorSpace="catalog"/>
+                    </textFieldCell>
+                    <connections>
+                        <binding destination="-2" name="value" keyPath="ProofsViewModelAdapter.Error" id="3hX-gl-y6L"/>
+                    </connections>
+                </textField>
+            </subviews>
+            <point key="canvasLocation" x="794" y="364"/>
+        </customView>
+        <customView id="Hpb-kZ-xG9">
+            <rect key="frame" x="0.0" y="0.0" width="280" height="38"/>
+            <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
+            <subviews>
+                <textField horizontalHuggingPriority="251" verticalHuggingPriority="750" id="V87-Hg-81P">
+                    <rect key="frame" x="18" y="10" width="63" height="17"/>
+                    <autoresizingMask key="autoresizingMask" flexibleMinX="YES" flexibleMaxY="YES"/>
+                    <textFieldCell key="cell" scrollable="YES" lineBreakMode="clipping" sendsActionOnEndEditing="YES" alignment="left" title="Location" id="SzO-p3-EUk">
+                        <font key="font" metaFont="systemSemibold" size="12"/>
+                        <color key="textColor" name="labelColor" catalog="System" colorSpace="catalog"/>
+                        <color key="backgroundColor" name="controlColor" catalog="System" colorSpace="catalog"/>
+                    </textFieldCell>
+                    <connections>
+                        <binding destination="-2" name="textColor" keyPath="PopoverConstTextColor" id="dL8-UE-dDZ"/>
+                    </connections>
+                </textField>
+                <textField horizontalHuggingPriority="251" verticalHuggingPriority="750" id="7rf-eN-cGR">
+                    <rect key="frame" x="77" y="11" width="159" height="18"/>
+                    <autoresizingMask key="autoresizingMask" flexibleMinX="YES" flexibleMaxY="YES"/>
+                    <textFieldCell key="cell" scrollable="YES" lineBreakMode="clipping" sendsActionOnEndEditing="YES" title="Country" id="NOo-iC-5e9">
+                        <font key="font" metaFont="system" size="14"/>
+                        <color key="textColor" name="labelColor" catalog="System" colorSpace="catalog"/>
+                        <color key="backgroundColor" name="controlColor" catalog="System" colorSpace="catalog"/>
+                    </textFieldCell>
+                    <connections>
+                        <binding destination="-2" name="textColor" keyPath="PopoverTextColor" id="mjr-TB-RcG"/>
+                        <binding destination="-2" name="value" keyPath="ProofsViewModelAdapter.geoLookup.Country" id="KMz-01-CoW"/>
+                    </connections>
+                </textField>
+                <imageView horizontalHuggingPriority="251" verticalHuggingPriority="251" id="tFZ-ZH-Yp7">
+                    <rect key="frame" x="236" y="7" width="24" height="24"/>
+                    <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
+                    <imageCell key="cell" refusesFirstResponder="YES" alignment="left" imageScaling="proportionallyDown" id="CYM-7e-8Lg"/>
+                    <connections>
+                        <binding destination="-2" name="value" keyPath="ProofsViewModelAdapter.CountryImage" id="d48-JF-LrO"/>
+                    </connections>
+                </imageView>
+            </subviews>
+            <point key="canvasLocation" x="794" y="-53"/>
+        </customView>
+        <customView id="Pgh-oj-71G">
+            <rect key="frame" x="0.0" y="0.0" width="280" height="89"/>
+            <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
+            <subviews>
+                <box verticalHuggingPriority="750" boxType="separator" id="ZRl-6v-vwA">
+                    <rect key="frame" x="0.0" y="86" width="280" height="5"/>
+                    <autoresizingMask key="autoresizingMask" widthSizable="YES" flexibleMinY="YES"/>
+                </box>
+                <textField horizontalHuggingPriority="251" verticalHuggingPriority="750" id="rM4-e7-LOA">
+                    <rect key="frame" x="18" y="61" width="62" height="17"/>
+                    <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
+                    <textFieldCell key="cell" scrollable="YES" lineBreakMode="clipping" sendsActionOnEndEditing="YES" alignment="left" title="Duration" id="aIc-Jd-JVU">
+                        <font key="font" metaFont="systemSemibold" size="12"/>
+                        <color key="textColor" name="labelColor" catalog="System" colorSpace="catalog"/>
+                        <color key="backgroundColor" name="controlColor" catalog="System" colorSpace="catalog"/>
+                    </textFieldCell>
+                    <connections>
+                        <binding destination="-2" name="hidden" keyPath="MainViewModelAdapter.isDisconnected" id="u07-m3-Dbe"/>
+                        <binding destination="-2" name="textColor" keyPath="PopoverConstTextColor" id="zQU-H1-cEI"/>
+                    </connections>
+                </textField>
+                <textField horizontalHuggingPriority="251" verticalHuggingPriority="750" id="x5a-2e-UJr">
+                    <rect key="frame" x="77" y="63" width="198" height="17"/>
+                    <autoresizingMask key="autoresizingMask" widthSizable="YES" flexibleMinY="YES"/>
+                    <textFieldCell key="cell" scrollable="YES" lineBreakMode="clipping" sendsActionOnEndEditing="YES" title="Label" id="fE2-G7-QJI">
+                        <font key="font" metaFont="system" size="14"/>
+                        <color key="textColor" name="labelColor" catalog="System" colorSpace="catalog"/>
+                        <color key="backgroundColor" name="controlColor" catalog="System" colorSpace="catalog"/>
+                    </textFieldCell>
+                    <connections>
+                        <binding destination="-2" name="value" keyPath="MainViewModelAdapter.connectionInfoAdapter.DurationString" id="cgb-ua-Nav"/>
+                        <binding destination="-2" name="hidden" keyPath="MainViewModelAdapter.isDisconnected" id="SCZ-l2-aaW"/>
+                        <binding destination="-2" name="textColor" keyPath="PopoverTextColor" id="rnN-Af-WG3"/>
+                    </connections>
+                </textField>
+                <textField horizontalHuggingPriority="251" verticalHuggingPriority="750" id="Uu2-ZU-MNX">
+                    <rect key="frame" x="18" y="36" width="62" height="17"/>
+                    <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
+                    <textFieldCell key="cell" scrollable="YES" lineBreakMode="clipping" sendsActionOnEndEditing="YES" alignment="left" title="Protocol" id="d2G-E4-ozK">
+                        <font key="font" metaFont="systemSemibold" size="12"/>
+                        <color key="textColor" name="labelColor" catalog="System" colorSpace="catalog"/>
+                        <color key="backgroundColor" name="controlColor" catalog="System" colorSpace="catalog"/>
+                    </textFieldCell>
+                    <connections>
+                        <binding destination="-2" name="hidden" keyPath="MainViewModelAdapter.isDisconnected" id="ip2-Pz-WTD"/>
+                        <binding destination="-2" name="textColor" keyPath="PopoverConstTextColor" id="lgQ-y0-xod"/>
+                    </connections>
+                </textField>
+                <textField horizontalHuggingPriority="251" verticalHuggingPriority="750" id="pac-fi-mFF">
+                    <rect key="frame" x="77" y="37" width="198" height="17"/>
+                    <autoresizingMask key="autoresizingMask" widthSizable="YES" flexibleMinY="YES"/>
+                    <textFieldCell key="cell" scrollable="YES" lineBreakMode="clipping" sendsActionOnEndEditing="YES" title="Label" id="MW6-fK-T87">
+                        <font key="font" metaFont="system" size="14"/>
+                        <color key="textColor" name="labelColor" catalog="System" colorSpace="catalog"/>
+                        <color key="backgroundColor" name="controlColor" catalog="System" colorSpace="catalog"/>
+                    </textFieldCell>
+                    <connections>
+                        <binding destination="-2" name="value" keyPath="MainViewModelAdapter.connectionInfoAdapter.VpnProtocolInfo" id="M61-7V-LuC"/>
+                        <binding destination="-2" name="hidden" keyPath="MainViewModelAdapter.isDisconnected" id="NiN-95-M4v"/>
+                        <binding destination="-2" name="textColor" keyPath="PopoverTextColor" id="LWh-1P-VeF"/>
+                    </connections>
+                </textField>
+                <textField horizontalHuggingPriority="251" verticalHuggingPriority="750" id="mg3-Zo-gCp">
+                    <rect key="frame" x="18" y="9" width="62" height="17"/>
+                    <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
+                    <textFieldCell key="cell" scrollable="YES" lineBreakMode="clipping" sendsActionOnEndEditing="YES" alignment="left" title="Local IP" id="tYJ-Hw-8H5">
+                        <font key="font" metaFont="systemSemibold" size="12"/>
+                        <color key="textColor" name="labelColor" catalog="System" colorSpace="catalog"/>
+                        <color key="backgroundColor" name="controlColor" catalog="System" colorSpace="catalog"/>
+                    </textFieldCell>
+                    <connections>
+                        <binding destination="-2" name="hidden" keyPath="MainViewModelAdapter.isDisconnected" id="m01-cM-76u"/>
+                        <binding destination="-2" name="textColor" keyPath="PopoverConstTextColor" id="Odt-lN-eHy"/>
+                    </connections>
+                </textField>
+                <textField horizontalHuggingPriority="251" verticalHuggingPriority="750" id="QDb-uq-ROc">
+                    <rect key="frame" x="77" y="11" width="198" height="17"/>
+                    <autoresizingMask key="autoresizingMask" widthSizable="YES" flexibleMinY="YES"/>
+                    <textFieldCell key="cell" scrollable="YES" lineBreakMode="clipping" sendsActionOnEndEditing="YES" title="Label" id="5ou-Oy-d6c">
+                        <font key="font" metaFont="system" size="14"/>
+                        <color key="textColor" name="labelColor" catalog="System" colorSpace="catalog"/>
+                        <color key="backgroundColor" name="controlColor" catalog="System" colorSpace="catalog"/>
+                    </textFieldCell>
+                    <connections>
+                        <binding destination="-2" name="value" keyPath="MainViewModelAdapter.connectionInfoAdapter.ClientIPAddress" id="tGk-cW-hxG"/>
+                        <binding destination="-2" name="hidden" keyPath="MainViewModelAdapter.isDisconnected" id="sXA-lN-9Ih"/>
+                        <binding destination="-2" name="textColor" keyPath="PopoverTextColor" id="i2G-Sg-jI2"/>
+                    </connections>
+                </textField>
+            </subviews>
+            <point key="canvasLocation" x="794" y="502.5"/>
+        </customView>
+        <customView id="wkU-xk-p0c">
+            <rect key="frame" x="0.0" y="0.0" width="280" height="26"/>
+            <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
+            <subviews>
+                <textField horizontalHuggingPriority="251" verticalHuggingPriority="750" id="aY2-El-Nbu">
+                    <rect key="frame" x="77" y="11" width="186" height="18"/>
+                    <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
+                    <textFieldCell key="cell" scrollable="YES" lineBreakMode="clipping" sendsActionOnEndEditing="YES" title="City" id="WG6-Sq-qoY">
+                        <font key="font" metaFont="system" size="14"/>
+                        <color key="textColor" name="labelColor" catalog="System" colorSpace="catalog"/>
+                        <color key="backgroundColor" name="controlColor" catalog="System" colorSpace="catalog"/>
+                    </textFieldCell>
+                    <connections>
+                        <binding destination="-2" name="textColor" keyPath="PopoverTextColor" id="XFQ-UQ-3iQ"/>
+                        <binding destination="-2" name="value" keyPath="ProofsViewModelAdapter.geoLookup.City" id="APt-KU-Csi"/>
+                    </connections>
+                </textField>
+            </subviews>
+            <point key="canvasLocation" x="794" y="21"/>
+        </customView>
+        <customView id="mNM-mf-5g6">
+            <rect key="frame" x="0.0" y="0.0" width="280" height="26"/>
+            <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
+            <subviews>
+                <textField horizontalHuggingPriority="251" verticalHuggingPriority="750" id="WAC-D1-XVx">
+                    <rect key="frame" x="18" y="10" width="62" height="17"/>
+                    <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
+                    <textFieldCell key="cell" scrollable="YES" lineBreakMode="clipping" sendsActionOnEndEditing="YES" alignment="left" title="Public IP" id="Mhk-ZJ-y7U">
+                        <font key="font" metaFont="systemSemibold" size="12"/>
+                        <color key="textColor" name="labelColor" catalog="System" colorSpace="catalog"/>
+                        <color key="backgroundColor" name="controlColor" catalog="System" colorSpace="catalog"/>
+                    </textFieldCell>
+                    <connections>
+                        <binding destination="-2" name="textColor" keyPath="PopoverConstTextColor" id="iQT-00-FC2"/>
+                    </connections>
+                </textField>
+                <textField horizontalHuggingPriority="251" verticalHuggingPriority="750" id="IWD-Vt-n5C">
+                    <rect key="frame" x="77" y="11" width="187" height="18"/>
+                    <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
+                    <textFieldCell key="cell" scrollable="YES" lineBreakMode="clipping" sendsActionOnEndEditing="YES" title="0.0.0.0" id="NSa-Vl-knF">
+                        <font key="font" metaFont="system" size="14"/>
+                        <color key="textColor" name="labelColor" catalog="System" colorSpace="catalog"/>
+                        <color key="backgroundColor" name="controlColor" catalog="System" colorSpace="catalog"/>
+                    </textFieldCell>
+                    <connections>
+                        <binding destination="-2" name="textColor" keyPath="PopoverTextColor" id="U7b-kS-Vug"/>
+                        <binding destination="-2" name="value" keyPath="ProofsViewModelAdapter.geoLookup.IpAddress" id="MOI-gF-oRY"/>
+                    </connections>
+                </textField>
+            </subviews>
+            <point key="canvasLocation" x="794" y="90"/>
+        </customView>
+    </objects>
+    <resources>
+        <image name="buttonConnect" width="184" height="184"/>
+        <image name="buttonPauseLight" width="48" height="48"/>
+        <image name="iconInformation" width="24" height="24"/>
+        <image name="iconInformationTint" width="24" height="24"/>
+        <image name="iconWiFiSmallBlue" width="384" height="384"/>
+    </resources>
+</document>
