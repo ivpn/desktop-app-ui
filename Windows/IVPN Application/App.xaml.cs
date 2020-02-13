@@ -79,7 +79,12 @@ namespace IVPN
             if (!TryUpgradeSettings())
                 return;
 
+#if DEBUG
+#warning DEBUG MODE! Platform.InstallationDirectory hardcoded to : "C:/Program Files/IVPN Client"
+            Platform.InstallationDirectory = @"C:/Program Files/IVPN Client";
+#else
             Platform.InstallationDirectory = Path.GetDirectoryName(GetExecutingAssemblyFile());
+#endif
 
             if (SingleInstance<App>.InitializeAsFirstInstance("IVPNClient"))
             {
