@@ -364,26 +364,6 @@ namespace IVPN
             SendRequest(new IVPNDisconnectRequest());
         }
 
-        /// <summary>
-        /// Doing disconnect/connect on a service side (only if WG is connected).
-        /// But it does not notify client 'Disconnected' evet and do not disable KillSwitch during reconnection
-        /// </summary>
-        /// <param name="internalClientIp"></param>
-        /// <param name="privateKey"></param>
-        public void UpdateWireGuardCredentials(string internalClientIp, string privateKey)
-        {
-            Logging.Info($"[WireGuard] Local credentials update");
-
-            SendRequest(new IVPNWireGuardCredentialsUpdate
-            { 
-                WireGuardCredentials = new WireGuardLocalCredentials
-                {
-                    InternalClientIp = internalClientIp,
-                    LocalPrivateKey = privateKey
-                }
-            });
-        }
-
         public void PingServers(int pingTimeOutMs, int pingRetriesCount)
         {
             if (ServiceConnected)

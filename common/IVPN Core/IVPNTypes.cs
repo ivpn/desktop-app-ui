@@ -144,13 +144,6 @@ namespace IVPN
     public class IVPNResumeConnection : IVPNRequest {}
 
     [Serializable]
-    public class IVPNWireGuardCredentialsUpdate : IVPNRequest
-    {
-        [DataMember]
-        internal WireGuardLocalCredentials WireGuardCredentials;
-    }
-
-    [Serializable]
     public class IVPNSetAlternateDns : IVPNRequest
     {
 

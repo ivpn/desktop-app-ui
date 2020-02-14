@@ -32,6 +32,11 @@ namespace IVPN.Models
                 DurationString = $"{ts.Days} days {ts.Hours:D2}:{ts.Minutes:D2}:{ts.Seconds:D2}";
         }
 
+        public void SetConnectTime(DateTime connectTime)
+        {
+            ConnectTime = connectTime;
+        }
+
         /// <summary>
         /// Useful when pausing connection
         /// </summary>

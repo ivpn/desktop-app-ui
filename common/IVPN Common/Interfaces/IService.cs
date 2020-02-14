@@ -29,8 +29,6 @@ namespace IVPN.Interfaces
         void Disconnect();
         void Exit();
 
-        void UpdateWireguardLocalCredentias(string internalClientIp, string privateKey);
-
         IServers Servers { get; }
 
         ServiceState State { get; }
