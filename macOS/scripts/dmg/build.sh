@@ -192,6 +192,8 @@ echo '
            set position of item "'${APPLICATION_NAME}'" of container window to {120, 110}
            set position of item "'${UNINSTALL_APPLICATION_NAME}'" of container window to {420, 300}
            set position of item "Applications" of container window to {420, 110}
+           set position of item ".background" of container window to {120, 500}
+           set position of item ".fseventsd" of container window to {420, 500}
            update without registering applications
            delay 3
            close
