@@ -511,21 +511,6 @@ namespace IVPN.Models
 
         }
 
-        public void UpdateWireguardLocalCredentias(string internalClientIp, string privateKey)
-        {
-            var old = ConnectionTarget;
-            if (old == null)
-                return;
-
-            // '__ConnectionTarget' always should contain actuall connection information. It can be used for reconnection (e.g. in method 'ServiceProxy_Disconnected()')
-            ConnectionTarget = new ConnectionTarget(old.Server, old.Port, old.PortsToReconnect, old.CurrentManualDns, old.OpenVpnUsername, old.OpenVpnPassword, old.OpenVpnProxyOptions,
-                internalClientIp, privateKey);
-
-            // UpdateWireGuardCredentials -  doing disconnect/connect on a service side (only if WG is connected).
-            // But it does not notify client 'Disconnected' evet and do not disable KillSwitch during reconnection
-            __ServiceProxy.UpdateWireGuardCredentials(internalClientIp, privateKey);
-        }
-
         /// <summary>
         /// Register connection progress object
         /// All registered objects will be notified about progress during connection

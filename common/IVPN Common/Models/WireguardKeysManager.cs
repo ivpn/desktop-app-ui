@@ -192,8 +192,8 @@ namespace IVPN.Models
                     {
                         var calcelationSource = new CancellationTokenSource();
                         IPAddress ip = await ApiServices.Instance.WireguardKeySet(
-                                                    __AppSettings.WireGuardClientPublicKey,
-                                                    newPublicKey,
+                                                    publicKey: newPublicKey,
+                                                    old_key: __AppSettings.WireGuardClientPublicKey,
                                                     calcelationSource.Token);
                                         
                         __AppSettings.SetWireGuardCredentials(newPrivateKey, newPublicKey, false, ip.ToString());
@@ -272,8 +272,8 @@ namespace IVPN.Models
                     try
                     {
                         IPAddress ip = await ApiServices.Instance.WireguardKeySet(
-                                                newPublicKey,
-                                                "",
+                                                publicKey: newPublicKey,
+                                                old_key: "",
                                                 calcelationSource.Token);
 
                         __AppSettings.SetWireGuardCredentials(newPrivateKey, newPublicKey, false, ip.ToString());

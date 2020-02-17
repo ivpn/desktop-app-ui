@@ -37,6 +37,7 @@ namespace IVPN
             catch (Exception ex)
             {
                 __RavenClient = null;
+                Logging.Info($"[ERROR]: Unbale to init RavenClient {ex}");
             }
         }
 

@@ -156,6 +156,13 @@ namespace IVPN.ViewModels
             __Service.ServiceInitialized += ServiceInitializedAsync;
             __Service.Connected += (ConnectionInfo connectionInfo) =>
             {
+                // If current connection info is not null - it means there was no disconnection
+                // It can be when vpn was reconnected (for example, because of WireGuard credentials was changed)
+                var oldConnInfo = ConnectionInfo;
+                if (oldConnInfo != null)
+                    connectionInfo.SetConnectTime(oldConnInfo.ConnectTime);
+
+                // save connection info
                 ConnectionInfo = connectionInfo;
             };
 
@@ -377,12 +384,15 @@ namespace IVPN.ViewModels
             // WireGuard credentials are changed
             // If we are already connected (WG) -> send to service new credantioal to update current connection 
             if (Settings.VpnProtocolType != VpnType.WireGuard 
-                || ConnectionState == ServiceState.Disconnected 
-                || ConnectionState == ServiceState.Uninitialized
-                || Settings.IsWireGuardCredentialsAvailable() == false)
+                  || Settings.IsWireGuardCredentialsAvailable() == false)
                 return;
 
-            __Service.UpdateWireguardLocalCredentias(Settings.WireGuardClientInternalIp, Settings.GetWireGuardClientPrivateKey());
+            if (ConnectionState != ServiceState.Connected
+                && ConnectionState != ServiceState.ReconnectingOnService
+                && ConnectionState != ServiceState.ReconnectingOnClient)
+                return;
+
+            Connect();
         }
 
         public async Task ConnectToLastServer()
@@ -720,7 +730,6 @@ namespace IVPN.ViewModels
                 if (result.Success)
                 {
                     UpdateTrayIconOnConnect(result);
-                    ConnectionInfo = result.ConnectionInfo;
                     StartDurationUpdateTimer();
                 }
             }
