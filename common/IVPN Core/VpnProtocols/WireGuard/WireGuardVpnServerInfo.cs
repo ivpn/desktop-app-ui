@@ -1,27 +1,25 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Runtime.Serialization;
 using System.Text;
+using Newtonsoft.Json;
 
 namespace IVPN.VpnProtocols.WireGuard
 {
-    [DataContract]
     [Serializable]
     public class WireGuardVpnServerInfo : VpnServerInfoBase
     {
-        [DataContract]
         [Serializable]
         public class HostInfo
         {
-            [DataMember]
+            [JsonProperty("host")]
             public string Host { get; set; }
-            [DataMember]
+            [JsonProperty("public_key")]
             public string PublicKey { get; set; }
-            [DataMember]
-            public string LocalIp { get; set; }
+            [JsonProperty("local_ip")]
+            public string LocalIP { get; set; }
 
-            public override string ToString() { return $"host={Host}; PublicKey={PublicKey}; localIp={LocalIp}"; }
+            public override string ToString() { return $"host={Host}; PublicKey={PublicKey}; localIp={LocalIP}"; }
         }
 
         public override List<string> GetHostsIpAddresses()
@@ -34,7 +32,7 @@ namespace IVPN.VpnProtocols.WireGuard
             return Hosts.Any(x => x.Host.Equals(host));
         }
 
-        [DataMember]
+        [JsonProperty("hosts")]
         public List<HostInfo> Hosts { get; set; }
 
         public override string ToString()

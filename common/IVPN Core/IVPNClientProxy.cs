@@ -48,7 +48,7 @@ namespace IVPN
         public delegate void PreferencesHandler(Dictionary<string, string> preferences);
         public delegate void ConnectToLastServerHandler();
         public delegate void DiagnosticsSubmissionStatusHandler(bool success, string error);
-        public delegate void DiagnosticsGeneratedHandler(IVPNDiagnosticsGeneratedResponse diagInfoResponse);
+        public delegate void DiagnosticsGeneratedHandler(Responses.IVPNDiagnosticsGeneratedResponse diagInfoResponse);
         public delegate void ExceptionHappenedHandler(Exception exception);
         public event ServerListChangedHandler ServerListChanged = delegate { };
         public event ServersPingsUpdatedHandler ServersPingsUpdated = delegate { };
@@ -73,7 +73,7 @@ namespace IVPN
         private bool __ServiceConnected;
 
         private readonly SemaphoreSlim __SyncCallSemaphore = new SemaphoreSlim(1);
-        private readonly BlockingCollection<IVPNResponse> __BlockingCollection = new BlockingCollection<IVPNResponse>();
+        private readonly BlockingCollection<Responses.IVPNResponse> __BlockingCollection = new BlockingCollection<Responses.IVPNResponse>();
         private CancellationTokenSource __CancellationToken;
 
         public void Initialize(int port)
@@ -96,7 +96,7 @@ namespace IVPN
                 ConnectToService();
 
                 // send hello
-                SendRequest(new IVPNHelloRequest { Version = Platform.Version });
+                SendRequest(new Requests.Hello { Version = Platform.Version });
 
                 while (HandleRequest())
                 {
@@ -106,7 +106,7 @@ namespace IVPN
                 Logging.Info("Handle request loop finished");
             }
             catch (Exception ex)
-            {
+                {
                 Logging.Info("error: " + ex.StackTrace);
                 ClientException(ex);
             }
@@ -202,25 +202,21 @@ namespace IVPN
             if (string.IsNullOrEmpty(line))
                 return false;
 
-            IVPNResponse response = JsonConvert.DeserializeObject<IVPNResponse>(line, new JsonSerializerSettings { TypeNameHandling = TypeNameHandling.All });
+            Responses.IVPNResponse response = JsonConvert.DeserializeObject<Responses.IVPNResponse>(line);
             Logging.Info("received " + response);
 
-            switch (response.GetType().ToString())
+            switch (response.Type)
             {
-                case "IVPN.IVPNHelloResponse":
-
-                    // Uncommment to test eror during connection to client proxy
-
-                    // Thread.Sleep(2000);
-                    // throw new Exception("This is some text exception with very long text");
-
-                    Logging.Info("got hello, server version is " + ((IVPNHelloResponse)response).Version);
+                case "Hello":
+                    var helloResp = JsonConvert.DeserializeObject<Responses.IVPNHelloResponse>(line);
+                    Logging.Info("got hello, server version is " + helloResp.Version);
                     break;
 
-                case "IVPN.IVPNServerListResponse":
-                    Logging.Info($"Got servers info [{((IVPNServerListResponse)response).VpnServers.OpenVPNServers.Count} openVPN; {((IVPNServerListResponse)response).VpnServers.WireGuardServers.Count} WireGuard]");
+                case "ServerList":
+                    var serversResp = JsonConvert.DeserializeObject<Responses.IVPNServerListResponse>(line);
 
-                    VpnServersInfo retServers = ((IVPNServerListResponse)response).VpnServers;
+                    Logging.Info($"Got servers info [{serversResp.VpnServers.OpenVPNServers.Count} openVPN; {serversResp.VpnServers.WireGuardServers.Count} WireGuard]");
+                    VpnServersInfo retServers = serversResp.VpnServers;
 
                     // When no servers received:
                     // - on a initialization (ServiceConnected == false): throw an exception
@@ -240,49 +236,63 @@ namespace IVPN
                     
                     break;
 
-                case "IVPN.IVPNPingServersResponse":
-                    IVPNPingServersResponse resp = (IVPNPingServersResponse)response;
-                    Logging.Info($"Got ping response for {resp.pingResults.Count} servers");
-                    ServersPingsUpdated(resp.pingResults);
-                    break;
-
-                case "IVPN.IVPNStateResponse":
-                    ConnectionState(((IVPNStateResponse)response).State, ((IVPNStateResponse)response).StateAdditionalInfo);
-                    break;
-
-                case "IVPN.IVPNConnectedResponse":
-                    IVPNConnectedResponse connectedRes = (IVPNConnectedResponse)response;
-                    Connected(connectedRes.TimeSecFrom1970, connectedRes.ClientIP, connectedRes.ServerIP);
-                    break;
-
-                case "IVPN.IVPNDisconnectedResponse":
-                    IVPNDisconnectedResponse discRes = response as IVPNDisconnectedResponse;
-                    Disconnected(discRes.Failure, discRes.Reason, discRes.ReasonDescription);
-                    break;
-
-                case "IVPN.IVPNGetPreferencesResponse":
-                    IVPNGetPreferencesResponse prefsRes = response as IVPNGetPreferencesResponse;
-                    Preferences(prefsRes.Preferences);
-                    break;
-
-                case "IVPN.IVPNDiagnosticsGeneratedResponse":
+                case "PingServers":
+                    var pingResp = JsonConvert.DeserializeObject<Responses.IVPNPingServersResponse>(line);
+                    if (pingResp.PingResults != null)
                     {
-                        IVPNDiagnosticsGeneratedResponse diag = response as IVPNDiagnosticsGeneratedResponse;
-                        DiagnosticsGenerated(diag);
+                        Dictionary<string, int> results = pingResp.PingResults.ToDictionary(x => x.Host, x => x.Ping);
+
+                        Logging.Info($"Got ping response for {results.Count} servers");
+                        ServersPingsUpdated(results);
                     }
                     break;
 
-                case "IVPN.IVPNServiceExitingResponse":
+                case "State":
+                    var stateResp = JsonConvert.DeserializeObject<Responses.IVPNStateResponse>(line);
+                    ConnectionState(stateResp.State, stateResp.StateAdditionalInfo);
+                    break;
+
+                case "Connected":
+                    var connectedRes = JsonConvert.DeserializeObject<Responses.IVPNConnectedResponse>(line);  
+                    Connected(connectedRes.TimeSecFrom1970, connectedRes.ClientIP, connectedRes.ServerIP);
+                    break;
+
+                case "Disconnected":
+                    var discRes = JsonConvert.DeserializeObject<Responses.IVPNDisconnectedResponse>(line);
+                    Disconnected(discRes.Failure, discRes.Reason, discRes.ReasonDescription);
+                    break;
+
+                case "DiagnosticsGenerated":
+                    var diagResp = JsonConvert.DeserializeObject<Responses.IVPNDiagnosticsGeneratedResponse>(line);  
+                    DiagnosticsGenerated(diagResp);
+                    break;
+
+                case "ServiceExiting":
                     __IsExiting = true;
                     ServiceExiting();
                     break;
 
-                case "IVPN.IVPNKillSwitchGetStatusResponse":
-                case "IVPN.IVPNKillSwitchGetIsPestistentResponse":
-                case "IVPN.IVPNSetAlternateDnsResponse":
-                case "IVPN.IVPNEmptyResponse":
-                case "IVPN.IVPNErrorResponse":
-                    __BlockingCollection.Add(response);
+                // :: __BlockingCollection ::
+
+                case "KillSwitchGetStatus":
+                    var kssResp = JsonConvert.DeserializeObject<Responses.IVPNKillSwitchGetStatusResponse>(line);
+                    __BlockingCollection.Add(kssResp);
+                    break;
+                case "KillSwitchGetIsPestistent":
+                    var kspResp = JsonConvert.DeserializeObject<Responses.IVPNKillSwitchGetIsPestistentResponse>(line);
+                    __BlockingCollection.Add(kspResp);
+                    break;
+                case "SetAlternateDns":
+                    var adnsResp = JsonConvert.DeserializeObject<Responses.IVPNSetAlternateDnsResponse>(line);
+                    __BlockingCollection.Add(adnsResp);
+                    break;
+                case "Empty":
+                    var erResp = JsonConvert.DeserializeObject<Responses.IVPNEmptyResponse>(line);
+                    __BlockingCollection.Add(erResp);
+                    break;
+                case "Error":
+                    var errResp = JsonConvert.DeserializeObject<Responses.IVPNErrorResponse>(line);
+                    __BlockingCollection.Add(errResp);
                     break;
             }
 
@@ -295,35 +305,34 @@ namespace IVPN
                 throw new IVPNClientProxyNotConnectedException("Proxy is not connected to service");
         }
 
-        private void SendRequest(IVPNRequest request)
+        private void SendRequest(   Requests.Request request)
         {
             Logging.Info("Sending: " + request);
 
             // Hello request can be sent without being in "connected
-            if (!(request is IVPNHelloRequest))
+            if (!(request is Requests.Hello))
                 CheckConnected();
 
             lock (__StreamWriter)
             {
-                __StreamWriter.WriteLine(JsonConvert.SerializeObject(request,
-                    new JsonSerializerSettings { TypeNameHandling = TypeNameHandling.All }));
+                __StreamWriter.WriteLine(JsonConvert.SerializeObject(request));
                 __StreamWriter.Flush();
             }            
         }
 
         public void SetPreference(string key, string value)
         {
-            SendRequest(new IVPNSetPreferenceRequest { Key = key, Value = value });
+            SendRequest(new Requests.SetPreference { Key = key, Value = value });
         }
 
         public void ConnectOpenVPN(OpenVPNVpnServer vpnServer, DestinationPort port, IPAddress manualDns, string username, string password, string proxyType = "none", string proxyAddress = null, int proxyPort = 0, string proxyUsername = null, string proxyPassword = null)
         {
             Logging.Info($"[OpenVPN] Connect: {vpnServer}:{port} as user: {username} (proxy: {proxyType}: {proxyAddress})");
 
-            SendRequest(new IVPNConnectRequest
+            SendRequest(new Requests.Connect
             {
                 VpnType = VpnType.OpenVPN,
-                CurrentDns = manualDns.ToString(),
+                CurrentDNS = manualDns.ToString(),
                 OpenVpnParameters = new OpenVPNConnectionParameters()
                 { 
                     EntryVpnServer = vpnServer,
@@ -343,14 +352,14 @@ namespace IVPN
         {
             Logging.Info($"[WireGuard] Connect: {vpnServer})");
 
-            SendRequest(new IVPNConnectRequest
+            SendRequest(new Requests.Connect
             {
                 VpnType = VpnType.WireGuard,
-                CurrentDns = manualDns.ToString(),
+                CurrentDNS = manualDns.ToString(),
                 WireGuardParameters = new WireGuardConnectionParameters
                 {
                     EntryVpnServer = vpnServer,
-                    InternalClientIp = internalClientIp,
+                    InternalClientIP = internalClientIp,
                     Port = port,
                     LocalPrivateKey = privateKey
                 }
@@ -361,27 +370,27 @@ namespace IVPN
         {
             Logging.Info("Disconnecting...");
 
-            SendRequest(new IVPNDisconnectRequest());
+            SendRequest(new Requests.Disconnect());
         }
 
         public void PingServers(int pingTimeOutMs, int pingRetriesCount)
         {
             if (ServiceConnected)
-                SendRequest(new IVPNPingServers { timeOutMs = pingTimeOutMs, retryCount = pingRetriesCount });
+                SendRequest(new Requests.PingServers { TimeOutMs = pingTimeOutMs, RetryCount = pingRetriesCount });
         }
 
         public void GenerateDiagnosticLogs(VpnType vpnProtocolType)
         {
-            SendRequest(new IVPNGenerateDiagnosticsRequest {VpnProtocolType = vpnProtocolType});
+            SendRequest(new Requests.GenerateDiagnostics {VpnProtocolType = vpnProtocolType});
         }
 
-        private T GetSyncResponse<T>() where T : IVPNResponse
+        private T GetSyncResponse<T>() where T : Responses.IVPNResponse
         {
             var result = __BlockingCollection.TryTake(out var response, SYNC_RESPONSE_TIMEOUT_MS, __CancellationToken.Token);
             if (!result)
                 throw new TimeoutException("SyncResponse took more time than expected.");
 
-            if (response is IVPNErrorResponse errorResponse)
+            if (response is Responses.IVPNErrorResponse errorResponse)
                 throw new IVPNClientProxyException(errorResponse.ErrorMessage);
 
             return (T)response;
@@ -389,54 +398,54 @@ namespace IVPN
 
         public async Task<bool> KillSwitchGetIsEnabled()
         {
-            return (await SendSyncRequestAsync<IVPNKillSwitchGetStatusResponse>(new IVPNKillSwitchGetStatusRequest())).IsEnabled;
+            return (await SendSyncRequestAsync<Responses.IVPNKillSwitchGetStatusResponse>(new Requests.KillSwitchGetStatus())).IsEnabled;
         }
 
         public async Task KillSwitchSetEnabled(bool isEnabled)
         {            
-            var request = new IVPNKillSwitchSetEnabledRequest() {IsEnabled = isEnabled};
-            await SendSyncRequestAsync<IVPNEmptyResponse>(request);
+            var request = new Requests.KillSwitchSetEnabled() {IsEnabled = isEnabled};
+            await SendSyncRequestAsync<Responses.IVPNEmptyResponse>(request);
         }
 
         public void KillSwitchSetAllowLAN(bool allowLAN)
         {
-            var request = new IVPNKillSwitchSetAllowLANRequest {AllowLAN = allowLAN};
+            var request = new Requests.KillSwitchSetAllowLAN {AllowLAN = allowLAN};
             SendRequest(request);
         }
 
         public void KillSwitchSetAllowLANMulticast(bool allowLANMulticast)
         {
-            var request = new IVPNKillSwitchSetAllowLANMulticastRequest {AllowLANMulticast = allowLANMulticast};
+            var request = new Requests.KillSwitchSetAllowLANMulticast {AllowLANMulticast = allowLANMulticast};
             SendRequest(request);
         }
 
         public async Task KillSwitchSetIsPersistent(bool isPersistent)
         {
-            await SendSyncRequestAsync<IVPNEmptyResponse>(new IVPNKillSwitchSetIsPersistentRequest() { IsPersistent = isPersistent });                            
+            await SendSyncRequestAsync<Responses.IVPNEmptyResponse>(new Requests.KillSwitchSetIsPersistent() { IsPersistent = isPersistent });                            
         }
 
         public async Task<bool> KillSwitchGetIsPersistent()
         {            
-            return (await SendSyncRequestAsync<IVPNKillSwitchGetIsPestistentResponse>(
-                    new IVPNKillSwitchGetIsPestistentRequest())).IsPersistent;            
+            return (await SendSyncRequestAsync<Responses.IVPNKillSwitchGetIsPestistentResponse>(
+                    new Requests.KillSwitchGetIsPestistent())).IsPersistent;            
         }
 
         public async Task PauseConnection()
         {
-            await SendSyncRequestAsync<IVPNEmptyResponse>(new IVPNPauseConnection());
+            await SendSyncRequestAsync<Responses.IVPNEmptyResponse>(new Requests.PauseConnection());
         }
 
         public async Task ResumeConnection()
         {
-            await SendSyncRequestAsync<IVPNEmptyResponse>(new IVPNResumeConnection());
+            await SendSyncRequestAsync<Responses.IVPNEmptyResponse>(new Requests.ResumeConnection());
         }
 
         public async Task<bool> SetAlternateDns(IPAddress dns)
         {
-            return (await SendSyncRequestAsync<IVPNSetAlternateDnsResponse>(new IVPNSetAlternateDns {DNS = dns.ToString()})).IsSuccess;
+            return (await SendSyncRequestAsync<Responses.IVPNSetAlternateDnsResponse>(new Requests.SetAlternateDns {DNS = dns.ToString()})).IsSuccess;
         }
 
-        private async Task<TResult> SendSyncRequestAsync<TResult>(IVPNRequest request) where TResult : IVPNResponse
+        private async Task<TResult> SendSyncRequestAsync<TResult>(Requests.Request request) where TResult : Responses.IVPNResponse
         {
             await __SyncCallSemaphore.WaitAsync(__CancellationToken.Token);
             try
@@ -452,7 +461,7 @@ namespace IVPN
 
         public void RemoveServiceCrashFile()
         {
-            SendRequest(new IVPNRemoveServiceCrashFile ());
+            SendRequest(new Requests.RemoveServiceCrashFile ());
         }
 
         public void Exit()

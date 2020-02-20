@@ -8,7 +8,7 @@ namespace IVPN.VpnProtocols.WireGuard
     public class WireGuardLocalCredentials
     {
         [DataMember]
-        internal string InternalClientIp;
+        internal string InternalClientIP;
 
         [DataMember]
         internal string LocalPrivateKey;

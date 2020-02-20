@@ -1,22 +1,21 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Runtime.Serialization;
 using IVPN.VpnProtocols.OpenVPN;
 using IVPN.VpnProtocols.WireGuard;
+using Newtonsoft.Json;
 
 namespace IVPN.VpnProtocols
 {
-    [DataContract]
     [Serializable]
     public class VpnServersInfo
     {
-        [DataMember]
+        [JsonProperty("wireguard")]
         public List<WireGuardVpnServerInfo> WireGuardServers { get; set; } = new List<WireGuardVpnServerInfo>();
-        [DataMember]
+        [JsonProperty("openvpn")]
         public List<OpenVPNVpnServer> OpenVPNServers { get; set; } = new List<OpenVPNVpnServer>();
 
-        [DataMember]
+        [JsonProperty("config")]
         public RESTApi.RestRequestGetServers.ServersInfoResponse.ConfigInfoResponse Config { get; set; }
 
         public bool IsAnyServers()

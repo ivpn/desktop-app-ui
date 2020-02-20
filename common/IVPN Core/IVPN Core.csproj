@@ -102,7 +102,7 @@
     <Compile Include="IVPNClientProxy.cs" />
     <Compile Include="Platform.cs" />
     <Compile Include="IVPNServer.cs" />
-    <Compile Include="IVPNTypes.cs" />
+    <Compile Include="IVPNRequests.cs" />
     <Compile Include="Logging.cs" />
     <Compile Include="VpnProtocols\OpenVPN\OpenVPNVpnServer.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
@@ -120,6 +120,7 @@
     <Compile Include="VpnProtocols\WireGuard\WireGuardConnectionParameters.cs" />
     <Compile Include="VpnProtocols\OpenVPN\OpenVPNConnectionParameters.cs" />
     <Compile Include="VpnProtocols\WireGuard\WireGuardKeys.cs" />
+    <Compile Include="IVPNResponses.cs" />
   </ItemGroup>
   <ItemGroup>
     <BootstrapperPackage Include="Microsoft.Net.Client.3.5">

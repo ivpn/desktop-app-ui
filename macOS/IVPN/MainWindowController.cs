@@ -1276,7 +1276,7 @@ namespace IVPN
                 diagnosticsSendButton.Enabled = !string.IsNullOrEmpty(diagnosticsTextViewUserComments.Value);
         }
 
-        void Service_Proxy_DiagnosticsGenerated(IVPNDiagnosticsGeneratedResponse diagInfoResponse)
+        void Service_Proxy_DiagnosticsGenerated(Responses.IVPNDiagnosticsGeneratedResponse diagInfoResponse)
         {
             __diagReport = ErrorReporter.PrepareDiagReportToSend(__Settings,
                 diagInfoResponse.EnvironmentLog,

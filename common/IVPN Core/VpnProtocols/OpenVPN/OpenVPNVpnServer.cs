@@ -1,24 +1,23 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Runtime.Serialization;
+using Newtonsoft.Json;
 
 namespace IVPN.VpnProtocols.OpenVPN
 {
-    [DataContract]
     [Serializable]
     public class OpenVPNVpnServer : VpnServerInfoBase
     {
         public override List<string> GetHostsIpAddresses()
         {
-            return IpAddresses;
+            return IPAddresses;
         }
 
         public override bool IsContainHostIpAddress(string host)
         {
-            return IpAddresses.Contains(host);
+            return IPAddresses.Contains(host);  
         }
 
-        [DataMember]
-        public List<string> IpAddresses { get; set; }
+        [JsonProperty("ip_addresses")]
+        public List<string> IPAddresses { get; set; }
     }
 }

@@ -1,20 +1,19 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Runtime.Serialization;
+using Newtonsoft.Json;
 
 namespace IVPN.VpnProtocols
 {
-    [DataContract]
     [Serializable]
     public abstract class VpnServerInfoBase
     {
-        [DataMember]
+        [JsonProperty("gateway")]
         public string GatewayId { get; set; }
-        [DataMember]
+        [JsonProperty("country_code")]
         public string CountryCode { get; set; }
-        [DataMember]
+        [JsonProperty("country")]
         public string Country { get; set; }
-        [DataMember]
+        [JsonProperty("city")]
         public string City { get; set; }
 
         public abstract List<string> GetHostsIpAddresses();
