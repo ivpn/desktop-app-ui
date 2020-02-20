@@ -2,8 +2,16 @@
 
 All notable changes to this project will be documented in this file.
 
+###Version 2.11.2 - 2020-02-20
+[IMPROVED] WireGuard upgraded to 0.0.38
+[IMPROVED] Wintun upgraded to v0.8
+[FIXED] Unable to connect WireGuard if its service not uninstalled
+[FIXED] Issue with background update of WireGuard keys
+[FIXED] Firewall config changes from Always-On to On-Demand after upgrade
+[FIXED] Processing of users additional OpenVPN parameters
+
 ###Version 2.11.0 - 2020-01-28
-[Improved] Improved performance of IVPN Service
+[IMPROVED] Improved performance of IVPN Service
 
 ##Version 2.10.9 - 2019-12-12
 
