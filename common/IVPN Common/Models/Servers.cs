@@ -109,6 +109,7 @@ namespace IVPN.Models
                     if (oldServer != null)
                     {
                         newServer.PingTime = oldServer.PingTime;
+                        newServer.PingTimeRelative = oldServer.PingTimeRelative;
                         newServer.IsSelected = oldServer.IsSelected;
                     }
                 }
@@ -128,6 +129,7 @@ namespace IVPN.Models
                     if (oldServer != null)
                     {
                         newServer.PingTime = oldServer.PingTime;
+                        newServer.PingTimeRelative = oldServer.PingTimeRelative;
                         newServer.IsSelected = oldServer.IsSelected;
                     }
                 }
