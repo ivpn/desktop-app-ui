@@ -396,14 +396,25 @@ namespace IVPN
         private bool __IsLoading;
         public void Load(AppSettings settings)
         {
+            Exception firstExp = null;
+
             __IsLoading = true;
             try
             {
                 RegisterDefaults();
-
+                
                 foreach (var propertyName in __Defaults.Keys)
                 {
-                    LoadProperty(settings, propertyName.ToString());
+                    try
+                    {
+                        LoadProperty(settings, propertyName.ToString());
+                    }
+                    catch (Exception e)
+                    {
+                        // Save first exception but keep loading other properties
+                        if (firstExp == null)
+                            firstExp = new Exception($"Failed to load property '{propertyName}'", e);
+                    }
                 }
 
                 try
@@ -419,6 +430,9 @@ namespace IVPN
                 LoadCredentials(settings);
 
                 Save(settings);
+
+                if (firstExp != null)
+                    throw firstExp;
             }
             finally
             {
