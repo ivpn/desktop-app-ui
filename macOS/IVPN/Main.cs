@@ -56,7 +56,7 @@ namespace IVPN
             if (NSBundle.MainBundle.BundlePath == null)
                 throw new Exception("Internal exception: NSBundle.MainBundle.BundlePath is null.");
 
-            Platform.InstallationDirectory = NSBundle.MainBundle.BundlePath;
+            Platform.InstallationDirectory = @"/Applications/IVPN.app";
 
             NSApplication.Main(args);
         }
