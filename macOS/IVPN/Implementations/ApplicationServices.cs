@@ -55,9 +55,9 @@ namespace IVPN
         {
             __TaskCompletion = new TaskCompletionSource<ServiceAttachResult>();
 
-            PrivilegeHelper.StartAndConnectToLaunchAgent((int connectionPort) => {
+            PrivilegeHelper.StartAndConnectToLaunchAgent((int connectionPort, UInt64 secret) => {
                 if (connectionPort > 0)                    
-                    __TaskCompletion.SetResult(new ServiceAttachResult(connectionPort));
+                    __TaskCompletion.SetResult(new ServiceAttachResult(connectionPort, secret));
                 else 
                     __TaskCompletion.SetResult(new ServiceAttachResult("There was an error launching IVPN Agent."));
             });

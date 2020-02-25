@@ -1,11 +1,14 @@
-﻿namespace IVPN.Models
+﻿using System;
+
+namespace IVPN.Models
 {
     public class ServiceAttachResult
     {
-        public ServiceAttachResult(int port)
+        public ServiceAttachResult(int port, UInt64 secret)
         {
             IsError = false;
             Port = port;
+            Secret = secret;
         }
 
         public ServiceAttachResult(string errorMessage = "")
@@ -20,5 +23,6 @@
         public bool IsError { get; }
 
         public int Port { get; }
+        public UInt64 Secret { get; }
     }
 }

@@ -14,6 +14,7 @@ namespace IVPN.Requests
     public class Hello : Request
     {
         public string Version;
+        public UInt64 Secret;
 
         // GetServersList == true - client requests to send back info about all servers
         public bool GetServersList;

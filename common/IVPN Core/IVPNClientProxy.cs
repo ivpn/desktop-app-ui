@@ -76,13 +76,14 @@ namespace IVPN
         private readonly BlockingCollection<Responses.IVPNResponse> __BlockingCollection = new BlockingCollection<Responses.IVPNResponse>();
         private CancellationTokenSource __CancellationToken;
 
-        public void Initialize(int port)
+        public void Initialize(int port, UInt64 secret)
         {
             __IsExiting = false;
             if (__Thread != null)
                 throw new InvalidOperationException("client is already running");
 
             ServicePort = port;
+            Secret = secret;
 
             __Thread = new Thread(ClientThread) {Name = "IVPN Client Proxy", IsBackground = true};
             __Thread.Start();
@@ -96,7 +97,7 @@ namespace IVPN
                 ConnectToService();
 
                 // send hello
-                SendRequest(new Requests.Hello { Version = Platform.Version, GetServersList = true, GetStatus = true });
+                SendRequest(new Requests.Hello { Version = Platform.Version, Secret = Secret, GetServersList = true, GetStatus = true });
 
 
                 while (HandleRequest())
@@ -159,7 +160,11 @@ namespace IVPN
                 {
                     try
                     {
-                        ServicePort = Convert.ToUInt16(File.ReadAllText(portfile));
+                        string connectionInfo = File.ReadAllText(portfile);
+                        var p = connectionInfo.Split(new char[] {':'});
+
+                        ServicePort = Convert.ToUInt16(p[0]);
+                        Secret = Convert.ToUInt64(p[1], 16);
                     }
                     catch (Exception ex)
                     {
@@ -536,7 +541,8 @@ namespace IVPN
 
         public VpnServersInfo VpnServerList { get; set; } = new VpnServersInfo();
 
-        public int ServicePort { get; set; }
+        public int ServicePort { get; private set; }
+        public UInt64 Secret { get; private set; }
 
         public bool IsExiting => __IsExiting;
     }

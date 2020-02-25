@@ -1,10 +1,6 @@
 ﻿using System;
 using System.IO;
-using System.Runtime.InteropServices;
-
-using AppKit;
 using Foundation;
-using CoreFoundation;
 using Security;
 
 using IVPN;
@@ -12,7 +8,7 @@ using IVPN;
 namespace MacLib
 {
 
-    public delegate void LaunchAgentStartedDelegate(int port);
+    public delegate void LaunchAgentStartedDelegate(int port, UInt64 secret);
 
     public class PrivilegeHelper
     {
@@ -119,18 +115,18 @@ namespace MacLib
         /// Reference to delegate to avoid processing it by GarbageCollector
         /// (we SHOUL NOT pass unnamed action to native code!)
         /// </summary>
-        private static Action<int> __AgentStartedDelegate;
+        private static Action<int, UInt64> __AgentStartedDelegate;
 
-        public static void StartAndConnectToLaunchAgent(Action<int> cb) 
+        public static void StartAndConnectToLaunchAgent(Action<int, UInt64> cb) 
         {
             // save reference to delegate to avoid processing it by GarbageCollector
             // (we SHOUL NOT pass unnamed action to native code!)
             __AgentStartedDelegate = cb;
 
-            MacHelpers.LibLaunchAgent(HELPER_LABEL, (int port) => 
+            MacHelpers.LibLaunchAgent(HELPER_LABEL, (int port, UInt64 secret) => 
             {
                 Logging.Info("GOT BACK PORT => " + port);
-                __AgentStartedDelegate(port);
+                __AgentStartedDelegate(port, secret);
             });
         }
 

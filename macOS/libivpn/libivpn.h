@@ -27,9 +27,9 @@
 #define HELPER_NOT_INSTALLED 1
 #define HELPER_UPGRADE_REQUIRED 2
 
-typedef void (*AgentConnectedHandler) (int port);
+typedef void (*AgentConnectedHandler) (int port, uint64_t secret);
 
-void start_xpc_listener(char *name, int serviceTcpPort);
+void start_xpc_listener(char *name, int serviceTcpPort, uint64_t serviceSecret);
 void connect_to_agent(char *name, AgentConnectedHandler handler);
 void close_connection();
 

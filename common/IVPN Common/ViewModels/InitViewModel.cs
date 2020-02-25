@@ -28,6 +28,18 @@ namespace IVPN.ViewModels
         private readonly IApplicationServices __AppServices;
         private readonly IAppNavigationService __NavigationService;
 
+        class ConnectionParams
+        {
+            public ConnectionParams(int port, UInt64 secret)
+            {
+                Port = port;
+                Secret = secret;
+            }
+
+            public int Port { get; }
+            public UInt64 Secret { get; }
+        }
+
         public InitViewModel(
             AppState appState,
             IApplicationServices appServices,
@@ -82,13 +94,13 @@ namespace IVPN.ViewModels
                 if (!await StartServiceAsync())
                     return;
 
-                var port = await AttachToService();
-                if (port == 0)
+                ConnectionParams retInfo = await AttachToService();
+                if (retInfo.Port == 0) // || retInfo.Secret == 0) TODO:
                     return;
 
                 try
                 {
-                    await ConnectToServiceAsync(port);
+                    await ConnectToServiceAsync(retInfo.Port, retInfo.Secret);
                 }
                 catch (Exception ex)
                 {
@@ -113,7 +125,7 @@ namespace IVPN.ViewModels
             __Service.Proxy.SetPreference("is_stop_server_on_client_disconnect", __Settings.StopServerOnClientDisconnect ? "1" : "0");
         }
 
-        private async Task<int> AttachToService()
+        private async Task<ConnectionParams> AttachToService()
         {
             ProgressMessage = __AppServices.LocalizedString("Connecting_Service_Progress");
             IsInProgress = true;
@@ -126,13 +138,13 @@ namespace IVPN.ViewModels
             if (result.IsError)
             {
                 SetError(__AppServices.LocalizedString("ErrorCaption_IVPNServiceCouldNotStart"), result.ErrorMessage);
-                return 0;
+                return new ConnectionParams(0, 0);
             }
 
-            return result.Port;
+            return new ConnectionParams(result.Port, result.Secret);
         }
 
-        private async Task ConnectToServiceAsync(int port)
+        private async Task ConnectToServiceAsync(int port, UInt64 secret)
         {
             ClearError();
 
@@ -141,7 +153,7 @@ namespace IVPN.ViewModels
 
             try
             {
-                await __Service.InitializeAsync(port);
+                await __Service.InitializeAsync(port, secret);
             }
             finally
             {

@@ -60,14 +60,14 @@ namespace IVPN.Models
             SetProxyHandlers();
         }
 
-        public async Task<bool> InitializeAsync(int port)
+        public async Task<bool> InitializeAsync(int port, UInt64 secret)
         {
             if (__State != ServiceState.Uninitialized)
                 return true;
 
             __InitializationSignal.Reset();
 
-            __ServiceProxy.Initialize(port);
+            __ServiceProxy.Initialize(port, secret);
             await Task.Run(() =>
             {
                 while (!__ServiceProxy.IsExiting)

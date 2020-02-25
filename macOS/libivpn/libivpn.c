@@ -94,7 +94,7 @@ dispatch_queue_t init_queue(char *name) {
 }
 
 EXPORT
-void start_xpc_listener(char *name, int serviceTcpPort) {
+void start_xpc_listener(char *name, int serviceTcpPort, uint64_t serviceSecret) {
     queue = init_queue(name);
 
     puts("libivpn: Starting listener");
@@ -102,12 +102,17 @@ void start_xpc_listener(char *name, int serviceTcpPort) {
 
     connection = xpc_connection_create_mach_service(name, queue, XPC_CONNECTION_MACH_SERVICE_LISTENER);
 
-    xpc_connection_set_event_handler(connection, ^(xpc_object_t client) {
-        if(xpc_get_type(client) == XPC_TYPE_ERROR) {
-            if(client == XPC_ERROR_CONNECTION_INTERRUPTED) {
+    xpc_connection_set_event_handler(connection, ^(xpc_object_t client)
+		{
+        if(xpc_get_type(client) == XPC_TYPE_ERROR)
+				{
+            if(client == XPC_ERROR_CONNECTION_INTERRUPTED)
+						{
 								puts("libivpn: INTERRUPTED");
                 syslog(LOG_ALERT, "libivpn: INTERRUPTED");
-            } else if(client == XPC_ERROR_CONNECTION_INVALID) {
+            }
+						else if(client == XPC_ERROR_CONNECTION_INVALID)
+						{
 								puts("libivpn: INVALID");
                 syslog(LOG_ALERT, "libivpn: INVALID");
             }
@@ -115,7 +120,8 @@ void start_xpc_listener(char *name, int serviceTcpPort) {
             syslogSaveXpcObject(client, NULL);
 
             char *error = (char *) xpc_dictionary_get_string(client, XPC_ERROR_KEY_DESCRIPTION);
-            if(error) {
+            if(error)
+						{
                 printf("libivpn: error: %s\n", error);
 								syslog(LOG_ALERT, "libivpn: error: %s", error);
                 return;
@@ -124,14 +130,16 @@ void start_xpc_listener(char *name, int serviceTcpPort) {
 
         syslogSaveXpcObject(client, NULL);
 
-        xpc_connection_set_event_handler(client, ^(xpc_object_t event) {
+        xpc_connection_set_event_handler(client, ^(xpc_object_t event)
+				{
             syslogSaveXpcObject(event, "****: %s");
             fflush(stdout);
 
             if(xpc_get_type(event) != XPC_TYPE_DICTIONARY)
                 return;
 
-            if(xpc_dictionary_get_int64(event, "type") == LIBIVPN_XPC_MESSAGE_TYPE_START_REQUEST) {
+            if(xpc_dictionary_get_int64(event, "type") == LIBIVPN_XPC_MESSAGE_TYPE_START_REQUEST)
+						{
                 syslog(LOG_ALERT, "libivpn: **************** START REQUEST");
 								puts( "libivpn: **************** START REQUEST");
 
@@ -139,6 +147,7 @@ void start_xpc_listener(char *name, int serviceTcpPort) {
                 xpc_object_t message = xpc_dictionary_create_reply(event);
                 xpc_dictionary_set_int64(message, "type", LIBIVPN_XPC_MESSAGE_TYPE_STARTED_REPLY);
                 xpc_dictionary_set_int64(message, "port", serviceTcpPort);
+								xpc_dictionary_set_uint64(message, "secret", serviceSecret);
 
                 xpc_connection_t remote = xpc_dictionary_get_remote_connection(event);
 
@@ -162,7 +171,8 @@ void connect_to_agent(char *name, AgentConnectedHandler handler) {
 
     connection = xpc_connection_create_mach_service(name, queue, XPC_CONNECTION_MACH_SERVICE_PRIVILEGED);
 
-    xpc_connection_set_event_handler(connection, ^(xpc_object_t server) {
+    xpc_connection_set_event_handler(connection, ^(xpc_object_t server)
+		{
         puts("HERE");
         fflush(stdout);
     });
@@ -172,15 +182,16 @@ void connect_to_agent(char *name, AgentConnectedHandler handler) {
     // send a start request
     xpc_object_t message = xpc_dictionary_create(NULL, NULL, 0);
     xpc_dictionary_set_int64(message, "type", LIBIVPN_XPC_MESSAGE_TYPE_START_REQUEST);
-    xpc_connection_send_message_with_reply(connection, message, NULL, ^(xpc_object_t reply) {
+    xpc_connection_send_message_with_reply(connection, message, NULL, ^(xpc_object_t reply)
+		{
         if(xpc_get_type(reply) != XPC_TYPE_DICTIONARY) {
-            handler(-1);
+            handler(-1, 0);
             syslog(LOG_ALERT, "libivpn: Received reply in connect_to_agent");
             syslogSaveXpcObject(reply, NULL);
             return;
           }
 
-        handler(xpc_dictionary_get_int64(reply, "port"));
+        handler(xpc_dictionary_get_int64(reply, "port"), xpc_dictionary_get_uint64(reply, "secret"));
     });
     xpc_release(message);
 }
