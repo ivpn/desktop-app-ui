@@ -191,6 +191,10 @@ namespace IVPN.ViewModels
                 if (e.PropertyName.Equals(nameof(Settings.VpnProtocolType)))
                 {
                     CheckCapabilities();
+                } else if (e.PropertyName.Equals(nameof(Settings.IsAntiTracker)))
+                {
+                    RaisePropertyWillChange(nameof(IsAntiTrackerEnabled));
+                    RaisePropertyChanged(nameof(IsAntiTrackerEnabled));
                 }
             };
 

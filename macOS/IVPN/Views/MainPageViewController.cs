@@ -92,8 +92,13 @@ namespace IVPN
                     GuiAntiTrackerSwitchControl.SwitchOnBackgroundColor = NSColor.FromRgb(255, 0, 57);      // red
                 else
                     GuiAntiTrackerSwitchControl.SwitchOnBackgroundColor = NSColor.FromRgb(61, 161, 235);    // blue
-                GuiAntiTrackerSwitchControl.NeedsDisplay = true;
+
+                if (!NSThread.IsMain)
+                    InvokeOnMainThread(() => { GuiAntiTrackerSwitchControl.NeedsDisplay = true; });
+                else
+                    GuiAntiTrackerSwitchControl.NeedsDisplay = true;
             };
+
             updateAntiTrackerSwitcherColor();
             __MainViewModel.Settings.PropertyChanged += (sender, e) =>
             {
