@@ -59,6 +59,8 @@ namespace IVPNCommon.Interfaces
         /// </returns>
         bool StartPingUpdate();
 
+        ServerLocation GetServerByIP(IPAddress addr, VpnType vpnType);
+
         IPAddress GetDnsIp(DnsTypeEnum dnsType, bool isMultihop);
     }
 }

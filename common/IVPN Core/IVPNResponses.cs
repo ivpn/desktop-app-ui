@@ -37,7 +37,7 @@ namespace IVPN.Responses
         public List<PingResult> PingResults { get; set; }
     }
 
-    public class IVPNStateResponse : IVPNResponse
+    public class IVPNVpnStateResponse : IVPNResponse
     {
         public string State;
         public string StateAdditionalInfo;
@@ -53,13 +53,14 @@ namespace IVPN.Responses
         public ulong TimeSecFrom1970;
         public string ClientIP;
         public string ServerIP;
+        public VpnType VpnType;
     }
 
     public class IVPNDisconnectedResponse : IVPNResponse
     {
         public bool Failure;
-        public IVPNServer.DisconnectionReason Reason;
-        public string ReasonDescription;
+        public DisconnectionReason Reason;
+        public string ReasonDescription;        
     }
 
     public class IVPNServiceExitingResponse : IVPNResponse { }
@@ -75,9 +76,12 @@ namespace IVPN.Responses
         public string EnvironmentLog;
     }
 
-    public class IVPNKillSwitchGetStatusResponse : IVPNResponse
+    public class IVPNKillSwitchStatusResponse : IVPNResponse
     {
         public bool IsEnabled;
+        public bool IsPersistent;
+        public bool IsAllowLAN;
+        public bool IsAllowMulticast;
     }
 
     public class IVPNKillSwitchGetIsPestistentResponse : IVPNResponse

@@ -357,33 +357,26 @@ namespace IVPN.Models
             }), null);            
         }
 
-        private void ServiceProxy_Connected(ulong timeSecFrom1970, string clientIP, string serverIP)
+        private void ServiceProxy_Connected(ulong timeSecFrom1970, string clientIP, string serverIP, VpnType vpnType)
         {
-            if (__ConnectionTarget == null || __ConnectionProgress == null || __ConnectionTCS == null)
-                return;
-
             if (State == ServiceState.CancellingConnection)
             {
                 Disconnect();
                 return;
             }
 
-            string vpnProtocolInfo;
-            if (__ConnectionTarget != null) // TODO: to think: we must use another mechanism for determining VPN protocol in use!
-                vpnProtocolInfo = (__ConnectionTarget.Server.VpnServer is OpenVPNVpnServer) ? VpnType.OpenVPN.ToString() : VpnType.WireGuard.ToString();
-            else
-                vpnProtocolInfo = "unknown error";
-
+            ServerLocation servLocation = Servers.GetServerByIP(IPAddress.Parse(serverIP), vpnType);
+            
             ConnectionInfo newConnectionInfo = new ConnectionInfo(
-                __ConnectionTarget.Server,
+                servLocation,
                 new DateTime(1970, 1, 1).AddSeconds(timeSecFrom1970),
                 clientIP,
                 serverIP,
-                vpnProtocolInfo
+                vpnType
             );
 
             ConnectionResult result = new ConnectionResult(true) {ConnectionInfo = newConnectionInfo};
-            __ConnectionTCS.TrySetResult(result);
+            __ConnectionTCS?.TrySetResult(result);
 
             __SyncInvoke.BeginInvoke(new Action(() =>
                 {
@@ -394,17 +387,14 @@ namespace IVPN.Models
             Connected(newConnectionInfo);
         }
 
-        private void ServiceProxy_Disconnected(bool failure, IVPNServer.DisconnectionReason reason, string reasonDescription)
+        private void ServiceProxy_Disconnected(bool failure, DisconnectionReason reason, string reasonDescription)
         {
-
-            if (__ConnectionTarget == null || __ConnectionProgress == null || __ConnectionTCS == null)
-                return;
-
             __SyncInvoke.BeginInvoke(new Action(async () =>
                 {
-                    if (State == ServiceState.Connected ||
+                    if (__ConnectionTarget != null && // TODO: __ConnectionTarget can be null if connection established not by UI client
+                        (State == ServiceState.Connected ||
                         State == ServiceState.ReconnectingOnService ||
-                        State == ServiceState.ReconnectingOnClient) // ReconnectingOnClient - was set by watchdog. Current connection failed - try to reconnect
+                        State == ServiceState.ReconnectingOnClient)) // ReconnectingOnClient - was set by watchdog. Current connection failed - try to reconnect
                     {
                         State = ServiceState.ReconnectingOnClient;
 
@@ -425,10 +415,10 @@ namespace IVPN.Models
                 }), null);
         }
 
-        private void SetStatusDisconnected(bool failure, IVPNServer.DisconnectionReason reason, string reasonDescription)
+        private void SetStatusDisconnected(bool failure, DisconnectionReason reason, string reasonDescription)
         {
             ConnectionResult result = new ConnectionResult(false, reasonDescription);
-            __ConnectionTCS.TrySetResult(result);
+            __ConnectionTCS?.TrySetResult(result);
 
             ReportProgress("Disconnected");
             State = ServiceState.Disconnected;

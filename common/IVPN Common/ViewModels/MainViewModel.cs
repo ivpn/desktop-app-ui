@@ -156,6 +156,8 @@ namespace IVPN.ViewModels
             __Service.ServiceInitialized += ServiceInitializedAsync;
             __Service.Connected += (ConnectionInfo connectionInfo) =>
             {
+                __IsDisconnectFailureProcessed = false;
+
                 // If current connection info is not null - it means there was no disconnection
                 // It can be when vpn was reconnected (for example, because of WireGuard credentials was changed)
                 var oldConnInfo = ConnectionInfo;
@@ -164,6 +166,25 @@ namespace IVPN.ViewModels
 
                 // save connection info
                 ConnectionInfo = connectionInfo;
+
+                UpdateTrayIconOnConnect(ConnectionInfo);
+                StartDurationUpdateTimer();
+
+                // Ensure that connected server equals to selected server
+                // They could be different in case if connection was established not by UI client
+                if (ConnectionInfo.Server != null && !string.Equals(SelectedServer.VpnServer.GatewayId, ConnectionInfo.Server?.VpnServer?.GatewayId))
+                {
+                    if (ConnectionInfo.VpnType != __AppState.Settings.VpnProtocolType)
+                        __AppState.Settings.VpnProtocolType = ConnectionInfo.VpnType;
+                    
+                    // TODO: implement possibility to show correct multihop servers
+                    // If connection was established outside - we do not have infor is it multihop or not
+                    // therefore, we switching to singlehop.  
+                    IsMultiHop = false;
+
+                    // select connected server
+                    SelectedServer = ConnectionInfo.Server;
+                }
             };
 
             Settings.PropertyChanged += (object sender, PropertyChangedEventArgs e) => {
@@ -351,13 +372,14 @@ namespace IVPN.ViewModels
                 {
                     // Save port information if it was changed.
                     // perform save in background thread to avoid GUI freeze
-                    if (!Settings.PreferredPort.Equals(__Service.ConnectionTarget.Port))
+                    var connTarget = __Service.ConnectionTarget;
+                    if (connTarget!=null && !Settings.PreferredPort.Equals(connTarget.Port))
                     {
                         //TODO: I do not like this code ((. We should not care about VpnType here. Try to rework in future.
                         if (Settings.VpnProtocolType == VpnType.OpenVPN)
-                            Settings.PreferredPort = __Service.ConnectionTarget.Port;
+                            Settings.PreferredPort = connTarget.Port;
                         else if (Settings.VpnProtocolType == VpnType.WireGuard)
-                            Settings.WireGuardPreferredPort = __Service.ConnectionTarget.Port;
+                            Settings.WireGuardPreferredPort = connTarget.Port;
 
                         Settings.Save();
                     }                    
@@ -725,13 +747,7 @@ namespace IVPN.ViewModels
                     Settings.WireGuardClientInternalIp,
                     Settings.GetWireGuardClientPrivateKey());
 
-                ConnectionResult result = await __Service.Connect(this, cancelToken, connectionTarget);
-
-                if (result.Success)
-                {
-                    UpdateTrayIconOnConnect(result);
-                    StartDurationUpdateTimer();
-                }
+                await __Service.Connect(this, cancelToken, connectionTarget);
             }
             finally
             {
@@ -758,12 +774,12 @@ namespace IVPN.ViewModels
             }
         }
 
-        async void Disconnected (bool failure, IVPNServer.DisconnectionReason reason, string reasonDescription)
+        async void Disconnected (bool failure, DisconnectionReason reason, string reasonDescription)
         {
             await DoDisconnectedAsync (failure, reason, reasonDescription);
         }
 
-        async Task DoDisconnectedAsync(bool failure, IVPNServer.DisconnectionReason reason, string reasonDescription)
+        async Task DoDisconnectedAsync(bool failure, DisconnectionReason reason, string reasonDescription)
         {
             Logging.Info("Disconnected event received");
 
@@ -784,7 +800,7 @@ namespace IVPN.ViewModels
             await ProcessDisconnectedReason (failure, reason, reasonDescription);
         }
 
-        async Task ProcessDisconnectedReason(bool failure, IVPNServer.DisconnectionReason reason, string reasonDescription)
+        async Task ProcessDisconnectedReason(bool failure, DisconnectionReason reason, string reasonDescription)
         {
             // We can receive multiple 'Disconnected' events with fail description for one 'connect' try.
             // So, we processing only first event.
@@ -799,7 +815,7 @@ namespace IVPN.ViewModels
                 {
                     // When account is suspended - openvpn fails with authentication error.
                     // To check is the account is suspended or it is really wrong credentails - we are sending Acount status request
-                    if (reason == IVPNServer.DisconnectionReason.AuthenticationError) 
+                    if (reason == DisconnectionReason.AuthenticationError) 
                     {
                         if (IsKillSwitchEnabled == false) // when KillSwitch enabled - no sense to request status. Request will be blocked.
                         {
@@ -887,10 +903,10 @@ namespace IVPN.ViewModels
             }
         }
 
-        private void UpdateTrayIconOnConnect(ConnectionResult result)
+        private void UpdateTrayIconOnConnect(ConnectionInfo ci)
         {
             string baloonText =
-                $"You are now connected to {SelectedServer.Name}. Your internal IP address is: {result.ConnectionInfo.ClientIPAddress}";
+                $"You are now connected to {SelectedServer.Name}. Your internal IP address is: {ci.ClientIPAddress}";
             
             __Notifications.ShowConnectedTrayBaloon(baloonText);
         }

@@ -8,7 +8,7 @@ using IVPNCommon.Interfaces;
 
 namespace IVPN.Interfaces
 {
-    public delegate void VPNDisconnected(bool failure, IVPNServer.DisconnectionReason reason, string reasonDescription);
+    public delegate void VPNDisconnected(bool failure, DisconnectionReason reason, string reasonDescription);
     public delegate void VPNConnected(ConnectionInfo connectionInfo);
 
     public interface IService: INotifyPropertyChanged

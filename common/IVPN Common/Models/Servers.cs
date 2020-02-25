@@ -20,6 +20,7 @@ namespace IVPN.Models
 
         public event OnPingUpdateRequestDelegate OnPingUpdateRequired = delegate { };
 
+        // List of servers of current VPN protocol
         public List<ServerLocation> ServersList
         {
             get => __ServersList;
@@ -196,6 +197,29 @@ namespace IVPN.Models
 
             RequestPings();
             return true;
+        }
+
+        public ServerLocation GetServerByIP(IPAddress addr, VpnType vpnType)
+        {
+            var allSvrs = __AllVpnServers;
+            if (vpnType == VpnType.OpenVPN)
+            {
+                foreach (var s in allSvrs.OpenVPNServers)
+                {
+                    if (s.IsContainHostIpAddress(addr.ToString()))
+                        return new ServerLocation(s);
+                }
+            }
+            else if (vpnType == VpnType.WireGuard)
+            {
+                foreach (var s in allSvrs.WireGuardServers)
+                {
+                    if (s.IsContainHostIpAddress(addr.ToString()))
+                        return new ServerLocation(s);
+                }
+            }
+
+            return null;
         }
 
         #region Dns servers info

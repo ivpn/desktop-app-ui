@@ -13,6 +13,9 @@ namespace IVPN
         {
             mainViewModel.PropertyChanged += MainViewModel_PropertyChanged;
             mainViewModel.PropertyWillChange += MainViewModel_PropertyWillChange;
+
+            if (ViewModel.ConnectionInfo != null)
+                ConnectionInfoAdapter = new ConnectionInfoAdapter(ViewModel.ConnectionInfo);
         }
 
         void MainViewModel_PropertyWillChange(object sender, PropertyChangingEventArgs e)

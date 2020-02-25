@@ -1,13 +1,11 @@
 ﻿using System;
 using System.Reflection;
-using System.Security.Cryptography;
 
 using System.Collections.Generic;
 using Foundation;
 
 using IVPN.Models;
 using IVPN.Interfaces;
-using IVPN.Lib;
 using System.IO;
 using System.Xml.Serialization;
 using IVPN.Models.Configuration;
@@ -238,25 +236,6 @@ namespace IVPN
 
             propertyInfo.SetValue(settings, value);
 
-        }
-    
-        private string LoadPasswordFromKeyChain(string username)
-        {
-            try
-            {
-                if (!string.IsNullOrEmpty(username))
-                {
-                    var password = KeyChain.GetCredentialFromFromKeychain(username);
-                    if (!string.IsNullOrEmpty(password))
-                        return CryptoUtil.EncryptString(password);
-                }
-            }
-            catch (CryptographicException ex)
-            {
-                Logging.Info(string.Format("Error loading password from KeyChain: {0}", ex));
-            }
-
-            return "";
         }
 
         #region Acount credentials

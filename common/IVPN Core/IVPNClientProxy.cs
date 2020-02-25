@@ -39,9 +39,9 @@ namespace IVPN
 
         public delegate void ServerListChangedHandler(VpnServersInfo vpnServers);
         public delegate void ServersPingsUpdatedHandler(Dictionary<string, int> pingResults);
-        public delegate void ConnectedHandler(ulong timeSecFrom1970, string clientIP, string serverIP);
+        public delegate void ConnectedHandler(ulong timeSecFrom1970, string clientIP, string serverIP, VpnType VpnType);
         public delegate void ConnectionStateHandler(string state, string stateAdditionalInfo);
-        public delegate void DisconnectedHandler(bool failure, IVPNServer.DisconnectionReason reason, string reasonDescription);
+        public delegate void DisconnectedHandler(bool failure, DisconnectionReason reason, string reasonDescription);
         public delegate void SecurityPolicyHandler(string type, string message);
         public delegate void ServiceStatusChangeHandler(bool connected);
         public delegate void ServiceExitingHandler();
@@ -96,7 +96,8 @@ namespace IVPN
                 ConnectToService();
 
                 // send hello
-                SendRequest(new Requests.Hello { Version = Platform.Version });
+                SendRequest(new Requests.Hello { Version = Platform.Version, GetServersList = true, GetStatus = true });
+
 
                 while (HandleRequest())
                 {
@@ -203,7 +204,7 @@ namespace IVPN
                 return false;
 
             Responses.IVPNResponse response = JsonConvert.DeserializeObject<Responses.IVPNResponse>(line);
-            Logging.Info("received " + response);
+            Logging.Info($"received {response.Type}: {response}");
 
             switch (response.Type)
             {
@@ -247,14 +248,14 @@ namespace IVPN
                     }
                     break;
 
-                case "State":
-                    var stateResp = JsonConvert.DeserializeObject<Responses.IVPNStateResponse>(line);
+                case "VpnState":
+                    var stateResp = JsonConvert.DeserializeObject<Responses.IVPNVpnStateResponse>(line);
                     ConnectionState(stateResp.State, stateResp.StateAdditionalInfo);
                     break;
 
                 case "Connected":
                     var connectedRes = JsonConvert.DeserializeObject<Responses.IVPNConnectedResponse>(line);  
-                    Connected(connectedRes.TimeSecFrom1970, connectedRes.ClientIP, connectedRes.ServerIP);
+                    Connected(connectedRes.TimeSecFrom1970, connectedRes.ClientIP, connectedRes.ServerIP, connectedRes.VpnType);
                     break;
 
                 case "Disconnected":
@@ -274,14 +275,15 @@ namespace IVPN
 
                 // :: __BlockingCollection ::
 
-                case "KillSwitchGetStatus":
-                    var kssResp = JsonConvert.DeserializeObject<Responses.IVPNKillSwitchGetStatusResponse>(line);
+                case "KillSwitchStatus":
+                    var kssResp = JsonConvert.DeserializeObject<Responses.IVPNKillSwitchStatusResponse>(line);
                     __BlockingCollection.Add(kssResp);
                     break;
                 case "KillSwitchGetIsPestistent":
                     var kspResp = JsonConvert.DeserializeObject<Responses.IVPNKillSwitchGetIsPestistentResponse>(line);
                     __BlockingCollection.Add(kspResp);
                     break;
+
                 case "SetAlternateDns":
                     var adnsResp = JsonConvert.DeserializeObject<Responses.IVPNSetAlternateDnsResponse>(line);
                     __BlockingCollection.Add(adnsResp);
@@ -297,6 +299,18 @@ namespace IVPN
             }
 
             return true;
+        }
+
+        private T GetSyncResponse<T>() where T : Responses.IVPNResponse
+        {
+            var result = __BlockingCollection.TryTake(out var response, SYNC_RESPONSE_TIMEOUT_MS, __CancellationToken.Token);
+            if (!result)
+                throw new TimeoutException("SyncResponse took more time than expected.");
+
+            if (response is Responses.IVPNErrorResponse errorResponse)
+                throw new IVPNClientProxyException(errorResponse.ErrorMessage);
+
+            return (T)response;
         }
 
         private void CheckConnected()
@@ -384,21 +398,9 @@ namespace IVPN
             SendRequest(new Requests.GenerateDiagnostics {VpnProtocolType = vpnProtocolType});
         }
 
-        private T GetSyncResponse<T>() where T : Responses.IVPNResponse
-        {
-            var result = __BlockingCollection.TryTake(out var response, SYNC_RESPONSE_TIMEOUT_MS, __CancellationToken.Token);
-            if (!result)
-                throw new TimeoutException("SyncResponse took more time than expected.");
-
-            if (response is Responses.IVPNErrorResponse errorResponse)
-                throw new IVPNClientProxyException(errorResponse.ErrorMessage);
-
-            return (T)response;
-        }
-
         public async Task<bool> KillSwitchGetIsEnabled()
         {
-            return (await SendSyncRequestAsync<Responses.IVPNKillSwitchGetStatusResponse>(new Requests.KillSwitchGetStatus())).IsEnabled;
+            return (await SendSyncRequestAsync<Responses.IVPNKillSwitchStatusResponse>(new Requests.KillSwitchGetStatus())).IsEnabled;
         }
 
         public async Task KillSwitchSetEnabled(bool isEnabled)

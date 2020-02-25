@@ -101,7 +101,7 @@
     <Compile Include="WiFi\IWiFiWrapper.cs" />
     <Compile Include="IVPNClientProxy.cs" />
     <Compile Include="Platform.cs" />
-    <Compile Include="IVPNServer.cs" />
+    <Compile Include="DisconnectionReason.cs" />
     <Compile Include="IVPNRequests.cs" />
     <Compile Include="Logging.cs" />
     <Compile Include="VpnProtocols\OpenVPN\OpenVPNVpnServer.cs" />

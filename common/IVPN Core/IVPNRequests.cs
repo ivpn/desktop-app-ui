@@ -14,6 +14,17 @@ namespace IVPN.Requests
     public class Hello : Request
     {
         public string Version;
+
+        // GetServersList == true - client requests to send back info about all servers
+        public bool GetServersList;
+
+        // GetStatus == true - client requests current status (Vpn connection, Firewal... etc.)
+        public bool GetStatus;
+
+        // KeepDaemonAlone informs daemon\service to do nothing when client disconnects
+        // 		false (default) - VPN disconnects when client disconnects from a daemon
+        // 		true - do nothing when client disconnects from a daemon (if VPN is connected - do not disconnect)
+        public bool KeepDaemonAlone;
     }
 
     /// <summary>
