@@ -641,16 +641,6 @@ namespace IVPN.Models
                 }
             }
         }
-        /// <summary>
-        /// Request service to remove service-crash file
-        /// (Platform.ServiceCrashInfoFilePath)
-        /// 
-        /// Client itseld can not remove it, because file was creaded by service with admin rights
-        /// </summary>
-        public void RemoveServiceCrashFile()
-        {
-            __ServiceProxy.RemoveServiceCrashFile();
-        }
 
         public async Task PauseOn()
         {

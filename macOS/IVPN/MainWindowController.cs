@@ -157,7 +157,6 @@ namespace IVPN
             __Service.ServiceInitialized += (object sender, EventArgs e) => 
             { 
                 UpdateMenuItems ();
-                ProcessServiceCrashLogIfExisists();
             };
 
             MacWiFiWrapper.Create(); // initialize WiFi wrapper
@@ -247,41 +246,6 @@ namespace IVPN
             // Update check should be performed after successfull application start
             // (on a curent moment everything is initialized (e.g.: firewall ... etc.))
             IVPN.IVPNUpdater.InitializeUpdater();
-        }
-
-        private void ProcessServiceCrashLogIfExisists()
-        {
-            // Check is there was an Service crash
-            if (File.Exists(Platform.ServiceCrashInfoFilePath))
-            {
-                try
-                {
-                    string agentCrashInfo = FileUtils.TailOfLog(Platform.ServiceCrashInfoFilePath);
-                    // send requeest to remove crash-info file
-                    __Service.RemoveServiceCrashFile();
-
-                    AppSettings settings = AppDelegate.GetAppSettings();
-                    if (settings != null
-                        && string.IsNullOrEmpty(agentCrashInfo) == false
-                       )
-                    {
-                        Action action = () => 
-                        {
-                            ExceptionWindowController.Show(new IVPNServiceCrash(agentCrashInfo), true, false, __AppServices.LocalizedString("Message_LooksLikeAgentWasChashed"));
-                        };
-
-                        if (!NSThread.IsMain)
-                            InvokeOnMainThread(() => action());
-                        else
-                            action();
-                        return;
-                    }
-                }
-                catch (Exception ex)
-                {
-                    Logging.Info(string.Format("Exception during processing Agent crash-log: {0}", ex));
-                }
-            }
         }
 
         private void View_OnApperianceChanged()

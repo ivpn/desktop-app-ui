@@ -63,8 +63,6 @@ namespace IVPN.Responses
         public string ReasonDescription;        
     }
 
-    public class IVPNServiceExitingResponse : IVPNResponse { }
-
     public class IVPNDiagnosticsGeneratedResponse : IVPNResponse
     {
         public string ServiceLog;

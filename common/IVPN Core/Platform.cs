@@ -187,21 +187,6 @@ namespace IVPN
             }
         }
 
-        public static string ServiceCrashInfoFilePath
-        {
-            get
-            {
-                switch (Environment.OSVersion.Platform)
-                {
-                    case PlatformID.Win32NT:
-                        return Path.Combine(LogDirectory, "ivpnServiceCrashInfo.log");
-
-                    default:
-                        return "/Library/Logs/IVPN Agent CrashInfo.log";
-                }
-            }
-        }
-
         public static string OpenSSLExecutablePath
         {
             get

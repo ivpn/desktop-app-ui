@@ -464,11 +464,6 @@ namespace IVPN
             {
                 __SyncCallSemaphore.Release();
             }
-        }        
-
-        public void RemoveServiceCrashFile()
-        {
-            SendRequest(new Requests.RemoveServiceCrashFile ());
         }
 
         public void Exit()
