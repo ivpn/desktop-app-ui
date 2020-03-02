@@ -108,7 +108,7 @@ namespace IVPN
                 Logging.Info("Handle request loop finished");
             }
             catch (Exception ex)
-                {
+            {
                 Logging.Info("error: " + ex.StackTrace);
                 ClientException(ex);
             }
@@ -209,16 +209,16 @@ namespace IVPN
                 return false;
 
             Responses.IVPNResponse response = JsonConvert.DeserializeObject<Responses.IVPNResponse>(line);
-            Logging.Info($"received {response.Type}: {response}");
+            Logging.Info($"received {response.Command}: {response}");
 
-            switch (response.Type)
+            switch (response.Command)
             {
-                case "Hello":
+                case "HelloResp":
                     var helloResp = JsonConvert.DeserializeObject<Responses.IVPNHelloResponse>(line);
                     Logging.Info("got hello, server version is " + helloResp.Version);
                     break;
 
-                case "ServerList":
+                case "ServerListResp":
                     var serversResp = JsonConvert.DeserializeObject<Responses.IVPNServerListResponse>(line);
 
                     Logging.Info($"Got servers info [{serversResp.VpnServers.OpenVPNServers.Count} openVPN; {serversResp.VpnServers.WireGuardServers.Count} WireGuard]");
@@ -242,7 +242,7 @@ namespace IVPN
                     
                     break;
 
-                case "PingServers":
+                case "PingServersResp":
                     var pingResp = JsonConvert.DeserializeObject<Responses.IVPNPingServersResponse>(line);
                     if (pingResp.PingResults != null)
                     {
@@ -253,51 +253,50 @@ namespace IVPN
                     }
                     break;
 
-                case "VpnState":
+                case "VpnStateResp":
                     var stateResp = JsonConvert.DeserializeObject<Responses.IVPNVpnStateResponse>(line);
                     ConnectionState(stateResp.State, stateResp.StateAdditionalInfo);
                     break;
 
-                case "Connected":
+                case "ConnectedResp":
                     var connectedRes = JsonConvert.DeserializeObject<Responses.IVPNConnectedResponse>(line);  
                     Connected(connectedRes.TimeSecFrom1970, connectedRes.ClientIP, connectedRes.ServerIP, connectedRes.VpnType);
                     break;
 
-                case "Disconnected":
+                case "DisconnectedResp":
                     var discRes = JsonConvert.DeserializeObject<Responses.IVPNDisconnectedResponse>(line);
                     Disconnected(discRes.Failure, discRes.Reason, discRes.ReasonDescription);
                     break;
 
-                case "DiagnosticsGenerated":
+                case "DiagnosticsGeneratedResp":
                     var diagResp = JsonConvert.DeserializeObject<Responses.IVPNDiagnosticsGeneratedResponse>(line);  
                     DiagnosticsGenerated(diagResp);
                     break;
 
-                case "ServiceExiting":
+                case "ServiceExitingResp":
                     __IsExiting = true;
                     ServiceExiting();
                     break;
 
                 // :: __BlockingCollection ::
-
-                case "KillSwitchStatus":
+                case "KillSwitchStatusResp":
                     var kssResp = JsonConvert.DeserializeObject<Responses.IVPNKillSwitchStatusResponse>(line);
                     __BlockingCollection.Add(kssResp);
                     break;
-                case "KillSwitchGetIsPestistent":
+                case "KillSwitchGetIsPestistentResp":
                     var kspResp = JsonConvert.DeserializeObject<Responses.IVPNKillSwitchGetIsPestistentResponse>(line);
                     __BlockingCollection.Add(kspResp);
                     break;
 
-                case "SetAlternateDns":
+                case "SetAlternateDNSResp":
                     var adnsResp = JsonConvert.DeserializeObject<Responses.IVPNSetAlternateDnsResponse>(line);
                     __BlockingCollection.Add(adnsResp);
                     break;
-                case "Empty":
+                case "EmptyResp":
                     var erResp = JsonConvert.DeserializeObject<Responses.IVPNEmptyResponse>(line);
                     __BlockingCollection.Add(erResp);
                     break;
-                case "Error":
+                case "ErrorResp":
                     var errResp = JsonConvert.DeserializeObject<Responses.IVPNErrorResponse>(line);
                     __BlockingCollection.Add(errResp);
                     break;
@@ -432,7 +431,7 @@ namespace IVPN
         }
 
         public async Task<bool> KillSwitchGetIsPersistent()
-        {            
+        {
             return (await SendSyncRequestAsync<Responses.IVPNKillSwitchGetIsPestistentResponse>(
                     new Requests.KillSwitchGetIsPestistent())).IsPersistent;            
         }

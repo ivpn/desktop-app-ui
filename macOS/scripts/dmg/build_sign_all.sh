@@ -79,6 +79,7 @@ ListCompiledBinaries=(
 "_image/Uninstall IVPN.app"
 
 "_image/IVPN.app/Contents/MacOS/IVPN Agent"
+"_image/IVPN.app/Contents/MacOS/cli/ivpn"
 "_image/IVPN.app/Contents/MacOS/IVPN"
 "_image/IVPN.app"
 )

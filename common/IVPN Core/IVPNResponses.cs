@@ -7,7 +7,7 @@ namespace IVPN.Responses
 {
     [Serializable]
     public class IVPNResponse {
-        public string Type { get; set; }
+        public string Command { get; set; }
     }
 
     public class IVPNEmptyResponse : IVPNResponse { }

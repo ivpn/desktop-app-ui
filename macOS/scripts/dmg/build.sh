@@ -28,11 +28,20 @@ function CheckLastResult
 DAEMON_REPO_ABS_PATH=$("./../daemon_repo_local_path_abs.sh")
 CheckLastResult "Failed to determine location of IVPN Daemon sources. Plase check 'config/daemon_repo_local_path.txt'"
 
+CLI_REPO_ABS_PATH=$("./../cli_repo_local_path_abs.sh")
+CheckLastResult "Failed to determine location of IVPN CLI sources. Plase check 'config/cli_repo_local_path.txt'"
+
 echo '---------------------------'
 echo "Building IVPN Daemon ($DAEMON_REPO_ABS_PATH)...";
 echo '---------------------------'
 $DAEMON_REPO_ABS_PATH/References/macOS/scripts/build-all.sh -norebuild
 CheckLastResult "ERROR building IVPN Daemon"
+
+echo '---------------------------'
+echo "Building IVPN CLI ($CLI_REPO_ABS_PATH)...";
+echo '---------------------------'
+$CLI_REPO_ABS_PATH/References/macOS/build.sh
+CheckLastResult "ERROR building IVPN CLI"
 
 echo '---------------------------'
 echo "Building IVPN App (UI client) ...";
@@ -81,6 +90,9 @@ CheckLastResult
 
 echo "Copying daemon..."
 cp -R "$DAEMON_REPO_ABS_PATH/IVPN Agent" "./_image/IVPN.app/Contents/MacOS"
+echo "Copying CLI..."
+mkdir "./_image/IVPN.app/Contents/MacOS/cli"
+cp -R "$CLI_REPO_ABS_PATH/ivpn" "./_image/IVPN.app/Contents/MacOS/cli"
 CheckLastResult
 
 echo "Removing unnecessary debug files..."
