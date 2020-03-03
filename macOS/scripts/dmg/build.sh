@@ -25,6 +25,9 @@ function CheckLastResult
   fi
 }
 
+VERSION_FILE="../config/version.txt"
+EXPECTED_VERSION=`cat "$VERSION_FILE"`
+
 DAEMON_REPO_ABS_PATH=$("./../daemon_repo_local_path_abs.sh")
 CheckLastResult "Failed to determine location of IVPN Daemon sources. Plase check 'config/daemon_repo_local_path.txt'"
 
@@ -34,13 +37,13 @@ CheckLastResult "Failed to determine location of IVPN CLI sources. Plase check '
 echo '---------------------------'
 echo "Building IVPN Daemon ($DAEMON_REPO_ABS_PATH)...";
 echo '---------------------------'
-$DAEMON_REPO_ABS_PATH/References/macOS/scripts/build-all.sh -norebuild
+$DAEMON_REPO_ABS_PATH/References/macOS/scripts/build-all.sh -norebuild -v $EXPECTED_VERSION
 CheckLastResult "ERROR building IVPN Daemon"
 
 echo '---------------------------'
 echo "Building IVPN CLI ($CLI_REPO_ABS_PATH)...";
 echo '---------------------------'
-$CLI_REPO_ABS_PATH/References/macOS/build.sh
+$CLI_REPO_ABS_PATH/References/macOS/build.sh -v $EXPECTED_VERSION
 CheckLastResult "ERROR building IVPN CLI"
 
 echo '---------------------------'
@@ -110,9 +113,7 @@ echo " Checking binaries versions..."
 
 BUNDLE_PLIST_FILE="./_image/IVPN.app/Contents/Info.plist"
 HELPER_FILE="./_image/IVPN.app/Contents/Library/LaunchServices/net.ivpn.client.Helper"
-VERSION_FILE="../config/version.txt"
 
-EXPECTED_VERSION=`cat "$VERSION_FILE"`
 CheckLastResult "Can not read version from '$VERSION_FILE'"
 BUNDLE_VERSION=`/usr/libexec/PlistBuddy -c "Print :CFBundleVersion" "$BUNDLE_PLIST_FILE"`
 CheckLastResult "Can not read bundle version from '$BUNDLE_PLIST_FILE'"
