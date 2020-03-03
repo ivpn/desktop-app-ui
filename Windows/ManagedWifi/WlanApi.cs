@@ -654,7 +654,8 @@ namespace NativeWifi
 
 		~WlanClient()
 		{
-			Wlan.WlanCloseHandle(clientHandle, IntPtr.Zero);
+            if (clientHandle != IntPtr.Zero)
+			    Wlan.WlanCloseHandle(clientHandle, IntPtr.Zero);
 		}
 
 		private Wlan.WlanConnectionNotificationData? ParseWlanConnectionNotification(ref Wlan.WlanNotificationData notifyData)
