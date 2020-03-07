@@ -40,18 +40,18 @@ namespace IVPN
         {
             // firewall should be disabled on LogIn page 
             __MainWindowController.MainViewModel.ForceDisconnectAndDisableFirewall();
-            
+
             __MainWindowController.ShowLogInPage(animation, doLogIn, doForceLogin);
             CurrentPage = NavigationTarget.LogInPage;
         }
-        
+
         public void NavigateToSessionLimitPage(NavigationAnimation animation)
         {
             // firewall should be disabled on LogIn page 
             __MainWindowController.MainViewModel.ForceDisconnectAndDisableFirewall();
 
             // if user is authenticated - do the LogOut first
-            if (__MainWindowController.AppState.IsAuthenticated())
+            if (__MainWindowController.AppState.IsLoggedIn())
             {
                 __MainWindowController.ShowLogOutPage(animation, showSessionLimit: true);
                 CurrentPage = NavigationTarget.LogOutPage;

@@ -112,4 +112,22 @@ namespace IVPN.Requests
         /// </summary>
         public string DNS; 
     }
+
+    public class SessionNew : Request
+    {
+        public string AccountID;
+        public bool ForceLogin;
+    }
+
+    public class SessionDelete : Request { }
+
+    public class WireGuardGenerateNewKeys : Request
+    {
+        public bool OnlyUpdateIfNecessary;
+    }
+
+    public class WireGuardSetKeysRotationInterval : Request
+    {
+        public Int64 Interval; // seconds
+    }
 }

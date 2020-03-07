@@ -48,6 +48,12 @@ namespace IVPN.Interfaces
         Task PauseOn();
         Task PauseOff();
 
+        Task<Responses.SessionNewResponse> Login(string accountID, bool forceDeleteAllSesssions);
+        Task Logout();
+
+        Task WireGuardGeneratedKeys(bool generateIfNecessary);
+        Task WireGuardKeysSetRotationInterval(Int64 interval);
+
         Task<bool> SetDns(IPAddress dns);
 
         /// <summary>

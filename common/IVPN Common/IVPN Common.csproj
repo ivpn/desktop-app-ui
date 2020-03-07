@@ -95,10 +95,9 @@
     <Compile Include="ViewModels\ViewModelLogIn.cs" />
     <Compile Include="Lib\IOperationStartStopNotifier.cs" />
     <Compile Include="Models\Session\SessionManager.cs" />
-    <Compile Include="Models\Session\SessionStatus.cs" />
+    <Compile Include="Models\Session\AccountStatus.cs" />
     <Compile Include="Models\PrivateEmail\PrivateEmailInfo.cs" />
     <Compile Include="ViewModels\PrivateEmailsManagerViewModel.cs" />
-    <Compile Include="Models\AppState.cs" />
     <Compile Include="ViewModels\ViewModelLogOut.cs" />
     <Compile Include="Models\Configuration\ServersFilterConfig.cs" />
     <Compile Include="ViewModels\ViewModelFastestServerSettings.cs" />
@@ -108,9 +107,10 @@
     <Compile Include="ErrorReporting\ErrorReporterEvent.cs" />
     <Compile Include="Api\ApiResponses.cs" />
     <Compile Include="Api\ApiServices.cs" />
-    <Compile Include="Models\Configuration\ICredentials.cs" />
     <Compile Include="ViewModels\ViewModelSessionLimit.cs" />
     <Compile Include="ErrorReporting\ErrorReporterSentryKey.cs" />
+    <Compile Include="Models\AppState\AppState.cs" />
+    <Compile Include="Models\AppState\ISessionKeeper.cs" />
   </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
   <ItemGroup>
@@ -129,4 +129,7 @@
     <None Include="packages.config" />
   </ItemGroup>
   <ItemGroup />
+  <ItemGroup>
+    <Folder Include="Models\AppState\" />
+  </ItemGroup>
 </Project>

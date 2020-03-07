@@ -98,6 +98,10 @@ namespace IVPN.Models
         private void SetProxyHandlers()
         {
             Servers.OnPingUpdateRequired += Proxy.PingServers;
+
+            __ServiceProxy.SessionInfoChanged += (SessionInfo s) => AppState.Instance().SetSession(s);
+            
+
             __ServiceProxy.ServerListChanged += (VpnServersInfo servers) =>
             {
                 __SyncInvoke.BeginInvoke(new Action(() =>
@@ -148,6 +152,7 @@ namespace IVPN.Models
 
         private void ProcessProxyException(Exception exception)
         {
+            Logging.Info($"Proxy EXCEPTION: {exception} - {exception.StackTrace}");
             __SyncInvoke.BeginInvoke(new Action(() =>
             {
                 // There is a problems with communication to service(agent)
@@ -261,7 +266,7 @@ namespace IVPN.Models
         #region Connection process watchdog timer
         /// <summary>
         /// Connection watchdog timer: 
-        /// If long time no response from server during connection (from WAIT to next event from openvpm managment interfrace) 
+        /// If long time no response from server during connection (from WAIT to next event from openvpn managment interfrace) 
         /// - watchdog can cancel current connection process and try to connect to another port
         /// </summary>
         private Timer __ConnectingProcessWatchDogTimer;
@@ -467,17 +472,15 @@ namespace IVPN.Models
                 if (connectionTarget.OpenVpnProxyOptions == null)
                     __ServiceProxy.ConnectOpenVPN(
                         svr,
+                        connectionTarget.OpenVpnMultihopExitSrvId,
                         connectionTarget.Port,
-                        connectionTarget.CurrentManualDns,
-                        connectionTarget.OpenVpnUsername,
-                        connectionTarget.OpenVpnPassword);
+                        connectionTarget.CurrentManualDns);
                 else
                     __ServiceProxy.ConnectOpenVPN(
                         svr,
+                        connectionTarget.OpenVpnMultihopExitSrvId,
                         connectionTarget.Port,
                         connectionTarget.CurrentManualDns,
-                        connectionTarget.OpenVpnUsername,
-                        connectionTarget.OpenVpnPassword,
                         connectionTarget.OpenVpnProxyOptions.Type,
                         connectionTarget.OpenVpnProxyOptions.Server,
                         connectionTarget.OpenVpnProxyOptions.Port,
@@ -486,15 +489,10 @@ namespace IVPN.Models
             }
             else if (connectionTarget.Server.VpnServer is WireGuardVpnServerInfo)
             {
-                if (string.IsNullOrEmpty(connectionTarget.WireGuardInternalClientIp) || string.IsNullOrEmpty(connectionTarget.WireGuardLocalPrivateKey))
-                    throw new Exception("Unable to connect: WireGuard configuration not defined");
-
                 WireGuardVpnServerInfo svr = connectionTarget.Server.VpnServer as WireGuardVpnServerInfo;
                 __ServiceProxy.ConnectWireGuard(svr, 
                     connectionTarget.Port,
-                    connectionTarget.CurrentManualDns,
-                    connectionTarget.WireGuardInternalClientIp,
-                    connectionTarget.WireGuardLocalPrivateKey);
+                    connectionTarget.CurrentManualDns);
             }
             else
                 throw new Exception($"[{nameof(DoConnect)}] Internal exception. Unexpected type of connectionTarget ({connectionTarget.GetType()})");
@@ -674,5 +672,25 @@ namespace IVPN.Models
             return isSuccess;
         }
         #endregion // DNS filter
+
+        public async Task<Responses.SessionNewResponse> Login(string accountID, bool forceDeleteAllSesssions)
+        {
+            return await __ServiceProxy.LogIn(accountID, forceDeleteAllSesssions);
+        }
+
+        public async Task Logout()
+        {
+            await __ServiceProxy.LogOut();
+        }
+
+        public async Task WireGuardGeneratedKeys(bool generateIfNecessary)
+        {
+            await __ServiceProxy.WireGuardGeneratedKeys(generateIfNecessary);
+        }
+
+        public async Task WireGuardKeysSetRotationInterval(Int64 interval)
+        {
+            await __ServiceProxy.WireGuardKeysSetRotationInterval(interval);
+        }
     }
 }

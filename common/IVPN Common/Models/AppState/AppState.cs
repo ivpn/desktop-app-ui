@@ -2,12 +2,13 @@
 using System.Collections.Generic;
 using System.IO;
 using System.Text;
-using IVPN.Models.Configuration;
+using IVPN.Interfaces;
 using IVPN.Models.Session;
 using Newtonsoft.Json;
 
 namespace IVPN.Models
 {
+
     /// <summary>
     /// Application state.
     /// Save\restore data between application start.
@@ -15,100 +16,100 @@ namespace IVPN.Models
     /// IMPORTANT! Be carefull with data serialization!
     /// Mark '[JsonIgnore]' all public properties which should be excluded from serialization
     /// </summary>
-    public class AppState
+    public class AppState : ISessionKeeper
     {
         public const string AppStateFile = "app.state";
 
-        public delegate void OnSessionStatusChangedDelegate(SessionStatus sessionStatus);
-        public event OnSessionStatusChangedDelegate OnSessionStatusChanged = delegate {};
+        public delegate void OnAccountStatusChangedDelegate(AccountStatus accountStatus);
+        public event OnAccountStatusChangedDelegate OnAccountStatusChanged = delegate {};
+
+        public event OnSessionChangedDelegate OnSessionChanged = delegate { };
 
         /// <summary> Gets the user account. </summary>
-        public SessionStatus SessionStatusInfo
+        public AccountStatus AccountStatus
         {
-            get => __SessionStatus;
+            get => __AccountStatus;
             set
             {
-                __SessionStatus = value;
+                __AccountStatus = value;
 
                 if (__IsLoaded)
                 {
                     Save();
 
                     // notify event: account info changed
-                    OnSessionStatusChanged(SessionStatusInfo);
+                    OnAccountStatusChanged(AccountStatus);
                 }
             }
         }
-        private SessionStatus __SessionStatus;
+        private AccountStatus __AccountStatus;
 
         #region Not serializable properties
         private bool __IsLoaded;
 
         [JsonIgnore]
-        public SessionManager SessionManager { get; private set; }
-
+        public SessionInfo Session { get; private set; }
         [JsonIgnore]
-        public AppSettings Settings { get; private set; }
-
-        /// <summary> Gets a value indicating whether is user authenticated. </summary>
-        public bool IsAuthenticated() { return Settings.IsUserLoggedIn(); }
+        public SessionManager SessionManager { get; private set; }
 
         [JsonIgnore]
         public List<string> Capabilities
         {
             get 
             {
-                if (SessionStatusInfo == null)
+                var acc = AccountStatus;
+                if (acc == null)
                     return new List<string>();
-                
-                return SessionStatusInfo.Capabilities;
+                return acc.Capabilities;
             }
         }
+
         #endregion //Not serializable properties
 
-        public void SetAccountInfo(SessionStatus sessionStatus)
-        {            
-            // change account info
-            SessionStatusInfo = sessionStatus;
-        }
-
+        /// <summary> Gets a value indicating whether is user authenticated. </summary>
+        public bool IsLoggedIn() { return !string.IsNullOrEmpty(Session?.Session); }
+               
         #region Singleton
         private AppState() { }
         private static AppState __SingletonInstance;
         #endregion // Singleton
 
-        #region Private functionality
-
-        private void SetSettings(AppSettings settings)
+        public void SetSession(SessionInfo session)
         {
-            Settings = settings ?? throw new ArgumentNullException(nameof(settings));
-
-            Settings.OnCredentialsChanged += (credentials) =>
+            var oldSession = Session;
+            Session = session;
+            if (string.IsNullOrEmpty(Session?.AccountID)
+                || !string.Equals(oldSession?.AccountID, Session?.AccountID))
             {
-                if (credentials.IsUserLoggedIn())
-                    SessionStatusInfo = null;
-            };
-
-            SessionManager = SessionManager.CreateSessionManager(settings);
-            SessionManager.OnSessionStatusReceived += (SessionStatus sessionStatus) =>
-            {
-                if (sessionStatus != null)
-                    SetAccountInfo(sessionStatus);
-            };
+                AccountStatus = null;
+            }
+            OnSessionChanged(Session);
         }
 
+        #region Private functionality
         #endregion // Private functionality
 
         #region Save/Load
+        public static AppState Instance()
+        {
+            if (__SingletonInstance == null)
+                throw new Exception("AppState not initialized");
+
+            return __SingletonInstance;
+        }
+
         /// <summary>
         /// Get appState singleton instance
         /// OR Load the application state object OR create a new one
         /// </summary>
-        public static AppState GetInstance(AppSettings settings)
+        public static AppState Initialize(IService service)
         {
             if (__SingletonInstance != null)
                 return __SingletonInstance;
 
+            // Initialization
+
+            // Create folder where state will save
             try
             {
                 if (!Directory.Exists(Platform.UserSettingsDirectory))
@@ -120,8 +121,8 @@ namespace IVPN.Models
                 Logging.Info(string.Format("Error creaing UserSettingsDirectory AppState: {0} ({1})", ex, Platform.UserSettingsDirectory)); 
             }
 
+            // Create new empty instance  OR load previus state
             string fname = Path.Combine(Platform.UserSettingsDirectory, AppStateFile);
-
             if (!File.Exists(fname))
                 __SingletonInstance = new AppState();
             else
@@ -143,7 +144,15 @@ namespace IVPN.Models
                 __SingletonInstance = new AppState();
 
             __SingletonInstance.__IsLoaded = true;
-            __SingletonInstance.SetSettings(settings);
+
+            // Init session manager
+            __SingletonInstance.SessionManager = SessionManager.CreateSessionManager(__SingletonInstance, service);
+            __SingletonInstance.SessionManager.OnAcountStatusReceived += (AccountStatus accountStatus) =>
+            {
+                if (accountStatus != null)
+                    __SingletonInstance.AccountStatus = accountStatus;
+            };
+
             return __SingletonInstance;
         }
 
@@ -166,7 +175,8 @@ namespace IVPN.Models
 
         public void Reset()
         {
-            SessionStatusInfo = null;
+            SetSession(null);
+            AccountStatus = null;
             TryToRemoveStateFile();
         }
 

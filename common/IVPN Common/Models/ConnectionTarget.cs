@@ -9,9 +9,10 @@ namespace IVPN
 {
     public class ConnectionTarget
     {
-        private ConnectionTarget(ServerLocation server, DestinationPort port, List<DestinationPort> portsToReconnect, IPAddress currentManualDns)
+        private ConnectionTarget(ServerLocation server, string openVpnMultihopExitSrvId, DestinationPort port, List<DestinationPort> portsToReconnect, IPAddress currentManualDns)
         {
             Server = server;
+            OpenVpnMultihopExitSrvId = openVpnMultihopExitSrvId;
             Port = port;
             CurrentManualDns = currentManualDns;
 
@@ -24,16 +25,11 @@ namespace IVPN
             }
         }
 
-        public ConnectionTarget(ServerLocation server, DestinationPort port, List<DestinationPort> portsToReconnect, IPAddress currentManualDns, string username, string password, ProxyOptions proxyOptions, string wireguardInternalClientIp, string wireguardPrivateKey)
-            : this(server, port, portsToReconnect, currentManualDns)
+        public ConnectionTarget(ServerLocation server, string openVpnMultihopExitSrvId, DestinationPort port, List<DestinationPort> portsToReconnect, IPAddress currentManualDns, ProxyOptions proxyOptions)
+            : this(server, openVpnMultihopExitSrvId, port, portsToReconnect, currentManualDns)
         {
             // TODO: necessary to think how to divide implementation for OpenVPN and Wireguard 
-
-            OpenVpnUsername = username;
-            OpenVpnPassword = password;
-            OpenVpnProxyOptions = proxyOptions;
-            WireGuardInternalClientIp = wireguardInternalClientIp;
-            WireGuardLocalPrivateKey = wireguardPrivateKey;
+            OpenVpnProxyOptions = proxyOptions;            
         }
 
         public ServerLocation Server { get; }
@@ -60,17 +56,11 @@ namespace IVPN
         }
 
         #region OpenVpn specific configuration parameters
-        public string OpenVpnUsername { get; }
-
-        public string OpenVpnPassword { get; }
-
         public ProxyOptions OpenVpnProxyOptions { get; }
+        public string       OpenVpnMultihopExitSrvId { get; }
         #endregion //OpenVpn specific configuration parameters
 
         #region WireGuard specific configuration parameters
-        public string WireGuardLocalPrivateKey { get; }
-
-        public string WireGuardInternalClientIp { get; }
         #endregion //WireGuard specific configuration parameters
     }
 }

@@ -10,19 +10,19 @@ namespace IVPN
     public partial class SubscriptionWillExpireWindowController : NSWindowController
     {
         private int __DaysLeft;
-        SessionStatus __SessionStatus;
+        AccountStatus __SessionStatus;
         string __Username;
 
-        public SubscriptionWillExpireWindowController (IntPtr handle) : base (handle)
+        public SubscriptionWillExpireWindowController(IntPtr handle) : base(handle)
         {
         }
 
-        [Export ("initWithCoder:")]
-        public SubscriptionWillExpireWindowController (NSCoder coder) : base (coder)
+        [Export("initWithCoder:")]
+        public SubscriptionWillExpireWindowController(NSCoder coder) : base(coder)
         {
         }
 
-        public SubscriptionWillExpireWindowController (SessionStatus sessionStatus, string username) : base ("SubscriptionWillExpireWindow")
+        public SubscriptionWillExpireWindowController(AccountStatus sessionStatus, string username) : base("SubscriptionWillExpireWindow")
         {
             __SessionStatus = sessionStatus;
             __Username = username ?? "";
@@ -31,11 +31,11 @@ namespace IVPN
                 __DaysLeft = 0;
         }
 
-        private readonly NSColor TitleDaysTextColor = NSColor.FromRgb (57, 158, 230);
+        private readonly NSColor TitleDaysTextColor = NSColor.FromRgb(57, 158, 230);
 
-        public override void AwakeFromNib ()
+        public override void AwakeFromNib()
         {
-            base.AwakeFromNib ();
+            base.AwakeFromNib();
 
             // Disable title-bar (but keep close/minimize/expand buttons on content-view)
             // IMPORTANT! 'FullSizeContentView' implemented since OS X 10.10 !!!
@@ -46,7 +46,7 @@ namespace IVPN
             // Progress indicator
             if (!__SessionStatus.IsActive)
                 __DaysLeft = 0;
-            
+
             // Normally we should show it days left <= 3
             // if '__DaysLeft' > 3 - set max value to __DaysLeft+1
             int maxValue = 3;
@@ -57,12 +57,12 @@ namespace IVPN
             GuiProgressIndicator.MaxValue = maxValue;
             GuiProgressIndicator.DoubleValue = maxValue - __DaysLeft;
 
-            string cancelBtnText = LocalizedStrings.Instance.LocalizedString ("Button_ContinueTrial");
+            string cancelBtnText = LocalizedStrings.Instance.LocalizedString("Button_ContinueTrial");
             string subscriptionBtnText;
             if (__SessionStatus.IsOnFreeTrial)
-                subscriptionBtnText = LocalizedStrings.Instance.LocalizedString ("Button_GetSubscription");
+                subscriptionBtnText = LocalizedStrings.Instance.LocalizedString("Button_GetSubscription");
             else
-                subscriptionBtnText = LocalizedStrings.Instance.LocalizedString ("Button_RenewSubscription");
+                subscriptionBtnText = LocalizedStrings.Instance.LocalizedString("Button_RenewSubscription");
 
             // BUTTON Continue Trial
             GuiButtonCancel.Gradient = new NSGradient(NSColor.FromRgb(240, 244, 247), NSColor.FromRgb(240, 244, 247));
@@ -79,35 +79,35 @@ namespace IVPN
                 ShadowColor = NSColor.FromRgba(0, 0, 0, 0.18f)
             };
             GuiButtonGoToAccount.TitleText = subscriptionBtnText;
-            GuiButtonGoToAccount.TitleFont = UIUtils.GetSystemFontOfSize (13f, NSFontWeight.Medium);
+            GuiButtonGoToAccount.TitleFont = UIUtils.GetSystemFontOfSize(13f, NSFontWeight.Medium);
             GuiButtonGoToAccount.TitleForegroundColor = NSColor.White;
 
             // TITLE
-            if (!__SessionStatus.IsActive) 
-            { 
-                string title = LocalizedStrings.Instance.LocalizedString ("Label_SubscriptionExpired");
+            if (!__SessionStatus.IsActive)
+            {
+                string title = LocalizedStrings.Instance.LocalizedString("Label_SubscriptionExpired");
                 if (__SessionStatus.IsOnFreeTrial)
-                    title = LocalizedStrings.Instance.LocalizedString ("Label_FreeTrialExpired");
-                
-                NSMutableAttributedString attrTitle = new NSMutableAttributedString (title);
+                    title = LocalizedStrings.Instance.LocalizedString("Label_FreeTrialExpired");
 
-                NSStringAttributes stringAttributes0 = new NSStringAttributes ();
-                stringAttributes0.Font = UIUtils.GetSystemFontOfSize (20f, NSFontWeight.Medium);
-                attrTitle.AddAttributes (stringAttributes0, new NSRange (0, title.Length));
+                NSMutableAttributedString attrTitle = new NSMutableAttributedString(title);
+
+                NSStringAttributes stringAttributes0 = new NSStringAttributes();
+                stringAttributes0.Font = UIUtils.GetSystemFontOfSize(20f, NSFontWeight.Medium);
+                attrTitle.AddAttributes(stringAttributes0, new NSRange(0, title.Length));
                 GuiLabelTitleText.AttributedStringValue = attrTitle;
 
                 // DESCRIPTION
                 string description = LocalizedStrings.Instance.LocalizedString("Label_AccountDaysLeftDescription_Expired");
                 if (__SessionStatus.IsOnFreeTrial)
-                    description = LocalizedStrings.Instance.LocalizedString ("Label_TrialDaysLeftDescription_Expired");
+                    description = LocalizedStrings.Instance.LocalizedString("Label_TrialDaysLeftDescription_Expired");
 
-                description = string.Format (description, __DaysLeft);
-                GuiLabelDescriptionText.AttributedStringValue = AttributedString.Create (description, null, NSTextAlignment.Left);
+                description = string.Format(description, __DaysLeft);
+                GuiLabelDescriptionText.AttributedStringValue = AttributedString.Create(description, null, NSTextAlignment.Left);
             }
-            else 
+            else
             {
                 string title;
-                string daysStr = string.Format ("{0}", __DaysLeft);
+                string daysStr = string.Format("{0}", __DaysLeft);
                 if (__DaysLeft == 0)
                 {
                     title = LocalizedStrings.Instance.LocalizedString("Label_AccountDaysLeftTitle_LastDay_PARAMETRIZED");
@@ -127,22 +127,22 @@ namespace IVPN
                     if (__SessionStatus.IsOnFreeTrial)
                         title = LocalizedStrings.Instance.LocalizedString("Label_TrialDaysLeftTitle_PARAMETRIZED");
                 }
-                
-                int numberSymbolPos = title.LastIndexOf ("{0}", StringComparison.Ordinal);
-                title = string.Format (title, daysStr);
-                NSMutableAttributedString attrTitle = new NSMutableAttributedString (title);
 
-                NSStringAttributes stringAttributes0 = new NSStringAttributes ();
-                stringAttributes0.Font = UIUtils.GetSystemFontOfSize (20f, NSFontWeight.Medium);
+                int numberSymbolPos = title.LastIndexOf("{0}", StringComparison.Ordinal);
+                title = string.Format(title, daysStr);
+                NSMutableAttributedString attrTitle = new NSMutableAttributedString(title);
 
-                NSStringAttributes stringAttributes1 = new NSStringAttributes ();
+                NSStringAttributes stringAttributes0 = new NSStringAttributes();
+                stringAttributes0.Font = UIUtils.GetSystemFontOfSize(20f, NSFontWeight.Medium);
+
+                NSStringAttributes stringAttributes1 = new NSStringAttributes();
                 stringAttributes1.ForegroundColor = TitleDaysTextColor;
 
-                attrTitle.AddAttributes (stringAttributes0, new NSRange (0, title.Length));
-                attrTitle.AddAttributes (stringAttributes1, new NSRange (numberSymbolPos, title.Length -  numberSymbolPos));
+                attrTitle.AddAttributes(stringAttributes0, new NSRange(0, title.Length));
+                attrTitle.AddAttributes(stringAttributes1, new NSRange(numberSymbolPos, title.Length - numberSymbolPos));
 
                 GuiLabelTitleText.AttributedStringValue = attrTitle;
-            
+
                 // DESCRIPTION
                 string description;
                 if (__DaysLeft == 0)
@@ -163,35 +163,36 @@ namespace IVPN
                     if (__SessionStatus.IsOnFreeTrial)
                         description = LocalizedStrings.Instance.LocalizedString("Label_TrialDaysLeftDescription_PARAMETRIZED");
                 }
-                
-                description = string.Format (description, __DaysLeft);
-                GuiLabelDescriptionText.AttributedStringValue = AttributedString.Create (description, null, NSTextAlignment.Left);
+
+                description = string.Format(description, __DaysLeft);
+                GuiLabelDescriptionText.AttributedStringValue = AttributedString.Create(description, null, NSTextAlignment.Left);
             }
         }
 
-        public override void WindowDidLoad ()
+        public override void WindowDidLoad()
         {
-            base.WindowDidLoad ();
+            base.WindowDidLoad();
         }
 
-        public override void Close ()
+        public override void Close()
         {
-            base.Close ();
+            base.Close();
         }
 
-        public new SubscriptionWillExpireWindow Window {
+        public new SubscriptionWillExpireWindow Window
+        {
             get { return (SubscriptionWillExpireWindow)base.Window; }
         }
 
-        partial void GuiButtonGoToAccountPressed (Foundation.NSObject sender)
+        partial void GuiButtonGoToAccountPressed(Foundation.NSObject sender)
         {
-            NSWorkspace.SharedWorkspace.OpenUrl (new NSUrl (Constants.GetRenewUrl (__Username)));
-            Close ();
+            NSWorkspace.SharedWorkspace.OpenUrl(new NSUrl(Constants.GetRenewUrl(__Username)));
+            Close();
         }
 
-        partial void OnGuiButtonCancelPressed (Foundation.NSObject sender)
+        partial void OnGuiButtonCancelPressed(Foundation.NSObject sender)
         {
-            Close ();
+            Close();
         }
     }
 }

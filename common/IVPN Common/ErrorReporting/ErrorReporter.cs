@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections;
 using System.Collections.Generic;
+using IVPN.Models;
 using IVPN.Models.Configuration;
 using Newtonsoft.Json;
 using SharpRaven;
@@ -10,7 +11,7 @@ namespace IVPN
 {
     internal class DiagnosticReport : Exception
     {
-        public DiagnosticReport() : base("Diagnostic report") {}
+        public DiagnosticReport() : base("Diagnostic report") { }
     }
 
     public class ErrorReporter
@@ -30,7 +31,7 @@ namespace IVPN
                     Environment = "Debug",
                     Release = $"{Platform.ShortPlatformName}_v{Platform.Version}_[Debug]"
 #else
-                Release = $"{Platform.ShortPlatformName}_v{Platform.Version}"
+                    Release = $"{Platform.ShortPlatformName}_v{Platform.Version}"
 #endif
                 };
             }
@@ -47,7 +48,7 @@ namespace IVPN
                 return null;
 
             IDictionary<string, string> parameters = InitializeParameters(appSettings);
-            foreach(var item in parameters)
+            foreach (var item in parameters)
                 ex.Data.Add(item.Key, item.Value);
 
             if (!string.IsNullOrEmpty(ivpnLog))
@@ -193,7 +194,7 @@ namespace IVPN
 
                 for (int i = items.Count - 1; i >= 0; i--)
                 {
-                    evt.Event.Exception.Data.Add(fieldName + $" {i- nameIdxOffset}", items[i]);
+                    evt.Event.Exception.Data.Add(fieldName + $" {i - nameIdxOffset}", items[i]);
                     if (maxItemsCount > 0 && items.Count - i >= maxItemsCount)
                         break;
                 }
@@ -231,10 +232,10 @@ namespace IVPN
 
             return oldValLength - value.Length;
         }*/
-        
+
         private static void AddParameter(IDictionary desDic, object key, object value)
         {
-            if (desDic==null)
+            if (desDic == null)
                 return;
 
             if (desDic.Contains(key))
@@ -266,7 +267,7 @@ namespace IVPN
                             }
                         );
 
-                    parameters.Add(GetFieldName(FieldsPositions.IVPNUser), appSettings.Username);
+                    parameters.Add(GetFieldName(FieldsPositions.IVPNUser), AppState.Instance()?.Session?.AccountID ?? "");
                     parameters.Add(GetFieldName(FieldsPositions.Settings), settingsJson);
                 }
             }
@@ -286,12 +287,10 @@ namespace IVPN
                 { $"{FieldsPositions.Platform}", Platform.ShortPlatformName }
             };
 
-            if (appSettings != null)
+            string uname = AppState.Instance()?.Session?.AccountID ?? "";
+            if (!string.IsNullOrEmpty(uname))
             {
-                if (appSettings.Username != null)
-                {
-                    parameters.Add($"{FieldsPositions.IVPNUser}", appSettings.Username);
-                }
+                parameters.Add($"{FieldsPositions.IVPNUser}", uname);
             }
 
             return parameters;

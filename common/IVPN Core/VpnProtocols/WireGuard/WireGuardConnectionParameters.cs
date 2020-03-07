@@ -5,18 +5,7 @@ namespace IVPN.VpnProtocols.WireGuard
 {
     [DataContract]
     [Serializable]
-    public class WireGuardLocalCredentials
-    {
-        [DataMember]
-        internal string InternalClientIP;
-
-        [DataMember]
-        internal string LocalPrivateKey;
-    }
-
-    [DataContract]
-    [Serializable]
-    public class WireGuardConnectionParameters : WireGuardLocalCredentials
+    public class WireGuardConnectionParameters
     {
         [DataMember]
         internal WireGuardVpnServerInfo EntryVpnServer;

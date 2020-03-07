@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Net;
 using System.Threading;
 using System.Threading.Tasks;
 using IVPN.Interfaces;
@@ -14,10 +15,10 @@ namespace IVPN.Models.Session
     {
         #region Singleton
         private static SessionManager __Instance;
-        public static SessionManager CreateSessionManager(Configuration.ICredentials credentials)
+        public static SessionManager CreateSessionManager(ISessionKeeper sessionKeeper, IService service)
         {
             if (__Instance == null)
-                __Instance = new SessionManager(credentials);
+                __Instance = new SessionManager(sessionKeeper, service);
             return __Instance;
         }
         #endregion //Singleton
@@ -38,26 +39,29 @@ namespace IVPN.Models.Session
         private CancellationTokenSource __RequestCancellationSource;
 
         // Settings object
-        private readonly Configuration.ICredentials __Credentials;
+        private readonly ISessionKeeper __SessionKeeper;
+        private readonly IService __Service;
         #endregion //Internal variables
 
         #region Public functionality
-        public event OnSessionStatusReceivedDelegate OnSessionStatusReceived = delegate { };
+        public event OnAccountStatusReceivedDelegate OnAcountStatusReceived = delegate { };
         public event OnSessionRequestErrorDelegate OnSessionRequestError = delegate { };
 
-        private SessionManager(Configuration.ICredentials credentials)
+        private SessionManager(ISessionKeeper sessionKeeper, IService service)
         {
-            __Credentials = credentials;
+            __SessionKeeper = sessionKeeper;
+            __Service = service;
 
             __TimerAccountCheck.Elapsed += async (object sender, System.Timers.ElapsedEventArgs e) => { await StatusTimerElapsed(); };
 
-            if (__Credentials.IsUserLoggedIn())
+            if (__SessionKeeper.IsLoggedIn())
                 Initialize();
 
-            __Credentials.OnCredentialsChanged += (Configuration.ICredentials creds) =>
+            __SessionKeeper.OnSessionChanged += (SessionInfo sessionInfo) => 
             {
                 __IsStatusReceived = false;
-                if (creds.IsUserLoggedIn())
+
+                if (__SessionKeeper.IsLoggedIn())
                     Initialize();
                 else
                     UnInitialize();
@@ -70,14 +74,13 @@ namespace IVPN.Models.Session
             };
         }
 
-
         private void Initialize()
-        {            
+        {
             StartBackgroundChecker();
 
             Logging.Info("Session status check is enabled");
         }
-        
+
         public void UnInitialize()
         {
             StopBackgroundChecker();
@@ -86,34 +89,32 @@ namespace IVPN.Models.Session
         }
 
         /// <summary> New session </summary>
-        public async Task<ApiSessionStatusAuthenticate> CreateNewSessionAsync(string username,
-            string password,
-            CancellationToken? cancellationToken = null,
-            bool isForceDeleteAllSessions = false,
-            string wireguardPublicKey = null)
-        {
+        public async Task CreateNewSessionAsync(string accountID, bool isForceDeleteAllSessions = false)
+        {            
             try
             {
                 StopBackgroundChecker();
 
-                CancellationToken cToken = (cancellationToken != null) ? (CancellationToken)cancellationToken : new CancellationTokenSource().Token;
+                var resp = await __Service.Login(accountID, isForceDeleteAllSessions);
+                if (resp.APIStatus == 0)
+                    throw new Exception("Internal error: Failed to create session");
+                else if (resp.APIStatus != (int)ApiStatusCode.Success)
+                    throw new IVPNRestRequestApiException(HttpStatusCode.OK, (ApiStatusCode)resp.APIStatus, resp.APIErrorMessage);
 
-                var resp = await ApiServices.Instance.SessionNewAsync(username, password, cToken, isForceDeleteAllSessions, wireguardPublicKey);
-                if (resp!=null)
-                {
-                    if (__Credentials.SetSession(username, resp.SessionToken, resp.VpnUser, resp.VpnPass, isPassEncrypded: false))
-                        __Credentials.Save();
-                }
-                               
-                if (resp.SessionStatusInfo != null)
-                    OnSessionStatusReceived(resp.SessionStatusInfo);
+                var acc = new AccountStatus(
+                resp.Account.Active,
+                IVPN_Helpers.DataConverters.DateTimeConverter.FromUnixTime(resp.Account.ActiveUntil),
+                resp.Account.IsRenewable,
+                resp.Account.WillAutoRebill,
+                resp.Account.IsFreeTrial,
+                resp.Account.Capabilities);
 
-                return resp;
-            }            
+                OnAcountStatusReceived(acc);
+            }
             catch (IVPNRestRequestApiException ex)
             {
                 Logging.Info($"{ex}");
-                
+
                 if (ex.ApiStatusCode == ApiStatusCode.SessionTooManySessions)
                     OnSessionRequestError(ex);
                 throw;
@@ -135,20 +136,15 @@ namespace IVPN.Models.Session
             try
             {
                 StopBackgroundChecker();
-
-                CancellationToken cToken = (cancellationToken != null)? (CancellationToken)cancellationToken : new CancellationTokenSource().Token;
-
+                
                 try
                 {
-                    await ApiServices.Instance.SessionDeleteAsync(cToken);
+                    await __Service.Logout();
                 }
                 catch (Exception ex)
                 {
                     Logging.Info($"Failed to delete session from IVPN server: {ex}");
-                }
-
-                if (__Credentials.DeleteSession())
-                    __Credentials.Save();                
+                }                
             }
             catch (Exception ex)
             {
@@ -174,7 +170,7 @@ namespace IVPN.Models.Session
         /// <summary>
         /// Immediately check accountStatus
         /// </summary>
-        public async Task<SessionStatus> CheckStatusNowAsync(int timeoutMs)
+        public async Task<AccountStatus> CheckStatusNowAsync(int timeoutMs)
         {
             try
             {
@@ -183,8 +179,8 @@ namespace IVPN.Models.Session
                 var ret = await CheckStatus(timeoutMs);
 
                 if (ret != null)
-                    OnSessionStatusReceived(ret);
-                    
+                    OnAcountStatusReceived(ret);
+
                 return ret;
             }
             catch (Exception ex)
@@ -195,7 +191,7 @@ namespace IVPN.Models.Session
             finally
             {
                 StartBackgroundChecker();
-            }            
+            }
         }
         #endregion //Public functionality
 
@@ -205,7 +201,7 @@ namespace IVPN.Models.Session
             if (__IsActive)
                 return;
 
-            if (!__Credentials.IsUserLoggedIn())
+            if (! __SessionKeeper.IsLoggedIn())
                 return; // User not loged-in () no registered sesion - nonthing to check
 
             __IsActive = true;
@@ -228,7 +224,7 @@ namespace IVPN.Models.Session
             if (!__IsActive)
                 return;
 
-            SessionStatus retSessionStatus = null;
+            AccountStatus retAccountStatus = null;
             try
             {
                 // request not often than once per 'MinCheckIntervalMs'
@@ -240,19 +236,19 @@ namespace IVPN.Models.Session
                 {
                     var account = await CheckStatus();
                     if (account != null)
-                        retSessionStatus = account;
+                        retAccountStatus = account;
                 }
-                catch 
+                catch
                 {
-                    retSessionStatus = null;
+                    retAccountStatus = null;
                     // IGNORE ALLL !!!
-                }               
+                }
 
                 if (!__IsActive)
                     return;
 
-                if (retSessionStatus != null)                    
-                    OnSessionStatusReceived(retSessionStatus);
+                if (retAccountStatus != null)
+                    OnAcountStatusReceived(retAccountStatus);
             }
             catch (Exception ex)
             {
@@ -265,22 +261,22 @@ namespace IVPN.Models.Session
                 if (__IsActive)
                 {
                     // calculate next account check time based on 'ActiveUtil'
-                    if (retSessionStatus != null)
+                    if (retAccountStatus != null)
                     {
-                        double accountAliveMsLeft = (retSessionStatus.ActiveUtil - DateTime.Now).TotalMilliseconds;
+                        double accountAliveMsLeft = (retAccountStatus.ActiveUtil - DateTime.Now).TotalMilliseconds;
                         if (accountAliveMsLeft > 0)
-                        {                            
+                        {
                             if (accountAliveMsLeft < DefaultCheckIntervalMs)
                                 __TimerAccountCheck.Interval = accountAliveMsLeft;
                         }
-                    } 
+                    }
 
                     __TimerAccountCheck.Start();
                 }
             }
         }
 
-        protected async Task<SessionStatus> CheckStatus(int timeoutMs = ApiServices.DefaultTimeout)
+        protected async Task<AccountStatus> CheckStatus(int timeoutMs = ApiServices.DefaultTimeout)
         {
             try
             {
@@ -289,20 +285,20 @@ namespace IVPN.Models.Session
                 // Info: WebRequest can use not more than 2 simultaneous connections to same host
                 __RequestCancellationSource?.Cancel();
 
-                if (!__Credentials.IsUserLoggedIn())
+                if (!__SessionKeeper.IsLoggedIn())
                     return null; // User not loged-in () no registered sesion - nonthing to check
 
                 // send request to rest server                
                 try
                 {
                     __RequestCancellationSource = new CancellationTokenSource();
-                    SessionStatus acc = await ApiServices.Instance.SessionStatusAsync(__RequestCancellationSource.Token, timeoutMs);
+                    AccountStatus acc = await ApiServices.Instance.SessionStatusAsync(__RequestCancellationSource.Token, timeoutMs);
 
                     if (acc != null)
                         __IsStatusReceived = true;
 
                     return acc;
-                }                
+                }
                 finally
                 {
                     __LastCheckTime = DateTime.Now;

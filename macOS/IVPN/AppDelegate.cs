@@ -9,7 +9,6 @@ namespace IVPN
 {
     public partial class AppDelegate : NSApplicationDelegate
     {
-
         MainWindowController __MainWindowController;
         AppSettings __Settings;
         SettingsProvider __SettingsProvider;
@@ -44,21 +43,6 @@ namespace IVPN
         {
             // Load & initialize settings
             __Settings = AppSettings.InitInstance(__SettingsProvider);
-
-            // Initialize API service object
-            System.Net.IPAddress.TryParse(__Settings.AlternateAPIHost, out System.Net.IPAddress alternateAPIHost);
-            IVPNCommon.Api.ApiServices.Instance.Initialize(__Settings, alternateAPIHost);
-            // save into settings when alternate host changed
-            IVPNCommon.Api.ApiServices.Instance.AlternateHostChanged += (System.Net.IPAddress ip) =>
-            {
-                __Settings.AlternateAPIHost = (ip==null)? "" : ip.ToString();
-            };
-            // reset alternate host on logout
-            __Settings.OnCredentialsChanged += (ICredentials sender) =>
-            {
-                if (!sender.IsUserLoggedIn())
-                    IVPNCommon.Api.ApiServices.Instance.ResetCurAlternateHost();
-            };
 
             // processing MacIsShowIconInSystemDock parameter
             ShowIconInSystemDockIfNecessary();

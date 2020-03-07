@@ -17,45 +17,45 @@ namespace IVPN
         #region Constructors
 
         // Called when created from unmanaged code
-        public LogInViewController (IntPtr handle) : base (handle)
+        public LogInViewController(IntPtr handle) : base(handle)
         {
-            Initialize ();
+            Initialize();
         }
 
         // Called when created directly from a XIB file
-        [Export ("initWithCoder:")]
-        public LogInViewController (NSCoder coder) : base (coder)
+        [Export("initWithCoder:")]
+        public LogInViewController(NSCoder coder) : base(coder)
         {
-            Initialize ();
+            Initialize();
         }
 
         // Call to load from the XIB/NIB file
-        public LogInViewController () : base ("LogInView", NSBundle.MainBundle)
+        public LogInViewController() : base("LogInView", NSBundle.MainBundle)
         {
-            Initialize ();
+            Initialize();
         }
 
         // Shared initialization code
-        void Initialize ()
+        void Initialize()
         {
-            
+
         }
 
         #endregion
 
         public nfloat InitialHeight { get; private set; }
 
-        public override void ViewDidLoad ()
+        public override void ViewDidLoad()
         {
-            base.ViewDidLoad ();
-            if (View!=null && View.Frame.IsEmpty == false)
+            base.ViewDidLoad();
+            if (View != null && View.Frame.IsEmpty == false)
                 InitialHeight = View.Frame.Height;
 
-            CustomButtonStyles.ApplyStyleMainButton (GuiButtonLogIn, LocalizedStrings.Instance.LocalizedString ("Button_LogIn"));
+            CustomButtonStyles.ApplyStyleMainButton(GuiButtonLogIn, LocalizedStrings.Instance.LocalizedString("Button_LogIn"));
 
             CustomButtonStyles.ApplyStyleNavigationButtonV2(GuiButtonStartFreeTrial, LocalizedStrings.Instance.LocalizedString("Button_StartFreeTrial"));
-            
-            GuiTextViewUser.PlaceholderString = LocalizedStrings.Instance.LocalizedString ("Placeholder_Username");
+
+            GuiTextViewUser.PlaceholderString = LocalizedStrings.Instance.LocalizedString("Placeholder_Username");
             GuiTextViewUser.Cell.Title = __LogInViewModel.UserName ?? "";
             GuiTextViewUser.LineBreakMode = NSLineBreakMode.TruncatingHead;
 
@@ -64,7 +64,7 @@ namespace IVPN
             NSData descriptionData = NSData.FromString("Your account ID can be found in the <a style=\"text-decoration:none\" href=\"https://www.ivpn.net/clientarea/login\">Client Area</a> of the website");
             NSDictionary resultDocumentAttributes;
             NSAttributedString nSAttributed = NSAttributedString.CreateWithHTML(descriptionData, out resultDocumentAttributes);
-            
+
             NSStringAttributes descTextAttributes = new NSStringAttributes();
             descTextAttributes.Font = GuiTextAccountIdDescription.Font;                 // keep using preconfigured TextField font
             descTextAttributes.ForegroundColor = GuiTextAccountIdDescription.TextColor; // keep using preconfigured TextField color
@@ -72,7 +72,7 @@ namespace IVPN
 
             NSMutableAttributedString descriptionString = new NSMutableAttributedString(nSAttributed);
             descriptionString.AddAttributes(descTextAttributes, new NSRange(0, nSAttributed.Length));
-            
+
             GuiTextAccountIdDescription.AllowsEditingTextAttributes = true; // it is important
             GuiTextAccountIdDescription.Selectable = true;
             GuiTextAccountIdDescription.AttributedStringValue = descriptionString;// nSAttributed;
@@ -84,163 +84,167 @@ namespace IVPN
             {
                 CustomButtonStyles.ApplyStyleNavigationButtonV2(GuiButtonStartFreeTrial, LocalizedStrings.Instance.LocalizedString("Button_StartFreeTrial"));
             };
-        }        
+        }
 
         //strongly typed view accessor
-        public new LogInView View {
-            get {
+        public new LogInView View
+        {
+            get
+            {
                 return (LogInView)base.View;
             }
         }
 
-        public override void ViewDidAppear ()
+        public override void ViewDidAppear()
         {
-            base.ViewDidAppear ();
+            base.ViewDidAppear();
         }
 
-        public void Navigated ()
+        public void Navigated()
         {
-            GuiTextViewUser.BecomeFirstResponder ();            
+            GuiTextViewUser.BecomeFirstResponder();
         }
 
-        void __LogInViewModel_PropertyChanged (object sender, System.ComponentModel.PropertyChangedEventArgs e)
+        void __LogInViewModel_PropertyChanged(object sender, System.ComponentModel.PropertyChangedEventArgs e)
         {
-            if (!NSThread.IsMain) 
+            if (!NSThread.IsMain)
             {
-                InvokeOnMainThread (() => __LogInViewModel_PropertyChanged (sender, e));
+                InvokeOnMainThread(() => __LogInViewModel_PropertyChanged(sender, e));
                 return;
             }
 
-            if (e.PropertyName.Equals (nameof (__LogInViewModel.UserName)))
+            if (e.PropertyName.Equals(nameof(__LogInViewModel.UserName)))
                 GuiTextViewUser.Cell.Title = __LogInViewModel.UserName ?? "";
         }
 
-		NSPopover __LoginPopoverErrorInfo;
-		private void ShowLoginErrorPopover(PopoverContentView contentView, NSView positioningView = null)
-		{
-			if (__LoginPopoverErrorInfo!=null)
-			{
-				__LoginPopoverErrorInfo.Close();
-				__LoginPopoverErrorInfo = null;
-			}
+        NSPopover __LoginPopoverErrorInfo;
+        private void ShowLoginErrorPopover(PopoverContentView contentView, NSView positioningView = null)
+        {
+            if (__LoginPopoverErrorInfo != null)
+            {
+                __LoginPopoverErrorInfo.Close();
+                __LoginPopoverErrorInfo = null;
+            }
 
-			// create and show popover
-			__LoginPopoverErrorInfo = new NSPopover ();
-   
-			NSViewController popoverControllerConnectionError = new NSViewController();
+            // create and show popover
+            __LoginPopoverErrorInfo = new NSPopover();
+
+            NSViewController popoverControllerConnectionError = new NSViewController();
 
             contentView.BackgroundColor = NSColor.FromRgb(251, 56, 65);
-			popoverControllerConnectionError.View = contentView;
-            
-			__LoginPopoverErrorInfo.ContentViewController = popoverControllerConnectionError;
-			__LoginPopoverErrorInfo.Behavior = NSPopoverBehavior.Transient;
+            popoverControllerConnectionError.View = contentView;
 
-			if (positioningView == null)
-				positioningView = GuiTextViewUser;
-			__LoginPopoverErrorInfo.Show (GuiTextViewUser.Bounds, positioningView, NSRectEdge.MinYEdge);              
-		}
-        
-		void __LogInViewModel_OnAccountCredentailsError(string errorText, string errorDescription = "")
-		{
-			string fullString = (string.IsNullOrEmpty(errorText) ? "" : errorText)
-				+ (string.IsNullOrEmpty(errorDescription) ? "" : errorDescription);
+            __LoginPopoverErrorInfo.ContentViewController = popoverControllerConnectionError;
+            __LoginPopoverErrorInfo.Behavior = NSPopoverBehavior.Transient;
 
-			// Due to we do not have solution for auto-resizing Popover according to text size
+            if (positioningView == null)
+                positioningView = GuiTextViewUser;
+            __LoginPopoverErrorInfo.Show(GuiTextViewUser.Bounds, positioningView, NSRectEdge.MinYEdge);
+        }
+
+        void __LogInViewModel_OnAccountCredentailsError(string errorText, string errorDescription = "")
+        {
+            string fullString = (string.IsNullOrEmpty(errorText) ? "" : errorText)
+                + (string.IsNullOrEmpty(errorDescription) ? "" : errorDescription);
+
+            // Due to we do not have solution for auto-resizing Popover according to text size
             // we are created separate view for each possible eror-message.
-			// TODO: required universal implementation with text auto-resizing
+            // TODO: required universal implementation with text auto-resizing
 
-			if (fullString.Contains(LocalizedStrings.Instance.LocalizedString("Error_UserNameIsEmpty")))
-				ShowLoginErrorPopover(GuiPopoverContent_EnterUserrname);
-			else if (fullString.Contains(LocalizedStrings.Instance.LocalizedString("Error_Authentication")))
-				ShowLoginErrorPopover(GuiPopoverContent_CredentialsError);
-			else if (fullString.Contains(LocalizedStrings.Instance.LocalizedString("Message_InvalidUsername")))
-				ShowLoginErrorPopover(GuiPopoverContent_InvalidUserrname);
-			else
-				__LogInViewModel_OnError(errorText, errorDescription);
-		}
+            if (fullString.Contains(LocalizedStrings.Instance.LocalizedString("Error_UserNameIsEmpty")))
+                ShowLoginErrorPopover(GuiPopoverContent_EnterUserrname);
+            else if (fullString.Contains(LocalizedStrings.Instance.LocalizedString("Error_Authentication")))
+                ShowLoginErrorPopover(GuiPopoverContent_CredentialsError);
+            else if (fullString.Contains(LocalizedStrings.Instance.LocalizedString("Message_InvalidUsername")))
+                ShowLoginErrorPopover(GuiPopoverContent_InvalidUserrname);
+            else
+                __LogInViewModel_OnError(errorText, errorDescription);
+        }
 
-		void __LogInViewModel_OnError(string errorText, string errorDescription = "")
-		{
-			if (string.IsNullOrEmpty(errorDescription))
+        void __LogInViewModel_OnError(string errorText, string errorDescription = "")
+        {
+            if (string.IsNullOrEmpty(errorDescription))
                 IVPNAlert.Show(errorText);
             else
                 IVPNAlert.Show(errorText, errorDescription);
-		}
-        
-        public void SetViewModel (ViewModelLogIn viewModel)         {             __LogInViewModel = viewModel; 
-			__LogInViewModel.OnAccountCredentailsError += __LogInViewModel_OnAccountCredentailsError;
+        }
 
-            __LogInViewModel.OnWillExecute += (sender) => 
+        public void SetViewModel(ViewModelLogIn viewModel)         {             __LogInViewModel = viewModel;
+
+            __LogInViewModel.OnAccountCredentailsError += __LogInViewModel_OnAccountCredentailsError;
+
+            __LogInViewModel.OnWillExecute += (sender) =>
             {
-                EnableView.Disable (View, ignoreControls: new List<NSControl> { GuiButtonLogIn });
-                CustomButtonStyles.ApplyStyleMainButton (GuiButtonLogIn, LocalizedStrings.Instance.LocalizedString ("Button_Cancel"));
+                EnableView.Disable(View, ignoreControls: new List<NSControl> { GuiButtonLogIn });
+                CustomButtonStyles.ApplyStyleMainButton(GuiButtonLogIn, LocalizedStrings.Instance.LocalizedString("Button_Cancel"));
                 GuiProgressIndicator.Hidden = false;
-                GuiProgressIndicator.StartAnimation (this);
+                GuiProgressIndicator.StartAnimation(this);
             };
 
-            __LogInViewModel.OnDidExecute += (sender) => 
+            __LogInViewModel.OnDidExecute += (sender) =>
             {
                 GuiButtonLogIn.Hidden = false;
-				
-                EnableView.Enable (View, ignoreControls: new List<NSControl> { GuiButtonLogIn });
-                CustomButtonStyles.ApplyStyleMainButton (GuiButtonLogIn, LocalizedStrings.Instance.LocalizedString ("Button_LogIn"));
+
+                EnableView.Enable(View, ignoreControls: new List<NSControl> { GuiButtonLogIn });
+                CustomButtonStyles.ApplyStyleMainButton(GuiButtonLogIn, LocalizedStrings.Instance.LocalizedString("Button_LogIn"));
                 GuiProgressIndicator.Hidden = true;
-                GuiProgressIndicator.StopAnimation (this);
+                GuiProgressIndicator.StopAnimation(this);
             };
 
-			__LogInViewModel.OnError += __LogInViewModel_OnError; 
+            __LogInViewModel.OnError += __LogInViewModel_OnError;
 
-            __LogInViewModel.OnAccountSuspended += (SessionStatus session) => 
+            __LogInViewModel.OnAccountSuspended += (AccountStatus session) =>
             {
-                ShowAccountExpireDialog (session);
+                ShowAccountExpireDialog(session);
             };
 
-            __LogInViewModel.PropertyChanged += (sender, e) => {
-                    __LogInViewModel_PropertyChanged (sender, e);
+            __LogInViewModel.PropertyChanged += (sender, e) =>
+            {
+                __LogInViewModel_PropertyChanged(sender, e);
             };
         }
 
         private void PrepareForLogin()
-		{
-			if (__SubscriptionExpireWindowCrl != null)
+        {
+            if (__SubscriptionExpireWindowCrl != null)
                 __SubscriptionExpireWindowCrl.Close();
 
             __LogInViewModel.UserName = GuiTextViewUser.Cell.Title;
-		}
-         partial void OnLogInPressed (Foundation.NSObject sender)
+        }
+         partial void OnLogInPressed(Foundation.NSObject sender)
         {
-			PrepareForLogin();
-            __LogInViewModel.LogInCommand.Execute (null);
+            PrepareForLogin();
+            __LogInViewModel.LogInCommand.Execute(null);
         }
 
-		partial void OnStartFreeTrialPressed (Foundation.NSObject sender)
+        partial void OnStartFreeTrialPressed(Foundation.NSObject sender)
         {
-            __LogInViewModel.StartFreeTrialCommand.Execute (null);
+            __LogInViewModel.StartFreeTrialCommand.Execute(null);
         }
-        
-        private void ShowAccountExpireDialog (SessionStatus sessionStatus)
+
+        private void ShowAccountExpireDialog(AccountStatus sessionStatus)
         {
-            SessionStatus acc = sessionStatus;
+            AccountStatus acc = sessionStatus;
             if (acc == null)
                 return;
 
-            if (__SubscriptionExpireWindowCrl!=null)
-                __SubscriptionExpireWindowCrl.Close ();
-                        
-            __SubscriptionExpireWindowCrl = new SubscriptionWillExpireWindowController (acc, __LogInViewModel.UserName);
+            if (__SubscriptionExpireWindowCrl != null)
+                __SubscriptionExpireWindowCrl.Close();
 
-            NSWindow mainWindow = AppDelegate.GetMainWindowController ()?.Window;
-            if (mainWindow != null) 
-            {   
+            __SubscriptionExpireWindowCrl = new SubscriptionWillExpireWindowController(acc, __LogInViewModel.UserName);
+
+            NSWindow mainWindow = AppDelegate.GetMainWindowController()?.Window;
+            if (mainWindow != null)
+            {
                 // Set window position centered to the main window
                 CGRect mainWindowRect = mainWindow.Frame;
                 CGRect infoWindowRect = __SubscriptionExpireWindowCrl.Window.Frame;
-                CGPoint wndNewPos = new CGPoint (mainWindowRect.X + mainWindowRect.Width / 2 - infoWindowRect.Width / 2,
+                CGPoint wndNewPos = new CGPoint(mainWindowRect.X + mainWindowRect.Width / 2 - infoWindowRect.Width / 2,
                                                  mainWindowRect.Y + mainWindowRect.Height / 2 - infoWindowRect.Height / 2);
-                __SubscriptionExpireWindowCrl.Window.SetFrameOrigin (wndNewPos);
+                __SubscriptionExpireWindowCrl.Window.SetFrameOrigin(wndNewPos);
             }
 
-            __SubscriptionExpireWindowCrl.ShowWindow (this);
+            __SubscriptionExpireWindowCrl.ShowWindow(this);
         }
     }
 }

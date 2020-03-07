@@ -160,13 +160,13 @@ namespace IVPN.ViewModels
                 IsInProgress = false;
             }
 
-            if (__Service.State != ServiceState.Uninitialized) 
+            if (__Service.State != ServiceState.Uninitialized)
             {
                 // If username and password are defined - do not show LogIn View
-                if (!__AppState.IsAuthenticated())
-                    __NavigationService.NavigateToLogInPage (NavigationAnimation.FadeToLeft);
+                if (!__AppState.IsLoggedIn())
+                    __NavigationService.NavigateToLogInPage(NavigationAnimation.FadeToLeft);
                 else
-                    __NavigationService.NavigateToMainPage (NavigationAnimation.FadeToLeft);
+                    __NavigationService.NavigateToMainPage(NavigationAnimation.FadeToLeft);
             }
         }
 
@@ -177,7 +177,7 @@ namespace IVPN.ViewModels
             {
                 ProgressMessage = "";
                 IsInProgress = false;
-                
+
                 SetError(__AppServices.LocalizedString("ErrorCaption_IVPNServiceCouldNotStart"),
                     "IVPN Windows service was not found on computer. Please, reinstall the application.",
                     isHideStandardErrorDescription: true);
@@ -206,7 +206,7 @@ namespace IVPN.ViewModels
 
             return true;
         }
-        
+
         private void ServiceExceptionRaised(Service sender, Exception exception)
         {
             if (__AppServices.IsExiting)

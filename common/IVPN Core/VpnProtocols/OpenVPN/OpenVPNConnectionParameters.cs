@@ -11,10 +11,7 @@ namespace IVPN.VpnProtocols.OpenVPN
         internal OpenVPNVpnServer EntryVpnServer;
 
         [DataMember]
-        internal string Username;
-
-        [DataMember]
-        internal string Password;
+        internal string MultihopExitSrvID;
 
         [DataMember]
         internal DestinationPort Port;

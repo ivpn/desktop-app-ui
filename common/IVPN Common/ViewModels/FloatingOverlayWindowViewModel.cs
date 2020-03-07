@@ -69,7 +69,7 @@ namespace IVPNCommon.ViewModels
         }
         private bool __IsBlockingAllTraffic;
 
-        public AppSettings Settings => __AppState.Settings;
+        public AppSettings Settings =>  AppSettings.Instance();
         private IApplicationServices __AppServices;
 
         public MainViewModel MainViewModel => __MainViewModel;
@@ -101,7 +101,7 @@ namespace IVPNCommon.ViewModels
             __MainViewModel = mainViewModel;
             __MainViewModel.PropertyChanged += __MainViewModel_PropertyChanged;
 
-            __AppState.Settings.OnSettingsSaved += (sender, e) => { ShowNotificationIfNecessary(); };
+            AppSettings.Instance().OnSettingsSaved += (sender, e) => { ShowNotificationIfNecessary(); };
 
             __ConnectionProgress.ProgressChanged += (object sender, string e) => { UpdateVPNStatus(e); };
             __Service.RegisterConnectionProgressListener(__ConnectionProgress);

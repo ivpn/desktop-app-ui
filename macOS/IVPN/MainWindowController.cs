@@ -14,7 +14,6 @@ using IVPN.Models;
 using IVPN.ViewModels;
 using IVPN.Interfaces;
 using IVPN.Models.Configuration;
-using IVPN.Exceptions;
 using System.Collections.Concurrent;
 
 namespace IVPN
@@ -142,7 +141,22 @@ namespace IVPN
         // Shared initialization code
         void Initialize ()
         {
-            __AppState = AppState.GetInstance(__Settings);
+            __Service = new Service(this, new Servers(AppSettings.Instance()));
+            __Service.ServiceInitialized += (object sender, EventArgs e) =>
+            {
+                UpdateMenuItems();
+            };
+
+            __AppState = AppState.Initialize(__Service);
+
+            // Initialize API service object
+            System.Net.IPAddress.TryParse(__Settings.AlternateAPIHost, out System.Net.IPAddress alternateAPIHost);
+            IVPNCommon.Api.ApiServices.Instance.Initialize(alternateAPIHost);
+            // save into settings when alternate host changed
+            IVPNCommon.Api.ApiServices.Instance.AlternateHostChanged += (System.Net.IPAddress ip) =>
+            {
+                __Settings.AlternateAPIHost = (ip == null) ? "" : ip.ToString();
+            };
 
             __AppServices = new ApplicationServices( LocalizedStrings.Instance );//.GetInstance ();
             __AppServices.HelperMethodInstalled += AppServices_HelperMethodInstalled;
@@ -153,15 +167,11 @@ namespace IVPN
             __IconAnimationTimer.AutoReset = true;
             __IconAnimationTimer.Elapsed += IconAnimationTimer_Elapsed;
 
-            __Service = new Service (this, new Servers(__AppState.Settings));
-            __Service.ServiceInitialized += (object sender, EventArgs e) => 
-            { 
-                UpdateMenuItems ();
-            };
+            
 
             MacWiFiWrapper.Create(); // initialize WiFi wrapper
 
-            __AppState.OnSessionStatusChanged += (session) => UpdateMenuItems(); 
+            __AppState.OnAccountStatusChanged += (session) => UpdateMenuItems(); 
 
             __MainViewModel = new MainViewModel(__AppState, this, __NavigationService, __AppNotifications, __AppServices, __Service);
             __MainViewModel.PropertyChanged += MainViewModel_PropertyChanged;
@@ -979,7 +989,7 @@ namespace IVPN
             statusMenuItemConnectToLastServer.Hidden = __MainViewModel.ConnectionState != ServiceState.Disconnected;
 
             // if user not logged-in - disable possibility to connect 
-            if (!__AppState.IsAuthenticated())
+            if (!__AppState.IsLoggedIn())
                 statusMenuItemConnectToLastServer.Hidden = true;
             
             statusItem.Image = NSImage.ImageNamed ((__MainViewModel.ConnectionState == ServiceState.Connected
@@ -1008,7 +1018,7 @@ namespace IVPN
                     statusMenuItemDisconnect.Hidden = true;
             }
 
-            if (!__AppState.IsAuthenticated())
+            if (!__AppState.IsLoggedIn())
             {
                 __accountMenuItem.Hidden = true;
                 __privateEmailMenuItem.Hidden = true;
@@ -1023,11 +1033,11 @@ namespace IVPN
                     __privateEmailMenuItem.Hidden = true;
             }
 
-            if (__accountNameMenuItem != null && !string.IsNullOrEmpty (__Settings.Username)) 
+            if (__accountNameMenuItem != null && !string.IsNullOrEmpty (AppState?.Session?.AccountID)) 
             {
                 __accountNameMenuItem.Title = string.Format ("{0}{1}",
                                                              LocalizedStrings.Instance.LocalizedString ("MenuItem_AccountUsername"),
-                                                             __Settings.Username);
+                                                             AppState?.Session?.AccountID ?? "");
                 __accountNameMenuItem.Hidden = false;
             }
             else
@@ -1137,8 +1147,8 @@ namespace IVPN
             NSMenu accountSubMenu = new NSMenu ();
 
             __accountNameMenuItem = accountSubMenu.AddItem (string.Format ("{0}{1}", 
-                                                                           LocalizedStrings.Instance.LocalizedString ("MenuItem_AccountUsername"), 
-                                                                               __Settings.Username), 
+                                                                           LocalizedStrings.Instance.LocalizedString ("MenuItem_AccountUsername"),
+                                                                               AppState?.Session?.AccountID ?? ""), 
                                                                 new ObjCRuntime.Selector ("dummy:"), 
                                                                 "");
             

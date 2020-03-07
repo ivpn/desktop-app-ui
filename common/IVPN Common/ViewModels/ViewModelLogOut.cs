@@ -2,6 +2,7 @@
 using System.Threading.Tasks;
 using IVPN.Interfaces;
 using IVPN.Models;
+using IVPN.Models.Configuration;
 
 namespace IVPN.ViewModels
 {
@@ -77,8 +78,8 @@ namespace IVPN.ViewModels
                 try
                 {
                     await Task.Run(() =>
-                    {   
-                        __AppState.Settings.Reset();
+                    {
+                        AppSettings.Instance().Reset();
                         __AppState.Reset();
                     }
                     );

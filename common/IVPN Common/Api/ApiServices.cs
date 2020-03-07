@@ -5,6 +5,7 @@ using System.Threading;
 using System.Threading.Tasks;
 using IVPN;
 using IVPN.Exceptions;
+using IVPN.Models;
 using IVPN.Models.PrivateEmail;
 using IVPN.Models.Session;
 using IVPN.RESTApi;
@@ -22,17 +23,24 @@ namespace IVPNCommon.Api
         public static ApiServices Instance { get; } = new ApiServices();
 
         // Credentials (Session or user login/pass)
-        IVPN.Models.Configuration.ICredentials __Credentials;
+        ISessionKeeper __sessionKeeper;
 
         // Alternate hostIPs (in use if DNS access is blocked)
         private readonly IVPNApiHostIPs __HostIPs = new IVPNApiHostIPs();
         public event IVPNApiHostIPs.AlternateHostChangedDelegate AlternateHostChanged = delegate { };
         public event IVPNApiHostIPs.AlternateHostsListUpdatedDelegate AlternateHostsListUpdated = delegate { };
 
-        public void Initialize(IVPN.Models.Configuration.ICredentials credentials, IPAddress currentAlternateIp)
+        public void Initialize(IPAddress currentAlternateIp)
         {
-            __Credentials = credentials;
+            __sessionKeeper = AppState.Instance(); 
             __HostIPs.SetCurAlternateHost(currentAlternateIp);
+
+            // reset alternate host on logout
+            __sessionKeeper.OnSessionChanged += (SessionInfo sessionInfo) =>
+            {
+                if (!__sessionKeeper.IsLoggedIn())
+                    ResetCurAlternateHost();
+            };
 
             // forward event
             __HostIPs.AlternateHostChanged += (IPAddress ip) =>
@@ -64,15 +72,15 @@ namespace IVPNCommon.Api
 
         #region Private functionality
 
-        private string CheckCredentials()
+        private string GetSession()
         {
-            if (__Credentials == null)
-                throw new IVPNInternalException("ApiServices: Credentials object not defined"); 
+            if (__sessionKeeper == null)
+                throw new IVPNInternalException("ApiServices: SessionKeeper object not defined"); 
 
-            string session = __Credentials.GetSessionToken();
+            string session = __sessionKeeper.Session.Session;
 
             if (string.IsNullOrEmpty(session))
-                throw new RestException("(ApiServices) Unable to make API request: credentials are empty");
+                throw new RestException("(ApiServices) Unable to make API request: not logged in");
 
             return session;
         }
@@ -150,44 +158,18 @@ namespace IVPNCommon.Api
 
         #endregion // General
 
-        #region Sessions
         /// <summary> </summary>
-        public async Task<ApiSessionStatusAuthenticate> SessionNewAsync(string username,
-                                                                            string password,
-                                                                            CancellationToken cancellationToken,
-                                                                            bool isForceDeleteAllSessions = false,
-                                                                            string wireguardPublicKey = null,
-                                                                            int timeoutMs = Consts.DefaultTimeout)
-        {
-            var resp = await DoRequestAsync(new RestRequestSessionNew(username, password, isForceDeleteAllSessions, wireguardPublicKey), cancellationToken, timeoutMs);
-
-            SessionStatus account = new SessionStatus(                    
-                    resp.ServiceStatus.IsActive,
-                    IVPN_Helpers.DataConverters.DateTimeConverter.FromUnixTime(resp.ServiceStatus.ActiveUtil),
-                    resp.ServiceStatus.IsRenewable,
-                    resp.ServiceStatus.WillAutoRebill,
-                    resp.ServiceStatus.IsOnFreeTrial,
-                    resp.ServiceStatus.Capabilities);
-
-            IPAddress wgIP = null;
-            if (resp.WireGuard != null && !string.IsNullOrEmpty(resp.WireGuard.IpAddress))
-                IPAddress.TryParse(resp.WireGuard.IpAddress, out wgIP);
-
-            return new ApiSessionStatusAuthenticate(resp.SessionToken, resp.VpnUsername, resp.VpnPassword, account, wgIP);
-        }
-
-        /// <summary> </summary>
-        public async Task<SessionStatus> SessionStatusAsync(CancellationToken cancellationToken,
+        public async Task<AccountStatus> SessionStatusAsync(CancellationToken cancellationToken,
                                                                  int timeoutMs = Consts.DefaultTimeout)
         {
             ServiceStatusResponse serviceStatus;
 
-            string session = CheckCredentials();
+            string session = GetSession();
             var response = await DoRequestAsync(new RestRequestSessionStatus(session), cancellationToken, timeoutMs);
             serviceStatus = response.ServiceStatus;
-            
 
-            return new SessionStatus(
+
+            return new AccountStatus(
                 serviceStatus.IsActive,
                 IVPN_Helpers.DataConverters.DateTimeConverter.FromUnixTime(serviceStatus.ActiveUtil),
                 serviceStatus.IsRenewable,
@@ -196,43 +178,6 @@ namespace IVPNCommon.Api
                 serviceStatus.Capabilities);
         }
 
-        /// <summary> </summary>
-        public async Task SessionDeleteAsync(CancellationToken cancellationToken,
-                                                            int timeoutMs = Consts.DefaultTimeout)
-        {
-            try
-            {
-                string session = CheckCredentials();
-                if (string.IsNullOrEmpty(session))
-                    throw new RestException("(ApiServices) Unable to delete session. Session is not defined.");
-                
-                await DoRequestAsync(new RestRequestSessionDelete(session), cancellationToken, timeoutMs);
-            }
-            catch (Exception ex)
-            {
-                Logging.Info($"REST request error: {ex}");
-                throw;
-            }
-        }
-        #endregion //Sessions
-
-        #region WireGuard
-
-        public async Task<IPAddress> WireguardKeySet(string publicKey, string old_key,
-                                                                   CancellationToken cancellationToken,
-                                                                   int timeoutMs = Consts.DefaultTimeout)
-        {
-            string session = CheckCredentials();
-
-            if (string.IsNullOrEmpty(session))
-                throw new IVPNInternalException("Unable to perform API call 'WireguardKeySet'. Session is not defined");
-
-            var resp = await DoRequestAsync(new RestRequestWireGuardKeySet(session, publicKey, old_key), cancellationToken, timeoutMs);
-            return IPAddress.Parse(resp.IpAddress);
-        }
-
-        #endregion //WireGuard
-
         #region Private emails
         public async Task<List<PrivateEmailInfo>> PrivateEmailListAsync(CancellationToken cancellationToken,
                                                                               int timeoutMs = Consts.DefaultTimeout)
@@ -240,7 +185,7 @@ namespace IVPNCommon.Api
             List<PrivateEmailInfo> emails = new List<PrivateEmailInfo>();
             try
             {
-                string session = CheckCredentials();
+                string session = GetSession();
 
                 var response = await DoRequestAsync(new RestRequestPrivateEmailList(session), cancellationToken, timeoutMs);
                 foreach (var email in response.Emails)
@@ -260,7 +205,7 @@ namespace IVPNCommon.Api
         {
             try
             {
-                string session = CheckCredentials();
+                string session = GetSession();
 
                 var resp = await DoRequestAsync(new RestRequestPrivateEmailGenerate(session), cancellationToken, timeoutMs);
                 return new PrivateEmailInfo(resp.Generated, resp.ForwardedTo, "");
@@ -280,7 +225,7 @@ namespace IVPNCommon.Api
         {
             try
             {
-                string session = CheckCredentials();
+                string session = GetSession();
                 await DoRequestAsync(new RestRequestPrivateEmailUpdateNote(session, email, notes), cancellationToken, timeoutMs);
             }
             catch (Exception ex)
@@ -296,7 +241,7 @@ namespace IVPNCommon.Api
         {
             try
             {
-                string session = CheckCredentials();
+                string session = GetSession();
                 var resp = await DoRequestAsync(new RestRequestPrivateEmailDelete(session, email), cancellationToken, timeoutMs);
                 return resp.Status;
             }

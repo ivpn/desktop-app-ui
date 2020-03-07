@@ -111,8 +111,8 @@ namespace IVPN
             UpdateGuiData();
             InitializeInformationPopover();
 
-            __MainViewModel.AppState.SessionManager.OnSessionStatusReceived += UpdateSessionStatusInfo;
-            UpdateSessionStatusInfo(__MainViewModel.AppState.SessionStatusInfo);
+            __MainViewModel.AppState.SessionManager.OnAcountStatusReceived += UpdateSessionStatusInfo;
+            UpdateSessionStatusInfo(__MainViewModel.AppState.AccountStatus);
 
             GuiWiFiButton.Activated += GuiWiFiButton_Activated;
 
@@ -184,7 +184,7 @@ namespace IVPN
             }
             else if (e.PropertyName.Equals(nameof(__MainViewModel.TimeToResumeLeft)))
             {
-                Action action = new Action (() => GuiPauseLeftTimeText.StringValue = (string.IsNullOrEmpty(__MainViewModel.TimeToResumeLeft)) ? "0:00:00" : __MainViewModel.TimeToResumeLeft );
+                Action action = new Action(() => GuiPauseLeftTimeText.StringValue = (string.IsNullOrEmpty(__MainViewModel.TimeToResumeLeft)) ? "0:00:00" : __MainViewModel.TimeToResumeLeft);
                 if (!NSThread.IsMain)
                     InvokeOnMainThread(action);
                 else
@@ -192,7 +192,7 @@ namespace IVPN
             }
         }
 
-        private void UpdateSessionStatusInfo(SessionStatus sessionStatus)
+        private void UpdateSessionStatusInfo(AccountStatus sessionStatus)
         {
             InvokeOnMainThread(() =>
            {
@@ -304,7 +304,7 @@ namespace IVPN
             if (ViewLoaded != true || __MainViewModel == null)
                 return;
 
-            UpdateSessionStatusInfo(__MainViewModel.AppState.SessionStatusInfo);        
+            UpdateSessionStatusInfo(__MainViewModel.AppState.AccountStatus);
 
             GuiPauseButton.Hidden = true;
             GuiPauseLeftTimeText.Hidden = true;
@@ -486,17 +486,17 @@ namespace IVPN
         /// </summary>
         partial void GuiNotificationButtonBottomPressed(Foundation.NSObject sender)
         {
-            ShowAccountExpireDialog(__MainViewModel.AppState.SessionStatusInfo);
+            ShowAccountExpireDialog(__MainViewModel.AppState.AccountStatus);
         }
 
-        private void __MainViewModel_OnAccountSuspended(SessionStatus sessionStatus)
+        private void __MainViewModel_OnAccountSuspended(AccountStatus sessionStatus)
         {
             ShowAccountExpireDialog(sessionStatus);
         }
 
-        private void ShowAccountExpireDialog(SessionStatus sessionStatus)
+        private void ShowAccountExpireDialog(AccountStatus sessionStatus)
         {
-            SessionStatus acc = sessionStatus;
+            AccountStatus acc = sessionStatus;
             if (acc == null)
                 return;
 
@@ -511,7 +511,7 @@ namespace IVPN
                 if (__SubscriptionExpireWindowCrl != null)
                     __SubscriptionExpireWindowCrl.Close();
 
-                __SubscriptionExpireWindowCrl = new SubscriptionWillExpireWindowController(acc, __MainViewModel?.AppState?.Settings?.Username);
+                __SubscriptionExpireWindowCrl = new SubscriptionWillExpireWindowController(acc, __MainViewModel?.AppState?.Session?.AccountID);
 
                 MainWindowController wndController = AppDelegate.GetMainWindowController();
                 if (wndController != null && wndController.Window != null)
@@ -589,7 +589,7 @@ namespace IVPN
         {
             View.IsVisibleCircles = true;
 
-            UpdateDisconnectedUITheme(isPaused);            
+            UpdateDisconnectedUITheme(isPaused);
 
             GuiConnectButtonImage.AlphaValue = 0f;
             GuiConnectButtonText.AlphaValue = 0f;
@@ -695,14 +695,14 @@ namespace IVPN
         {
             if (__MainViewModel.ConnectionState != ServiceState.Connected)
                 return;
-            
+
             NSColor startCircleColor = Colors.ConnectiongAnimationCircleColor;
             NSColor endCircleColor = NSColor.Clear;
 
             __animationLayer.FillColor = NSColor.Clear.CGColor;
 
             var frame = GuiConnectButtonImage.Frame;
-            var startCircle = 
+            var startCircle =
                 CGPath.EllipseFromRect(
                     new CGRect(frame.X + 10,
                                 frame.Y + 10,
@@ -950,7 +950,7 @@ namespace IVPN
                         NSStringAttributes stringAttributes0 = new NSStringAttributes();
                         stringAttributes0.ForegroundColor = __ToDoDescriptionTextColor;
                         stringAttributes0.Font = wifiLabelFont;
-                                         
+
                         NSStringAttributes stringAttributes1 = new NSStringAttributes();
                         stringAttributes1.ForegroundColor = NSColor.SystemRedColor;
                         stringAttributes1.Font = wifiLabelFont;
@@ -963,7 +963,7 @@ namespace IVPN
                     }
                     else
                     {
-                        
+
                         GuiWiFiButton.Image = NSImage.ImageNamed("iconWiFiSmallBlue");
                         GuiWiFiButton.AttributedTitle = AttributedString.Create(" " + state.Network.SSID, __ToDoDescriptionTextColor, NSTextAlignment.Center, wifiLabelFont);
                     }
@@ -1080,7 +1080,7 @@ namespace IVPN
             MainWindowController mainWndController = AppDelegate.GetMainWindowController();
             if (mainWndController == null || mainWndController.Window == null)
                 return;
-            
+
             InitializePauseIntervalDialog();
             mainWndController.MakeFront();
             NSApplication.SharedApplication.BeginSheet(GuiSetPauseIntervalWindow, mainWndController.Window);

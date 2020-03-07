@@ -48,8 +48,9 @@ namespace IVPN
         {
             Initialize();
 
+            __Service = service;
+            
             SetMainViewModel(mainViewModel);
-            SetService(service);
             SetSettings(settings);
         }
         
@@ -79,7 +80,7 @@ namespace IVPN
         {
             __MainViewModel = mainViewModel;
 
-            __WireguardSetingsViewModel = new ViewModelWireguardSettings(__MainViewModel, LocalizedStrings.Instance);
+            __WireguardSetingsViewModel = new ViewModelWireguardSettings(__MainViewModel, __Service, LocalizedStrings.Instance);
             __WireguardSetingsViewModel.OnError += __WireguardSetingsViewModel_OnError;
             WireguardSettingsViewModelObservable = new ObservableObject(__WireguardSetingsViewModel);
 
@@ -87,15 +88,12 @@ namespace IVPN
             __MainViewModel.WireguardKeysManager.OnStopped += WireguardKeysManager_OnStopped;
         }
 
-        private void SetService(Service service)
-        {
-            __Service = service;
-        }
-
         private void SetSettings(AppSettings settings)
         {
             __Settings = settings;
             __Settings.PropertyChanged += __Settings_PropertyChanged;
+
+            __MainViewModel.AppState.OnSessionChanged += AppState_OnSessionChanged;
 
             Settings = new AppSettingsAdapter(__Settings);
             NetworkActions = new ObservableObject(__Settings.NetworkActions);
@@ -162,23 +160,29 @@ namespace IVPN
 
             if (Equals(e.PropertyName, nameof(__Settings.VpnProtocolType)))
                 UpdateSelectedVpnProtocolTypeUI();
-
-            if (Equals(e.PropertyName, nameof(__Settings.WireGuardKeysTimestamp)) 
-            || Equals(e.PropertyName, nameof(__Settings.WireGuardKeysRegenerationIntervalHours)))
-            {
-                // quick trick: to update WG settings UI - just simulate viewmodel change
-                var tmp = WireguardSettingsViewModelObservable;
-                WillChangeValue("WireguardSettingsViewModel");
-                WireguardSettingsViewModelObservable = null;
-                DidChangeValue("WireguardSettingsViewModel");
-
-                WillChangeValue("WireguardSettingsViewModel");
-                WireguardSettingsViewModelObservable = tmp;
-                DidChangeValue("WireguardSettingsViewModel");
-            }
         }
 
-        partial void OnLaunchAtLoginChanged(Foundation.NSObject sender)
+
+        private void AppState_OnSessionChanged(SessionInfo sessionInfo)
+        {
+            if (!NSThread.IsMain)
+            {
+                InvokeOnMainThread(()=> AppState_OnSessionChanged(sessionInfo));
+                return;
+            }
+
+            // quick trick: to update WG settings UI - just simulate viewmodel change
+            var tmp = WireguardSettingsViewModelObservable;
+            WillChangeValue("WireguardSettingsViewModel");
+            WireguardSettingsViewModelObservable = null;
+            DidChangeValue("WireguardSettingsViewModel");
+
+            WillChangeValue("WireguardSettingsViewModel");
+            WireguardSettingsViewModelObservable = tmp;
+            DidChangeValue("WireguardSettingsViewModel");
+        }
+
+        partial void OnLaunchAtLoginChanged(NSObject sender)
         {
             SaveLaunchAtLoginItem();
         }
@@ -330,17 +334,17 @@ namespace IVPN
             SwitchSettings (OpenVPNSettings);
         }
 
-        partial void ShowNetworksSettings(Foundation.NSObject sender)
+        partial void ShowNetworksSettings(NSObject sender)
         {
             SwitchSettings(NetworksSettings);
         }
 
-        partial void ShowAntitrackerSettings(Foundation.NSObject sender)
+        partial void ShowAntitrackerSettings(NSObject sender)
         {
             SwitchSettings(AntiTrackerSettings);
         }
 
-        partial void ShowDnsSettings(Foundation.NSObject sender)
+        partial void ShowDnsSettings(NSObject sender)
         {
             SwitchSettings(DnsSettings);
         }
@@ -379,7 +383,7 @@ namespace IVPN
             return true;
         }
 
-        partial void OnProtocolChangedOpenVPN(Foundation.NSObject sender)
+        partial void OnProtocolChangedOpenVPN(NSObject sender)
         {
             if (CheckIsPossibleToChangeVpnType(VpnProtocols.VpnType.OpenVPN))
                 __Settings.VpnProtocolType = VpnProtocols.VpnType.OpenVPN;
@@ -387,9 +391,9 @@ namespace IVPN
             UpdateSelectedVpnProtocolTypeUI();
         }
 
-        partial void OnProtocolChangedWireGuard(Foundation.NSObject sender)
+        partial void OnProtocolChangedWireGuard(NSObject sender)
         {
-            if (!__Settings.IsWireGuardCredentialsAvailable())
+            if (!__MainViewModel.AppState?.Session?.IsWireGuardKeysInitialized() ?? false)
             {
                 GenerateWireguardKeysBtn(this);
                 return;
@@ -400,7 +404,7 @@ namespace IVPN
 
         private void DoChangeWireGuardProtocol()
         {
-            if (CheckIsPossibleToChangeVpnType(VpnProtocols.VpnType.WireGuard) && __Settings.IsWireGuardCredentialsAvailable())
+            if (CheckIsPossibleToChangeVpnType(VpnProtocols.VpnType.WireGuard) && (__MainViewModel.AppState?.Session?.IsWireGuardKeysInitialized() ?? false))
                 __Settings.VpnProtocolType = VpnProtocols.VpnType.WireGuard;
 
             UpdateSelectedVpnProtocolTypeUI();
@@ -453,7 +457,7 @@ namespace IVPN
             }
         }
 
-        partial void OnGuiBtnOpenvpnTooltip(Foundation.NSObject sender)
+        partial void OnGuiBtnOpenvpnTooltip(NSObject sender)
         {
             var popover = new NSPopover { Behavior = NSPopoverBehavior.Transient };
             NSViewController informationPopoverController = new NSViewController();
@@ -475,7 +479,7 @@ namespace IVPN
                 IVPNAlert.Show(Window, errorText, errorDescription, NSAlertStyle.Warning);
         }
 
-        partial void ShowWireguardConfigDetails(Foundation.NSObject sender)
+        partial void ShowWireguardConfigDetails(NSObject sender)
         {
             GuiPanelWireguardConfigDetails.MakeKeyAndOrderFront(this);
             GuiPanelWireguardConfigDetails.Center();
@@ -487,7 +491,7 @@ namespace IVPN
             NSApplication.SharedApplication.StopModal();
         }
 
-        partial void GenerateWireguardKeysBtn(Foundation.NSObject sender)
+        partial void GenerateWireguardKeysBtn(NSObject sender)
         {
             UpdateSelectedVpnProtocolTypeUI(VpnProtocols.VpnType.WireGuard);
             InvokeOnMainThread(async () =>
@@ -543,7 +547,7 @@ namespace IVPN
         #endregion //WireGuard
 
         #region trusted\untrusted networks settings
-        partial void SetAllNetworksToDefaultAction(Foundation.NSObject sender)
+        partial void SetAllNetworksToDefaultAction(NSObject sender)
         {
             NSAlert alert = new NSAlert();
             alert.AlertStyle = NSAlertStyle.Informational;
@@ -594,7 +598,7 @@ namespace IVPN
             NetworksDefaultActionBtn.SelectItemWithTag((int)__Settings.NetworkActions.DefaultActionType);
         }
 
-        void OnNetworksDefaultAction_Changed(object sender, System.EventArgs e)
+        void OnNetworksDefaultAction_Changed(object sender, EventArgs e)
         {
             NSMenuItem menuItem = sender as NSMenuItem;
             if (menuItem == null)

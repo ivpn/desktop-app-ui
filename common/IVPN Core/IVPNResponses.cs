@@ -8,6 +8,7 @@ namespace IVPN.Responses
     [Serializable]
     public class IVPNResponse {
         public string Command { get; set; }
+        public int Idx { get; set; }
     }
 
     public class IVPNEmptyResponse : IVPNResponse { }
@@ -20,8 +21,43 @@ namespace IVPN.Responses
     public class IVPNHelloResponse : IVPNResponse
     {
         public string Version;
+        public SessionInfo Session;
     }
 
+    public class SessionInfo
+    {
+        public string AccountID;
+        public string Session;
+        public string WgPublicKey;
+        public string WgLocalIP;
+        public Int64 WgKeyGenerated;       // Unix time
+        public Int64 WgKeysRegenInerval;   // seconds
+    }
+
+    public class AccountInfo
+    {
+        public bool Active;
+        public Int64 ActiveUntil;
+        public string CurrentPlan;
+        public string PaymentMethod;
+        public bool IsRenewable;
+        public bool WillAutoRebill;
+        public bool IsFreeTrial;
+        public string[] Capabilities;
+        public bool Upgradable;
+        public string UpgradeToPlan;
+        public string UpgradeToURL;
+        public int Limit;
+    }
+
+    public class SessionNewResponse : IVPNResponse
+    {
+        public int APIStatus;
+        public string APIErrorMessage;
+        public SessionInfo Session;
+        public AccountInfo Account;
+    }
+    
     public class IVPNServerListResponse : IVPNResponse
     {
         public VpnServersInfo VpnServers;

@@ -10,7 +10,7 @@ using IVPN.VpnProtocols;
 
 namespace IVPN.Models.Configuration
 {
-    public class AppSettings : ViewModelBase, ICredentials// INotifyPropertyChanged
+    public class AppSettings : ViewModelBase
     {
         private readonly ISettingsProvider __SettingsProvider;
         
@@ -18,8 +18,15 @@ namespace IVPN.Models.Configuration
         /// <summary> Occurs when on settings saved. </summary>
         public event EventHandler OnSettingsSaved = delegate { };
 
-        public event EventHandler OnWireguardCredentialsChanged = delegate { };
         #endregion //Events
+
+        public static AppSettings Instance()
+        {
+            if (__SingletonInstance == null)
+                throw new Exception("Settings instance not initialized");
+
+            return __SingletonInstance;
+        }
 
         private static AppSettings __SingletonInstance;
         public static AppSettings InitInstance(ISettingsProvider settingsProvider)
@@ -63,23 +70,12 @@ namespace IVPN.Models.Configuration
                 new ServerPort(new DestinationPort(58237, DestinationPort.ProtocolEnum.UDP))
             };
 
-            try
-            {
-                __IsLoading = true;
-                __SettingsProvider.Load(this);
-            }
-            finally
-            {
-                __IsTempCredentialsSaved = true;
-                __IsLoading = false;
-            }
+            __SettingsProvider.Load(this);
         }
-        private bool __IsLoading;
 
         public void Save()
         {
             __SettingsProvider.Save(this);
-            __IsTempCredentialsSaved = true;
 
             // notify event "settings saved"
             OnSettingsSaved(this, null);
@@ -93,32 +89,21 @@ namespace IVPN.Models.Configuration
             UnfreezeSettings(isRestoreFreezedState: false);
 
             VpnType vpnType = VpnProtocolType;
-            string userName = Username;
+            
             bool isFirstIntroductionDone = IsFirstIntroductionDone;
             bool macIsShowIconInSystemDock = MacIsShowIconInSystemDock;
             bool isLoggingOn = IsLoggingEnabled;
 
             // Reset values to defaults
-            try
-            {
-                __IsLoading = true;
-                __SettingsProvider.Reset(this);
-            }
-            finally
-            {
-                __IsLoading = false;
-            }            
-
+            __SettingsProvider.Reset(this);
+            
             // Some values should not be changed after reset:
             VpnProtocolType = vpnType;
-            Username = userName;
             IsFirstIntroductionDone = isFirstIntroductionDone;
             MacIsShowIconInSystemDock = macIsShowIconInSystemDock;
             IsLoggingEnabled = isLoggingOn;
 
             Save();
-
-            OnCredentialsChanged(this);
         }
 
         #region Temporary settings
@@ -134,16 +119,6 @@ namespace IVPN.Models.Configuration
         {
             var settings = __FreezedSettings;
             __FreezedSettings = null;
-
-            // if WG credentials was regenerated - use a newest one (because last WG key is storing on server)
-            if (settings != null && settings.WireGuardKeysTimestamp < WireGuardKeysTimestamp)
-            {
-                settings.SetWireGuardCredentials(WireGuardClientPrivateKeySafe,
-                    WireGuardClientPublicKey,
-                    isPrivateKeyEncrypted: true,
-                    WireGuardClientInternalIp,
-                    WireGuardKeysTimestamp);
-            }
 
             if (isRestoreFreezedState == false || settings == null)
                 return;
@@ -196,124 +171,6 @@ namespace IVPN.Models.Configuration
         /// Do not show question-dialog on application close in 'connected' state
         /// </summary>
         public bool DoNotShowDialogOnAppClose { get; set; }
-
-        #region Credentials 
-        private bool __IsTempCredentialsSaved = true;
-        public bool IsTempCredentialsSaved() { return __IsTempCredentialsSaved; }
-                
-        public string Username { get; private set; }
-
-        #region Session
-        public string SessionToken  { get; private set; }
-
-        [IgnoreDataMember]
-        public string VpnSafePass   { get; private set; }
-        public string VpnUser { get; private set; }
-
-        /// <summary> Returns TRUE in case if settings must to me saved </summary>
-        public bool DeleteSession()
-        {
-            if (string.IsNullOrEmpty(SessionToken) == false || string.IsNullOrEmpty(VpnUser) == false || string.IsNullOrEmpty(VpnSafePass) == false)
-                __IsTempCredentialsSaved = false;
-
-            SessionToken = "";
-            VpnUser = "";
-            VpnSafePass = "";
-
-            // Wireguard key is assigned to session. If session was removed on backlend - WG key will be removed automatically
-            DoResetWireGuardCredentials(false);
-
-            return !__IsTempCredentialsSaved;
-        }
-
-        /// <summary> Returns TRUE in case if settings must to me saved </summary>
-        public bool SetSession(string username, string sessionToken, string vpnUser, string vpnPass, bool isPassEncrypded)
-        {
-            vpnPass = (isPassEncrypded) ? vpnPass : CryptoUtil.EncryptString(vpnPass);
-
-            var oldUsername = Username;
-            var oldSessionToken = SessionToken;
-            var oldVpnUser = VpnUser;
-            var oldVpnSafePass = VpnSafePass;
-
-            Username = username;
-
-            if (string.IsNullOrEmpty(username) || string.IsNullOrEmpty(sessionToken) || string.IsNullOrEmpty(vpnUser) || string.IsNullOrEmpty(vpnPass))
-            {
-                DeleteSession();
-                __IsTempCredentialsSaved = false;
-            }
-            else
-            {
-                SessionToken = sessionToken;
-                VpnUser = vpnUser;
-                VpnSafePass = vpnPass;
-            }
-
-            if (!__IsLoading &&
-                (
-                !string.Equals(oldUsername, Username)
-                || !string.Equals(oldSessionToken, SessionToken)
-                || !string.Equals(oldVpnUser, VpnUser)
-                || !string.Equals(oldVpnSafePass, VpnSafePass)))
-            {
-                __IsTempCredentialsSaved = false;
-                OnCredentialsChanged(this);
-            }
-
-            return !__IsTempCredentialsSaved;
-        }       
-        #endregion // Session
-
-        #region ICredentials
-
-        public string GetSessionToken() { return SessionToken; }
-        public string GetVpnUser() { return GetVpnUser(); }
-        public string GetVpnPassword() { return CryptoUtil.DecryptString(VpnSafePass); }
-
-        public event CredentialsChanged OnCredentialsChanged = delegate { };
-
-        /// <summary>
-        /// TRUE if user\pass OR user\session\vpnUser\vpnPass available
-        ///
-        /// puserPass will be not in use for future releases (sessions will be used instead)
-        /// </summary>
-        public bool IsUserLoggedIn()
-        {
-            if (string.IsNullOrEmpty(Username))
-                return false;
-
-            if (string.IsNullOrEmpty(SessionToken) || string.IsNullOrEmpty(VpnUser) || string.IsNullOrEmpty(GetVpnPassword()))
-                return false;
-
-            return true;
-        }
-
-        /// <summary>
-        /// user\session\vpnUser\vpnPass available
-        /// </summary>
-        public bool IsSessionAvailable()
-        {
-            if (string.IsNullOrEmpty(SessionToken) || string.IsNullOrEmpty(VpnUser) || string.IsNullOrEmpty(GetVpnPassword()))
-                return false;
-
-            return true;
-        }
-
-        public bool GetVpnCredentials(out string vpnUser, out string vpnPass)
-        {
-            vpnUser = VpnUser;
-            vpnPass = GetVpnPassword();
-                        
-            if (string.IsNullOrEmpty(SessionToken) ||  string.IsNullOrEmpty(vpnUser) || string.IsNullOrEmpty(vpnPass))
-                return false;
-
-            return true;
-        }
-
-        #endregion // ICredentials
-
-        #endregion // Credentials 
 
         /// <summary>
         /// TRUE - server (Windows service or macOS Agent) will stop on client disconnect (when application cloased)
@@ -644,133 +501,6 @@ namespace IVPN.Models.Configuration
         #endregion //OpenVPN configuration
 
         #region WireGuard configuration
-        public void SetWireGuardCredentials(string privateKey, string publicKey, bool isPrivateKeyEncrypted, string localIp, DateTime timestamp = default)
-        {
-            string oldPrivateKeySafe = WireGuardClientPrivateKeySafe;
-            string oldWireGuardClientPublicKey = WireGuardClientPublicKey;
-            string oldWireGuardClientInternalIp = WireGuardClientInternalIp;
-            
-            WireGuardClientPublicKey = publicKey ?? "";
-
-            if (isPrivateKeyEncrypted)
-                WireGuardClientPrivateKeySafe = privateKey ?? "";
-            else
-                SetWireGuardClientPrivateKey(privateKey ?? "");
-
-            WireGuardClientInternalIp = localIp ?? "";
-
-            if (timestamp == default)
-                WireGuardKeysTimestamp = DateTime.Now;
-            else
-                WireGuardKeysTimestamp = timestamp;
-
-            if (string.Equals(WireGuardClientPublicKey, oldWireGuardClientPublicKey) == false
-                || string.Equals(WireGuardClientInternalIp, oldWireGuardClientInternalIp) == false
-                || string.Equals(WireGuardClientPrivateKeySafe, oldPrivateKeySafe) == false
-            )
-            {
-                if (!__IsLoading)
-                    __IsTempCredentialsSaved = false;
-
-                NotifyWireGuardCredentialsCahnged();
-            }
-        }
-
-        public void ResetWireGuardCredentials() { DoResetWireGuardCredentials(true);}
-        private void DoResetWireGuardCredentials(bool isSaveRequired)
-        {
-            if (!IsWireGuardCredentialsAvailable())
-                return;
-
-            WireGuardClientPrivateKeySafe = "";
-            WireGuardClientPublicKey = "";
-            WireGuardClientInternalIp = "";
-            WireGuardKeysTimestamp = default;
-
-            if (isSaveRequired)
-                Save();
-
-            NotifyWireGuardCredentialsCahnged();
-        }
-
-        private void NotifyWireGuardCredentialsCahnged()
-        {
-            RaisePropertyWillChange(nameof(WireGuardClientPrivateKeySafe));
-            RaisePropertyChanged(nameof(WireGuardClientPrivateKeySafe));
-
-            RaisePropertyWillChange(nameof(WireGuardClientPublicKey));
-            RaisePropertyChanged(nameof(WireGuardClientPublicKey));
-
-            RaisePropertyWillChange(nameof(WireGuardClientInternalIp));
-            RaisePropertyChanged(nameof(WireGuardClientInternalIp));
-
-            RaisePropertyWillChange(nameof(WireGuardKeysTimestamp));
-            RaisePropertyChanged(nameof(WireGuardKeysTimestamp));
-
-            OnWireguardCredentialsChanged(this, null);
-        }
-
-        public bool IsWireGuardCredentialsAvailable()
-        {
-            return  !string.IsNullOrEmpty(GetWireGuardClientPrivateKey())
-                    && !string.IsNullOrEmpty(WireGuardClientPublicKey)
-                    && !string.IsNullOrEmpty(WireGuardClientInternalIp);
-        }
-
-        /// <summary> ClientPrivateKey encrypted</summary>
-        [IgnoreDataMember]
-        public string WireGuardClientPrivateKeySafe { get; private set; }
-        public string GetWireGuardClientPrivateKey() { return CryptoUtil.DecryptString(WireGuardClientPrivateKeySafe); }
-        private void SetWireGuardClientPrivateKey(string key) { WireGuardClientPrivateKeySafe = CryptoUtil.EncryptString(key); }
-
-        /// <summary> ClientPublicKey </summary>
-        [IgnoreDataMember]
-        public string WireGuardClientPublicKey 
-        {
-            get => __WireGuardClientPublicKey; 
-            private set
-            {
-                RaisePropertyWillChange();
-                __WireGuardClientPublicKey = value;
-                RaisePropertyChanged();
-            }
-        }
-        private string __WireGuardClientPublicKey;
-
-        /// <summary> ClientInternalIp </summary>
-        public string WireGuardClientInternalIp { get; private set; }
-
-        /// <summary> Gets the WireGuard keys timestamp (when keys was generated) </summary>
-        public DateTime WireGuardKeysTimestamp 
-        { 
-            get => __WireGuardKeysTimestamp; 
-            private set 
-            {
-                RaisePropertyWillChange();
-                __WireGuardKeysTimestamp = value;
-                RaisePropertyChanged();
-            }
-        }
-        private DateTime __WireGuardKeysTimestamp;
-
-        /// <summary> Interval for automatic regenaration of WireGuard keys (in hours) </summary>
-        public int WireGuardKeysRegenerationIntervalHours 
-        { 
-            get
-            {
-                if (__WireGuardKeysRegenerationIntervalHours <= 0)
-                    return 24 * 7;
-                return __WireGuardKeysRegenerationIntervalHours;
-            }
-            set
-            {
-                RaisePropertyWillChange();
-                __WireGuardKeysRegenerationIntervalHours = value;
-                RaisePropertyChanged();
-            } 
-        }
-        private int __WireGuardKeysRegenerationIntervalHours;
-
         // Ports
         [IgnoreDataMember]
         public List<ServerPort> WireGuardPreferredPortsList { get; }

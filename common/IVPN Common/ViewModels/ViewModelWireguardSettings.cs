@@ -10,40 +10,38 @@ namespace IVPN.ViewModels
     {
         private readonly ILocalizedStrings __LocalizedStrings;
         private readonly MainViewModel __MainViewModel;
+        private readonly IService __Service;
         private WireguardKeysManager KeysManager => __MainViewModel.WireguardKeysManager;
 
-        public ViewModelWireguardSettings(MainViewModel mainViewModel, ILocalizedStrings localizedStrings)
+        public ViewModelWireguardSettings(MainViewModel mainViewModel, IService service, ILocalizedStrings localizedStrings)
         {
+            __Service = service;
             __LocalizedStrings = localizedStrings;
             __MainViewModel = mainViewModel;
-            Settings = __MainViewModel.AppState.Settings;
-
+            Settings = AppSettings.Instance();
+                        
             KeysManager.OnStarted += () => { IsUpdateInProgress = true; };
             KeysManager.OnStopped += () => { IsUpdateInProgress = false; };
 
-            Settings.PropertyChanged += (sender, e) =>
+            __MainViewModel.AppState.OnSessionChanged += (SessionInfo sessionInfo) =>
             {
-                if (string.Equals(e.PropertyName, nameof(Settings.WireGuardKeysTimestamp))
-                || string.Equals(e.PropertyName, nameof(Settings.WireGuardKeysRegenerationIntervalHours)))
-                {
-                    RaisePropertyWillChange(nameof(Generated));
-                    RaisePropertyChanged(nameof(Generated));
+                RaisePropertyWillChange(nameof(Generated));
+                RaisePropertyChanged(nameof(Generated));
 
-                    RaisePropertyWillChange(nameof(ExpirationDate));
-                    RaisePropertyChanged(nameof(ExpirationDate));
+                RaisePropertyWillChange(nameof(ExpirationDate));
+                RaisePropertyChanged(nameof(ExpirationDate));
 
-                    RaisePropertyWillChange(nameof(AutoRegenerationDate));
-                    RaisePropertyChanged(nameof(AutoRegenerationDate));
+                RaisePropertyWillChange(nameof(AutoRegenerationDate));
+                RaisePropertyChanged(nameof(AutoRegenerationDate));
 
-                    RaisePropertyWillChange(nameof(RegenerationIntervalDays));
-                    RaisePropertyChanged(nameof(RegenerationIntervalDays));
+                RaisePropertyWillChange(nameof(RegenerationIntervalDays));
+                RaisePropertyChanged(nameof(RegenerationIntervalDays));
 
-                    RaisePropertyWillChange(nameof(WireGuardClientInternalIp));
-                    RaisePropertyChanged(nameof(WireGuardClientInternalIp));
+                RaisePropertyWillChange(nameof(WireGuardClientInternalIp));
+                RaisePropertyChanged(nameof(WireGuardClientInternalIp));
 
-                    RaisePropertyWillChange(nameof(WireGuardClientPublicKey));
-                    RaisePropertyChanged(nameof(WireGuardClientPublicKey));
-                }
+                RaisePropertyWillChange(nameof(WireGuardClientPublicKey));
+                RaisePropertyChanged(nameof(WireGuardClientPublicKey));
             };
             
             KeysManager.OnProgress += (string progress) =>
@@ -78,18 +76,22 @@ namespace IVPN.ViewModels
         }
         private string __ProgressStatus;
 
-        public string Generated => DateToString(Settings.WireGuardKeysTimestamp, false);
-        public string ExpirationDate => DateToString(Settings.WireGuardKeysTimestamp.AddDays(WireguardKeysManager.HardExpirationIntervalDays), false);
-        public string AutoRegenerationDate => DateToString(KeysManager.KeysExpiryDate, true);
+        public string Generated => DateToString(__MainViewModel.AppState.Session?.WgKeyGenerated ?? default, false);
+        public string ExpirationDate => DateToString((__MainViewModel.AppState.Session?.WgKeyGenerated ?? default).AddDays(WireguardKeysManager.HardExpirationIntervalDays), false);
+        public string AutoRegenerationDate => DateToString(__MainViewModel.AppState.Session?.GetKeysExpiryDate() ?? default, true);
 
         public int RegenerationIntervalDays 
         {
-            get => Settings.WireGuardKeysRegenerationIntervalHours / 24;
-            set => Settings.WireGuardKeysRegenerationIntervalHours = value * 24;
+            get => (__MainViewModel.AppState.Session?.WgKeyRotateInterval ?? default).Days;
+
+            set
+            {
+                __Service.WireGuardKeysSetRotationInterval((Int64)TimeSpan.FromDays(value).TotalSeconds);                
+            }
         }
 
-        public string WireGuardClientInternalIp => Settings.WireGuardClientInternalIp;
-        public string WireGuardClientPublicKey => Settings.WireGuardClientPublicKey;
+        public string WireGuardClientInternalIp => __MainViewModel.AppState.Session?.WgLocalIP.ToString() ?? "";
+        public string WireGuardClientPublicKey => __MainViewModel.AppState.Session?.WgPublicKey ?? "";
 
         public async Task RegenerateNewKeyAsync()
         {
@@ -123,16 +125,9 @@ namespace IVPN.ViewModels
 
         private static string DateToString(DateTime dateTime, bool canShowToday)
         {
-#if BETA_WG_GENERATION_1MIN || BETA_WG_GENERATION_10MINS || BETA_WG_GENERATION_HOURS
-#warning "!!!!!!!!!!!!!!!!!!! BETA_WG_GENERATION_XXX !!!!!!!!!!!!!!!!!!!!!!!"
-            if (canShowToday && DateTime.Now.Date >= dateTime.Date)
-                return "Today [" + dateTime.ToString("hh:mm") +"]";
-            return dateTime.ToString("d/MM hh:mm");
-#else
             if (canShowToday && DateTime.Now.Date >= dateTime.Date)
                 return "Today";
             return dateTime.ToString("d MMM yyyy");
-#endif
         }
     }
 }

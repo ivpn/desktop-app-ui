@@ -6,9 +6,9 @@ namespace IVPN.Models.Session
     /// <summary>
     /// Information about user account
     /// </summary>
-    public class SessionStatus
+    public class AccountStatus
     {
-        public SessionStatus(bool isActive, DateTime activeUtil, bool isRenewable, bool willAutoRebill, bool isOnFreeTrial, string[] capabilities)
+        public AccountStatus(bool isActive, DateTime activeUtil, bool isRenewable, bool willAutoRebill, bool isOnFreeTrial, string[] capabilities)
         {
             IsActive = isActive;
             ActiveUtil = activeUtil;

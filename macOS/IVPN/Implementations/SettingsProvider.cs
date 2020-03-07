@@ -33,7 +33,6 @@ namespace IVPN
             __Defaults["DoNotShowDialogOnAppClose"] = false;
                         
             __Defaults["WireGuardPreferredPortIndex"] = 0;
-            __Defaults["WireGuardKeysRegenerationIntervalHours"] = 24 * 7; // 7 days
 
             __Defaults["ProxyType"] = (int)ProxyType.None;
             __Defaults["ProxyServer"] = "";
@@ -237,91 +236,7 @@ namespace IVPN
             propertyInfo.SetValue(settings, value);
 
         }
-
-        #region Acount credentials
-        private void SaveCredentials(AppSettings settings)
-        {
-            if (settings.IsTempCredentialsSaved())
-                return;
-
-            string username = settings.Username;
-            // USERNAME
-            NSUserDefaults.StandardUserDefaults.SetString(username, nameof(AppSettings.Username));
-
-            if (string.IsNullOrEmpty(username))
-                return;
-
-            // SESSION
-            NSUserDefaults.StandardUserDefaults.SetString(settings.SessionToken, nameof(AppSettings.SessionToken));
-            NSUserDefaults.StandardUserDefaults.SetString(settings.VpnUser, nameof(AppSettings.VpnUser));
-            KeyChain.SaveSecuredValueToKeychain(username, nameof(AppSettings.VpnSafePass), settings.VpnSafePass);
-
-            // WIREGUARD
-            string clientPublicKey = settings.WireGuardClientPublicKey ?? "";
-            string privateKeySafe = settings.WireGuardClientPrivateKeySafe ?? "";
-            string clientInternalIp = settings.WireGuardClientInternalIp ?? "";
-
-            NSUserDefaults.StandardUserDefaults.SetString(clientPublicKey, nameof(AppSettings.WireGuardClientPublicKey));
-            NSUserDefaults.StandardUserDefaults.SetString(clientInternalIp, nameof(AppSettings.WireGuardClientInternalIp));
-            KeyChain.SaveSecuredValueToKeychain(username, nameof(AppSettings.WireGuardClientPrivateKeySafe), privateKeySafe);
-            KeyChain.SaveSecuredValueToKeychain(username, nameof(AppSettings.WireGuardKeysTimestamp), settings.WireGuardKeysTimestamp.ToString());
-        }
-
-        private void LoadCredentials(AppSettings settings)
-        {
-            // USERNAME
-            string username = NSUserDefaults.StandardUserDefaults.StringForKey(nameof(AppSettings.Username));
-
-            if (string.IsNullOrEmpty(username))
-            {
-                settings.DeleteSession();
-                settings.SetWireGuardCredentials( null, null, true, null);
-                return; // unknown user - do not load the rest
-            }
-
-            // SESSION
-            string session = NSUserDefaults.StandardUserDefaults.StringForKey(nameof(AppSettings.SessionToken));
-            string vpnUser = NSUserDefaults.StandardUserDefaults.StringForKey(nameof(AppSettings.VpnUser));
-            string vpnPass = KeyChain.GetSecuredValueFromKeychain(username, nameof(AppSettings.VpnSafePass));
-
-            settings.SetSession(username, session, vpnUser, vpnPass, isPassEncrypded: true);
-
-            // WIREGUARD
-            string publicKey = NSUserDefaults.StandardUserDefaults.StringForKey(nameof(AppSettings.WireGuardClientPublicKey));
-            string internalIp = NSUserDefaults.StandardUserDefaults.StringForKey(nameof(AppSettings.WireGuardClientInternalIp));
-            string privateKey = KeyChain.GetSecuredValueFromKeychain(settings.Username, nameof(AppSettings.WireGuardClientPrivateKeySafe));
-            string keysTimestampString = KeyChain.GetSecuredValueFromKeychain(settings.Username, nameof(AppSettings.WireGuardKeysTimestamp));
-            if (string.IsNullOrEmpty(keysTimestampString) || !DateTime.TryParse(keysTimestampString, out DateTime keysTimestamp))
-                keysTimestamp = DateTime.Now;
-            
-            settings.SetWireGuardCredentials(privateKey, publicKey, true, internalIp, keysTimestamp);
-        }
-
-        private void ResetCredentials(string username)
-        {
-            bool isHasUsername = !string.IsNullOrEmpty(username);
-
-            // Remove user password
-            if (isHasUsername)
-                KeyChain.RemoveCredentialFromKeychain(username);
-
-            // Remove wireguard info
-            NSUserDefaults.StandardUserDefaults.RemoveObject(nameof(AppSettings.WireGuardClientPublicKey));
-            NSUserDefaults.StandardUserDefaults.RemoveObject(nameof(AppSettings.WireGuardClientInternalIp));
-            if (isHasUsername)
-            {
-                KeyChain.RemoveSecuredValueFromKeychain(username, nameof(AppSettings.WireGuardClientPrivateKeySafe));
-                KeyChain.RemoveSecuredValueFromKeychain(username, nameof(AppSettings.WireGuardKeysTimestamp));
-            }
-
-            // Remove session info
-            NSUserDefaults.StandardUserDefaults.RemoveObject(nameof(AppSettings.SessionToken));
-            NSUserDefaults.StandardUserDefaults.RemoveObject(nameof(AppSettings.VpnUser));
-            if (isHasUsername)
-                KeyChain.RemoveSecuredValueFromKeychain(username, nameof(AppSettings.VpnSafePass));
-        }
-        #endregion //Credentials
-
+                
         private static void SaveLoginItem(bool RunOnLogin)
         {
             if (RunOnLogin)
@@ -368,8 +283,6 @@ namespace IVPN
             {
                 SaveProperty(settings, propertyName.ToString());
             }
-
-            SaveCredentials(settings);
         }
 
         private bool __IsLoading;
@@ -406,8 +319,6 @@ namespace IVPN
                     Logging.Info($"ERROR loading 'RunOnLogin' settings: {ex}");
                 }
 
-                LoadCredentials(settings);
-
                 Save(settings);
 
                 if (firstExp != null)
@@ -427,8 +338,6 @@ namespace IVPN
                 {
                     NSUserDefaults.StandardUserDefaults.RemoveObject(propertyName);
                 }
-
-                ResetCredentials(settings.Username);
                                 
                 Load(settings);
             }

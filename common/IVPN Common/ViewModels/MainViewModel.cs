@@ -86,7 +86,7 @@ namespace IVPN.ViewModels
 
         public WireguardKeysManager WireguardKeysManager { get; }
 
-        public delegate void OnAccountSuspendedDelegate (SessionStatus account);
+        public delegate void OnAccountSuspendedDelegate (AccountStatus account);
         public event OnAccountSuspendedDelegate OnAccountSuspended = delegate { };
 
         public MainViewModel(
@@ -106,9 +106,10 @@ namespace IVPN.ViewModels
             __Service = service;
 
             WireguardKeysManager = new WireguardKeysManager(
+                __Service,
                 isCanUpdateKey: () =>
                 {
-                    return Settings.IsUserLoggedIn()
+                    return __AppState.IsLoggedIn()
                         && Settings.VpnProtocolType == VpnType.WireGuard
                         && (ConnectionState == ServiceState.Connected || ConnectionState == ServiceState.Connecting);
                 },
@@ -144,13 +145,13 @@ namespace IVPN.ViewModels
 
                     // If we still do not have SessionStatus - we can try to do new API request (can be used alternate API IPs from servers.json)
                     // Do SessionStatus update ONLY if it still not received.
-                    if (__AppState.SessionStatusInfo == null)
+                    if (__AppState.AccountStatus == null)
                         __AppState.SessionManager.RequestStatusCheck();
                 }
             };
 
             CheckCapabilities();
-            __AppState.OnSessionStatusChanged += (SessionStatus sessionStatus) => { CheckCapabilities(); };
+            __AppState.OnAccountStatusChanged += (AccountStatus sessionStatus) => { CheckCapabilities(); };
 
             __Service.Disconnected += Disconnected;
             __Service.ServiceInitialized += ServiceInitializedAsync;
@@ -174,8 +175,8 @@ namespace IVPN.ViewModels
                 // They could be different in case if connection was established not by UI client
                 if (ConnectionInfo.Server != null && !string.Equals(SelectedServer.VpnServer.GatewayId, ConnectionInfo.Server?.VpnServer?.GatewayId))
                 {
-                    if (ConnectionInfo.VpnType != __AppState.Settings.VpnProtocolType)
-                        __AppState.Settings.VpnProtocolType = ConnectionInfo.VpnType;
+                    if (ConnectionInfo.VpnType != AppSettings.Instance().VpnProtocolType)
+                        AppSettings.Instance().VpnProtocolType = ConnectionInfo.VpnType;
                     
                     // TODO: implement possibility to show correct multihop servers
                     // If connection was established outside - we do not have infor is it multihop or not
@@ -197,8 +198,6 @@ namespace IVPN.ViewModels
                     RaisePropertyChanged(nameof(IsAntiTrackerEnabled));
                 }
             };
-
-            Settings.OnWireguardCredentialsChanged += Settings_OnWireguardCredentialsChanged;
 
             __KillSwitchIsPersistent = __Service.KillSwitchIsPersistent;
 
@@ -393,32 +392,16 @@ namespace IVPN.ViewModels
                     ConnectionState == ServiceState.Disconnected)
                 {
                     // Perform account check only if something wrong with account (it is not active OR are going to expire OR it is trial)
-                    if (__AppState?.SessionStatusInfo == null 
-                        || __AppState.SessionStatusInfo.IsActive == false
-                        || __AppState.SessionStatusInfo.IsOnFreeTrial 
-                        || (__AppState.SessionStatusInfo.WillAutoRebill == false && (__AppState.SessionStatusInfo.ActiveUtil - DateTime.Now).TotalDays < 4)
+                    if (__AppState?.AccountStatus == null 
+                        || __AppState.AccountStatus.IsActive == false
+                        || __AppState.AccountStatus.IsOnFreeTrial 
+                        || (__AppState.AccountStatus.WillAutoRebill == false && (__AppState.AccountStatus.ActiveUtil - DateTime.Now).TotalDays < 4)
                     )
                     {
                         __AppState.SessionManager.RequestStatusCheck();
                     }
                 }
             }
-        }
-
-        void Settings_OnWireguardCredentialsChanged(object sender, EventArgs e)
-        {
-            // WireGuard credentials are changed
-            // If we are already connected (WG) -> send to service new credantioal to update current connection 
-            if (Settings.VpnProtocolType != VpnType.WireGuard 
-                  || Settings.IsWireGuardCredentialsAvailable() == false)
-                return;
-
-            if (ConnectionState != ServiceState.Connected
-                && ConnectionState != ServiceState.ReconnectingOnService
-                && ConnectionState != ServiceState.ReconnectingOnClient)
-                return;
-
-            Connect();
         }
 
         public async Task ConnectToLastServer()
@@ -457,7 +440,7 @@ namespace IVPN.ViewModels
 
             __IsNecessaryToUpdateSelectedServers = false;
 
-            ServerLocation newEntryServer = GetNewServerById(SelectedServer, __AppState.Settings.GetLastUsedServerId(isExitServer: false), out var isDefaultSelectedServer);
+            ServerLocation newEntryServer = GetNewServerById(SelectedServer, AppSettings.Instance().GetLastUsedServerId(isExitServer: false), out var isDefaultSelectedServer);
 
             if (newEntryServer != null) 
                 SetSelectedServer(newEntryServer);
@@ -469,7 +452,7 @@ namespace IVPN.ViewModels
                 IsAutomaticServerSelection = true;
             }
 
-            ServerLocation newExitServer = GetNewServerById(SelectedExitServer, __AppState.Settings.GetLastUsedServerId(isExitServer: true), out isDefaultSelectedServer);
+            ServerLocation newExitServer = GetNewServerById(SelectedExitServer, AppSettings.Instance().GetLastUsedServerId(isExitServer: true), out isDefaultSelectedServer);
             
             if (newExitServer == null)
                 return;
@@ -487,7 +470,7 @@ namespace IVPN.ViewModels
             // fastest server
             if (FastestServer == null)
             {   // load fastest server from settings (only if it not defined)
-                string fsId = __AppState.Settings.GetLastFastestServerId();                
+                string fsId = AppSettings.Instance().GetLastFastestServerId();                
                 if (string.IsNullOrEmpty(fsId) == false)
                 {                    
                     ServerLocation fs = GetNewServerById(null, fsId, out isDefaultSelectedServer);
@@ -542,9 +525,9 @@ namespace IVPN.ViewModels
         {
             try
             {
-                if (!Settings.GetVpnCredentials(out var username, out var password))
+                if (!AppState.IsLoggedIn())
                 {
-                    Logging.Info("[ERROR] ConnectToServer(): Unable to connect. VPN user credentials not found.");
+                    Logging.Info("[ERROR] ConnectToServer(): Unable to connect. Not logged in.");
 
                     __NavigationService.NavigateToLogOutPage(NavigationAnimation.FadeToRight);
                     NotifyError("VPN credentials are empty", "You have been redirected to the login page to re-enter your credentials.");
@@ -558,116 +541,25 @@ namespace IVPN.ViewModels
 
                 // we need to block GUI from changing server during we are preparing to connect (searching fastest server OR keys generation)
                 ConnectionState = ServiceState.Connecting;
-
-                // SESSION: Create new session (if still not created)
-                // SM-APP-200 After upgrade: Create new session the next time user presses the “Connect” button manually.
-                if (!Settings.IsSessionAvailable())
-                {
-                    try
-                    {
-                        var accResp = await __AppState.SessionManager.CreateNewSessionAsync(username, password, new CancellationTokenSource().Token, isForceDeleteAllSessions: false, Settings.WireGuardClientPublicKey);
-                        // If wireguard public key successfuly registered - save wireguard credentials
-                        if (accResp.WGIPAddress != null && accResp.WGIPAddress != default(IPAddress))
-                        {
-                            __AppState.Settings.SetWireGuardCredentials(Settings.WireGuardClientPrivateKeySafe, Settings.WireGuardClientPublicKey, true, accResp.WGIPAddress.ToString());
-                        }
-                        else
-                            __AppState.Settings.ResetWireGuardCredentials();
-                    }
-                    catch (TimeoutException)
-                    {
-                        // Keep using old credentials
-                    }
-                    catch (IVPNRestRequestApiException ex)
-                    {
-                        Logging.Info("EXCEPTION during session creation on Connect (API request): " + ex);
-
-                        // SM-APP- 220  When performing SM-APP-200, all errors, other than Authentication error, or session limit errors have to be ignored
-                        // SM-APP- 221  When performing SM-APP-200, Authentication error have to result in presenting user with "Log In" screen
-                        // SM-APP- 222  When performing SM-APP-200, session limit error should result in presenting "connection limit reached" dialog to the user.
-                        if (ex.ApiStatusCode == ApiStatusCode.Unauthorized)
-                        {
-                            __NavigationService.NavigateToLogOutPage(NavigationAnimation.FadeToRight);
-                            return;
-                        }
-                        else if (ex.ApiStatusCode == ApiStatusCode.SessionTooManySessions)
-                        {
-                            __NavigationService.NavigateToSessionLimitPage(NavigationAnimation.FadeToRight);
-                            return;
-                        }
-
-                        Logging.Info("EXCEPTION during session creation on Connect (API request): " + ex);
-                        // Session creation failed. But if no SessionLimit and not credentials error - keep using old credentials.
-                    }
-                    catch (Exception ex)
-                    {
-                        Logging.Info("EXCEPTION during session creation on Connect (API request): " + ex);
-                        NotifyError(__AppServices.LocalizedString("Error_FailedToCreateSession", "IVPN: Failed to create new session"), $"{ex.Message}");
-                        return;
-                    }
-                }
-
+                                
                 // WIREGUARD: regenerate keys (if necessary)
                 if (Settings.VpnProtocolType == VpnType.WireGuard)
                 {
                     bool isUpgradeSuccess = false;
-                    IVPNRestRequestApiException exp = null;
                     try
                     {
                         isUpgradeSuccess = await WireguardKeysManager.RegenerateKeysIfNecessary();
-                    }
-                    catch (IVPNRestRequestApiException ex)
-                    {
-                        if (ex.ResponseWithStatus.Status == ApiStatusCode.WgPublicKeyNotFound)
-                        {
-                            Logging.Info("[ERROR] Failed to regenerate WireGuard keys: " + ex);
-
-                            // The old (current) WG key is no exists on backend (backend bug???)
-                            // Trying to generate new key (active key is not in use for this request). 
-                            try
-                            {
-                                await WireguardKeysManager.GenerateNewKeysAsync();
-                                isUpgradeSuccess = true;
-                            }
-                            catch (Exception e)
-                            {
-                                Logging.Info("Failed to generate new key (attempt after regeneration failed) " + e);
-                            }
-                        }
-
-                        // check if new call 'GenerateNewKeysAsync()' not fixed the issue
-                        if (isUpgradeSuccess == false)
-                        { 
-                            if (ProcessApiErrorResponse(ex.ApiStatusCode))
-                                return;
-
-                            exp = ex;
-                        }
                     }
                     catch (Exception ex)
                     {
                         Logging.Info("[ERROR] Failed to regenerate WireGuard keys: " + ex);
                     }
                     
-                    if (isUpgradeSuccess == false || exp!=null)
+                    if (isUpgradeSuccess == false)
                     {
                         // WG keys generation failed
-#if BETA_WG_GENERATION_1MIN
-#warning "!!!!!!!!!!!!!!!!!!! BETA_WG_GENERATION_1MIN !!!!!!!!!!!!!!!!!!!!!!!"
-                        int minsPassed = (int)(DateTime.Now - WireguardKeysManager.KeysExpiryDate).TotalMinutes;
-                        if (exp!=null || minsPassed > 3)
-#elif BETA_WG_GENERATION_10MINS
-#warning "!!!!!!!!!!!!!!!!!!! BETA_WG_GENERATION_10MINS !!!!!!!!!!!!!!!!!!!!!!!"
-                        int minsPassed = (int)(DateTime.Now - WireguardKeysManager.KeysExpiryDate).TotalMinutes;
-                        if (exp!=null || minsPassed > 3*10)
-#elif BETA_WG_GENERATION_HOURS
-#warning "!!!!!!!!!!!!!!!!!!! BETA_WG_GENERATION_HOURS !!!!!!!!!!!!!!!!!!!!!!!"
-                        int hoursPassed = (int)(DateTime.Now - WireguardKeysManager.KeysExpiryDate).TotalHours;
-                        if (exp!=null || hoursPassed > 3)
-#else
-                        int daysPassed =(int)(DateTime.Now - WireguardKeysManager.KeysExpiryDate).TotalDays;
-                        if (exp!=null || daysPassed > 3)
-#endif
+                        int daysPassed =(int)(DateTime.Now - AppState.Session?.GetKeysExpiryDate()??default).TotalDays;
+                        if (daysPassed > 3)
                         {
                             ConnectionState = __Service.State;
                             
@@ -676,10 +568,7 @@ namespace IVPN.ViewModels
                                 __AppServices.LocalizedString(
                                     "Error_WireGuardRegenerationFailedOnConnectDetailed",
                                     "Cannot connect using WireGuard protocol: regenerating WireGuard keys failed. This is likely because of no access to the IVPN API server."
-                                    + Environment.NewLine + Environment.NewLine + "You can retry connection, regenerate keys manually from preferences, or select another protocol. Please contact support if this error persists."
-                                    + ((exp != null)? Environment.NewLine + Environment.NewLine + $"({exp.Message})": "")
-                                    )
-                                );
+                                    + Environment.NewLine + Environment.NewLine + "You can retry connection, regenerate keys manually from preferences, or select another protocol. Please contact support if this error persists."));
                             return;
                         }
                     }
@@ -698,7 +587,8 @@ namespace IVPN.ViewModels
                     throw new Exception("Internal error: selected server not defined");
                 if (SelectedServer.VpnServer == null)
                     throw new Exception("Internal error: selected server details not defined");
-                if (Settings.VpnProtocolType == VpnType.WireGuard && !Settings.IsWireGuardCredentialsAvailable())
+
+                if (Settings.VpnProtocolType == VpnType.WireGuard && !(AppState.Session?.IsWireGuardKeysInitialized() ?? false))
                 {
                     NotifyError("WireGuard credentials not defined. Please, re-generate WireGuard keys");
                     return;
@@ -740,16 +630,13 @@ namespace IVPN.ViewModels
                 }
 
                 // CONNECT
-
                 var connectionTarget = new ConnectionTarget(
                     SelectedServer,
+                    (IsMultiHop)?SelectedExitServer.MultihopId:"",
                     GetPreferredPort(SelectedServer),
                     GetPortsToReconnect(),
                     manualDns,
-                    GetAdjustedUsername(username), password,
-                    proxyOptions,
-                    Settings.WireGuardClientInternalIp,
-                    Settings.GetWireGuardClientPrivateKey());
+                    proxyOptions);
 
                 await __Service.Connect(this, cancelToken, connectionTarget);
             }
@@ -758,16 +645,6 @@ namespace IVPN.ViewModels
                 // ensure that connection state represents correct value (we changed it manually on the begining of this method)
                 ConnectionState = __Service.State;
             }
-        }
-        
-        private string GetAdjustedUsername(string username)
-        {
-            // MultiHop configuration is based just by adding "@exit_server_id" to the end of username
-            // And forwarding this info on server
-            if (IsMultiHop)
-                return $"{username}@{SelectedExitServer.MultihopId}";
-
-            return username;
         }
 
         private void ConnectionInfo_PropertyChanged(object sender, PropertyChangedEventArgs e)
@@ -814,7 +691,7 @@ namespace IVPN.ViewModels
 
             try
             {
-                SessionStatus sessionStatus = null;                
+                AccountStatus sessionStatus = null;                
                 if (failure)
                 {
                     // When account is suspended - openvpn fails with authentication error.
@@ -849,23 +726,6 @@ namespace IVPN.ViewModels
                             }                            
                         }
 
-                        /*
-                         * It is required by the feature “Skip and continue”: When a user can skip LogIn procedure (skip login\pass verification) 
-                         * 
-                        // If user credentials still not checked by IVPN API server, 
-                        // it means, there was no possibility to access to it
-                        //  - LogOut user and show LogIn page
-						if  (__AppState.SessionStatusInfo == null // account info should not be null here. Otherwise - logout.
-						     || sessionStatus==null)
-                        {
-                            ConnectionState = ServiceState.Disconnected;
-
-                            // Wrong username or password - moving user to log-in page
-                            __NavigationService.NavigateToLogOutPage(NavigationAnimation.FadeToRight);
-                            ConnectionError = __AppServices.LocalizedString("Error_AuthenticationGoToLogInPage");
-                            return;
-                        }*/
-
                         ConnectionState = __Service.State;
                         if (sessionStatus != null) 
                         {
@@ -880,9 +740,9 @@ namespace IVPN.ViewModels
                         {
                             // Unable to get latest account status info
                             // So, we can make conclusion based only on account 'ExpirationDate' of last known account status (saved in AppState)
-                            if (__AppState.SessionStatusInfo != null
-                                && __AppState.SessionStatusInfo.ActiveUtil != default
-                                && __AppState.SessionStatusInfo.ActiveUtil <= DateTime.Now)
+                            if (__AppState.AccountStatus != null
+                                && __AppState.AccountStatus.ActiveUtil != default
+                                && __AppState.AccountStatus.ActiveUtil <= DateTime.Now)
                             {
                                 ConnectionError = __AppServices.LocalizedString ("Error_ConnectionError_AccountExpiredOrWrongPassword");
                                 reasonDescription = null;
@@ -1185,7 +1045,7 @@ namespace IVPN.ViewModels
             RaisePropertyChanged(nameof(IsFastestServerInUse));
             RaisePropertyChanged(nameof(SelectedServer));
 
-            string lastSrvId = __AppState.Settings.GetLastUsedServerId(isExitServer: false);
+            string lastSrvId = AppSettings.Instance().GetLastUsedServerId(isExitServer: false);
             if (lastSrvId != __SelectedServer.VpnServer.GatewayId)
             {
                 Settings.SetLastUsedServerId(__SelectedServer.VpnServer.GatewayId, isExitServer: false);
@@ -1213,7 +1073,7 @@ namespace IVPN.ViewModels
             __SelectedExitServer = value;
             RaisePropertyChanged(nameof(SelectedExitServer));
 
-            string lastSrvId = __AppState.Settings.GetLastUsedServerId(isExitServer: true);
+            string lastSrvId = AppSettings.Instance().GetLastUsedServerId(isExitServer: true);
             if (lastSrvId != __SelectedExitServer.VpnServer.GatewayId)
             {
                 Settings.SetLastUsedServerId(__SelectedExitServer.VpnServer.GatewayId, isExitServer: true);
@@ -1254,13 +1114,13 @@ namespace IVPN.ViewModels
             if (value == null)
                 return true;
 
-            if (__AppState.Settings.VpnProtocolType == VpnType.OpenVPN
+            if (AppSettings.Instance().VpnProtocolType == VpnType.OpenVPN
                 && !(value.VpnServer is VpnProtocols.OpenVPN.OpenVPNVpnServer))
             {
                 Logging.Info("INTERNAL ERROR: unable to set a selected server. Server VPN type differs from the current protocol");
                 return false;
             }
-            if (__AppState.Settings.VpnProtocolType == VpnType.WireGuard
+            if (AppSettings.Instance().VpnProtocolType == VpnType.WireGuard
                 && !(value.VpnServer is VpnProtocols.WireGuard.WireGuardVpnServerInfo))
             {
                 Logging.Info("INTERNAL ERROR: unable to set a selected server. Server VPN type differs from the current protocol");
@@ -1454,7 +1314,7 @@ namespace IVPN.ViewModels
             }
         }
 
-        public AppSettings Settings => __AppState.Settings;
+        public AppSettings Settings => AppSettings.Instance();
 
         public bool KillSwitchAllowLAN
         {
