@@ -204,7 +204,7 @@ namespace IVPN.ViewModels
             Platform.PowerModeChanged += OnPowerChange;
 
             // SM-APP-1100 If session is not valid (user received Session not found error) client app have to assume that the user was forcibly logged out and present user with the “Log In” form.
-            __AppState.SessionManager.OnSessionRequestError += (IVPNRestRequestApiException ex) => { ProcessApiErrorResponse(ex.ApiStatusCode); };
+            __AppState.SessionManager.OnSessionRequestError += (int apiStatus, string apiErrMes, Responses.AccountInfo account) => { ProcessApiErrorResponse(apiStatus, apiErrMes, account); };
         }
 
         private void CheckCapabilities()
@@ -226,9 +226,9 @@ namespace IVPN.ViewModels
         }
 
         // Returns TRUE - when status is processed
-        private bool ProcessApiErrorResponse(ApiStatusCode statusCode)
+        private bool ProcessApiErrorResponse(int apiStatus, string apiErrMes, Responses.AccountInfo account)
         {
-            if (statusCode == ApiStatusCode.SessionNotFound)
+            if (apiStatus == (int)ApiStatusCode.SessionNotFound)
             {
                 ConnectionState = __Service.State;
 

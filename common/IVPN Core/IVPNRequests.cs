@@ -119,6 +119,8 @@ namespace IVPN.Requests
         public bool ForceLogin;
     }
 
+    public class SessionStatus : Request { }
+
     public class SessionDelete : Request { }
 
     public class WireGuardGenerateNewKeys : Request

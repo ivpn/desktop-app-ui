@@ -43,20 +43,13 @@ namespace IVPN.ViewModels
             __AppState.SessionManager.OnSessionRequestError += SessionManager_OnSessionRequestError;
         }
 
-        private void SessionManager_OnSessionRequestError(IVPNRestRequestApiException ex)
+        private void SessionManager_OnSessionRequestError(int apiStatus, string apiErrMes, Responses.AccountInfo account)
         {
-            if (ex.ApiStatusCode != ApiStatusCode.SessionTooManySessions)
+            if (apiStatus != (int)ApiStatusCode.SessionTooManySessions)
                 return;
             
-            var resp = ex.ResponseWithStatus as RestRequestSessionNew.SessionNewResponse;
-            if (resp == null)
-            {
-                IsCanUpgrade = false;
-                return;
-            }
-
-            UpgradeToUrl = resp.SessionLimitErrorInfo.UpgradeToUrl;
-            IsCanUpgrade = resp.SessionLimitErrorInfo.Upgradable && !string.IsNullOrEmpty(UpgradeToUrl);
+            UpgradeToUrl = account.UpgradeToURL;
+            IsCanUpgrade = account.Upgradable && !string.IsNullOrEmpty(UpgradeToUrl);
         }
 
         private void __LogInViewModel_PropertyChanged(object sender, System.ComponentModel.PropertyChangedEventArgs e)

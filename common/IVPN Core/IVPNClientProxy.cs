@@ -339,6 +339,11 @@ namespace IVPN
                         }
                         break;
 
+                    case "SessionStatusResp":
+                        var ssResp = JsonConvert.DeserializeObject<Responses.SessionStatusResponse>(line);
+                        __BlockingCollection.Add(ssResp);
+                        break;
+
                     case "SetAlternateDNSResp":
                         var adnsResp = JsonConvert.DeserializeObject<Responses.IVPNSetAlternateDnsResponse>(line);
                         __BlockingCollection.Add(adnsResp);
@@ -533,6 +538,11 @@ namespace IVPN
         public async Task<Responses.SessionNewResponse> LogIn(string accountId, bool forceLogin)
         {
             return await SendSyncRequestAsync<Responses.SessionNewResponse>(new Requests.SessionNew { AccountID = accountId, ForceLogin = forceLogin });
+        }
+
+        public async Task<Responses.SessionStatusResponse> SessionStatus()
+        {
+            return await SendSyncRequestAsync<Responses.SessionStatusResponse>(new Requests.SessionStatus{});
         }
 
         public async Task LogOut()

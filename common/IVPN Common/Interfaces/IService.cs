@@ -50,6 +50,7 @@ namespace IVPN.Interfaces
 
         Task<Responses.SessionNewResponse> Login(string accountID, bool forceDeleteAllSesssions);
         Task Logout();
+        Task<Responses.SessionStatusResponse> SessionStatus();
 
         Task WireGuardGeneratedKeys(bool generateIfNecessary);
         Task WireGuardKeysSetRotationInterval(Int64 interval);

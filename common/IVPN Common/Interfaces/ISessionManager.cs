@@ -7,7 +7,7 @@ using IVPNCommon.Api;
 namespace IVPN.Interfaces
 {
     public delegate void OnAccountStatusReceivedDelegate(AccountStatus sessionStatus);
-    public delegate void OnSessionRequestErrorDelegate(IVPNRestRequestApiException ex);
+    public delegate void OnSessionRequestErrorDelegate(int apiStatus, string apiErrMes, Responses.AccountInfo account);
 
     public interface ISessionManager
     {

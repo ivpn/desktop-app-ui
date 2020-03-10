@@ -99,7 +99,12 @@ namespace IVPN.Models.Session
                 if (resp.APIStatus == 0)
                     throw new Exception("Internal error: Failed to create session");
                 else if (resp.APIStatus != (int)ApiStatusCode.Success)
+                {
+                    if (resp.APIStatus == (int)ApiStatusCode.SessionTooManySessions)
+                        OnSessionRequestError(resp.APIStatus, resp.APIErrorMessage, resp.Account);
+
                     throw new IVPNRestRequestApiException(HttpStatusCode.OK, (ApiStatusCode)resp.APIStatus, resp.APIErrorMessage);
+                }
 
                 var acc = new AccountStatus(
                 resp.Account.Active,
@@ -110,14 +115,6 @@ namespace IVPN.Models.Session
                 resp.Account.Capabilities);
 
                 OnAcountStatusReceived(acc);
-            }
-            catch (IVPNRestRequestApiException ex)
-            {
-                Logging.Info($"{ex}");
-
-                if (ex.ApiStatusCode == ApiStatusCode.SessionTooManySessions)
-                    OnSessionRequestError(ex);
-                throw;
             }
             catch (Exception ex)
             {
@@ -291,12 +288,28 @@ namespace IVPN.Models.Session
                 // send request to rest server                
                 try
                 {
-                    __RequestCancellationSource = new CancellationTokenSource();
-                    AccountStatus acc = await ApiServices.Instance.SessionStatusAsync(__RequestCancellationSource.Token, timeoutMs);
+                    var resp = await __Service.SessionStatus();
+                    if (resp.APIStatus == 0)
+                        throw new Exception("Internal error: Failed to create session");
+                    else if (resp.APIStatus != (int)ApiStatusCode.Success)
+                    {
+                        if (resp.APIStatus == (int)ApiStatusCode.SessionNotFound)
+                            OnSessionRequestError(resp.APIStatus, resp.APIErrorMessage, resp.Account);
 
-                    if (acc != null)
-                        __IsStatusReceived = true;
+                        throw new IVPNRestRequestApiException(HttpStatusCode.OK, (ApiStatusCode)resp.APIStatus, resp.APIErrorMessage);
+                    }
 
+                    __IsStatusReceived = true;
+
+                    var acc = new AccountStatus(
+                        resp.Account.Active,
+                        IVPN_Helpers.DataConverters.DateTimeConverter.FromUnixTime(resp.Account.ActiveUntil),
+                        resp.Account.IsRenewable,
+                        resp.Account.WillAutoRebill,
+                        resp.Account.IsFreeTrial,
+                        resp.Account.Capabilities);
+
+                    OnAcountStatusReceived(acc);
                     return acc;
                 }
                 finally
@@ -304,13 +317,6 @@ namespace IVPN.Models.Session
                     __LastCheckTime = DateTime.Now;
                     __RequestCancellationSource = null;
                 }
-            }
-            catch (IVPNRestRequestApiException ex)
-            {
-                Logging.Info($"{ex}");
-                if (ex.ApiStatusCode == ApiStatusCode.SessionNotFound)
-                    OnSessionRequestError(ex);
-                throw;
             }
             catch (Exception ex)
             {

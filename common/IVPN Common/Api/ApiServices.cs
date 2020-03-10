@@ -157,27 +157,7 @@ namespace IVPNCommon.Api
         }
 
         #endregion // General
-
-        /// <summary> </summary>
-        public async Task<AccountStatus> SessionStatusAsync(CancellationToken cancellationToken,
-                                                                 int timeoutMs = Consts.DefaultTimeout)
-        {
-            ServiceStatusResponse serviceStatus;
-
-            string session = GetSession();
-            var response = await DoRequestAsync(new RestRequestSessionStatus(session), cancellationToken, timeoutMs);
-            serviceStatus = response.ServiceStatus;
-
-
-            return new AccountStatus(
-                serviceStatus.IsActive,
-                IVPN_Helpers.DataConverters.DateTimeConverter.FromUnixTime(serviceStatus.ActiveUtil),
-                serviceStatus.IsRenewable,
-                serviceStatus.WillAutoRebill,
-                serviceStatus.IsOnFreeTrial,
-                serviceStatus.Capabilities);
-        }
-
+        
         #region Private emails
         public async Task<List<PrivateEmailInfo>> PrivateEmailListAsync(CancellationToken cancellationToken,
                                                                               int timeoutMs = Consts.DefaultTimeout)

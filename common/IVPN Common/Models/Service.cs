@@ -683,6 +683,11 @@ namespace IVPN.Models
             await __ServiceProxy.LogOut();
         }
 
+        public async Task<Responses.SessionStatusResponse> SessionStatus()
+        {
+            return await __ServiceProxy.SessionStatus();
+        }
+
         public async Task WireGuardGeneratedKeys(bool generateIfNecessary)
         {
             await __ServiceProxy.WireGuardGeneratedKeys(generateIfNecessary);

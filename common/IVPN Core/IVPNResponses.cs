@@ -57,7 +57,15 @@ namespace IVPN.Responses
         public SessionInfo Session;
         public AccountInfo Account;
     }
-    
+
+    public class SessionStatusResponse : IVPNResponse
+    {
+        public int APIStatus;
+        public string APIErrorMessage;
+        public SessionInfo Session;
+        public AccountInfo Account;
+    }
+
     public class IVPNServerListResponse : IVPNResponse
     {
         public VpnServersInfo VpnServers;
