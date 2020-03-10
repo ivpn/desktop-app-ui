@@ -16,6 +16,7 @@ using IVPN.VpnProtocols;
 using IVPNCommon.ViewModels;
 using Application = System.Windows.Application;
 using MessageBox = System.Windows.MessageBox;
+using IVPN.Responses;
 
 namespace IVPN.Windows
 {
@@ -532,8 +533,8 @@ namespace IVPN.Windows
         }
 
         private async void ProtocolTypeBtn_Checked(object sender, RoutedEventArgs e)
-        {
-            if (Settings.VpnProtocolType == VpnType.WireGuard && !__Settings.IsWireGuardCredentialsAvailable())
+        {            
+            if (Settings.VpnProtocolType == VpnType.WireGuard && ! (AppState.Instance().Session?.IsWireGuardKeysInitialized() ?? false))
             {
                 await WireGuardSettings.RegenerateNewKeyAsync();
             }

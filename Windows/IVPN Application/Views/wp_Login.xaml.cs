@@ -3,6 +3,7 @@ using System.ComponentModel;
 using System.Runtime.CompilerServices;
 using System.Windows;
 using System.Windows.Controls;
+using IVPN.Models.Session;
 using IVPN.ViewModels;
 using IVPN.Windows;
 
@@ -62,7 +63,7 @@ namespace IVPN.Views
             DataContext = this;
         }
 
-        void __ViewModel_OnAccountSuspended(IVPN.Models.Session.SessionStatus session)
+        void __ViewModel_OnAccountSuspended(AccountStatus session)
         {
             SubscriptionExpireWindow.Show(session, ViewModel.UserName);
         }

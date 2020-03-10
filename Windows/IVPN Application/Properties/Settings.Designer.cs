@@ -61,18 +61,6 @@ namespace IVPN.Properties {
         
         [global::System.Configuration.UserScopedSettingAttribute()]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        [global::System.Configuration.DefaultSettingValueAttribute("")]
-        public string Username {
-            get {
-                return ((string)(this["Username"]));
-            }
-            set {
-                this["Username"] = value;
-            }
-        }
-        
-        [global::System.Configuration.UserScopedSettingAttribute()]
-        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
         [global::System.Configuration.DefaultSettingValueAttribute("False")]
         public bool AutoConnectOnLaunch {
             get {
@@ -529,42 +517,6 @@ namespace IVPN.Properties {
         
         [global::System.Configuration.UserScopedSettingAttribute()]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        [global::System.Configuration.DefaultSettingValueAttribute("")]
-        public string WireGuardClientInternalIp {
-            get {
-                return ((string)(this["WireGuardClientInternalIp"]));
-            }
-            set {
-                this["WireGuardClientInternalIp"] = value;
-            }
-        }
-        
-        [global::System.Configuration.UserScopedSettingAttribute()]
-        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        [global::System.Configuration.DefaultSettingValueAttribute("")]
-        public string WireGuardKeysTimestamp {
-            get {
-                return ((string)(this["WireGuardKeysTimestamp"]));
-            }
-            set {
-                this["WireGuardKeysTimestamp"] = value;
-            }
-        }
-        
-        [global::System.Configuration.UserScopedSettingAttribute()]
-        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        [global::System.Configuration.DefaultSettingValueAttribute("168")]
-        public int WireGuardKeysRegenerationIntervalHours {
-            get {
-                return ((int)(this["WireGuardKeysRegenerationIntervalHours"]));
-            }
-            set {
-                this["WireGuardKeysRegenerationIntervalHours"] = value;
-            }
-        }
-        
-        [global::System.Configuration.UserScopedSettingAttribute()]
-        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
         [global::System.Configuration.DefaultSettingValueAttribute("0")]
         public int WireGuardPreferredPortIndex {
             get {
@@ -572,66 +524,6 @@ namespace IVPN.Properties {
             }
             set {
                 this["WireGuardPreferredPortIndex"] = value;
-            }
-        }
-        
-        [global::System.Configuration.UserScopedSettingAttribute()]
-        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        [global::System.Configuration.DefaultSettingValueAttribute("")]
-        public string WireGuardClientPrivateKey {
-            get {
-                return ((string)(this["WireGuardClientPrivateKey"]));
-            }
-            set {
-                this["WireGuardClientPrivateKey"] = value;
-            }
-        }
-        
-        [global::System.Configuration.UserScopedSettingAttribute()]
-        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        [global::System.Configuration.DefaultSettingValueAttribute("")]
-        public string WireGuardClientPublicKey {
-            get {
-                return ((string)(this["WireGuardClientPublicKey"]));
-            }
-            set {
-                this["WireGuardClientPublicKey"] = value;
-            }
-        }
-        
-        [global::System.Configuration.UserScopedSettingAttribute()]
-        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        [global::System.Configuration.DefaultSettingValueAttribute("")]
-        public string SessionToken {
-            get {
-                return ((string)(this["SessionToken"]));
-            }
-            set {
-                this["SessionToken"] = value;
-            }
-        }
-        
-        [global::System.Configuration.UserScopedSettingAttribute()]
-        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        [global::System.Configuration.DefaultSettingValueAttribute("")]
-        public string VpnUser {
-            get {
-                return ((string)(this["VpnUser"]));
-            }
-            set {
-                this["VpnUser"] = value;
-            }
-        }
-        
-        [global::System.Configuration.UserScopedSettingAttribute()]
-        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        [global::System.Configuration.DefaultSettingValueAttribute("")]
-        public string VpnSafePass {
-            get {
-                return ((string)(this["VpnSafePass"]));
-            }
-            set {
-                this["VpnSafePass"] = value;
             }
         }
         

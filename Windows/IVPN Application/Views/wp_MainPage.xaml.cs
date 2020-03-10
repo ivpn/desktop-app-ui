@@ -9,6 +9,7 @@ using System.Windows.Controls.Primitives;
 using System.Windows.Media.Imaging;
 using IVPN.Models;
 using IVPN.Models.Configuration;
+using IVPN.Models.Session;
 using IVPN.ViewModels;
 using IVPN.Windows;
 
@@ -96,10 +97,10 @@ namespace IVPN.Views
                     MessageBox.Show(text + Environment.NewLine + description, "Error", MessageBoxButton.OK, MessageBoxImage.Error);
             };
 
-            ViewModel.AppState.OnSessionStatusChanged += (info) => UpdateSessionInfo(info);
+            ViewModel.AppState.OnAccountStatusChanged += (info) => UpdateSessionInfo(info);
             ViewModel.OnAccountSuspended += ViewModelOnAccountSuspended;
 
-            UpdateSessionInfo(ViewModel.AppState.SessionStatusInfo);
+            UpdateSessionInfo(ViewModel.AppState.AccountStatus);
 
             Application.Current.MainWindow.Activated += MainWindowActivation;
             Application.Current.MainWindow.Deactivated += MainWindowActivation;
@@ -270,31 +271,31 @@ namespace IVPN.Views
         #endregion // Private emails
 
         #region Account expiration info
-        private void ViewModelOnAccountSuspended(Models.Session.SessionStatus sessionInfo)
+        private void ViewModelOnAccountSuspended(AccountStatus accountInfo)
         {
-            if (GuiUtils.IsInvokedInGuiThread(this, () => UpdateSessionInfo(sessionInfo)))
+            if (GuiUtils.IsInvokedInGuiThread(this, () => UpdateSessionInfo(accountInfo)))
                 return;
 
-            UpdateSessionInfo(sessionInfo);
+            UpdateSessionInfo(accountInfo);
         }
         
-        private void UpdateSessionInfo(Models.Session.SessionStatus sessionInfo)
+        private void UpdateSessionInfo(AccountStatus accountInfo)
         {
-            if (GuiUtils.IsInvokedInGuiThread(this, () => UpdateSessionInfo(sessionInfo)))
+            if (GuiUtils.IsInvokedInGuiThread(this, () => UpdateSessionInfo(accountInfo)))
                 return;
             
             GuiAccountExpirationInfoButton.Visibility = Visibility.Hidden;
-            if (sessionInfo == null)
+            if (accountInfo == null)
                 return;
 
             string text;
             Uri imageUri;
 
             // update text
-            if (!sessionInfo.IsActive)
+            if (!accountInfo.IsActive)
             {
                 text = StringUtils.String("Label_SubscriptionExpired");
-                if (sessionInfo.IsOnFreeTrial)
+                if (accountInfo.IsOnFreeTrial)
                     text = StringUtils.String("Label_FreeTrialExpired");
 
                 text += " "+ StringUtils.String("Label_AccountExpiredUpgradeNow");
@@ -306,10 +307,10 @@ namespace IVPN.Views
             else 
             {
                 // show nothing if account Renewable (WillAutoRebill)
-                if (sessionInfo.WillAutoRebill)
+                if (accountInfo.WillAutoRebill)
                     return;
 
-                int daysLeft = (int) (sessionInfo.ActiveUtil - DateTime.Now).TotalDays;
+                int daysLeft = (int) (accountInfo.ActiveUtil - DateTime.Now).TotalDays;
                 if (daysLeft < 0)
                     daysLeft = 0;
 
@@ -320,19 +321,19 @@ namespace IVPN.Views
                 if (daysLeft == 0)
                 {
                     text = StringUtils.String("Label_AccountDaysLeft_LastDay");
-                    if (sessionInfo.IsOnFreeTrial)
+                    if (accountInfo.IsOnFreeTrial)
                         text = StringUtils.String("Label_FreeTrialDaysLeft_LastDay");
                 }
                 else if (daysLeft == 1)
                 {
                     text = StringUtils.String("Label_AccountDaysLeft_OneDay");
-                    if (sessionInfo.IsOnFreeTrial)
+                    if (accountInfo.IsOnFreeTrial)
                         text = StringUtils.String("Label_FreeTrialDaysLeft_OneDay");
                 }
                 else
                 {
                     text = StringUtils.String("Label_AccountDaysLeft_PARAMETRIZED");
-                    if (sessionInfo.IsOnFreeTrial)
+                    if (accountInfo.IsOnFreeTrial)
                         text = StringUtils.String("Label_FreeTrialDaysLeft_PARAMETRIZED");
 
                     text = string.Format(text, daysLeft);
@@ -357,10 +358,10 @@ namespace IVPN.Views
 
         private void ShowAccountExpireDialog()
         {
-            if (ViewModel.AppState.SessionStatusInfo == null)
+            if (ViewModel.AppState.AccountStatus == null)
                 return;
 
-            SubscriptionExpireWindow.Show(ViewModel.AppState.SessionStatusInfo, ViewModel.AppState?.Settings?.Username);
+            SubscriptionExpireWindow.Show(ViewModel.AppState.AccountStatus, ViewModel.AppState?.Session?.AccountID);
         }
         #endregion Account expiration info
 

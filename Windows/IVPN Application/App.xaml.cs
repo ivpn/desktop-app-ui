@@ -468,12 +468,12 @@ namespace IVPN
             if (appState == null)
                 throw new ArgumentNullException(nameof(appState));
 
-            if (appState.IsAuthenticated())
-                __UsernameMenuItem.Text = $@"Account ID: {appState.Settings.Username}";
+            if (appState.IsLoggedIn())
+                __UsernameMenuItem.Text = $@"Account ID: {appState.Session?.AccountID ?? ""}";
 
-            __MenuItemConnectToLastServer.Visible = appState.IsAuthenticated();
-            __AccountMenuItem.Visible = appState.IsAuthenticated();
-            __AccountSeparatorMenuItem.Visible = appState.IsAuthenticated();
+            __MenuItemConnectToLastServer.Visible = appState.IsLoggedIn();
+            __AccountMenuItem.Visible = appState.IsLoggedIn();
+            __AccountSeparatorMenuItem.Visible = appState.IsLoggedIn();
 
             __PrivateEmailSeparatorMenuItem.Visible = mainViewModel.IsAllowedPrivateEmails;
             __PrivateEmailsMenuItem.Visible = mainViewModel.IsAllowedPrivateEmails;
@@ -553,24 +553,7 @@ namespace IVPN
             get
             {
                 if (__AppSettings == null)
-                {
                     __AppSettings = AppSettings.InitInstance(new Models.SettingsProvider());
-
-                    // Initialize API service object
-                    System.Net.IPAddress.TryParse(__AppSettings.AlternateAPIHost, out System.Net.IPAddress alternateAPIHost);
-                    IVPNCommon.Api.ApiServices.Instance.Initialize(__AppSettings, alternateAPIHost);
-                    // save into settings when alternate host changed
-                    IVPNCommon.Api.ApiServices.Instance.AlternateHostChanged += (System.Net.IPAddress ip) =>
-                    {
-                        __AppSettings.AlternateAPIHost = (ip == null) ? "" : ip.ToString();
-                    };
-                    // reset alternate host on logout
-                    __AppSettings.OnCredentialsChanged += (ICredentials sender) =>
-                    {
-                        if (!sender.IsUserLoggedIn())
-                            IVPNCommon.Api.ApiServices.Instance.ResetCurAlternateHost();
-                    };
-                }
 
                 return __AppSettings;
             }

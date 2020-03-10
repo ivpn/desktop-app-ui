@@ -33,7 +33,6 @@ namespace IVPN
         private Frame __CurrentFrame;
         private Frame __TransitionFrame;
 
-        private AppState __AppState;
         private ApplicationServices __AppServices;
         private NavigationService __NavService;
         private Service __Service;
@@ -51,7 +50,7 @@ namespace IVPN
         #endregion //Internal variables
 
         #region Public variables
-        public AppState AppState => __AppState ?? (__AppState = AppState.GetInstance(App.Settings));
+        public AppState AppState { get; }
         public ApplicationServices AppServices => __AppServices ?? (__AppServices = new ApplicationServices(new StringUtils()));
         public NavigationService NavigationService => __NavService ?? (__NavService = new NavigationService(this));
         public Service Service => __Service ?? (__Service = new Service(this, new Servers(App.Settings)));
@@ -65,7 +64,7 @@ namespace IVPN
         public PrivateEmailsManagerViewModel PrivateEmailsViewModel => __PrivateEmailViewModel ?? (__PrivateEmailViewModel = new PrivateEmailsManagerViewModel(AppState, AppServices));
         public ProofsViewModel ProofsViewModel => __ProofsViewModel ?? (__ProofsViewModel = new ProofsViewModel(AppServices));
         public ViewModelFastestServerSettings FastestServerSettingsViewModel => __FastestServerSettingsViewModel ?? (__FastestServerSettingsViewModel = new ViewModelFastestServerSettings(AppServices, NavigationService, Service, MainViewModel));
-        public ViewModelWireguardSettings WireguardSettingsViewModel => __WireguardSettingsViewModel ?? (__WireguardSettingsViewModel = new ViewModelWireguardSettings(MainViewModel, AppServices));
+        public ViewModelWireguardSettings WireguardSettingsViewModel => __WireguardSettingsViewModel ?? (__WireguardSettingsViewModel = new ViewModelWireguardSettings(MainViewModel, Service, AppServices));
 
         #endregion //Public variables
 
@@ -75,9 +74,19 @@ namespace IVPN
         {
             InitializeComponent();
             MinimizeIfStartMinimized();
-            
+
+            AppState = AppState.Initialize(Service);
+
+            /// Initialize API service object
+            System.Net.IPAddress.TryParse(App.Settings.AlternateAPIHost, out System.Net.IPAddress alternateAPIHost);
+            IVPNCommon.Api.ApiServices.Instance.Initialize(alternateAPIHost);
+            // save into settings when alternate host changed
+            IVPNCommon.Api.ApiServices.Instance.AlternateHostChanged += (System.Net.IPAddress ip) =>
+            {
+                App.Settings.AlternateAPIHost = (ip == null) ? "" : ip.ToString();
+            };
+
             Service.ServiceExited += ServiceExited;
-            Service.ServiceInitialized += ServiceOnServiceInitialized;
 
             __NavigationQueue = new Queue<NavigationRequest>();
 
@@ -160,39 +169,7 @@ namespace IVPN
             if (Service.State == ServiceState.Uninitialized)
                 await InitViewModel.InitializeAsync();
         }
-
-        private void ServiceOnServiceInitialized(object o, EventArgs eventArgs1)
-        {
-            ProcessServiceCrashLogIfExisists();
-        }
-
-        private void ProcessServiceCrashLogIfExisists()
-        {
-            // Check is there was an Service crash
-            if (File.Exists(Platform.ServiceCrashInfoFilePath))
-            {
-                try
-                {
-                    string serviceCrashInfo = FileUtils.TailOfLog(Platform.ServiceCrashInfoFilePath);
-                    // send requeest to remove crash-info file
-                    Service.RemoveServiceCrashFile();
-                    if (string.IsNullOrEmpty(serviceCrashInfo) == false)
-                    {
-                        Dispatcher.Invoke(() =>
-                        {
-                            ExceptionWindow wnd = new ExceptionWindow(new IVPNServiceCrash(serviceCrashInfo), true, StringUtils.String("Crash_ServiceCrashedText"));
-                            wnd.Show();
-                        });
-                    }
-                }
-                catch (Exception ex)
-                {
-                    Logging.Info($"Exception during processing Agent crash-log: {ex}");
-
-                }
-            }
-        }
-        
+                
         private void MainViewModel_PropertyChanged(object sender, PropertyChangedEventArgs e)
         {
             if (e.PropertyName == nameof(MainViewModel.ConnectionState))

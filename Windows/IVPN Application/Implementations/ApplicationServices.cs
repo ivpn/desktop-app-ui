@@ -82,7 +82,7 @@ namespace IVPN
         {
             // On Windows, IVPN Client Proxy knows about the port used to connect to service
             // So we just can pass -1 here, and let the IVPNClientProxy figure it out by itself
-            return await Task.Run(() => new ServiceAttachResult(-1));
+            return await Task.Run(() => new ServiceAttachResult(-1, 0));
         }
     }
 }

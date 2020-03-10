@@ -36,23 +36,6 @@ namespace IVPN.Models
 
                 settings.AlternateAPIHost = Properties.Settings.Default.AlternateAPIHost;
 
-                string username = Properties.Settings.Default.Username;
-
-                if (string.IsNullOrEmpty(username))
-                {
-                    settings.DeleteSession();
-                    settings.SetWireGuardCredentials(null, null, true, null);
-                }
-                else
-                {
-                    // SESSION
-                    settings.SetSession(username,
-                        Properties.Settings.Default.SessionToken,
-                        Properties.Settings.Default.VpnUser,
-                        Properties.Settings.Default.VpnSafePass,
-                        isPassEncrypded: true);
-                }
-
                 // Connection settings
                 settings.IsAutoPortSelection = Properties.Settings.Default.IsAutoPortSelection;
                 settings.PreferredPortIndex = Properties.Settings.Default.PreferredPortIndex;
@@ -107,18 +90,6 @@ namespace IVPN.Models
                 settings.VpnProtocolType = (VpnType) Properties.Settings.Default.VpnProtocolType;
 
                 // WireGuard
-                DateTime wgKeyTimestamp;
-                try
-                {
-                    wgKeyTimestamp = DateTime.ParseExact(Properties.Settings.Default.WireGuardKeysTimestamp,
-                        DateTimeSerializationFormatString, System.Globalization.CultureInfo.InvariantCulture);
-                }
-                catch
-                {
-                    wgKeyTimestamp = default(DateTime);
-                }
-                settings.SetWireGuardCredentials(Properties.Settings.Default.WireGuardClientPrivateKey, Properties.Settings.Default.WireGuardClientPublicKey, true, Properties.Settings.Default.WireGuardClientInternalIp, wgKeyTimestamp);
-                settings.WireGuardKeysRegenerationIntervalHours = Properties.Settings.Default.WireGuardKeysRegenerationIntervalHours;
                 settings.WireGuardPreferredPortIndex = Properties.Settings.Default.WireGuardPreferredPortIndex;
 
                 settings.UpdateEnabledServerPorts();
@@ -145,12 +116,6 @@ namespace IVPN.Models
                 Properties.Settings.Default.LastWgFastestServerId = settings.LastWgFastestServerId;
                 
                 Properties.Settings.Default.AlternateAPIHost = settings.AlternateAPIHost;
-
-                Properties.Settings.Default.Username = settings.Username;
-
-                Properties.Settings.Default.SessionToken = settings.SessionToken;
-                Properties.Settings.Default.VpnUser = settings.VpnUser;
-                Properties.Settings.Default.VpnSafePass = settings.VpnSafePass;
 
                 Properties.Settings.Default.MinimizeToTray = settings.MinimizeToTray;
                 Properties.Settings.Default.LaunchMinimized = settings.LaunchMinimized;
@@ -207,13 +172,8 @@ namespace IVPN.Models
                 Properties.Settings.Default.VpnProtocolType = (int)settings.VpnProtocolType;
 
                 // WireGuard
-                Properties.Settings.Default.WireGuardClientInternalIp = settings.WireGuardClientInternalIp;
-                Properties.Settings.Default.WireGuardKeysTimestamp = settings.WireGuardKeysTimestamp.ToString(DateTimeSerializationFormatString);
-                Properties.Settings.Default.WireGuardKeysRegenerationIntervalHours = settings.WireGuardKeysRegenerationIntervalHours;
                 Properties.Settings.Default.WireGuardPreferredPortIndex = settings.WireGuardPreferredPortIndex;
-                Properties.Settings.Default.WireGuardClientPrivateKey = settings.WireGuardClientPrivateKeySafe;
-                Properties.Settings.Default.WireGuardClientPublicKey = settings.WireGuardClientPublicKey;
-
+                
                 // Save
                 Properties.Settings.Default.Save();
 

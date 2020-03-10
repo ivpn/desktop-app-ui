@@ -1,4 +1,5 @@
-﻿using System;
+﻿using IVPN.Models.Session;
+using System;
 using System.Windows;
 
 namespace IVPN.Windows
@@ -11,7 +12,7 @@ namespace IVPN.Windows
         #region Static functionality
         private static SubscriptionExpireWindow __Instance;
 
-        public static void Show(Models.Session.SessionStatus sessionInfo, string username)
+        public static void Show(AccountStatus accountInfo, string username)
         {
             if (__Instance==null || __Instance.IsLoaded == false)
                 __Instance = new SubscriptionExpireWindow();
@@ -20,7 +21,7 @@ namespace IVPN.Windows
                 username = "";
             __Instance.Username = username;
 
-            __Instance.SetSessionInfo(sessionInfo);
+            __Instance.SetSessionInfo(accountInfo);
             __Instance.Show();
             if (__Instance.WindowState == WindowState.Minimized)
                 __Instance.WindowState = WindowState.Normal;
@@ -32,7 +33,7 @@ namespace IVPN.Windows
         }
         #endregion Static functionality
 
-        public Models.Session.SessionStatus Session { get; private set; }
+        public AccountStatus Account { get; private set; }
         
         public string Username { get; private set; }
 
@@ -41,9 +42,9 @@ namespace IVPN.Windows
             InitializeComponent();
         }
         
-        private void SetSessionInfo(Models.Session.SessionStatus accountInfo)
+        private void SetSessionInfo(AccountStatus accountInfo)
         {
-            Session = accountInfo;
+            Account = accountInfo;
 
             string title;
             string titleDays = "";
@@ -51,24 +52,24 @@ namespace IVPN.Windows
             string text;
 
             string renewButtonText = StringUtils.String("Button_RenewSubscription");
-            if (Session.IsOnFreeTrial)
+            if (Account.IsOnFreeTrial)
                 renewButtonText = StringUtils.String("Button_GetSubscription");
 
             int progressDaysLeft = 0;
 
-            if (!Session.IsActive)
+            if (!Account.IsActive)
             {
                 title = StringUtils.String("Label_SubscriptionExpired");
-                if (Session.IsOnFreeTrial)
+                if (Account.IsOnFreeTrial)
                     title = StringUtils.String("Label_FreeTrialExpired");
 
                 text = StringUtils.String("Label_AccountDaysLeftDescription_Expired");
-                if (Session.IsOnFreeTrial)
+                if (Account.IsOnFreeTrial)
                     text = StringUtils.String("Label_TrialDaysLeftDescription_Expired");
             }
             else
             {
-                int daysLeft = (int)(Session.ActiveUtil - DateTime.Now).TotalDays;
+                int daysLeft = (int)(Account.ActiveUtil - DateTime.Now).TotalDays;
                 if (daysLeft < 0)
                     daysLeft = 0;
 
@@ -77,11 +78,11 @@ namespace IVPN.Windows
                 if (daysLeft == 0)
                 {
                     title = StringUtils.String("Label_AccountDaysLeftTitle_LastDay");
-                    if (Session.IsOnFreeTrial)
+                    if (Account.IsOnFreeTrial)
                         title = StringUtils.String("Label_TrialDaysLeftTitle_LastDay");
 
                     text = StringUtils.String("Label_AccountDaysLeftDescription_LastDay");
-                    if (Session.IsOnFreeTrial)
+                    if (Account.IsOnFreeTrial)
                         text = StringUtils.String("Label_TrialDaysLeftDescription_LastDay");
 
                     titleDays = StringUtils.String("Days_Today");
@@ -89,11 +90,11 @@ namespace IVPN.Windows
                 else if (daysLeft == 1)
                 {
                     title = StringUtils.String("Label_AccountDaysLeftTitle_OneDay");
-                    if (Session.IsOnFreeTrial)
+                    if (Account.IsOnFreeTrial)
                         title = StringUtils.String("Label_TrialDaysLeftTitle_OneDay");
 
                     text = StringUtils.String("Label_AccountDaysLeftDescription_OneDay");
-                    if (Session.IsOnFreeTrial)
+                    if (Account.IsOnFreeTrial)
                         text = StringUtils.String("Label_TrialDaysLeftDescription_OneDay");
 
                     titleDays = StringUtils.String("Days_OneDay");
@@ -101,11 +102,11 @@ namespace IVPN.Windows
                 else
                 {
                     title = StringUtils.String("Label_AccountDaysLeftTitle_PARAMETRIZED");
-                    if (Session.IsOnFreeTrial)
+                    if (Account.IsOnFreeTrial)
                         title = StringUtils.String("Label_TrialDaysLeftTitle_PARAMETRIZED");
 
                     text = StringUtils.String("Label_TrialDaysLeftDescription_PARAMETRIZED");
-                    if (Session.IsOnFreeTrial)
+                    if (Account.IsOnFreeTrial)
                         text = StringUtils.String("Label_AccountDaysLeftDescription_PARAMETRIZED");
 
                     titleDays = StringUtils.String("Days_Days_PARAMETRIZED");
