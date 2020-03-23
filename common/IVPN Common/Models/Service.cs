@@ -402,38 +402,33 @@ namespace IVPN.Models
 
             __SyncInvoke.BeginInvoke(new Action(async () =>
                 {
-                    if (State == ServiceState.Connected ||
-                        State == ServiceState.ReconnectingOnService ||
-                        State == ServiceState.ReconnectingOnClient) // ReconnectingOnClient - was set by watchdog. Current connection failed - try to reconnect
+                    if ( State == ServiceState.ReconnectingOnClient )
                     {
-                        State = ServiceState.ReconnectingOnClient;
-
-                        if (__IsSuspended)
-                        {
-                            if (!await WaitUntilUnsuspended())
-                            {
-                                SetStatusDisconnected(failure, reason, reasonDescription);
-                                return;
-                            }
-                        }
-
+                        // Connection is already as required to be reconnected with the last connection parameters
+                        // Probably,  we are going to connect with changed port number 
+                        ReportProgress("Disconnected. Reconnecting ...");
+                        await WaitUntilUnsuspended();
                         DoConnect(__ConnectionTarget);
                         return;
                     }
 
-                SetStatusDisconnected(failure, reason, reasonDescription);
+                    if (State == ServiceState.Connected ||
+                        State == ServiceState.ReconnectingOnService)
+                    {
+                        ReportProgress("Disconnected. Going to reconnect ...");
+                        State = ServiceState.ReconnectingOnClient; // require to reconnect
+                        await WaitUntilUnsuspended();
+                    }
+                    else
+                    {
+                        ReportProgress("Disconnected");
+                        State = ServiceState.Disconnected;
+                    }
+
+                    ConnectionResult result = new ConnectionResult(false, reasonDescription);
+                    __ConnectionTCS.TrySetResult(result);
+                    Disconnected(failure, reason, reasonDescription);
                 }), null);
-        }
-
-        private void SetStatusDisconnected(bool failure, IVPNServer.DisconnectionReason reason, string reasonDescription)
-        {
-            ConnectionResult result = new ConnectionResult(false, reasonDescription);
-            __ConnectionTCS.TrySetResult(result);
-
-            ReportProgress("Disconnected");
-            State = ServiceState.Disconnected;
-                
-            Disconnected(failure, reason, reasonDescription);
         }
 
         private async Task<bool> WaitUntilUnsuspended()
