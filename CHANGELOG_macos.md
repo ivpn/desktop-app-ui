@@ -2,6 +2,11 @@
 
 All notable changes to this project will be documented in this file.
 
+## Version 2.11.3 - 2020-02-24
+
+[FIXED] Pause feature for WireGuard  
+[FIXED] Reset AntiTracker to default value on LogOut
+
 ## Version 2.11.2 - 2020-02-20
 
 [IMPROVED] WireGuard upgraded to 0.0.20200121  

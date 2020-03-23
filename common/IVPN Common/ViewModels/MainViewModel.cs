@@ -657,6 +657,13 @@ namespace IVPN.ViewModels
 
         async void Disconnected (bool failure, DisconnectionReason reason, string reasonDescription)
         {
+            if (__Service.State == ServiceState.ReconnectingOnClient)
+            {
+                Logging.Info("Disconnected event received. Reconnecting required. Reconnect...");
+                Connect();
+                return;
+            }
+            
             await DoDisconnectedAsync (failure, reason, reasonDescription);
         }
 
