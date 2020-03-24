@@ -295,7 +295,7 @@ namespace IVPN.Models
             var ct = __ConnectionTarget;
             if (ct == null
                 || ct.PortsToReconnect.Count <= 0 
-                || ct.OpenVpnProxyOptions.Port != 0) // in case of Proxy - no sense to change port
+                || ct.OpenVpnProxyOptions != null) // in case of Proxy - no sense to change port
                 return;
 
             if (!(State == ServiceState.Connecting
