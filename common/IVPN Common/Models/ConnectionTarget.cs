@@ -38,7 +38,7 @@ namespace IVPN
 
         public List<DestinationPort> PortsToReconnect { get; } = new List<DestinationPort>();
 
-        public IPAddress CurrentManualDns { get; }
+        public IPAddress CurrentManualDns { get; set; }
 
         public DestinationPort ChangeToNextPort()
         {

@@ -81,6 +81,8 @@ cp "$DAEMON_REPO_ABS_PATH/References/macOS/_deps/openvpn_inst/bin/openvpn" "./_i
 CheckLastResult
 
 echo "Copying 'obfsproxy' binaries..."
+#delete precompiled Pythin files
+find "$DAEMON_REPO_ABS_PATH/References/macOS/obfsproxy" -iname "*.pyc" -type f -delete
 cp -R "$DAEMON_REPO_ABS_PATH/References/macOS/obfsproxy" "./_image/IVPN.app/Contents/Resources"
 CheckLastResult
 
