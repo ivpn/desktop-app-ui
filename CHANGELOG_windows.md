@@ -2,6 +2,11 @@
 
 All notable changes to this project will be documented in this file.
 
+## Version 2.11.5 - 2020-03-26
+
+[IMPROVED] Reconnection functionality  
+[FIXED] "Automatically change port" feature
+
 ## Version 2.11.4 - 2020-03-04
 
 [FIXED] Crash because of the missing library on Windows Server
