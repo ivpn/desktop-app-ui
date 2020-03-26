@@ -743,7 +743,7 @@ namespace IVPN.ViewModels
                 ConnectionState = __Service.State;
             }
         }
-        
+
         private string GetAdjustedUsername(string username)
         {
             // MultiHop configuration is based just by adding "@exit_server_id" to the end of username
@@ -764,6 +764,13 @@ namespace IVPN.ViewModels
 
         async void Disconnected (bool failure, IVPNServer.DisconnectionReason reason, string reasonDescription)
         {
+            if (__Service.State == ServiceState.ReconnectingOnClient)
+            {
+                Logging.Info("Disconnected event received. Reconnecting required. Reconnect...");
+                Connect();
+                return;
+            }
+            
             await DoDisconnectedAsync (failure, reason, reasonDescription);
         }
 
