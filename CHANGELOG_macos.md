@@ -2,6 +2,10 @@
 
 All notable changes to this project will be documented in this file.
 
+## Version 2.11.7 - 2020-03-30
+
+[FIXED] Sending logs
+
 ## Version 2.11.6 - 2020-03-27
 
 [FIXED] Sometimes ping indicators are not updating because of an issue on the daemon side
