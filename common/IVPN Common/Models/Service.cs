@@ -60,14 +60,14 @@ namespace IVPN.Models
             SetProxyHandlers();
         }
 
-        public async Task<bool> InitializeAsync(int port)
+        public async Task<bool> InitializeAsync(int port, UInt64 secret)
         {
             if (__State != ServiceState.Uninitialized)
                 return true;
 
             __InitializationSignal.Reset();
 
-            __ServiceProxy.Initialize(port);
+            __ServiceProxy.Initialize(port, secret);
             await Task.Run(() =>
             {
                 while (!__ServiceProxy.IsExiting)
@@ -98,6 +98,10 @@ namespace IVPN.Models
         private void SetProxyHandlers()
         {
             Servers.OnPingUpdateRequired += Proxy.PingServers;
+
+            __ServiceProxy.SessionInfoChanged += (SessionInfo s) => AppState.Instance().SetSession(s);
+            
+
             __ServiceProxy.ServerListChanged += (VpnServersInfo servers) =>
             {
                 __SyncInvoke.BeginInvoke(new Action(() =>
@@ -148,6 +152,7 @@ namespace IVPN.Models
 
         private void ProcessProxyException(Exception exception)
         {
+            Logging.Info($"Proxy EXCEPTION: {exception} - {exception.StackTrace}");
             __SyncInvoke.BeginInvoke(new Action(() =>
             {
                 // There is a problems with communication to service(agent)
@@ -261,7 +266,7 @@ namespace IVPN.Models
         #region Connection process watchdog timer
         /// <summary>
         /// Connection watchdog timer: 
-        /// If long time no response from server during connection (from WAIT to next event from openvpm managment interfrace) 
+        /// If long time no response from server during connection (from WAIT to next event from openvpn managment interfrace) 
         /// - watchdog can cancel current connection process and try to connect to another port
         /// </summary>
         private Timer __ConnectingProcessWatchDogTimer;
@@ -360,33 +365,26 @@ namespace IVPN.Models
             }), null);            
         }
 
-        private void ServiceProxy_Connected(ulong timeSecFrom1970, string clientIP, string serverIP)
+        private void ServiceProxy_Connected(ulong timeSecFrom1970, string clientIP, string serverIP, VpnType vpnType)
         {
-            if (__ConnectionTarget == null || __ConnectionProgress == null || __ConnectionTCS == null)
-                return;
-
             if (State == ServiceState.CancellingConnection)
             {
                 Disconnect();
                 return;
             }
 
-            string vpnProtocolInfo;
-            if (__ConnectionTarget != null) // TODO: to think: we must use another mechanism for determining VPN protocol in use!
-                vpnProtocolInfo = (__ConnectionTarget.Server.VpnServer is OpenVPNVpnServer) ? VpnType.OpenVPN.ToString() : VpnType.WireGuard.ToString();
-            else
-                vpnProtocolInfo = "unknown error";
-
+            ServerLocation servLocation = Servers.GetServerByIP(IPAddress.Parse(serverIP), vpnType);
+            
             ConnectionInfo newConnectionInfo = new ConnectionInfo(
-                __ConnectionTarget.Server,
+                servLocation,
                 new DateTime(1970, 1, 1).AddSeconds(timeSecFrom1970),
                 clientIP,
                 serverIP,
-                vpnProtocolInfo
+                vpnType
             );
 
             ConnectionResult result = new ConnectionResult(true) {ConnectionInfo = newConnectionInfo};
-            __ConnectionTCS.TrySetResult(result);
+            __ConnectionTCS?.TrySetResult(result);
 
             __SyncInvoke.BeginInvoke(new Action(() =>
                 {
@@ -397,7 +395,7 @@ namespace IVPN.Models
             Connected(newConnectionInfo);
         }
 
-        private void ServiceProxy_Disconnected(bool failure, IVPNServer.DisconnectionReason reason, string reasonDescription)
+        private void ServiceProxy_Disconnected(bool failure, DisconnectionReason reason, string reasonDescription)
         {
 
             if (__ConnectionTarget == null || __ConnectionProgress == null || __ConnectionTCS == null)
@@ -441,14 +439,14 @@ namespace IVPN.Models
             }), null);
         }
 
-        private void SetStatusDisconnected(bool failure, IVPNServer.DisconnectionReason reason, string reasonDescription)
+        private void SetStatusDisconnected(bool failure, DisconnectionReason reason, string reasonDescription)
         {
             ConnectionResult result = new ConnectionResult(false, reasonDescription);
-            __ConnectionTCS.TrySetResult(result);
+            __ConnectionTCS?.TrySetResult(result);
 
             ReportProgress("Disconnected");
             State = ServiceState.Disconnected;
-
+                
             Disconnected(failure, reason, reasonDescription);
         }
 
@@ -493,17 +491,15 @@ namespace IVPN.Models
                 if (connectionTarget.OpenVpnProxyOptions == null)
                     __ServiceProxy.ConnectOpenVPN(
                         svr,
+                        connectionTarget.OpenVpnMultihopExitSrvId,
                         connectionTarget.Port,
-                        connectionTarget.CurrentManualDns,
-                        connectionTarget.OpenVpnUsername,
-                        connectionTarget.OpenVpnPassword);
+                        connectionTarget.CurrentManualDns);
                 else
                     __ServiceProxy.ConnectOpenVPN(
                         svr,
+                        connectionTarget.OpenVpnMultihopExitSrvId,
                         connectionTarget.Port,
                         connectionTarget.CurrentManualDns,
-                        connectionTarget.OpenVpnUsername,
-                        connectionTarget.OpenVpnPassword,
                         connectionTarget.OpenVpnProxyOptions.Type,
                         connectionTarget.OpenVpnProxyOptions.Server,
                         connectionTarget.OpenVpnProxyOptions.Port,
@@ -512,15 +508,10 @@ namespace IVPN.Models
             }
             else if (connectionTarget.Server.VpnServer is WireGuardVpnServerInfo)
             {
-                if (string.IsNullOrEmpty(connectionTarget.WireGuardInternalClientIp) || string.IsNullOrEmpty(connectionTarget.WireGuardLocalPrivateKey))
-                    throw new Exception("Unable to connect: WireGuard configuration not defined");
-
                 WireGuardVpnServerInfo svr = connectionTarget.Server.VpnServer as WireGuardVpnServerInfo;
                 __ServiceProxy.ConnectWireGuard(svr, 
                     connectionTarget.Port,
-                    connectionTarget.CurrentManualDns,
-                    connectionTarget.WireGuardInternalClientIp,
-                    connectionTarget.WireGuardLocalPrivateKey);
+                    connectionTarget.CurrentManualDns);
             }
             else
                 throw new Exception($"[{nameof(DoConnect)}] Internal exception. Unexpected type of connectionTarget ({connectionTarget.GetType()})");
@@ -667,16 +658,6 @@ namespace IVPN.Models
                 }
             }
         }
-        /// <summary>
-        /// Request service to remove service-crash file
-        /// (Platform.ServiceCrashInfoFilePath)
-        /// 
-        /// Client itseld can not remove it, because file was creaded by service with admin rights
-        /// </summary>
-        public void RemoveServiceCrashFile()
-        {
-            __ServiceProxy.RemoveServiceCrashFile();
-        }
 
         public async Task PauseOn()
         {
@@ -714,5 +695,30 @@ namespace IVPN.Models
             return isSuccess;
         }
         #endregion // DNS filter
+
+        public async Task<Responses.SessionNewResponse> Login(string accountID, bool forceDeleteAllSesssions)
+        {
+            return await __ServiceProxy.LogIn(accountID, forceDeleteAllSesssions);
+        }
+
+        public async Task Logout()
+        {
+            await __ServiceProxy.LogOut();
+        }
+
+        public async Task<Responses.SessionStatusResponse> SessionStatus()
+        {
+            return await __ServiceProxy.SessionStatus();
+        }
+
+        public async Task WireGuardGeneratedKeys(bool generateIfNecessary)
+        {
+            await __ServiceProxy.WireGuardGeneratedKeys(generateIfNecessary);
+        }
+
+        public async Task WireGuardKeysSetRotationInterval(Int64 interval)
+        {
+            await __ServiceProxy.WireGuardKeysSetRotationInterval(interval);
+        }
     }
 }
