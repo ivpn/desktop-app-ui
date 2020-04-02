@@ -76,6 +76,12 @@ echo "Copying 'etc'..."
 cp -R "$DAEMON_REPO_ABS_PATH/References/macOS/etc" "./_image/IVPN.app/Contents/Resources"
 CheckLastResult
 
+echo "Setting correct file permissions for 'etc' folder ..."
+sudo chmod 0400 ./_image/IVPN.app/Contents/Resources/etc/*.*
+CheckLastResult
+sudo chmod 0700 ./_image/IVPN.app/Contents/Resources/etc/*.sh
+CheckLastResult
+
 echo "Copying 'openvpn'..."
 cp "$DAEMON_REPO_ABS_PATH/References/macOS/_deps/openvpn_inst/bin/openvpn" "./_image/IVPN.app/Contents/MacOS/openvpn"
 CheckLastResult
@@ -97,7 +103,7 @@ echo "Copying daemon..."
 cp -R "$DAEMON_REPO_ABS_PATH/IVPN Agent" "./_image/IVPN.app/Contents/MacOS"
 echo "Copying CLI..."
 mkdir "./_image/IVPN.app/Contents/MacOS/cli"
-cp -R "$CLI_REPO_ABS_PATH/ivpn" "./_image/IVPN.app/Contents/MacOS/cli"
+cp -R "$CLI_REPO_ABS_PATH/References/macOS/_out_bin/ivpn" "./_image/IVPN.app/Contents/MacOS/cli"
 CheckLastResult
 
 echo "Removing unnecessary debug files..."
