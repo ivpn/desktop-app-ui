@@ -9,6 +9,7 @@ namespace IVPN.Requests
     public abstract class Request
     {
         public string Command => GetType().Name;
+        public long Idx { get; set; }
     }
 
     public class Hello : Request

@@ -8,7 +8,7 @@ namespace IVPN.Responses
     [Serializable]
     public class IVPNResponse {
         public string Command { get; set; }
-        public int Idx { get; set; }
+        public long Idx { get; set; }
     }
 
     public class IVPNEmptyResponse : IVPNResponse { }

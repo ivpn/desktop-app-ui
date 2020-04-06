@@ -6,7 +6,6 @@ using System.Threading.Tasks;
 using Newtonsoft.Json;
 using System.Threading;
 using System.Runtime.CompilerServices;
-using System.Collections.Concurrent;
 using System.Linq;
 using System.Net;
 using IVPN.VpnProtocols;
@@ -74,8 +73,6 @@ namespace IVPN
         private readonly EventWaitHandle __HoldSignal = new AutoResetEvent(false);
         private bool __ServiceConnected;
 
-        private readonly SemaphoreSlim __SyncCallSemaphore = new SemaphoreSlim(1);
-        private readonly BlockingCollection<Responses.IVPNResponse> __BlockingCollection = new BlockingCollection<Responses.IVPNResponse>();
         private CancellationTokenSource __CancellationToken;
 
         public void Initialize(int port, UInt64 secret)
@@ -102,7 +99,7 @@ namespace IVPN
                 SendRequest(new Requests.Hello { Version = Platform.Version, Secret = Secret, GetServersList = true, GetStatus = true });
 
 
-                while (HandleRequest())
+                while (HandleResponse())
                 {
 
                 }
@@ -198,7 +195,7 @@ namespace IVPN
                 throw retException;
         }
 
-        private bool HandleRequest()
+        private bool HandleResponse()
         {
             if (!EventsEnabled)
             {
@@ -313,12 +310,10 @@ namespace IVPN
 
                     // :: __BlockingCollection ::
                     case "KillSwitchStatusResp":
-                        var kssResp = JsonConvert.DeserializeObject<Responses.IVPNKillSwitchStatusResponse>(line);
-                        __BlockingCollection.Add(kssResp);
+                        responseReceived(JsonConvert.DeserializeObject<Responses.IVPNKillSwitchStatusResponse>(line));
                         break;
                     case "KillSwitchGetIsPestistentResp":
-                        var kspResp = JsonConvert.DeserializeObject<Responses.IVPNKillSwitchGetIsPestistentResponse>(line);
-                        __BlockingCollection.Add(kspResp);
+                        responseReceived(JsonConvert.DeserializeObject<Responses.IVPNKillSwitchGetIsPestistentResponse>(line));
                         break;
 
                     case "SessionNewResp":
@@ -334,26 +329,22 @@ namespace IVPN
                                     snResp.Session.WgKeyGenerated,
                                     snResp.Session.WgKeysRegenInerval);
                             }
-                            __BlockingCollection.Add(snResp);
+                            responseReceived(snResp);
                         }
                         break;
 
                     case "SessionStatusResp":
-                        var ssResp = JsonConvert.DeserializeObject<Responses.SessionStatusResponse>(line);
-                        __BlockingCollection.Add(ssResp);
+                        responseReceived(JsonConvert.DeserializeObject<Responses.SessionStatusResponse>(line));
                         break;
 
                     case "SetAlternateDNSResp":
-                        var adnsResp = JsonConvert.DeserializeObject<Responses.IVPNSetAlternateDnsResponse>(line);
-                        __BlockingCollection.Add(adnsResp);
+                        responseReceived(JsonConvert.DeserializeObject<Responses.IVPNSetAlternateDnsResponse>(line));
                         break;
                     case "EmptyResp":
-                        var erResp = JsonConvert.DeserializeObject<Responses.IVPNEmptyResponse>(line);
-                        __BlockingCollection.Add(erResp);
+                        responseReceived(JsonConvert.DeserializeObject<Responses.IVPNEmptyResponse>(line));
                         break;
                     case "ErrorResp":
-                        var errResp = JsonConvert.DeserializeObject<Responses.IVPNErrorResponse>(line);
-                        __BlockingCollection.Add(errResp);
+                        responseReceived(JsonConvert.DeserializeObject<Responses.IVPNErrorResponse>(line));
                         break;
                 }
             }
@@ -382,34 +373,17 @@ namespace IVPN
             SessionInfoChanged(s);
         }
 
-        private T GetSyncResponse<T>() where T : Responses.IVPNResponse
-        {
-            var result = __BlockingCollection.TryTake(out var response, SYNC_RESPONSE_TIMEOUT_MS, __CancellationToken.Token);
-            if (!result)
-                throw new TimeoutException("SyncResponse took more time than expected.");
-
-            if (response is Responses.IVPNErrorResponse errorResponse)
-                throw new IVPNClientProxyException(errorResponse.ErrorMessage);
-
-            T ret = null;
-            try
-            {
-                ret = (T)response;
-            }
-            catch (Exception ex)
-            {
-                Logging.Info($"Error casting - expected:{typeof(T).FullName}, received:{response.GetType()}:" + ex);
-            }
-            return ret;
-        }
-
         private void CheckConnected()
         {
             if (!ServiceConnected)
                 throw new IVPNClientProxyNotConnectedException("Proxy is not connected to service");
         }
 
-        private void SendRequest(   Requests.Request request)
+        #region Send/Recv
+        private long __RequestCounter;
+        private List<Action<Responses.IVPNResponse>> __ResponseWaiters = new List<Action<Responses.IVPNResponse>>();
+
+        private void SendRequest(Requests.Request request)
         {
             Logging.Info("Sending: " + request);
 
@@ -421,8 +395,89 @@ namespace IVPN
             {
                 __StreamWriter.WriteLine(JsonConvert.SerializeObject(request));
                 __StreamWriter.Flush();
-            }            
+            }
         }
+
+        private void responseReceived(Responses.IVPNResponse response)
+        {
+            lock (__ResponseWaiters)
+            {
+                foreach (var waiter in __ResponseWaiters)
+                {
+                    waiter(response);
+                }
+            }
+        }
+
+        private async Task<Responses.IVPNResponse> SendRecvAsync(Requests.Request request, TimeSpan timeout) 
+        {
+            // initialize waiter
+            Responses.IVPNResponse response = null;
+            var evt = new ManualResetEvent(false);
+            Action<Responses.IVPNResponse> waiter = new Action<Responses.IVPNResponse>((resp) =>
+            {
+                if (resp.Idx == request.Idx)
+                {
+                    if (response != null)
+                        return;
+                    response = resp; 
+                    evt.Set();
+                }
+            });
+
+            try
+            {
+                // register waiter
+                lock (__ResponseWaiters)
+                {
+                    __RequestCounter += 1;
+                    if (__RequestCounter == 0)
+                        __RequestCounter = 1;
+                    request.Idx = __RequestCounter;
+
+                    __ResponseWaiters.Add(waiter);
+                }
+
+                // send request
+                SendRequest(request);
+
+                // wait for response
+                await Task.Run(() =>
+                {
+                    if (WaitHandle.WaitTimeout == WaitHandle.WaitAny(new WaitHandle[] { evt, __CancellationToken.Token.WaitHandle }, timeout))
+                        throw new TimeoutException("Response timeout");
+                });
+            }
+            finally
+            {
+                // un-register waiter
+                lock (__ResponseWaiters)
+                {
+                    __ResponseWaiters.Remove(waiter);
+                }
+            }
+
+            return response;
+        }
+
+        private async Task<TResult> SendRecvRequestAsync<TResult>(Requests.Request request) where TResult : Responses.IVPNResponse
+        {
+            var response = await SendRecvAsync(request, TimeSpan.FromMilliseconds(SYNC_RESPONSE_TIMEOUT_MS));
+            if (response is Responses.IVPNErrorResponse errorResponse)
+                throw new IVPNClientProxyException(errorResponse.ErrorMessage);
+
+            TResult ret = null;
+            try
+            {
+                ret = (TResult)response;
+            }
+            catch (Exception ex)
+            {
+                Logging.Info($"Error casting - expected:{typeof(TResult).FullName}, received:{response.GetType()}:" + ex);
+            }
+            return ret;
+        }
+        #endregion // SendRecv
 
         public void SetPreference(string key, string value)
         {
@@ -487,7 +542,7 @@ namespace IVPN
                  WgLocalIP= WgLocalIP,
                  WgKeyGenerated= WgKeyGenerated
             };
-            await SendSyncRequestAsync<Responses.IVPNEmptyResponse>(request);
+            await SendRecvRequestAsync<Responses.IVPNEmptyResponse>(request);
         }
 
         public void Disconnect()
@@ -510,13 +565,13 @@ namespace IVPN
 
         public async Task<bool> KillSwitchGetIsEnabled()
         {
-            return (await SendSyncRequestAsync<Responses.IVPNKillSwitchStatusResponse>(new Requests.KillSwitchGetStatus())).IsEnabled;
+            return (await SendRecvRequestAsync<Responses.IVPNKillSwitchStatusResponse>(new Requests.KillSwitchGetStatus())).IsEnabled;
         }
 
         public async Task KillSwitchSetEnabled(bool isEnabled)
         {            
             var request = new Requests.KillSwitchSetEnabled() {IsEnabled = isEnabled};
-            await SendSyncRequestAsync<Responses.IVPNEmptyResponse>(request);
+            await SendRecvRequestAsync<Responses.IVPNEmptyResponse>(request);
         }
 
         public void KillSwitchSetAllowLAN(bool allowLAN)
@@ -533,45 +588,45 @@ namespace IVPN
 
         public async Task KillSwitchSetIsPersistent(bool isPersistent)
         {
-            await SendSyncRequestAsync<Responses.IVPNEmptyResponse>(new Requests.KillSwitchSetIsPersistent() { IsPersistent = isPersistent });                            
+            await SendRecvRequestAsync<Responses.IVPNEmptyResponse>(new Requests.KillSwitchSetIsPersistent() { IsPersistent = isPersistent });                            
         }
 
         public async Task<bool> KillSwitchGetIsPersistent()
         {
-            return (await SendSyncRequestAsync<Responses.IVPNKillSwitchGetIsPestistentResponse>(
+            return (await SendRecvRequestAsync<Responses.IVPNKillSwitchGetIsPestistentResponse>(
                     new Requests.KillSwitchGetIsPestistent())).IsPersistent;            
         }
 
         public async Task PauseConnection()
         {
-            await SendSyncRequestAsync<Responses.IVPNEmptyResponse>(new Requests.PauseConnection());
+            await SendRecvRequestAsync<Responses.IVPNEmptyResponse>(new Requests.PauseConnection());
         }
 
         public async Task ResumeConnection()
         {
-            await SendSyncRequestAsync<Responses.IVPNEmptyResponse>(new Requests.ResumeConnection());
+            await SendRecvRequestAsync<Responses.IVPNEmptyResponse>(new Requests.ResumeConnection());
         }
 
         public async Task<bool> SetAlternateDns(IPAddress dns)
         {
-            return (await SendSyncRequestAsync<Responses.IVPNSetAlternateDnsResponse>(new Requests.SetAlternateDns {DNS = dns.ToString()})).IsSuccess;
+            return (await SendRecvRequestAsync<Responses.IVPNSetAlternateDnsResponse>(new Requests.SetAlternateDns {DNS = dns.ToString()})).IsSuccess;
         }
 
         public async Task<Responses.SessionNewResponse> LogIn(string accountId, bool forceLogin)
         {
-            return await SendSyncRequestAsync<Responses.SessionNewResponse>(new Requests.SessionNew { AccountID = accountId, ForceLogin = forceLogin });
+            return await SendRecvRequestAsync<Responses.SessionNewResponse>(new Requests.SessionNew { AccountID = accountId, ForceLogin = forceLogin });
         }
 
         public async Task<Responses.SessionStatusResponse> SessionStatus()
         {
-            return await SendSyncRequestAsync<Responses.SessionStatusResponse>(new Requests.SessionStatus{});
+            return await SendRecvRequestAsync<Responses.SessionStatusResponse>(new Requests.SessionStatus{});
         }
 
         public async Task LogOut()
         {
             try
             {
-                await SendSyncRequestAsync<Responses.IVPNEmptyResponse>(new Requests.SessionDelete());
+                await SendRecvRequestAsync<Responses.IVPNEmptyResponse>(new Requests.SessionDelete());
             }
             finally
             {
@@ -581,26 +636,12 @@ namespace IVPN
 
         public async Task WireGuardGeneratedKeys(bool onlyUpdateIfNecessary)
         {
-            await SendSyncRequestAsync<Responses.IVPNEmptyResponse>(new Requests.WireGuardGenerateNewKeys { OnlyUpdateIfNecessary = onlyUpdateIfNecessary });
+            await SendRecvRequestAsync<Responses.IVPNEmptyResponse>(new Requests.WireGuardGenerateNewKeys { OnlyUpdateIfNecessary = onlyUpdateIfNecessary });
         }
 
         public async Task WireGuardKeysSetRotationInterval(Int64 interval)
         {
-            await SendSyncRequestAsync<Responses.IVPNEmptyResponse>(new Requests.WireGuardSetKeysRotationInterval { Interval = interval });
-        }
-
-        private async Task<TResult> SendSyncRequestAsync<TResult>(Requests.Request request) where TResult : Responses.IVPNResponse
-        {
-            await __SyncCallSemaphore.WaitAsync(__CancellationToken.Token);
-            try
-            {
-                SendRequest(request);
-                return await Task.Run(() => GetSyncResponse<TResult>());
-            }
-            finally
-            {
-                __SyncCallSemaphore.Release();
-            }
+            await SendRecvRequestAsync<Responses.IVPNEmptyResponse>(new Requests.WireGuardSetKeysRotationInterval { Interval = interval });
         }
 
         public void Exit()
