@@ -518,6 +518,27 @@ namespace IVPN.Models
 
         }
 
+        public async Task SetCredentials(
+            string AccountID,
+            string Session,
+            string OvpnUser,
+            string OvpnPass,
+            string WgPublicKey,
+            string WgPrivateKey,
+            string WgLocalIP,
+            Int64 WgKeyGenerated)
+        {
+            await __ServiceProxy.SetCredentials(
+             AccountID,
+             Session,
+             OvpnUser,
+             OvpnPass,
+             WgPublicKey,
+             WgPrivateKey,
+             WgLocalIP,
+             WgKeyGenerated);
+        }
+
         /// <summary>
         /// Register connection progress object
         /// All registered objects will be notified about progress during connection

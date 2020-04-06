@@ -35,7 +35,6 @@ namespace IVPN
     /// </summary>
     public class IVPNClientProxy
     {
-        //private const int SYNC_RESPONSE_TIMEOUT_MS = 40000;
         private const int SYNC_RESPONSE_TIMEOUT_MS = 1000 * 60 * 6;
 
         public delegate void ServerListChangedHandler(VpnServersInfo vpnServers);
@@ -466,6 +465,29 @@ namespace IVPN
                     Port = port
                 }
             });
+        }
+
+        public async Task SetCredentials(
+            string AccountID,
+            string Session,
+            string OvpnUser,
+            string OvpnPass,
+            string WgPublicKey,
+            string WgPrivateKey,
+            string WgLocalIP,
+            Int64 WgKeyGenerated)
+        {
+            var request = new Requests.SetCredentials {
+                 AccountID= AccountID,
+                 Session= Session,
+                 OvpnUser= OvpnUser,
+                 OvpnPass= OvpnPass,
+                 WgPublicKey= WgPublicKey,
+                 WgPrivateKey= WgPrivateKey,
+                 WgLocalIP= WgLocalIP,
+                 WgKeyGenerated= WgKeyGenerated
+            };
+            await SendSyncRequestAsync<Responses.IVPNEmptyResponse>(request);
         }
 
         public void Disconnect()

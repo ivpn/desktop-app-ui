@@ -10,6 +10,7 @@ using System.IO;
 using System.Xml.Serialization;
 using IVPN.Models.Configuration;
 using IVPN.VpnProtocols;
+using IVPN.Lib;
 
 namespace IVPN
 {
@@ -346,6 +347,67 @@ namespace IVPN
                 Logging.Info("[ERROR] Failed to reset settings to defaults: " + ex);
                 throw;
             }
+        }
+
+        public bool GetOldStyleCredentials(
+            out string AccountID,
+            out string Session,
+            out string OvpnUser,
+            out string OvpnPass,
+            out string WgPublicKey,
+            out string WgPrivateKey,
+            out string WgLocalIP,
+            out Int64 WgKeyGenerated)
+        {
+            AccountID = "";
+            Session = "";
+            OvpnUser = "";
+            OvpnPass = "";
+            WgPublicKey = "";
+            WgPrivateKey = "";
+            WgLocalIP = "";
+            WgKeyGenerated = 0;
+
+            // READ OLD-STYLE CREDENTIALS (compatibility with older client versions) 
+            // USERNAME
+            AccountID = NSUserDefaults.StandardUserDefaults.StringForKey("Username");
+            if (string.IsNullOrEmpty(AccountID))
+                return false; // unknown user - do not load the rest
+            // SESSION
+            Session = NSUserDefaults.StandardUserDefaults.StringForKey("SessionToken");
+            OvpnUser = NSUserDefaults.StandardUserDefaults.StringForKey("VpnUser");
+            OvpnPass = CryptoUtil.DecryptString(KeyChain.GetSecuredValueFromKeychain(AccountID, "VpnSafePass"));
+            // WIREGUARD
+            WgPublicKey = NSUserDefaults.StandardUserDefaults.StringForKey("WireGuardClientPublicKey");
+            WgLocalIP = NSUserDefaults.StandardUserDefaults.StringForKey("WireGuardClientInternalIp");
+            WgPrivateKey = CryptoUtil.DecryptString(KeyChain.GetSecuredValueFromKeychain(AccountID, "WireGuardClientPrivateKeySafe"));
+            string keysTimestampString = KeyChain.GetSecuredValueFromKeychain(AccountID, "WireGuardKeysTimestamp");
+            if (string.IsNullOrEmpty(keysTimestampString) || !DateTime.TryParse(keysTimestampString, out DateTime keysTimestamp))
+                keysTimestamp = default;
+            WgKeyGenerated = IVPN_Helpers.DataConverters.DateTimeConverter.ToUnixTime(keysTimestamp);
+
+            // REMOVE ALL OLD-STYLE CREDENTIALS
+            bool isHasUsername = !string.IsNullOrEmpty(AccountID);
+            // Remove user password
+            if (isHasUsername)
+                KeyChain.RemoveCredentialFromKeychain(AccountID);
+            // Remove wireguard info
+            NSUserDefaults.StandardUserDefaults.RemoveObject("WireGuardClientPublicKey");
+            NSUserDefaults.StandardUserDefaults.RemoveObject("WireGuardClientInternalIp");
+            if (isHasUsername)
+            {
+                KeyChain.RemoveSecuredValueFromKeychain(AccountID, "WireGuardClientPrivateKeySafe");
+                KeyChain.RemoveSecuredValueFromKeychain(AccountID, "WireGuardKeysTimestamp");
+            }
+            // Remove session info
+            NSUserDefaults.StandardUserDefaults.RemoveObject("SessionToken");
+            NSUserDefaults.StandardUserDefaults.RemoveObject("VpnUser");
+            if (isHasUsername)
+                KeyChain.RemoveSecuredValueFromKeychain(AccountID, "VpnSafePass");
+
+            if (string.IsNullOrEmpty(Session))
+                return false;
+            return true;
         }
     }
 }

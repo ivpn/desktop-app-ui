@@ -132,4 +132,16 @@ namespace IVPN.Requests
     {
         public Int64 Interval; // seconds
     }
+
+    public class SetCredentials : Request
+    {
+        public string AccountID;
+        public string Session;
+        public string OvpnUser;
+        public string OvpnPass;
+        public string WgPublicKey;
+        public string WgPrivateKey;
+        public string WgLocalIP;
+        public Int64 WgKeyGenerated;
+    }
 }

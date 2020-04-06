@@ -106,6 +106,26 @@ namespace IVPN.Models.Configuration
             Save();
         }
 
+        public bool GetOldStyleCredentials(
+            out string AccountID,
+            out string Session,
+            out string OvpnUser,
+            out string OvpnPass,
+            out string WgPublicKey,
+            out string WgPrivateKey,
+            out string WgLocalIP,
+            out Int64 WgKeyGenerated)
+        {
+            return __SettingsProvider.GetOldStyleCredentials(out AccountID,
+                out Session,
+                out OvpnUser,
+                out OvpnPass,
+                out WgPublicKey,
+                out WgPrivateKey,
+                out WgLocalIP,
+                out WgKeyGenerated);
+        }
+
         #region Temporary settings
         private AppSettings __FreezedSettings;
 

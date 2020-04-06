@@ -18,7 +18,18 @@ namespace IVPN.Interfaces
 
         event EventHandler ServiceInitialized;
         event EventHandler ServiceExited;
-        
+
+        Task SetCredentials(
+            string AccountID,
+            string Session,
+            string OvpnUser,
+            string OvpnPass,
+            string WgPublicKey,
+            string WgPrivateKey,
+            string WgLocalIP,
+            Int64 WgKeyGenerated);
+
+
         Task<ConnectionResult> Connect(IProgress<string> progress,
                                  CancellationToken cancellationToken,
                                  ConnectionTarget connectionTarget);

@@ -291,6 +291,27 @@ namespace IVPN.ViewModels
         
         async void ServiceInitializedAsync(object sender, EventArgs e)
         {
+            // old versions compatibility. Sending old-stype credentials (if exists) to a service
+            if (Settings.GetOldStyleCredentials(out string AccountID,
+                out string Session,
+                out string OvpnUser,
+                out string OvpnPass,
+                out string WgPublicKey,
+                out string WgPrivateKey,
+                out string WgLocalIP,
+                out Int64 WgKeyGenerated))
+            {
+                Logging.Info("Upgrading old-style credentials...");
+                try
+                {
+                    await __Service.SetCredentials(AccountID, Session, OvpnUser, OvpnPass, WgPublicKey, WgPrivateKey, WgLocalIP, WgKeyGenerated);
+                }
+                catch (Exception ex)
+                {
+                    Logging.Info("Failed to update old-style credentials: ", ex.Message);
+                }
+            }
+
             __Service.KillSwitchAllowLANMulticast = Settings.FirewallAllowLANMulticast;
             __Service.KillSwitchAllowLAN = Settings.FirewallAllowLAN;
 
