@@ -184,7 +184,7 @@ namespace IVPN.ViewModels
                     IsMultiHop = false;
 
                     // select connected server
-                    SelectedServer = ConnectionInfo.Server;
+                    SetSelectedServer(ConnectionInfo.Server, false);
                 }
             };
 

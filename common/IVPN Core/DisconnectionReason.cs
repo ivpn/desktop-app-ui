@@ -4,5 +4,6 @@
     {
         Unknown,
         AuthenticationError,
+        DisconnectRequested
     }        
 }

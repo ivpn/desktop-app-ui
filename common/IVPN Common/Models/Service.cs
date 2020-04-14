@@ -356,9 +356,6 @@ namespace IVPN.Models
                
         private void ServiceProxy_ConnectionState(string state, string stateAdditionalInfo)
         {
-            if (__ConnectionTarget == null || __ConnectionProgress == null || __ConnectionTCS == null)
-                return;
-
             __SyncInvoke.BeginInvoke(new Action(() =>
             {
                 ProcessNewConnectionState(state, stateAdditionalInfo);
@@ -397,15 +394,16 @@ namespace IVPN.Models
 
         private void ServiceProxy_Disconnected(bool failure, DisconnectionReason reason, string reasonDescription)
         {
-
-            if (__ConnectionTarget == null || __ConnectionProgress == null || __ConnectionTCS == null)
-                return;
-
             __SyncInvoke.BeginInvoke(new Action(async () =>
             {
-                if (State == ServiceState.Connected ||
-                    State == ServiceState.ReconnectingOnService ||
-                    State == ServiceState.ReconnectingOnClient) // ReconnectingOnClient - was set by watchdog. Current connection failed - try to reconnect
+                var connTarget = __ConnectionTarget;
+                if (connTarget != null
+                    && reason !=  DisconnectionReason.DisconnectRequested
+                    && (
+                        State == ServiceState.Connected ||
+                        State == ServiceState.ReconnectingOnService ||
+                        State == ServiceState.ReconnectingOnClient // ReconnectingOnClient - was set by watchdog. Current connection failed - try to reconnect
+                    )) 
                 {
                     if (State != ServiceState.ReconnectingOnClient)
                     {
@@ -431,7 +429,7 @@ namespace IVPN.Models
                         return;
                     }
 
-                    DoConnect(__ConnectionTarget);
+                    DoConnect(connTarget);
                     return;
                 }
 

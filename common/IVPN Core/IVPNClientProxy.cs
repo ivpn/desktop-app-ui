@@ -16,19 +16,6 @@ using IVPN.RESTApi;
 
 namespace IVPN
 {
-    public enum ClientState
-    {
-        WAIT,
-        RESOLVE,
-        AUTH,
-        GET_CONFIG,
-        ASSIGN_IP,
-        ADD_ROUTES,
-        CONNECTED,
-        RECONNECTING,
-        DISCONNECTED
-    }
-
     /// <summary>
     /// Client-application-side communication with service (IVPNProtocolClient)
     /// </summary>
