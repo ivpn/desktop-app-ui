@@ -1,8 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<document type="com.apple.InterfaceBuilder3.Cocoa.XIB" version="3.0" toolsVersion="14490.70" targetRuntime="MacOSX.Cocoa" propertyAccessControl="none">
+<document type="com.apple.InterfaceBuilder3.Cocoa.XIB" version="3.0" toolsVersion="16096" targetRuntime="MacOSX.Cocoa" propertyAccessControl="none" useAutolayout="YES">
     <dependencies>
-        <deployment identifier="macosx"/>
-        <plugIn identifier="com.apple.InterfaceBuilder.CocoaPlugin" version="14490.70"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.CocoaPlugin" version="16096"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
     <objects>
@@ -18,16 +17,17 @@
                 <outlet property="GuiBtnLaunchAtLogin" destination="65" id="bc6-VD-ezS"/>
                 <outlet property="GuiBtnProtocolTypeOpenVPN" destination="prz-eJ-eMK" id="AQP-qF-NKa"/>
                 <outlet property="GuiBtnProtocolTypeWireGuard" destination="HeH-eE-QoO" id="z9f-0e-5Vr"/>
+                <outlet property="GuiBtnWireguardTooltip" destination="XVn-DK-9bw" id="LYu-a5-dsy"/>
                 <outlet property="GuiButtonOpenvpnTooltip" destination="bGf-d5-IJR" id="ZlN-MS-lOR"/>
                 <outlet property="GuiPanelOpenvpnTooltip" destination="PqD-Oi-UEv" id="HKn-Cc-O53"/>
                 <outlet property="GuiPanelWireguardConfigDetails" destination="Ub4-KR-MaY" id="tHF-CT-gQT"/>
+                <outlet property="GuiPanelWireguardTooltip" destination="6Pc-oM-jWg" id="hO6-Bh-viE"/>
                 <outlet property="GuiProgressViewWireguardKeysGeneration" destination="Vvx-nJ-Xc1" id="JxE-3B-Sxu"/>
                 <outlet property="GuiProgressWireguardKeysGeneration" destination="95a-lP-FF3" id="H95-Df-Owi"/>
                 <outlet property="GuiProtocolsConfigTabView" destination="bLr-1Y-F2K" id="1Wf-HC-SDP"/>
                 <outlet property="GuiTabConfigOpenVPN" destination="M8l-Ro-Ctk" id="7a6-AQ-gru"/>
                 <outlet property="GuiTabConfigWireGuard" destination="E95-3s-Dlh" id="A3l-Oc-S35"/>
                 <outlet property="GuiViewWireguardConfig" destination="82z-gM-6Hz" id="gLp-Pq-vmh"/>
-                <outlet property="GuiWireGuardDescription" destination="xFK-vj-5yB" id="K6E-jG-B8I"/>
                 <outlet property="GuiWireguardConfigDetailsProgressIndicator" destination="U2i-bj-VqZ" id="5rm-kD-ZPk"/>
                 <outlet property="GuiWireguardConfigDetailsView" destination="PMC-ER-FDp" id="vh7-se-NPl"/>
                 <outlet property="GuiWireguardConfigDetailsViewProgress" destination="h5U-VJ-qyr" id="odD-VS-cN3"/>
@@ -51,9 +51,9 @@
             <rect key="screenRect" x="0.0" y="0.0" width="1440" height="877"/>
             <view key="contentView" id="3">
                 <rect key="frame" x="0.0" y="0.0" width="562" height="577"/>
-                <autoresizingMask key="autoresizingMask"/>
+                <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                 <subviews>
-                    <customView id="105">
+                    <customView fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="105">
                         <rect key="frame" x="0.0" y="0.0" width="562" height="577"/>
                         <autoresizingMask key="autoresizingMask" flexibleMinY="YES"/>
                     </customView>
@@ -122,7 +122,7 @@
             <rect key="frame" x="0.0" y="0.0" width="562" height="342"/>
             <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
             <subviews>
-                <button id="65">
+                <button fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="65">
                     <rect key="frame" x="137" y="234" width="395" height="18"/>
                     <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
                     <buttonCell key="cell" type="check" title="Launch at login" bezelStyle="regularSquare" imagePosition="left" state="on" inset="2" id="74">
@@ -133,7 +133,7 @@
                         <action selector="OnLaunchAtLoginChanged:" target="-2" id="Oas-OE-eMS"/>
                     </connections>
                 </button>
-                <button id="66">
+                <button fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="66">
                     <rect key="frame" x="137" y="210" width="395" height="18"/>
                     <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
                     <buttonCell key="cell" type="check" title="Show main window on launch" bezelStyle="regularSquare" imagePosition="left" state="on" inset="2" id="73">
@@ -148,7 +148,7 @@
                         </binding>
                     </connections>
                 </button>
-                <button id="67">
+                <button fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="67">
                     <rect key="frame" x="137" y="275" width="395" height="18"/>
                     <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
                     <buttonCell key="cell" type="check" title="When joining insecure WiFi networks" bezelStyle="regularSquare" imagePosition="left" state="on" inset="2" id="72">
@@ -159,7 +159,7 @@
                         <binding destination="-2" name="value" keyPath="settings.ServiceConnectOnInsecureWifi" id="227"/>
                     </connections>
                 </button>
-                <textField horizontalHuggingPriority="251" verticalHuggingPriority="750" id="68">
+                <textField horizontalHuggingPriority="251" verticalHuggingPriority="750" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="68">
                     <rect key="frame" x="18" y="302" width="116" height="17"/>
                     <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
                     <textFieldCell key="cell" scrollable="YES" lineBreakMode="clipping" sendsActionOnEndEditing="YES" alignment="right" title="Autoconnect:" id="71">
@@ -168,7 +168,7 @@
                         <color key="backgroundColor" name="textBackgroundColor" catalog="System" colorSpace="catalog"/>
                     </textFieldCell>
                 </textField>
-                <textField horizontalHuggingPriority="251" verticalHuggingPriority="750" id="8ed-Fy-TDT">
+                <textField horizontalHuggingPriority="251" verticalHuggingPriority="750" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="8ed-Fy-TDT">
                     <rect key="frame" x="18" y="237" width="116" height="17"/>
                     <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
                     <textFieldCell key="cell" scrollable="YES" lineBreakMode="clipping" sendsActionOnEndEditing="YES" alignment="right" title="On launch:" id="mnl-EJ-IcI">
@@ -177,7 +177,7 @@
                         <color key="backgroundColor" name="textBackgroundColor" catalog="System" colorSpace="catalog"/>
                     </textFieldCell>
                 </textField>
-                <button id="69">
+                <button fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="69">
                     <rect key="frame" x="137" y="299" width="395" height="18"/>
                     <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
                     <buttonCell key="cell" type="check" title="On launch" bezelStyle="regularSquare" imagePosition="left" state="on" inset="2" id="70">
@@ -188,7 +188,7 @@
                         <binding destination="-2" name="value" keyPath="settings.AutoConnectOnStart" id="223"/>
                     </connections>
                 </button>
-                <button verticalHuggingPriority="750" id="JfB-3l-wko">
+                <button verticalHuggingPriority="750" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="JfB-3l-wko">
                     <rect key="frame" x="137" y="186" width="395" height="18"/>
                     <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
                     <buttonCell key="cell" type="check" title="Show application icon in system dock" bezelStyle="regularSquare" imagePosition="left" state="on" inset="2" id="5hj-7s-zO9">
@@ -199,7 +199,7 @@
                         <binding destination="-2" name="value" keyPath="settings.MacIsShowIconInSystemDock" id="KrW-qp-Wgg"/>
                     </connections>
                 </button>
-                <button id="bec-lz-z1R">
+                <button fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="bec-lz-z1R">
                     <rect key="frame" x="137" y="124" width="395" height="42"/>
                     <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
                     <buttonCell key="cell" type="check" bezelStyle="regularSquare" imagePosition="left" alignment="left" state="on" inset="2" id="g7L-ES-HLS">
@@ -212,7 +212,7 @@ application</string>
                         <binding destination="-2" name="value" keyPath="settings.DoNotShowDialogOnAppClose" id="68C-Wo-IIn"/>
                     </connections>
                 </button>
-                <textField horizontalHuggingPriority="251" verticalHuggingPriority="750" id="DXO-Q2-VDZ">
+                <textField horizontalHuggingPriority="251" verticalHuggingPriority="750" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="DXO-Q2-VDZ">
                     <rect key="frame" x="18" y="148" width="116" height="17"/>
                     <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
                     <textFieldCell key="cell" scrollable="YES" lineBreakMode="clipping" sendsActionOnEndEditing="YES" alignment="right" title="On exit:" id="fkz-AH-kdq">
@@ -221,7 +221,7 @@ application</string>
                         <color key="backgroundColor" name="textBackgroundColor" catalog="System" colorSpace="catalog"/>
                     </textFieldCell>
                 </textField>
-                <button verticalHuggingPriority="750" id="Ope-L2-z0z">
+                <button verticalHuggingPriority="750" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="Ope-L2-z0z">
                     <rect key="frame" x="137" y="104" width="395" height="18"/>
                     <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
                     <buttonCell key="cell" type="check" title="Stop IVPN Agent when application is not running" bezelStyle="regularSquare" imagePosition="left" state="on" inset="2" id="hbJ-dV-FMw">
@@ -232,14 +232,14 @@ application</string>
                         <binding destination="-2" name="value" keyPath="settings.StopServerOnClientDisconnect" id="gLg-Kk-YoG"/>
                     </connections>
                 </button>
-                <box boxType="custom" cornerRadius="4" title="Box" id="4Cr-Ol-PAB">
+                <box fixedFrame="YES" boxType="custom" cornerRadius="4" title="Box" translatesAutoresizingMaskIntoConstraints="NO" id="4Cr-Ol-PAB">
                     <rect key="frame" x="22" y="20" width="520" height="62"/>
                     <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
                     <view key="contentView" id="ZPB-zm-Hah">
                         <rect key="frame" x="1" y="1" width="518" height="60"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
-                            <button id="360">
+                            <button fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="360">
                                 <rect key="frame" x="114" y="22" width="368" height="18"/>
                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
                                 <buttonCell key="cell" type="check" title="Create log files" bezelStyle="regularSquare" imagePosition="left" state="on" inset="2" id="361">
@@ -250,7 +250,7 @@ application</string>
                                     <binding destination="-2" name="value" keyPath="settings.IsLoggingEnabled" id="365"/>
                                 </connections>
                             </button>
-                            <textField horizontalHuggingPriority="251" verticalHuggingPriority="750" id="PhX-VF-kBi">
+                            <textField horizontalHuggingPriority="251" verticalHuggingPriority="750" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="PhX-VF-kBi">
                                 <rect key="frame" x="18" y="22" width="94" height="19"/>
                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
                                 <textFieldCell key="cell" scrollable="YES" lineBreakMode="clipping" sendsActionOnEndEditing="YES" alignment="right" title="Diagnostics:" id="8iu-pA-M3m">
@@ -267,11 +267,11 @@ application</string>
             <point key="canvasLocation" x="770" y="-64"/>
         </customView>
         <customView id="75" userLabel="Connection">
-            <rect key="frame" x="0.0" y="0.0" width="562" height="577"/>
+            <rect key="frame" x="0.0" y="0.0" width="562" height="485"/>
             <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
             <subviews>
-                <textField horizontalHuggingPriority="251" verticalHuggingPriority="750" id="Ke8-CA-pLV">
-                    <rect key="frame" x="18" y="537" width="514" height="19"/>
+                <textField horizontalHuggingPriority="251" verticalHuggingPriority="750" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="Ke8-CA-pLV">
+                    <rect key="frame" x="18" y="445" width="514" height="19"/>
                     <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
                     <textFieldCell key="cell" scrollable="YES" lineBreakMode="clipping" sendsActionOnEndEditing="YES" title="VPN protocol:" id="Pj0-H8-R2v">
                         <font key="font" size="14" name="SFProText-Medium"/>
@@ -279,8 +279,8 @@ application</string>
                         <color key="backgroundColor" name="controlColor" catalog="System" colorSpace="catalog"/>
                     </textFieldCell>
                 </textField>
-                <button verticalHuggingPriority="750" id="prz-eJ-eMK">
-                    <rect key="frame" x="47" y="507" width="81" height="19"/>
+                <button verticalHuggingPriority="750" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="prz-eJ-eMK">
+                    <rect key="frame" x="47" y="415" width="81" height="19"/>
                     <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
                     <buttonCell key="cell" type="radio" title="OpenVPN" bezelStyle="regularSquare" imagePosition="left" alignment="left" inset="2" id="Xwd-j2-EwN">
                         <behavior key="behavior" changeContents="YES" doesNotDimImage="YES" lightByContents="YES"/>
@@ -290,8 +290,8 @@ application</string>
                         <action selector="OnProtocolChangedOpenVPN:" target="-2" id="1Mb-rp-o0m"/>
                     </connections>
                 </button>
-                <button verticalHuggingPriority="750" id="HeH-eE-QoO">
-                    <rect key="frame" x="47" y="478" width="88" height="19"/>
+                <button verticalHuggingPriority="750" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="HeH-eE-QoO">
+                    <rect key="frame" x="47" y="386" width="88" height="19"/>
                     <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
                     <buttonCell key="cell" type="radio" title="WireGuard" bezelStyle="regularSquare" imagePosition="left" alignment="left" inset="2" id="HVm-RQ-Ksx">
                         <behavior key="behavior" changeContents="YES" doesNotDimImage="YES" lightByContents="YES"/>
@@ -301,17 +301,7 @@ application</string>
                         <action selector="OnProtocolChangedWireGuard:" target="-2" id="eAI-0U-zIM"/>
                     </connections>
                 </button>
-                <textField verticalHuggingPriority="750" horizontalCompressionResistancePriority="250" setsMaxLayoutWidthAtFirstLayout="YES" id="xFK-vj-5yB">
-                    <rect key="frame" x="71" y="400" width="464" height="73"/>
-                    <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
-                    <textFieldCell key="cell" sendsActionOnEndEditing="YES" id="Z5L-bd-7mU">
-                        <font key="font" size="12" name="SFProText-Regular"/>
-                        <string key="title">The WireGuard protocol is currently under development and should be considered as experimental. Review the Wireguard project for more information. We do not recommend Wireguard except for testing or in situations where security is not critical.</string>
-                        <color key="textColor" name="secondaryLabelColor" catalog="System" colorSpace="catalog"/>
-                        <color key="backgroundColor" name="controlColor" catalog="System" colorSpace="catalog"/>
-                    </textFieldCell>
-                </textField>
-                <tabView id="bLr-1Y-F2K">
+                <tabView fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="bLr-1Y-F2K">
                     <rect key="frame" x="13" y="10" width="536" height="375"/>
                     <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
                     <font key="font" metaFont="system"/>
@@ -321,7 +311,7 @@ application</string>
                                 <rect key="frame" x="10" y="33" width="516" height="329"/>
                                 <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                                 <subviews>
-                                    <textField horizontalHuggingPriority="251" verticalHuggingPriority="750" id="341">
+                                    <textField horizontalHuggingPriority="251" verticalHuggingPriority="750" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="341">
                                         <rect key="frame" x="14" y="295" width="166" height="19"/>
                                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
                                         <textFieldCell key="cell" scrollable="YES" lineBreakMode="clipping" sendsActionOnEndEditing="YES" alignment="right" title="Preferred protocol/port:" id="342">
@@ -330,7 +320,7 @@ application</string>
                                             <color key="backgroundColor" name="controlColor" catalog="System" colorSpace="catalog"/>
                                         </textFieldCell>
                                     </textField>
-                                    <popUpButton verticalHuggingPriority="750" id="346">
+                                    <popUpButton verticalHuggingPriority="750" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="346">
                                         <rect key="frame" x="185" y="289" width="192" height="26"/>
                                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
                                         <popUpButtonCell key="cell" type="push" title="Item 1" bezelStyle="rounded" alignment="left" lineBreakMode="truncatingTail" state="on" borderStyle="borderAndBezel" imageScaling="proportionallyDown" inset="2" selectedItem="351" id="347">
@@ -349,7 +339,7 @@ application</string>
                                             </connections>
                                         </popUpButtonCell>
                                     </popUpButton>
-                                    <button verticalHuggingPriority="750" id="ltY-me-RZN">
+                                    <button verticalHuggingPriority="750" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="ltY-me-RZN">
                                         <rect key="frame" x="185" y="268" width="328" height="18"/>
                                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
                                         <buttonCell key="cell" type="check" title="Automatically change port on connection error" bezelStyle="regularSquare" imagePosition="left" state="on" inset="2" id="MaQ-Cc-vuA">
@@ -360,14 +350,14 @@ application</string>
                                             <binding destination="-2" name="value" keyPath="settings.IsAutoPortSelection" id="q5A-u5-fg7"/>
                                         </connections>
                                     </button>
-                                    <box boxType="custom" cornerRadius="4" title="Box" id="gwY-MT-6G6">
+                                    <box fixedFrame="YES" boxType="custom" cornerRadius="4" title="Box" translatesAutoresizingMaskIntoConstraints="NO" id="gwY-MT-6G6">
                                         <rect key="frame" x="17" y="70" width="482" height="187"/>
                                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
                                         <view key="contentView" id="Nzd-BG-dKx">
                                             <rect key="frame" x="1" y="1" width="480" height="185"/>
                                             <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                                             <subviews>
-                                                <textField horizontalHuggingPriority="251" verticalHuggingPriority="750" id="194">
+                                                <textField horizontalHuggingPriority="251" verticalHuggingPriority="750" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="194">
                                                     <rect key="frame" x="3" y="152" width="145" height="19"/>
                                                     <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
                                                     <textFieldCell key="cell" scrollable="YES" lineBreakMode="clipping" sendsActionOnEndEditing="YES" alignment="right" title="Network proxy:" id="195">
@@ -376,7 +366,7 @@ application</string>
                                                         <color key="backgroundColor" name="controlColor" catalog="System" colorSpace="catalog"/>
                                                     </textFieldCell>
                                                 </textField>
-                                                <matrix verticalHuggingPriority="750" allowsEmptySelection="NO" autorecalculatesCellSize="YES" id="185">
+                                                <matrix verticalHuggingPriority="750" fixedFrame="YES" allowsEmptySelection="NO" autorecalculatesCellSize="YES" translatesAutoresizingMaskIntoConstraints="NO" id="185">
                                                     <rect key="frame" x="165" y="151" width="260" height="18"/>
                                                     <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
                                                     <color key="backgroundColor" name="controlColor" catalog="System" colorSpace="catalog"/>
@@ -416,7 +406,7 @@ application</string>
                                                         <binding destination="-2" name="selectedIndex" keyPath="settings.ProxyTypeId" id="249"/>
                                                     </connections>
                                                 </matrix>
-                                                <textField verticalHuggingPriority="750" id="186">
+                                                <textField verticalHuggingPriority="750" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="186">
                                                     <rect key="frame" x="238" y="49" width="186" height="21"/>
                                                     <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
                                                     <textFieldCell key="cell" scrollable="YES" lineBreakMode="clipping" selectable="YES" editable="YES" sendsActionOnEndEditing="YES" state="on" borderStyle="bezel" drawsBackground="YES" id="203">
@@ -429,7 +419,7 @@ application</string>
                                                         <binding destination="-2" name="value" keyPath="settings.ProxyUsername" id="239"/>
                                                     </connections>
                                                 </textField>
-                                                <textField verticalHuggingPriority="750" id="187">
+                                                <textField verticalHuggingPriority="750" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="187">
                                                     <rect key="frame" x="238" y="113" width="186" height="21"/>
                                                     <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
                                                     <textFieldCell key="cell" scrollable="YES" lineBreakMode="clipping" selectable="YES" editable="YES" sendsActionOnEndEditing="YES" state="on" borderStyle="bezel" drawsBackground="YES" id="202">
@@ -442,7 +432,7 @@ application</string>
                                                         <binding destination="-2" name="value" keyPath="settings.ProxyServer" id="231"/>
                                                     </connections>
                                                 </textField>
-                                                <textField horizontalHuggingPriority="251" verticalHuggingPriority="750" id="188">
+                                                <textField horizontalHuggingPriority="251" verticalHuggingPriority="750" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="188">
                                                     <rect key="frame" x="139" y="48" width="88" height="19"/>
                                                     <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
                                                     <textFieldCell key="cell" scrollable="YES" lineBreakMode="clipping" sendsActionOnEndEditing="YES" alignment="right" title="Login:" id="201">
@@ -451,7 +441,7 @@ application</string>
                                                         <color key="backgroundColor" name="controlColor" catalog="System" colorSpace="catalog"/>
                                                     </textFieldCell>
                                                 </textField>
-                                                <textField horizontalHuggingPriority="251" verticalHuggingPriority="750" id="189">
+                                                <textField horizontalHuggingPriority="251" verticalHuggingPriority="750" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="189">
                                                     <rect key="frame" x="139" y="81" width="88" height="17"/>
                                                     <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
                                                     <textFieldCell key="cell" scrollable="YES" lineBreakMode="clipping" sendsActionOnEndEditing="YES" alignment="right" title="Port:" id="200">
@@ -460,7 +450,7 @@ application</string>
                                                         <color key="backgroundColor" name="controlColor" catalog="System" colorSpace="catalog"/>
                                                     </textFieldCell>
                                                 </textField>
-                                                <textField verticalHuggingPriority="750" id="190">
+                                                <textField verticalHuggingPriority="750" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="190">
                                                     <rect key="frame" x="238" y="81" width="186" height="21"/>
                                                     <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
                                                     <textFieldCell key="cell" scrollable="YES" lineBreakMode="clipping" selectable="YES" editable="YES" sendsActionOnEndEditing="YES" state="on" borderStyle="bezel" drawsBackground="YES" id="199">
@@ -473,7 +463,7 @@ application</string>
                                                         <binding destination="-2" name="value" keyPath="settings.ProxyPort" id="235"/>
                                                     </connections>
                                                 </textField>
-                                                <secureTextField verticalHuggingPriority="750" id="191">
+                                                <secureTextField verticalHuggingPriority="750" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="191">
                                                     <rect key="frame" x="238" y="17" width="186" height="21"/>
                                                     <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
                                                     <secureTextFieldCell key="cell" scrollable="YES" lineBreakMode="clipping" selectable="YES" editable="YES" sendsActionOnEndEditing="YES" borderStyle="bezel" drawsBackground="YES" usesSingleLineMode="YES" id="198">
@@ -489,7 +479,7 @@ application</string>
                                                         <binding destination="-2" name="value" keyPath="settings.ProxyUnsafePassword" id="305"/>
                                                     </connections>
                                                 </secureTextField>
-                                                <textField horizontalHuggingPriority="251" verticalHuggingPriority="750" id="193">
+                                                <textField horizontalHuggingPriority="251" verticalHuggingPriority="750" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="193">
                                                     <rect key="frame" x="139" y="115" width="88" height="17"/>
                                                     <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
                                                     <textFieldCell key="cell" scrollable="YES" lineBreakMode="clipping" sendsActionOnEndEditing="YES" alignment="right" title="Server:" id="196">
@@ -498,7 +488,7 @@ application</string>
                                                         <color key="backgroundColor" name="controlColor" catalog="System" colorSpace="catalog"/>
                                                     </textFieldCell>
                                                 </textField>
-                                                <textField horizontalHuggingPriority="251" verticalHuggingPriority="750" id="192">
+                                                <textField horizontalHuggingPriority="251" verticalHuggingPriority="750" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="192">
                                                     <rect key="frame" x="127" y="19" width="100" height="17"/>
                                                     <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
                                                     <textFieldCell key="cell" scrollable="YES" lineBreakMode="clipping" sendsActionOnEndEditing="YES" alignment="right" title="Password:" id="197">
@@ -511,7 +501,7 @@ application</string>
                                         </view>
                                         <color key="borderColor" name="gridColor" catalog="System" colorSpace="catalog"/>
                                     </box>
-                                    <textField horizontalHuggingPriority="251" verticalHuggingPriority="750" id="5Y6-rG-VBG">
+                                    <textField horizontalHuggingPriority="251" verticalHuggingPriority="750" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="5Y6-rG-VBG">
                                         <rect key="frame" x="11" y="42" width="158" height="17"/>
                                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
                                         <textFieldCell key="cell" scrollable="YES" lineBreakMode="clipping" sendsActionOnEndEditing="YES" alignment="right" title="Advanced:" id="rKW-mk-yme">
@@ -520,7 +510,7 @@ application</string>
                                             <color key="backgroundColor" name="controlColor" catalog="System" colorSpace="catalog"/>
                                         </textFieldCell>
                                     </textField>
-                                    <button id="77">
+                                    <button fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="77">
                                         <rect key="frame" x="185" y="38" width="243" height="18"/>
                                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
                                         <buttonCell key="cell" type="check" title="Use obfsproxy" bezelStyle="regularSquare" imagePosition="left" state="on" inset="2" id="80">
@@ -531,7 +521,7 @@ application</string>
                                             <binding destination="-2" name="value" keyPath="settings.ServiceUseObfsProxy" id="272"/>
                                         </connections>
                                     </button>
-                                    <textField horizontalHuggingPriority="251" verticalHuggingPriority="750" id="78">
+                                    <textField horizontalHuggingPriority="251" verticalHuggingPriority="750" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="78">
                                         <rect key="frame" x="185" y="14" width="275" height="18"/>
                                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
                                         <textFieldCell key="cell" scrollable="YES" lineBreakMode="clipping" sendsActionOnEndEditing="YES" title="Only enable if you have trouble connecting" id="79">
@@ -548,11 +538,11 @@ application</string>
                                 <rect key="frame" x="10" y="33" width="516" height="329"/>
                                 <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                                 <subviews>
-                                    <customView id="Vvx-nJ-Xc1">
+                                    <customView translatesAutoresizingMaskIntoConstraints="NO" id="Vvx-nJ-Xc1">
                                         <rect key="frame" x="-3" y="107" width="522" height="97"/>
                                         <autoresizingMask key="autoresizingMask" flexibleMinY="YES"/>
                                         <subviews>
-                                            <textField horizontalHuggingPriority="251" verticalHuggingPriority="750" id="kas-g9-mfF">
+                                            <textField horizontalHuggingPriority="251" verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="kas-g9-mfF">
                                                 <rect key="frame" x="16" y="53" width="479" height="24"/>
                                                 <autoresizingMask key="autoresizingMask" flexibleMinY="YES"/>
                                                 <textFieldCell key="cell" lineBreakMode="clipping" alignment="center" title="Registering new keys..." id="flo-7M-tEw">
@@ -564,17 +554,17 @@ application</string>
                                                     <binding destination="-2" name="value" keyPath="WireguardSettingsViewModel.ProgressStatus" id="7u4-Gg-ZUG"/>
                                                 </connections>
                                             </textField>
-                                            <progressIndicator wantsLayer="YES" horizontalHuggingPriority="750" verticalHuggingPriority="750" maxValue="100" bezeled="NO" indeterminate="YES" controlSize="small" style="spinning" id="95a-lP-FF3">
+                                            <progressIndicator wantsLayer="YES" horizontalHuggingPriority="750" verticalHuggingPriority="750" maxValue="100" bezeled="NO" indeterminate="YES" controlSize="small" style="spinning" translatesAutoresizingMaskIntoConstraints="NO" id="95a-lP-FF3">
                                                 <rect key="frame" x="247" y="28" width="16" height="16"/>
                                                 <autoresizingMask key="autoresizingMask" flexibleMinY="YES"/>
                                             </progressIndicator>
                                         </subviews>
                                     </customView>
-                                    <customView id="82z-gM-6Hz">
+                                    <customView translatesAutoresizingMaskIntoConstraints="NO" id="82z-gM-6Hz">
                                         <rect key="frame" x="-3" y="-46" width="522" height="370"/>
                                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
                                         <subviews>
-                                            <popUpButton verticalHuggingPriority="750" id="ZR1-tB-hSP">
+                                            <popUpButton verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="ZR1-tB-hSP">
                                                 <rect key="frame" x="188" y="335" width="192" height="26"/>
                                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
                                                 <popUpButtonCell key="cell" type="push" title="Item 1" bezelStyle="rounded" alignment="left" lineBreakMode="truncatingTail" state="on" borderStyle="borderAndBezel" imageScaling="proportionallyDown" inset="2" selectedItem="acL-dG-zoq" id="qG2-SZ-V3p">
@@ -593,7 +583,7 @@ application</string>
                                                     </connections>
                                                 </popUpButtonCell>
                                             </popUpButton>
-                                            <textField horizontalHuggingPriority="251" verticalHuggingPriority="750" id="fsn-6c-Qq8">
+                                            <textField horizontalHuggingPriority="251" verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="fsn-6c-Qq8">
                                                 <rect key="frame" x="25" y="341" width="158" height="19"/>
                                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
                                                 <textFieldCell key="cell" scrollable="YES" lineBreakMode="clipping" sendsActionOnEndEditing="YES" alignment="right" title="Preferred port:" id="a5d-89-a52">
@@ -602,7 +592,7 @@ application</string>
                                                     <color key="backgroundColor" name="controlColor" catalog="System" colorSpace="catalog"/>
                                                 </textFieldCell>
                                             </textField>
-                                            <textField horizontalHuggingPriority="251" verticalHuggingPriority="750" id="3IG-ar-7Li">
+                                            <textField horizontalHuggingPriority="251" verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="3IG-ar-7Li">
                                                 <rect key="frame" x="6" y="305" width="177" height="19"/>
                                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
                                                 <textFieldCell key="cell" scrollable="YES" lineBreakMode="clipping" sendsActionOnEndEditing="YES" alignment="right" title="Regenerate key every" id="2aX-Kp-grq">
@@ -611,7 +601,7 @@ application</string>
                                                     <color key="backgroundColor" name="controlColor" catalog="System" colorSpace="catalog"/>
                                                 </textFieldCell>
                                             </textField>
-                                            <popUpButton verticalHuggingPriority="750" id="2Bk-P7-D76">
+                                            <popUpButton verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="2Bk-P7-D76">
                                                 <rect key="frame" x="188" y="301" width="60" height="26"/>
                                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
                                                 <popUpButtonCell key="cell" type="push" title="7" bezelStyle="rounded" alignment="left" lineBreakMode="truncatingTail" state="on" borderStyle="borderAndBezel" tag="7" imageScaling="proportionallyDown" inset="2" selectedItem="G0l-ID-773" id="8mT-5B-SjW">
@@ -716,7 +706,7 @@ application</string>
                                                     </connections>
                                                 </popUpButtonCell>
                                             </popUpButton>
-                                            <textField verticalHuggingPriority="750" horizontalCompressionResistancePriority="250" setsMaxLayoutWidthAtFirstLayout="YES" id="WqZ-g5-00g">
+                                            <textField verticalHuggingPriority="750" horizontalCompressionResistancePriority="250" setsMaxLayoutWidthAtFirstLayout="YES" translatesAutoresizingMaskIntoConstraints="NO" id="WqZ-g5-00g">
                                                 <rect key="frame" x="188" y="248" width="328" height="48"/>
                                                 <autoresizingMask key="autoresizingMask" flexibleMinX="YES" flexibleMaxX="YES" flexibleMinY="YES"/>
                                                 <textFieldCell key="cell" sendsActionOnEndEditing="YES" alignment="left" title="Keys regeneration will start automatically in the defined interval. It will also change the internal IP address." id="p0x-1e-wic">
@@ -725,7 +715,7 @@ application</string>
                                                     <color key="backgroundColor" name="controlColor" catalog="System" colorSpace="catalog"/>
                                                 </textFieldCell>
                                             </textField>
-                                            <textField horizontalHuggingPriority="251" verticalHuggingPriority="750" id="Hva-LF-ZuX">
+                                            <textField horizontalHuggingPriority="251" verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="Hva-LF-ZuX">
                                                 <rect key="frame" x="252" y="305" width="177" height="19"/>
                                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
                                                 <textFieldCell key="cell" scrollable="YES" lineBreakMode="clipping" sendsActionOnEndEditing="YES" alignment="left" title="days." id="EFd-7F-5eT">
@@ -734,14 +724,14 @@ application</string>
                                                     <color key="backgroundColor" name="controlColor" catalog="System" colorSpace="catalog"/>
                                                 </textFieldCell>
                                             </textField>
-                                            <box boxType="secondary" title="Box" titlePosition="noTitle" id="E9B-og-lLT">
+                                            <box boxType="secondary" title="Box" titlePosition="noTitle" translatesAutoresizingMaskIntoConstraints="NO" id="E9B-og-lLT">
                                                 <rect key="frame" x="17" y="57" width="488" height="94"/>
                                                 <autoresizingMask key="autoresizingMask" flexibleMaxY="YES"/>
                                                 <view key="contentView" id="Lyd-Nh-NCS">
                                                     <rect key="frame" x="3" y="3" width="482" height="88"/>
                                                     <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                                                     <subviews>
-                                                        <textField verticalHuggingPriority="750" horizontalCompressionResistancePriority="250" setsMaxLayoutWidthAtFirstLayout="YES" id="278-Zd-2Og">
+                                                        <textField verticalHuggingPriority="750" horizontalCompressionResistancePriority="250" setsMaxLayoutWidthAtFirstLayout="YES" translatesAutoresizingMaskIntoConstraints="NO" id="278-Zd-2Og">
                                                             <rect key="frame" x="4" y="8" width="460" height="40"/>
                                                             <autoresizingMask key="autoresizingMask" flexibleMinX="YES" flexibleMaxY="YES"/>
                                                             <textFieldCell key="cell" sendsActionOnEndEditing="YES" alignment="right" id="aza-Bo-bOp">
@@ -751,7 +741,7 @@ application</string>
                                                                 <color key="backgroundColor" name="controlColor" catalog="System" colorSpace="catalog"/>
                                                             </textFieldCell>
                                                         </textField>
-                                                        <button verticalHuggingPriority="750" id="lEo-rw-wld">
+                                                        <button verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="lEo-rw-wld">
                                                             <rect key="frame" x="345" y="49" width="126" height="32"/>
                                                             <autoresizingMask key="autoresizingMask" flexibleMinX="YES" flexibleMaxY="YES"/>
                                                             <buttonCell key="cell" type="push" title="Configuration" bezelStyle="rounded" alignment="center" borderStyle="border" imageScaling="proportionallyDown" inset="2" id="WCY-wt-UhI">
@@ -772,8 +762,8 @@ application</string>
                         </tabViewItem>
                     </tabViewItems>
                 </tabView>
-                <button id="bGf-d5-IJR">
-                    <rect key="frame" x="134" y="510" width="12" height="12"/>
+                <button fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="bGf-d5-IJR">
+                    <rect key="frame" x="141" y="418" width="12" height="12"/>
                     <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
                     <buttonCell key="cell" type="square" bezelStyle="shadowlessSquare" image="iconInformation2" imagePosition="only" alignment="center" imageScaling="proportionallyUpOrDown" inset="2" id="4Lz-uB-LDc">
                         <behavior key="behavior" pushIn="YES" lightByBackground="YES" lightByGray="YES"/>
@@ -783,14 +773,25 @@ application</string>
                         <action selector="OnGuiBtnOpenvpnTooltip:" target="-2" id="Cd8-fC-DBS"/>
                     </connections>
                 </button>
+                <button fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="XVn-DK-9bw">
+                    <rect key="frame" x="141" y="389" width="12" height="12"/>
+                    <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
+                    <buttonCell key="cell" type="square" bezelStyle="shadowlessSquare" image="iconInformation2" imagePosition="only" alignment="center" imageScaling="proportionallyUpOrDown" inset="2" id="fId-go-feM">
+                        <behavior key="behavior" pushIn="YES" lightByBackground="YES" lightByGray="YES"/>
+                        <font key="font" metaFont="system"/>
+                    </buttonCell>
+                    <connections>
+                        <action selector="OnGuiBtnWireguardTooltip:" target="-2" id="pYR-Dm-stl"/>
+                    </connections>
+                </button>
             </subviews>
-            <point key="canvasLocation" x="770" y="437.5"/>
+            <point key="canvasLocation" x="770" y="391.5"/>
         </customView>
         <customView id="82" userLabel="Firewall">
             <rect key="frame" x="0.0" y="0.0" width="560" height="493"/>
             <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
             <subviews>
-                <textField horizontalHuggingPriority="251" verticalHuggingPriority="750" id="135">
+                <textField horizontalHuggingPriority="251" verticalHuggingPriority="750" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="135">
                     <rect key="frame" x="18" y="455" width="434" height="19"/>
                     <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
                     <textFieldCell key="cell" scrollable="YES" lineBreakMode="clipping" sendsActionOnEndEditing="YES" title="Non-VPN traffic blocking:" id="136">
@@ -799,7 +800,7 @@ application</string>
                         <color key="backgroundColor" name="controlColor" catalog="System" colorSpace="catalog"/>
                     </textFieldCell>
                 </textField>
-                <textField verticalHuggingPriority="750" horizontalCompressionResistancePriority="250" setsMaxLayoutWidthAtFirstLayout="YES" id="155">
+                <textField verticalHuggingPriority="750" horizontalCompressionResistancePriority="250" fixedFrame="YES" setsMaxLayoutWidthAtFirstLayout="YES" translatesAutoresizingMaskIntoConstraints="NO" id="155">
                     <rect key="frame" x="61" y="258" width="433" height="61"/>
                     <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
                     <textFieldCell key="cell" sendsActionOnEndEditing="YES" id="156">
@@ -809,7 +810,7 @@ application</string>
                         <color key="backgroundColor" name="controlColor" catalog="System" colorSpace="catalog"/>
                     </textFieldCell>
                 </textField>
-                <button id="158">
+                <button fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="158">
                     <rect key="frame" x="40" y="114" width="412" height="18"/>
                     <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
                     <buttonCell key="cell" type="check" title="Allow LAN traffic when IVPN Firewall is enabled" bezelStyle="regularSquare" imagePosition="left" state="on" inset="2" id="159">
@@ -820,7 +821,7 @@ application</string>
                         <binding destination="-2" name="value" keyPath="settings.FirewallAllowLAN" id="303"/>
                     </connections>
                 </button>
-                <button id="174">
+                <button fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="174">
                     <rect key="frame" x="40" y="176" width="412" height="18"/>
                     <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
                     <buttonCell key="cell" type="check" title="Deactivate IVPN Firewall on IVPN Client exit" bezelStyle="regularSquare" imagePosition="left" state="on" inset="2" id="175">
@@ -832,7 +833,7 @@ application</string>
                         <binding destination="-2" name="enabled" keyPath="settings.IsManualFirewall" id="309"/>
                     </connections>
                 </button>
-                <textField horizontalHuggingPriority="251" verticalHuggingPriority="750" id="178">
+                <textField horizontalHuggingPriority="251" verticalHuggingPriority="750" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="178">
                     <rect key="frame" x="18" y="227" width="434" height="17"/>
                     <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
                     <textFieldCell key="cell" scrollable="YES" lineBreakMode="clipping" sendsActionOnEndEditing="YES" title="On-demand Firewall:" id="179">
@@ -844,7 +845,7 @@ application</string>
                         <binding destination="-2" name="enabled" keyPath="settings.IsManualFirewall" id="310"/>
                     </connections>
                 </textField>
-                <textField horizontalHuggingPriority="251" verticalHuggingPriority="750" id="180">
+                <textField horizontalHuggingPriority="251" verticalHuggingPriority="750" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="180">
                     <rect key="frame" x="18" y="136" width="373" height="19"/>
                     <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
                     <textFieldCell key="cell" scrollable="YES" lineBreakMode="clipping" sendsActionOnEndEditing="YES" title="LAN settings:" id="181">
@@ -853,7 +854,7 @@ application</string>
                         <color key="backgroundColor" name="controlColor" catalog="System" colorSpace="catalog"/>
                     </textFieldCell>
                 </textField>
-                <button id="172">
+                <button fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="172">
                     <rect key="frame" x="40" y="195" width="446" height="31"/>
                     <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
                     <buttonCell key="cell" type="check" title="Activate on connect to VPN and deactivate on disconnect" bezelStyle="regularSquare" imagePosition="left" alignment="left" state="on" inset="2" id="177">
@@ -865,7 +866,7 @@ application</string>
                         <binding destination="-2" name="enabled" keyPath="settings.IsManualFirewall" id="po4-Iv-wl3"/>
                     </connections>
                 </button>
-                <button id="152-YF-xvM">
+                <button fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="152-YF-xvM">
                     <rect key="frame" x="40" y="89" width="412" height="18"/>
                     <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
                     <buttonCell key="cell" type="check" title="Allow Multicast when LAN traffic is allowed" bezelStyle="regularSquare" imagePosition="left" state="on" inset="2" id="txC-h4-jYB">
@@ -877,7 +878,7 @@ application</string>
                         <binding destination="-2" name="value" keyPath="settings.FirewallAllowLANMulticast" id="ouv-yM-SQv"/>
                     </connections>
                 </button>
-                <textField horizontalHuggingPriority="251" verticalHuggingPriority="750" id="j8X-yr-V9q">
+                <textField horizontalHuggingPriority="251" verticalHuggingPriority="750" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="j8X-yr-V9q">
                     <rect key="frame" x="18" y="51" width="373" height="17"/>
                     <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
                     <textFieldCell key="cell" scrollable="YES" lineBreakMode="clipping" sendsActionOnEndEditing="YES" title="Miscellaneous:" id="LpF-Vk-Wmf">
@@ -886,7 +887,7 @@ application</string>
                         <color key="backgroundColor" name="controlColor" catalog="System" colorSpace="catalog"/>
                     </textFieldCell>
                 </textField>
-                <button id="Qwt-lq-hOw">
+                <button fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="Qwt-lq-hOw">
                     <rect key="frame" x="40" y="25" width="412" height="18"/>
                     <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
                     <buttonCell key="cell" type="check" title="Do not show IVPN Firewall notification window" bezelStyle="regularSquare" imagePosition="left" inset="2" id="lPV-ey-3IS">
@@ -897,7 +898,7 @@ application</string>
                         <binding destination="-2" name="value" keyPath="settings.DisableFirewallNotificationWindow" id="vNL-Wg-7U7"/>
                     </connections>
                 </button>
-                <button verticalHuggingPriority="750" id="BCg-sg-uMe">
+                <button verticalHuggingPriority="750" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="BCg-sg-uMe">
                     <rect key="frame" x="41" y="324" width="199" height="18"/>
                     <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
                     <buttonCell key="cell" type="radio" title="Always-on Firewall" bezelStyle="regularSquare" imagePosition="left" alignment="left" inset="2" id="w4B-7H-Yei">
@@ -908,7 +909,7 @@ application</string>
                         <action selector="OnFirewallTypeChanged:" target="-2" id="tZy-Cn-oxY"/>
                     </connections>
                 </button>
-                <button verticalHuggingPriority="750" id="6hC-Qy-kMd">
+                <button verticalHuggingPriority="750" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="6hC-Qy-kMd">
                     <rect key="frame" x="41" y="424" width="245" height="18"/>
                     <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
                     <buttonCell key="cell" type="radio" title="On-demand" bezelStyle="regularSquare" imagePosition="left" alignment="left" inset="2" id="eVg-04-yWB">
@@ -919,7 +920,7 @@ application</string>
                         <action selector="OnFirewallTypeChanged:" target="-2" id="EWw-JD-MGK"/>
                     </connections>
                 </button>
-                <textField verticalHuggingPriority="750" horizontalCompressionResistancePriority="250" setsMaxLayoutWidthAtFirstLayout="YES" id="tZn-JS-L7F">
+                <textField verticalHuggingPriority="750" horizontalCompressionResistancePriority="250" fixedFrame="YES" setsMaxLayoutWidthAtFirstLayout="YES" translatesAutoresizingMaskIntoConstraints="NO" id="tZn-JS-L7F">
                     <rect key="frame" x="61" y="356" width="433" height="61"/>
                     <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
                     <textFieldCell key="cell" sendsActionOnEndEditing="YES" id="RKs-o1-h3e">
@@ -937,7 +938,7 @@ application</string>
             <rect key="frame" x="0.0" y="0.0" width="562" height="214"/>
             <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
             <subviews>
-                <textField horizontalHuggingPriority="251" verticalHuggingPriority="750" id="f1q-Zk-F8H">
+                <textField horizontalHuggingPriority="251" verticalHuggingPriority="750" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="f1q-Zk-F8H">
                     <rect key="frame" x="18" y="173" width="434" height="19"/>
                     <autoresizingMask key="autoresizingMask" flexibleMinY="YES"/>
                     <textFieldCell key="cell" scrollable="YES" lineBreakMode="clipping" sendsActionOnEndEditing="YES" title="OpenVPN additional configuration parameters:" id="Qmq-rf-74l">
@@ -946,7 +947,7 @@ application</string>
                         <color key="backgroundColor" name="textBackgroundColor" catalog="System" colorSpace="catalog"/>
                     </textFieldCell>
                 </textField>
-                <textField verticalHuggingPriority="750" horizontalCompressionResistancePriority="250" id="Bid-Xs-k70">
+                <textField verticalHuggingPriority="750" horizontalCompressionResistancePriority="250" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="Bid-Xs-k70">
                     <rect key="frame" x="18" y="112" width="526" height="55"/>
                     <autoresizingMask key="autoresizingMask" flexibleMinY="YES"/>
                     <textFieldCell key="cell" sendsActionOnEndEditing="YES" alignment="left" id="Osz-wS-aRA">
@@ -956,12 +957,12 @@ application</string>
                         <color key="backgroundColor" name="controlColor" catalog="System" colorSpace="catalog"/>
                     </textFieldCell>
                 </textField>
-                <scrollView wantsLayer="YES" horizontalLineScroll="10" horizontalPageScroll="10" verticalLineScroll="10" verticalPageScroll="10" usesPredominantAxisScrolling="NO" id="DV0-rh-oWK">
+                <scrollView wantsLayer="YES" fixedFrame="YES" horizontalLineScroll="10" horizontalPageScroll="10" verticalLineScroll="10" verticalPageScroll="10" usesPredominantAxisScrolling="NO" translatesAutoresizingMaskIntoConstraints="NO" id="DV0-rh-oWK">
                     <rect key="frame" x="20" y="22" width="522" height="76"/>
                     <autoresizingMask key="autoresizingMask" flexibleMaxY="YES"/>
                     <clipView key="contentView" drawsBackground="NO" id="AX3-D8-LjV">
                         <rect key="frame" x="1" y="1" width="520" height="74"/>
-                        <autoresizingMask key="autoresizingMask"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
                             <textView importsGraphics="NO" richText="NO" verticallyResizable="YES" usesFontPanel="YES" findStyle="panel" allowsUndo="YES" usesRuler="YES" allowsNonContiguousLayout="YES" textCompletion="NO" id="rKT-DC-ZFe">
                                 <rect key="frame" x="0.0" y="0.0" width="505" height="74"/>
@@ -993,7 +994,7 @@ application</string>
             <rect key="frame" x="0.0" y="0.0" width="562" height="453"/>
             <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
             <subviews>
-                <button verticalHuggingPriority="750" id="7yZ-0r-g4L">
+                <button verticalHuggingPriority="750" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="7yZ-0r-g4L">
                     <rect key="frame" x="18" y="411" width="514" height="18"/>
                     <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
                     <buttonCell key="cell" type="check" title="Trusted / Untrusted networks control" bezelStyle="regularSquare" imagePosition="left" state="on" inset="2" id="3oh-Qd-txv">
@@ -1004,7 +1005,7 @@ application</string>
                         <binding destination="-2" name="value" keyPath="settings.IsNetworkActionsEnabled" id="cZF-rI-vFG"/>
                     </connections>
                 </button>
-                <textField verticalHuggingPriority="750" horizontalCompressionResistancePriority="250" id="x5P-Dd-iEX">
+                <textField verticalHuggingPriority="750" horizontalCompressionResistancePriority="250" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="x5P-Dd-iEX">
                     <rect key="frame" x="38" y="361" width="494" height="45"/>
                     <autoresizingMask key="autoresizingMask" flexibleMinY="YES"/>
                     <textFieldCell key="cell" sendsActionOnEndEditing="YES" alignment="left" title="By enabling this feature you can define a network as trusted or untrusted  and what actions to take when joining the network" id="7S2-bV-X14">
@@ -1013,7 +1014,7 @@ application</string>
                         <color key="backgroundColor" name="controlColor" catalog="System" colorSpace="catalog"/>
                     </textFieldCell>
                 </textField>
-                <tabView id="2xc-bv-I0F">
+                <tabView fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="2xc-bv-I0F">
                     <rect key="frame" x="13" y="10" width="536" height="341"/>
                     <autoresizingMask key="autoresizingMask" flexibleMaxY="YES"/>
                     <font key="font" metaFont="system"/>
@@ -1023,7 +1024,7 @@ application</string>
                                 <rect key="frame" x="10" y="33" width="516" height="295"/>
                                 <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                                 <subviews>
-                                    <popUpButton id="vcg-e9-2yZ">
+                                    <popUpButton fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="vcg-e9-2yZ">
                                         <rect key="frame" x="299" y="255" width="203" height="31"/>
                                         <autoresizingMask key="autoresizingMask" flexibleMinX="YES" flexibleMinY="YES"/>
                                         <popUpButtonCell key="cell" type="push" title="No action" bezelStyle="rounded" alignment="center" lineBreakMode="truncatingTail" state="on" borderStyle="border" imageScaling="proportionallyDown" inset="2" selectedItem="6mU-Qr-Mz0" id="g1r-vi-5pf">
@@ -1041,7 +1042,7 @@ application</string>
                                             <action selector="OnNetworksDefaultActionChanged:" target="-2" id="8Wf-Z2-zKl"/>
                                         </connections>
                                     </popUpButton>
-                                    <textField horizontalHuggingPriority="251" verticalHuggingPriority="750" id="YIV-Qz-J1R">
+                                    <textField horizontalHuggingPriority="251" verticalHuggingPriority="750" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="YIV-Qz-J1R">
                                         <rect key="frame" x="15" y="262" width="279" height="19"/>
                                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
                                         <textFieldCell key="cell" scrollable="YES" lineBreakMode="clipping" sendsActionOnEndEditing="YES" title="Default trust status for undefined networks:" id="8Ky-ws-pmp">
@@ -1050,14 +1051,14 @@ application</string>
                                             <color key="backgroundColor" name="controlColor" catalog="System" colorSpace="catalog"/>
                                         </textFieldCell>
                                     </textField>
-                                    <scrollView horizontalLineScroll="10" horizontalPageScroll="10" verticalLineScroll="10" verticalPageScroll="10" usesPredominantAxisScrolling="NO" id="SYS-ug-7wy">
+                                    <scrollView fixedFrame="YES" horizontalLineScroll="10" horizontalPageScroll="10" verticalLineScroll="10" verticalPageScroll="10" usesPredominantAxisScrolling="NO" translatesAutoresizingMaskIntoConstraints="NO" id="SYS-ug-7wy">
                                         <rect key="frame" x="17" y="61" width="482" height="176"/>
                                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                                         <clipView key="contentView" id="9d7-k6-HGz">
                                             <rect key="frame" x="1" y="1" width="480" height="174"/>
-                                            <autoresizingMask key="autoresizingMask"/>
+                                            <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                                             <subviews>
-                                                <view id="IhW-jE-gqj" userLabel="NetworksView">
+                                                <view fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="IhW-jE-gqj" userLabel="NetworksView">
                                                     <rect key="frame" x="0.0" y="0.0" width="450" height="144"/>
                                                     <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                                                 </view>
@@ -1072,7 +1073,7 @@ application</string>
                                             <autoresizingMask key="autoresizingMask"/>
                                         </scroller>
                                     </scrollView>
-                                    <button verticalHuggingPriority="750" id="FHA-cK-t1h">
+                                    <button verticalHuggingPriority="750" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="FHA-cK-t1h">
                                         <rect key="frame" x="15" y="22" width="163" height="19"/>
                                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                         <buttonCell key="cell" type="check" title="Show all WiFi networks" bezelStyle="regularSquare" imagePosition="left" state="on" inset="2" id="mHu-xW-5R6">
@@ -1083,7 +1084,7 @@ application</string>
                                             <binding destination="-2" name="value" keyPath="NetworksViewModel.IsShowAllNetworks" id="hus-WN-63Z"/>
                                         </connections>
                                     </button>
-                                    <button verticalHuggingPriority="750" id="0eo-E1-oi1" userLabel="Button_AllNetworksToDefault">
+                                    <button verticalHuggingPriority="750" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="0eo-E1-oi1" userLabel="Button_AllNetworksToDefault">
                                         <rect key="frame" x="295" y="13" width="210" height="32"/>
                                         <autoresizingMask key="autoresizingMask" flexibleMinX="YES" flexibleMaxY="YES"/>
                                         <buttonCell key="cell" type="push" title="Reset to default settings" bezelStyle="rounded" alignment="center" borderStyle="border" imageScaling="proportionallyDown" inset="2" id="Gc2-U8-Zgf">
@@ -1102,7 +1103,7 @@ application</string>
                                 <rect key="frame" x="10" y="33" width="516" height="295"/>
                                 <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                                 <subviews>
-                                    <textField horizontalHuggingPriority="251" verticalHuggingPriority="750" id="Igc-JN-HTa">
+                                    <textField horizontalHuggingPriority="251" verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="Igc-JN-HTa">
                                         <rect key="frame" x="15" y="274" width="201" height="18"/>
                                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
                                         <textFieldCell key="cell" scrollable="YES" lineBreakMode="clipping" sendsActionOnEndEditing="YES" title="Actions for Untrusted WiFi" id="Usk-Ve-wyd">
@@ -1111,7 +1112,7 @@ application</string>
                                             <color key="backgroundColor" name="controlColor" catalog="System" colorSpace="catalog"/>
                                         </textFieldCell>
                                     </textField>
-                                    <textField horizontalHuggingPriority="251" verticalHuggingPriority="750" id="RZv-oZ-Yyi">
+                                    <textField horizontalHuggingPriority="251" verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="RZv-oZ-Yyi">
                                         <rect key="frame" x="15" y="194" width="201" height="18"/>
                                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
                                         <textFieldCell key="cell" scrollable="YES" lineBreakMode="clipping" sendsActionOnEndEditing="YES" title="Actions for Trusted WiFi" id="g2F-4T-bHM">
@@ -1120,7 +1121,7 @@ application</string>
                                             <color key="backgroundColor" name="controlColor" catalog="System" colorSpace="catalog"/>
                                         </textFieldCell>
                                     </textField>
-                                    <button verticalHuggingPriority="750" id="hla-Jf-c6l">
+                                    <button verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="hla-Jf-c6l">
                                         <rect key="frame" x="35" y="250" width="181" height="18"/>
                                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
                                         <buttonCell key="cell" type="check" title="Connect to VPN" bezelStyle="regularSquare" imagePosition="left" state="on" inset="2" id="9g8-0I-KQP">
@@ -1131,7 +1132,7 @@ application</string>
                                             <binding destination="-2" name="value" keyPath="NetworkActions.UnTrustedConnectToVPN" id="Pvb-6f-ol4"/>
                                         </connections>
                                     </button>
-                                    <button verticalHuggingPriority="750" id="4gm-s9-Idw">
+                                    <button verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="4gm-s9-Idw">
                                         <rect key="frame" x="35" y="225" width="181" height="18"/>
                                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
                                         <buttonCell key="cell" type="check" title="Enable firewall" bezelStyle="regularSquare" imagePosition="left" state="on" inset="2" id="hVy-3l-NBn">
@@ -1142,7 +1143,7 @@ application</string>
                                             <binding destination="-2" name="value" keyPath="NetworkActions.UnTrustedEnableKillSwitch" id="Kpz-Cy-T0a"/>
                                         </connections>
                                     </button>
-                                    <button verticalHuggingPriority="750" id="C3D-Aw-yXo">
+                                    <button verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="C3D-Aw-yXo">
                                         <rect key="frame" x="35" y="170" width="181" height="18"/>
                                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
                                         <buttonCell key="cell" type="check" title="Disconnect from VPN" bezelStyle="regularSquare" imagePosition="left" state="on" inset="2" id="tBi-10-Kkx">
@@ -1153,7 +1154,7 @@ application</string>
                                             <binding destination="-2" name="value" keyPath="NetworkActions.TrustedDisconnectFromVPN" id="Kxr-Xg-7tx"/>
                                         </connections>
                                     </button>
-                                    <button verticalHuggingPriority="750" id="XwW-7F-l86">
+                                    <button verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="XwW-7F-l86">
                                         <rect key="frame" x="35" y="145" width="181" height="18"/>
                                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
                                         <buttonCell key="cell" type="check" title="Disable firewall" bezelStyle="regularSquare" imagePosition="left" state="on" inset="2" id="Beh-jt-yhj">
@@ -1176,16 +1177,16 @@ application</string>
             <windowStyleMask key="styleMask" titled="YES" closable="YES"/>
             <windowPositionMask key="initialPositionMask" leftStrut="YES" rightStrut="YES" topStrut="YES" bottomStrut="YES"/>
             <rect key="contentRect" x="-2288" y="172" width="363" height="256"/>
-            <rect key="screenRect" x="-2560" y="0.0" width="2560" height="1417"/>
+            <rect key="screenRect" x="0.0" y="0.0" width="1440" height="877"/>
             <view key="contentView" id="kZu-Ie-I8Q">
                 <rect key="frame" x="0.0" y="0.0" width="363" height="256"/>
                 <autoresizingMask key="autoresizingMask"/>
                 <subviews>
-                    <customView id="PMC-ER-FDp">
+                    <customView fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="PMC-ER-FDp">
                         <rect key="frame" x="0.0" y="0.0" width="363" height="256"/>
                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
                         <subviews>
-                            <textField horizontalHuggingPriority="251" verticalHuggingPriority="750" id="gFa-ip-LWE">
+                            <textField horizontalHuggingPriority="251" verticalHuggingPriority="750" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="gFa-ip-LWE">
                                 <rect key="frame" x="6" y="189" width="94" height="19"/>
                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
                                 <textFieldCell key="cell" scrollable="YES" lineBreakMode="clipping" sendsActionOnEndEditing="YES" alignment="right" title="Public key:" id="rt6-rQ-qj3">
@@ -1194,7 +1195,7 @@ application</string>
                                     <color key="backgroundColor" name="controlColor" catalog="System" colorSpace="catalog"/>
                                 </textFieldCell>
                             </textField>
-                            <textField verticalHuggingPriority="750" id="jeb-qk-Efb">
+                            <textField verticalHuggingPriority="750" horizontalCompressionResistancePriority="250" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="jeb-qk-Efb">
                                 <rect key="frame" x="106" y="153" width="240" height="54"/>
                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
                                 <textFieldCell key="cell" lineBreakMode="charWrapping" selectable="YES" sendsActionOnEndEditing="YES" state="on" borderStyle="bezel" alignment="left" drawsBackground="YES" id="NNX-ms-3eW">
@@ -1206,7 +1207,7 @@ application</string>
                                     <binding destination="-2" name="value" keyPath="WireguardSettingsViewModel.WireGuardClientPublicKey" id="Bn2-Wv-tlf"/>
                                 </connections>
                             </textField>
-                            <textField horizontalHuggingPriority="251" verticalHuggingPriority="750" id="kuH-Og-IXP">
+                            <textField horizontalHuggingPriority="251" verticalHuggingPriority="750" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="kuH-Og-IXP">
                                 <rect key="frame" x="18" y="219" width="83" height="18"/>
                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
                                 <textFieldCell key="cell" scrollable="YES" lineBreakMode="clipping" sendsActionOnEndEditing="YES" alignment="right" title="Local IP:" id="fei-LH-Nqc">
@@ -1215,7 +1216,7 @@ application</string>
                                     <color key="backgroundColor" name="controlColor" catalog="System" colorSpace="catalog"/>
                                 </textFieldCell>
                             </textField>
-                            <textField verticalHuggingPriority="750" id="L4Q-hK-Wmc">
+                            <textField verticalHuggingPriority="750" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="L4Q-hK-Wmc">
                                 <rect key="frame" x="107" y="215" width="134" height="21"/>
                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
                                 <textFieldCell key="cell" scrollable="YES" lineBreakMode="clipping" selectable="YES" sendsActionOnEndEditing="YES" state="on" borderStyle="bezel" alignment="left" title="0.0.0.0" drawsBackground="YES" id="UW0-kR-q9P">
@@ -1227,14 +1228,14 @@ application</string>
                                     <binding destination="-2" name="value" keyPath="WireguardSettingsViewModel.WireGuardClientInternalIp" id="9rW-7g-tvA"/>
                                 </connections>
                             </textField>
-                            <box title="Key date info" titlePosition="noTitle" id="Ebv-Mm-MiY">
+                            <box fixedFrame="YES" title="Key date info" titlePosition="noTitle" translatesAutoresizingMaskIntoConstraints="NO" id="Ebv-Mm-MiY">
                                 <rect key="frame" x="17" y="47" width="332" height="92"/>
                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
                                 <view key="contentView" id="hdX-QP-hvl">
                                     <rect key="frame" x="3" y="3" width="326" height="86"/>
                                     <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                                     <subviews>
-                                        <textField horizontalHuggingPriority="251" verticalHuggingPriority="750" id="Qkn-nf-lde">
+                                        <textField horizontalHuggingPriority="251" verticalHuggingPriority="750" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="Qkn-nf-lde">
                                             <rect key="frame" x="63" y="36" width="157" height="18"/>
                                             <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
                                             <textFieldCell key="cell" scrollable="YES" lineBreakMode="clipping" sendsActionOnEndEditing="YES" alignment="right" title="Expiration date:" id="KRO-bx-gnC">
@@ -1243,7 +1244,7 @@ application</string>
                                                 <color key="backgroundColor" name="controlColor" catalog="System" colorSpace="catalog"/>
                                             </textFieldCell>
                                         </textField>
-                                        <textField horizontalHuggingPriority="251" verticalHuggingPriority="750" id="jCh-A3-iEr">
+                                        <textField horizontalHuggingPriority="251" verticalHuggingPriority="750" horizontalCompressionResistancePriority="250" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="jCh-A3-iEr">
                                             <rect key="frame" x="-2" y="10" width="222" height="18"/>
                                             <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
                                             <textFieldCell key="cell" sendsActionOnEndEditing="YES" alignment="right" title="Will be automatically regenerated:" id="u94-LL-bKa">
@@ -1252,7 +1253,7 @@ application</string>
                                                 <color key="backgroundColor" name="controlColor" catalog="System" colorSpace="catalog"/>
                                             </textFieldCell>
                                         </textField>
-                                        <textField horizontalHuggingPriority="251" verticalHuggingPriority="750" id="8qm-BH-MPi">
+                                        <textField horizontalHuggingPriority="251" verticalHuggingPriority="750" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="8qm-BH-MPi">
                                             <rect key="frame" x="70" y="62" width="150" height="18"/>
                                             <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
                                             <textFieldCell key="cell" scrollable="YES" lineBreakMode="clipping" sendsActionOnEndEditing="YES" alignment="right" title="Generated:" id="cCY-9u-q2C">
@@ -1261,7 +1262,7 @@ application</string>
                                                 <color key="backgroundColor" name="controlColor" catalog="System" colorSpace="catalog"/>
                                             </textFieldCell>
                                         </textField>
-                                        <textField horizontalHuggingPriority="251" verticalHuggingPriority="750" id="MzD-tJ-8iT">
+                                        <textField horizontalHuggingPriority="251" verticalHuggingPriority="750" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="MzD-tJ-8iT">
                                             <rect key="frame" x="224" y="62" width="86" height="18"/>
                                             <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
                                             <textFieldCell key="cell" scrollable="YES" lineBreakMode="clipping" sendsActionOnEndEditing="YES" alignment="left" title="2019.02.10" id="CC3-Dc-B0X">
@@ -1273,7 +1274,7 @@ application</string>
                                                 <binding destination="-2" name="value" keyPath="WireguardSettingsViewModel.Generated" id="03S-Wr-4Hv"/>
                                             </connections>
                                         </textField>
-                                        <textField horizontalHuggingPriority="251" verticalHuggingPriority="750" id="3AL-7t-9Cm">
+                                        <textField horizontalHuggingPriority="251" verticalHuggingPriority="750" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="3AL-7t-9Cm">
                                             <rect key="frame" x="222" y="36" width="88" height="18"/>
                                             <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
                                             <textFieldCell key="cell" scrollable="YES" lineBreakMode="clipping" sendsActionOnEndEditing="YES" alignment="left" title="2019.03.20" id="XSF-OR-lbc">
@@ -1285,7 +1286,7 @@ application</string>
                                                 <binding destination="-2" name="value" keyPath="WireguardSettingsViewModel.ExpirationDate" id="WVk-Yh-Gqw"/>
                                             </connections>
                                         </textField>
-                                        <textField horizontalHuggingPriority="251" verticalHuggingPriority="750" id="wst-h7-stg">
+                                        <textField horizontalHuggingPriority="251" verticalHuggingPriority="750" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="wst-h7-stg">
                                             <rect key="frame" x="222" y="10" width="88" height="18"/>
                                             <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
                                             <textFieldCell key="cell" scrollable="YES" lineBreakMode="clipping" sendsActionOnEndEditing="YES" alignment="left" title="2019.03.10" id="yhl-vr-djV">
@@ -1301,7 +1302,7 @@ application</string>
                                 </view>
                                 <font key="titleFont" metaFont="systemMedium" size="14"/>
                             </box>
-                            <button verticalHuggingPriority="750" id="HTp-ZU-jfd">
+                            <button verticalHuggingPriority="750" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="HTp-ZU-jfd">
                                 <rect key="frame" x="236" y="13" width="113" height="32"/>
                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
                                 <buttonCell key="cell" type="push" title="Regenerate" bezelStyle="rounded" alignment="center" borderStyle="border" imageScaling="proportionallyDown" inset="2" id="o27-4S-uwC">
@@ -1322,7 +1323,7 @@ application</string>
             <rect key="frame" x="0.0" y="0.0" width="363" height="256"/>
             <autoresizingMask key="autoresizingMask" flexibleMinY="YES"/>
             <subviews>
-                <textField horizontalHuggingPriority="251" verticalHuggingPriority="750" id="ikS-yS-4Rq">
+                <textField horizontalHuggingPriority="251" verticalHuggingPriority="750" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="ikS-yS-4Rq">
                     <rect key="frame" x="-2" y="144" width="367" height="24"/>
                     <autoresizingMask key="autoresizingMask" widthSizable="YES" flexibleMinY="YES"/>
                     <textFieldCell key="cell" lineBreakMode="clipping" alignment="center" title="Registering new keys..." id="Zh1-s4-lkx">
@@ -1334,7 +1335,7 @@ application</string>
                         <binding destination="-2" name="value" keyPath="WireguardSettingsViewModel.ProgressStatus" id="rk6-oP-NC1"/>
                     </connections>
                 </textField>
-                <progressIndicator wantsLayer="YES" horizontalHuggingPriority="750" verticalHuggingPriority="750" maxValue="100" bezeled="NO" indeterminate="YES" controlSize="small" style="spinning" id="U2i-bj-VqZ">
+                <progressIndicator wantsLayer="YES" horizontalHuggingPriority="750" verticalHuggingPriority="750" fixedFrame="YES" maxValue="100" bezeled="NO" indeterminate="YES" controlSize="small" style="spinning" translatesAutoresizingMaskIntoConstraints="NO" id="U2i-bj-VqZ">
                     <rect key="frame" x="173" y="120" width="16" height="16"/>
                     <autoresizingMask key="autoresizingMask" flexibleMinY="YES"/>
                 </progressIndicator>
@@ -1345,7 +1346,7 @@ application</string>
             <rect key="frame" x="0.0" y="0.0" width="562" height="189"/>
             <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
             <subviews>
-                <button verticalHuggingPriority="750" id="TtV-vk-RaB">
+                <button verticalHuggingPriority="750" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="TtV-vk-RaB">
                     <rect key="frame" x="22" y="89" width="119" height="19"/>
                     <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
                     <buttonCell key="cell" type="check" title="Hardcore Mode" bezelStyle="regularSquare" imagePosition="left" state="on" inset="2" id="wbm-2y-TJR">
@@ -1356,7 +1357,7 @@ application</string>
                         <binding destination="-2" name="value" keyPath="settings.IsAntiTrackerHardcore" id="fXt-vg-Y9D"/>
                     </connections>
                 </button>
-                <textField verticalHuggingPriority="750" horizontalCompressionResistancePriority="250" id="mDk-0I-Xew">
+                <textField verticalHuggingPriority="750" horizontalCompressionResistancePriority="250" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="mDk-0I-Xew">
                     <rect key="frame" x="40" y="48" width="490" height="36"/>
                     <autoresizingMask key="autoresizingMask" flexibleMinY="YES"/>
                     <textFieldCell key="cell" sendsActionOnEndEditing="YES" alignment="left" title="Hardcore mode blocks the leading companies with business models relying on user surveillance (currently: Google and Facebook)." id="SgO-WH-2UO">
@@ -1365,7 +1366,7 @@ application</string>
                         <color key="backgroundColor" name="controlColor" catalog="System" colorSpace="catalog"/>
                     </textFieldCell>
                 </textField>
-                <textField verticalHuggingPriority="750" horizontalCompressionResistancePriority="250" id="4TZ-dU-Aej">
+                <textField verticalHuggingPriority="750" horizontalCompressionResistancePriority="250" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="4TZ-dU-Aej">
                     <rect key="frame" x="22" y="134" width="542" height="32"/>
                     <autoresizingMask key="autoresizingMask" flexibleMinY="YES"/>
                     <textFieldCell key="cell" sendsActionOnEndEditing="YES" alignment="left" title="IVPN blocks ads, malicious websites, and third-party trackers  using our private DNS servers." id="nET-ru-t3x">
@@ -1374,7 +1375,7 @@ application</string>
                         <color key="backgroundColor" name="controlColor" catalog="System" colorSpace="catalog"/>
                     </textFieldCell>
                 </textField>
-                <textField verticalHuggingPriority="750" horizontalCompressionResistancePriority="250" id="Frc-Ix-ooT">
+                <textField verticalHuggingPriority="750" horizontalCompressionResistancePriority="250" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="Frc-Ix-ooT">
                     <rect key="frame" x="91" y="115" width="420" height="32"/>
                     <autoresizingMask key="autoresizingMask" flexibleMinY="YES"/>
                     <textFieldCell key="cell" sendsActionOnEndEditing="YES" alignment="left" title="about how IVPN AntiTracker is implemented. " id="hFC-jk-LZZ">
@@ -1383,7 +1384,7 @@ application</string>
                         <color key="backgroundColor" name="controlColor" catalog="System" colorSpace="catalog"/>
                     </textFieldCell>
                 </textField>
-                <button verticalHuggingPriority="750" id="ihK-VQ-HvT" customClass="CustomHyperLinkButton">
+                <button verticalHuggingPriority="750" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="ihK-VQ-HvT" customClass="CustomHyperLinkButton">
                     <rect key="frame" x="22" y="127" width="70" height="21"/>
                     <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
                     <buttonCell key="cell" type="bevel" title="Learn more" alternateTitle="https://www.ivpn.net/antitracker" bezelStyle="rounded" alignment="left" imageScaling="proportionallyDown" inset="2" id="bhy-Xy-Cy7">
@@ -1391,7 +1392,7 @@ application</string>
                         <font key="font" size="12" name="SFProText-Medium"/>
                     </buttonCell>
                 </button>
-                <textField verticalHuggingPriority="750" horizontalCompressionResistancePriority="250" id="x0d-rp-SDm">
+                <textField verticalHuggingPriority="750" horizontalCompressionResistancePriority="250" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="x0d-rp-SDm">
                     <rect key="frame" x="40" y="17" width="319" height="20"/>
                     <autoresizingMask key="autoresizingMask" flexibleMinY="YES"/>
                     <textFieldCell key="cell" sendsActionOnEndEditing="YES" alignment="left" title="To better understand the impact please see our page on" id="6dB-0G-RgP">
@@ -1400,7 +1401,7 @@ application</string>
                         <color key="backgroundColor" name="controlColor" catalog="System" colorSpace="catalog"/>
                     </textFieldCell>
                 </textField>
-                <button verticalHuggingPriority="750" id="SoT-sr-xZi" customClass="CustomHyperLinkButton">
+                <button verticalHuggingPriority="750" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="SoT-sr-xZi" customClass="CustomHyperLinkButton">
                     <rect key="frame" x="312" y="17" width="92" height="21"/>
                     <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
                     <buttonCell key="cell" type="bevel" title="hardcore mode" alternateTitle="https://www.ivpn.net/antitracker/hardcore" bezelStyle="rounded" alignment="left" imageScaling="proportionallyDown" inset="2" id="eeA-5y-Mfa">
@@ -1408,7 +1409,7 @@ application</string>
                         <font key="font" size="12" name="SFProText-Medium"/>
                     </buttonCell>
                 </button>
-                <textField verticalHuggingPriority="750" horizontalCompressionResistancePriority="250" id="9nz-px-RcP">
+                <textField verticalHuggingPriority="750" horizontalCompressionResistancePriority="250" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="9nz-px-RcP">
                     <rect key="frame" x="400" y="19" width="26" height="18"/>
                     <autoresizingMask key="autoresizingMask" flexibleMinY="YES"/>
                     <textFieldCell key="cell" sendsActionOnEndEditing="YES" alignment="left" title="." id="TaM-5D-uYM">
@@ -1424,7 +1425,7 @@ application</string>
             <rect key="frame" x="0.0" y="0.0" width="562" height="153"/>
             <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
             <subviews>
-                <button verticalHuggingPriority="750" id="2O6-Zy-wan">
+                <button verticalHuggingPriority="750" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="2O6-Zy-wan">
                     <rect key="frame" x="18" y="111" width="514" height="18"/>
                     <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
                     <buttonCell key="cell" type="check" title="Use custom DNS server when connected to IVPN" bezelStyle="regularSquare" imagePosition="left" state="on" inset="2" id="IgZ-9u-tuf">
@@ -1435,7 +1436,7 @@ application</string>
                         <binding destination="-2" name="value" keyPath="settings.IsCustomDns" id="oqu-5Q-cE4"/>
                     </connections>
                 </button>
-                <textField verticalHuggingPriority="750" horizontalCompressionResistancePriority="250" id="Vw1-S3-LOb">
+                <textField verticalHuggingPriority="750" horizontalCompressionResistancePriority="250" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="Vw1-S3-LOb">
                     <rect key="frame" x="35" y="74" width="497" height="16"/>
                     <autoresizingMask key="autoresizingMask" flexibleMinY="YES"/>
                     <textFieldCell key="cell" sendsActionOnEndEditing="YES" alignment="left" title="IP address:" id="51c-n5-iT4">
@@ -1444,7 +1445,7 @@ application</string>
                         <color key="backgroundColor" name="controlColor" catalog="System" colorSpace="catalog"/>
                     </textFieldCell>
                 </textField>
-                <textField verticalHuggingPriority="750" id="Xiw-YA-NdR">
+                <textField verticalHuggingPriority="750" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="Xiw-YA-NdR">
                     <rect key="frame" x="37" y="42" width="170" height="22"/>
                     <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
                     <textFieldCell key="cell" scrollable="YES" lineBreakMode="clipping" selectable="YES" editable="YES" sendsActionOnEndEditing="YES" borderStyle="bezel" placeholderString="0.0.0.0" drawsBackground="YES" id="WEv-UB-QMI">
@@ -1463,7 +1464,7 @@ application</string>
                         <binding destination="-2" name="enabled" keyPath="settings.IsCustomDns" id="N9Q-Jn-Jiv"/>
                     </connections>
                 </textField>
-                <textField verticalHuggingPriority="750" horizontalCompressionResistancePriority="250" id="NPy-rb-8Go">
+                <textField verticalHuggingPriority="750" horizontalCompressionResistancePriority="250" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="NPy-rb-8Go">
                     <rect key="frame" x="35" y="20" width="497" height="16"/>
                     <autoresizingMask key="autoresizingMask" flexibleMinY="YES"/>
                     <textFieldCell key="cell" sendsActionOnEndEditing="YES" alignment="left" title="AntiTracker will override the custom DNS when enabled." id="2mv-xA-ySd">
@@ -1476,11 +1477,11 @@ application</string>
             <point key="canvasLocation" x="771" y="2593.5"/>
         </customView>
         <customView id="PqD-Oi-UEv">
-            <rect key="frame" x="0.0" y="0.0" width="485" height="99"/>
+            <rect key="frame" x="0.0" y="0.0" width="485" height="92"/>
             <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
             <subviews>
-                <textField verticalHuggingPriority="750" horizontalCompressionResistancePriority="250" setsMaxLayoutWidthAtFirstLayout="YES" id="Ggv-vJ-LLb">
-                    <rect key="frame" x="18" y="20" width="449" height="59"/>
+                <textField verticalHuggingPriority="750" horizontalCompressionResistancePriority="250" fixedFrame="YES" setsMaxLayoutWidthAtFirstLayout="YES" translatesAutoresizingMaskIntoConstraints="NO" id="Ggv-vJ-LLb">
+                    <rect key="frame" x="18" y="20" width="449" height="52"/>
                     <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                     <textFieldCell key="cell" sendsActionOnEndEditing="YES" id="HV3-H6-20L">
                         <font key="font" size="12" name="SFProText-Regular"/>
@@ -1490,7 +1491,23 @@ application</string>
                     </textFieldCell>
                 </textField>
             </subviews>
-            <point key="canvasLocation" x="1328" y="178"/>
+            <point key="canvasLocation" x="1327.5" y="174"/>
+        </customView>
+        <customView id="6Pc-oM-jWg">
+            <rect key="frame" x="0.0" y="0.0" width="485" height="77"/>
+            <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
+            <subviews>
+                <textField verticalHuggingPriority="750" horizontalCompressionResistancePriority="250" fixedFrame="YES" setsMaxLayoutWidthAtFirstLayout="YES" translatesAutoresizingMaskIntoConstraints="NO" id="NXq-Pn-zei">
+                    <rect key="frame" x="18" y="20" width="449" height="37"/>
+                    <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                    <textFieldCell key="cell" sendsActionOnEndEditing="YES" title="WireGuard is a revolutionary VPN protocol that promises better security and faster speeds compared to existing solutions." id="AEl-Rc-GUt">
+                        <font key="font" size="12" name="SFProText-Regular"/>
+                        <color key="textColor" name="labelColor" catalog="System" colorSpace="catalog"/>
+                        <color key="backgroundColor" name="controlColor" catalog="System" colorSpace="catalog"/>
+                    </textFieldCell>
+                </textField>
+            </subviews>
+            <point key="canvasLocation" x="1327.5" y="300.5"/>
         </customView>
     </objects>
     <resources>
