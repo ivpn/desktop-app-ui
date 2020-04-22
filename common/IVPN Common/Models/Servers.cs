@@ -222,6 +222,14 @@ namespace IVPN.Models
             return null;
         }
 
+        public ServerLocation GetServerByMultihopID(string multihopId)
+        {
+            if (string.IsNullOrEmpty(multihopId))
+                return null;
+#error FINISH THIS METHOD
+            return null;
+        }
+
         #region Dns servers info
         public IPAddress GetDnsIp(DnsTypeEnum dnsType, bool isMultihop)
         {

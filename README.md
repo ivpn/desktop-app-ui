@@ -17,6 +17,7 @@ IVPN Client Desktop app is distributed on the official site [www.ivpn.net](www.i
 * [Authors](#Authors)
 * [Acknowledgements](#acknowledgements)
 
+<a name="installation"></a>
 ## Installation
 
 These instructions will get you a copy of the project up and running on your local machine for development and testing purposes.
@@ -70,6 +71,7 @@ New compiled DMG-installer of IVPN Desktop can be found in folder `macOS/scripts
 
 **Note!** In order to run application as macOS daemon, the binary must be signed by Apple Developer ID (must be located in `macOS/scripts/config/devid_certificate.txt`).
 
+<a name="versioning"></a>
 ## Versioning
 
 Project is using [Semantic Versioning (SemVer)](https://semver.org) for creating release versions.
@@ -82,22 +84,27 @@ SemVer is a 3-component system in the format of `x.y.z` where:
 
 So we have: `Major.Minor.Patch`
 
+<a name="contributing"></a>
 ## Contributing
 
 If you are interested in contributing to IVPN Client Desktop project, please read our [Contributing Guidelines](/.github/CONTRIBUTING.md).
 
+<a name="security"></a>
 ## Security Policy
 
 If you want to report a security problem, please read our [Security Policy](/.github/SECURITY.md).
 
+<a name="license"></a>
 ## License
 
 This project is licensed under the GPLv3 - see the [License](/LICENSE.md) file for details.
 
+<a name="Authors"></a>
 ## Authors
 
 See the [Authors](/AUTHORS) file for the list of contributors who participated in this project.
 
+<a name="acknowledgements"></a>
 ## Acknowledgements
 
 See the [Acknowledgements](/ACKNOWLEDGEMENTS.md) file for the list of third party libraries used in this project.

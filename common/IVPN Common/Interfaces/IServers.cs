@@ -60,6 +60,8 @@ namespace IVPNCommon.Interfaces
         bool StartPingUpdate();
 
         ServerLocation GetServerByIP(IPAddress addr, VpnType vpnType);
+        ServerLocation GetServerByMultihopID(string multihopId);
+
 
         IPAddress GetDnsIp(DnsTypeEnum dnsType, bool isMultihop);
     }

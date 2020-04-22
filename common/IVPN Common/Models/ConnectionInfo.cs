@@ -6,9 +6,10 @@ namespace IVPN.Models
     {
         private string __DurationString;
         private bool __IsDurationStopped;
-        public ConnectionInfo(ServerLocation server, DateTime connectTime, string clientIPAddress, string serverIPAddress, VpnProtocols.VpnType vpnType)
+        public ConnectionInfo(ServerLocation server, ServerLocation exitServer, DateTime connectTime, string clientIPAddress, string serverIPAddress, VpnProtocols.VpnType vpnType)
         {
             Server = server;
+            ExitServer = exitServer;
             ConnectTime = connectTime;
             ClientIPAddress = clientIPAddress;
             ServerIPAddress = serverIPAddress;
@@ -79,7 +80,9 @@ namespace IVPN.Models
         public string ServerIPAddress { get; }
 
         public ServerLocation Server { get; }
-                
+
+        public ServerLocation ExitServer { get; }
+
         public VpnProtocols.VpnType VpnType { get; }
 
         public string VpnProtocolInfo => VpnType.ToString();

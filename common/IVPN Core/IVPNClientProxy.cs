@@ -25,7 +25,7 @@ namespace IVPN
 
         public delegate void ServerListChangedHandler(VpnServersInfo vpnServers);
         public delegate void ServersPingsUpdatedHandler(Dictionary<string, int> pingResults);
-        public delegate void ConnectedHandler(ulong timeSecFrom1970, string clientIP, string serverIP, VpnType VpnType);
+        public delegate void ConnectedHandler(ulong timeSecFrom1970, string clientIP, string serverIP, VpnType VpnType, string exitServerID);
         public delegate void ConnectionStateHandler(string state, string stateAdditionalInfo);
         public delegate void DisconnectedHandler(bool failure, DisconnectionReason reason, string reasonDescription);
         public delegate void SecurityPolicyHandler(string type, string message);
@@ -277,7 +277,7 @@ namespace IVPN
 
                     case "ConnectedResp":
                         var connectedRes = JsonConvert.DeserializeObject<Responses.IVPNConnectedResponse>(line);  
-                        Connected(connectedRes.TimeSecFrom1970, connectedRes.ClientIP, connectedRes.ServerIP, connectedRes.VpnType);
+                        Connected(connectedRes.TimeSecFrom1970, connectedRes.ClientIP, connectedRes.ServerIP, connectedRes.VpnType, connectedRes.ExitServerID);
                         break;
 
                     case "DisconnectedResp":

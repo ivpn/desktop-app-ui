@@ -98,6 +98,7 @@ namespace IVPN.Responses
         public string ClientIP;
         public string ServerIP;
         public VpnType VpnType;
+        public string ExitServerID;
     }
 
     public class IVPNDisconnectedResponse : IVPNResponse

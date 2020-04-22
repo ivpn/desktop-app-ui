@@ -362,7 +362,7 @@ namespace IVPN.Models
             }), null);            
         }
 
-        private void ServiceProxy_Connected(ulong timeSecFrom1970, string clientIP, string serverIP, VpnType vpnType)
+        private void ServiceProxy_Connected(ulong timeSecFrom1970, string clientIP, string serverIP, VpnType vpnType, string exitServerID)
         {
             if (State == ServiceState.CancellingConnection)
             {
@@ -371,9 +371,17 @@ namespace IVPN.Models
             }
 
             ServerLocation servLocation = Servers.GetServerByIP(IPAddress.Parse(serverIP), vpnType);
-            
+            ServerLocation exitServLocation = null;
+            if (vpnType == VpnType.OpenVPN && string.IsNullOrEmpty(exitServerID) == false)
+            {
+                exitServLocation = Servers.GetServerByMultihopID(exitServerID);
+                if (exitServLocation == null)
+                    Logging.Info("ERROR: unable to find exit server ID (Multihop): " + exitServerID);
+            }
+
             ConnectionInfo newConnectionInfo = new ConnectionInfo(
                 servLocation,
+                exitServLocation,
                 new DateTime(1970, 1, 1).AddSeconds(timeSecFrom1970),
                 clientIP,
                 serverIP,
