@@ -543,5 +543,10 @@ namespace IVPN.Windows
         {
             PopupOpenvpnInfo.IsOpen = true;
         }
+
+        private void BtnWireguardPopup_Click(object sender, RoutedEventArgs e)
+        {
+            PopupWireguardInfo.IsOpen = true;
+        }
     }
 }

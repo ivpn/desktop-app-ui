@@ -298,13 +298,32 @@
                         </Popup>
                     </StackPanel>
 
-                    <RadioButton Margin="0,14,0,0" Content="WireGuard" IsChecked="{Binding VpnProtocolType, Converter={StaticResource EnumBooleanConverter}, ConverterParameter={x:Static vpnProtocols:VpnType.WireGuard}}"
-                                 Checked="ProtocolTypeBtn_Checked"/>
-                    <TextBlock Margin="22,5,0,5" Style="{StaticResource SecondaryTextStyle}" 
-                               Foreground="Black" Opacity="0.6">
-                        <TextBlock Text="WARNING: " Foreground="Red"/>The WireGuard protocol is currently under development and should be considered as experimental.<LineBreak/>
-                        Review the Wireguard project for more information. We do not recommend Wireguard except<LineBreak/>
-                        for testing or in situations where security is not critical.</TextBlock>
+                    <StackPanel Orientation="Horizontal">
+                        <RadioButton Margin="0,14,0,14" 
+                                     Content="WireGuard" 
+                                      Name="GuiRadioButtonWireguard"
+                                     IsChecked="{Binding VpnProtocolType, Converter={StaticResource EnumBooleanConverter}, ConverterParameter={x:Static vpnProtocols:VpnType.WireGuard}}"
+                                     Checked="ProtocolTypeBtn_Checked"/>
+
+                        <Button x:Name="BtWireguardPopup" IsTabStop="False" Focusable="False"
+                                Style="{StaticResource {x:Static ToolBar.ButtonStyleKey}}" 
+                                Click="BtnWireguardPopup_Click">
+                            <Button.Content>
+                                <Image  Source="/IVPN Client;component/Resources/iconInformation.png" Stretch="None"/>
+                            </Button.Content>
+                        </Button>
+
+                        <Popup x:Name="PopupWireguardInfo" 
+                               StaysOpen="False"                               
+                               Placement="Left"
+                               PlacementTarget="{Binding ElementName=GuiRadioButtonWireguard}">
+
+                            <Border BorderThickness="1" BorderBrush="#178FE6" Background="White">
+                                <TextBlock Margin="10" Style="{StaticResource SecondaryTextStyle}" Foreground="Black">
+                                   WireGuard is a revolutionary VPN protocol that promises better security<LineBreak/>and faster speeds compared to existing solutions.</TextBlock>
+                            </Border>
+                        </Popup>
+                    </StackPanel>
 
                     <GroupBox Margin="22,0,0,0">
                         <GroupBox.Header>
