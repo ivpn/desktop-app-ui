@@ -51,6 +51,13 @@ namespace IVPN.Models
             __ServiceProxy.Connected += ServiceProxy_Connected;
             __ServiceProxy.ConnectionState += ServiceProxy_ConnectionState;
             __ServiceProxy.Disconnected += ServiceProxy_Disconnected;
+            __ServiceProxy.KillSwitchStatus += (bool? enabled, bool? isPersistant, bool? isAllowLAN, bool? isAllowMulticast) =>
+            {
+                if (enabled != null)
+                    UpdateKillSwitchIsEnabled((bool)enabled);
+                if (isPersistant!=null)
+                    UpdateKillSwitchIsPersistent((bool)isPersistant);
+            };
 
             __State = ServiceState.Uninitialized;
             __InitializationSignal = new ManualResetEvent(false);
@@ -585,7 +592,7 @@ namespace IVPN.Models
             try
             { 
                 await __ServiceProxy.KillSwitchSetEnabled(value);
-                await UpdateKillSwitchIsEnabled();
+                //await UpdateKillSwitchIsEnabled();
             }
             catch (Exception ex)
             {
@@ -597,13 +604,18 @@ namespace IVPN.Models
         {
             try
             {
-                __KillSwitchIsEnabled = await __ServiceProxy.KillSwitchGetIsEnabled();
-                DoPropertyChanged(nameof(KillSwitchIsEnabled));
+                UpdateKillSwitchIsEnabled(await __ServiceProxy.KillSwitchGetIsEnabled());
             }
             catch (Exception ex)
             {
                 ProcessProxyException(ex);
             }
+        }
+
+        private void UpdateKillSwitchIsEnabled(bool isEnabled)
+        {
+            __KillSwitchIsEnabled = isEnabled;
+            DoPropertyChanged(nameof(KillSwitchIsEnabled));
         }
         #endregion //KillSwitch
 
@@ -619,7 +631,7 @@ namespace IVPN.Models
             try
             {
                 await __ServiceProxy.KillSwitchSetIsPersistent(value);
-                await UpdateKillSwitchIsPersistent();
+                //await UpdateKillSwitchIsPersistent();
             }
             catch (Exception ex)
             {
@@ -630,14 +642,19 @@ namespace IVPN.Models
         private async Task UpdateKillSwitchIsPersistent()
         {
             try
-            { 
-                __KillSwitchIsPersistent = await __ServiceProxy.KillSwitchGetIsPersistent();
-                DoPropertyChanged(nameof(KillSwitchIsPersistent));
+            {
+                UpdateKillSwitchIsPersistent(await __ServiceProxy.KillSwitchGetIsPersistent());
             }
             catch (Exception ex)
             {
                 ProcessProxyException(ex);
             }
+        }
+
+        private void UpdateKillSwitchIsPersistent(bool isPersistent)
+        {
+            __KillSwitchIsPersistent = isPersistent;
+            DoPropertyChanged(nameof(KillSwitchIsPersistent));
         }
 
         public bool KillSwitchAllowLAN

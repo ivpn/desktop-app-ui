@@ -37,6 +37,7 @@ namespace IVPN
         public delegate void DiagnosticsGeneratedHandler(Responses.IVPNDiagnosticsGeneratedResponse diagInfoResponse);
         public delegate void ExceptionHappenedHandler(Exception exception);
         public delegate void SessionInfoChangedHandler(SessionInfo s);
+        public delegate void KillSwitchStatusHandler(bool? enabled, bool? isPersistant, bool? isAllowLAN, bool? isAllowMulticast);
         public event ServerListChangedHandler ServerListChanged = delegate { };
         public event ServersPingsUpdatedHandler ServersPingsUpdated = delegate { };
         public event ConnectedHandler Connected = delegate { };
@@ -49,6 +50,7 @@ namespace IVPN
         public event ExceptionHappenedHandler ClientException = delegate { };
         public event EventHandler ClientProxyDisconnected = delegate { };
         public event SessionInfoChangedHandler SessionInfoChanged = delegate { };
+        public event KillSwitchStatusHandler KillSwitchStatus = delegate { };
 
         private TcpClient __Client;
         private StreamReader __StreamReader;
@@ -297,10 +299,15 @@ namespace IVPN
 
                     // :: __BlockingCollection ::
                     case "KillSwitchStatusResp":
-                        responseReceived(JsonConvert.DeserializeObject<Responses.IVPNKillSwitchStatusResponse>(line));
+                        var kwResp = JsonConvert.DeserializeObject<Responses.IVPNKillSwitchStatusResponse>(line);
+                        responseReceived(kwResp);
+                        KillSwitchStatus(kwResp.IsEnabled, kwResp.IsPersistent, kwResp.IsAllowLAN, kwResp.IsAllowMulticast);
                         break;
+
                     case "KillSwitchGetIsPestistentResp":
-                        responseReceived(JsonConvert.DeserializeObject<Responses.IVPNKillSwitchGetIsPestistentResponse>(line));
+                        var kwPers = JsonConvert.DeserializeObject<Responses.IVPNKillSwitchGetIsPestistentResponse>(line);
+                        responseReceived(kwPers);
+                        KillSwitchStatus(null, kwPers.IsPersistent, null, null);
                         break;
 
                     case "SessionNewResp":
