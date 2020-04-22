@@ -21,6 +21,18 @@ namespace IVPN.VpnProtocols
 
         public override string ToString() { return FullName; }
 
-        public string FullName => $"{City}, {CountryCode}"; 
+        public string FullName => $"{City}, {CountryCode}";
+
+        public string GetMultihopId()
+        {
+            string gwID = GatewayId;
+            if (string.IsNullOrEmpty(gwID))
+                return "";
+
+            if (!gwID.Contains("."))
+                return gwID;
+
+            return gwID.Split(new char[] { '.' })[0];
+        }
     }
 }

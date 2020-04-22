@@ -21,18 +21,10 @@ namespace IVPN.Models
 
         public ServerLocation(string name, string countryCode, VpnServerInfoBase vpnServer)
         {
-            MultihopId = GetMultihopId(vpnServer.GatewayId);
+            MultihopId = vpnServer.GetMultihopId();
             __Name = name;
             CountryCode = countryCode;
             VpnServer = vpnServer;
-        }
-
-        private string GetMultihopId(string serverId)
-        {
-            if (!serverId.Contains("."))
-                return serverId;
-
-            return serverId.Split(new char[] { '.' })[0];
         }
         
         private string FormatName(string city, string countryCode)

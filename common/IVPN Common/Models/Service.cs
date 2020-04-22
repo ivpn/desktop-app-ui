@@ -374,7 +374,7 @@ namespace IVPN.Models
             ServerLocation exitServLocation = null;
             if (vpnType == VpnType.OpenVPN && string.IsNullOrEmpty(exitServerID) == false)
             {
-                exitServLocation = Servers.GetServerByMultihopID(exitServerID);
+                exitServLocation = Servers.GetServerByOpenVpnMultihopID(exitServerID);
                 if (exitServLocation == null)
                     Logging.Info("ERROR: unable to find exit server ID (Multihop): " + exitServerID);
             }

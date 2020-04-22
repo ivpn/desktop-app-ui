@@ -222,11 +222,18 @@ namespace IVPN.Models
             return null;
         }
 
-        public ServerLocation GetServerByMultihopID(string multihopId)
+        public ServerLocation GetServerByOpenVpnMultihopID(string multihopId)
         {
             if (string.IsNullOrEmpty(multihopId))
                 return null;
-#error FINISH THIS METHOD
+
+            var allSvrs = __AllVpnServers;
+            foreach (var s in allSvrs.OpenVPNServers)
+            {
+                if (multihopId == s.GetMultihopId())
+                    return new ServerLocation(s);
+            }
+
             return null;
         }
 

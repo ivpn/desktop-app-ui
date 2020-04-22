@@ -173,18 +173,27 @@ namespace IVPN.ViewModels
 
                 // Ensure that connected server equals to selected server
                 // They could be different in case if connection was established not by UI client
-                if (ConnectionInfo.Server != null && !string.Equals(SelectedServer.VpnServer.GatewayId, ConnectionInfo.Server?.VpnServer?.GatewayId))
+                if (
+                    IsMultiHop != !string.IsNullOrEmpty(ConnectionInfo?.ExitServer?.VpnServer?.GatewayId)
+                    ||
+                    !string.Equals(SelectedServer?.VpnServer?.GatewayId, ConnectionInfo?.Server?.VpnServer?.GatewayId)
+                    ||
+                    !string.Equals(SelectedExitServer?.VpnServer?.GatewayId, ConnectionInfo?.ExitServer?.VpnServer?.GatewayId)
+                    )
                 {
                     if (ConnectionInfo.VpnType != AppSettings.Instance().VpnProtocolType)
                         AppSettings.Instance().VpnProtocolType = ConnectionInfo.VpnType;
-                    
-                    // TODO: implement possibility to show correct multihop servers
-                    // If connection was established outside - we do not have infor is it multihop or not
-                    // therefore, we switching to singlehop.  
-                    IsMultiHop = false;
 
                     // select connected server
-                    SetSelectedServer(ConnectionInfo.Server, false);
+                    SetSelectedServer(ConnectionInfo?.Server, false);
+
+                    if (ConnectionInfo?.ExitServer != null)
+                    {
+                        SetSelectedExitServer(ConnectionInfo?.ExitServer);
+                        IsMultiHop = true;
+                    }
+                    else
+                        IsMultiHop = false;
                 }
             };
 
