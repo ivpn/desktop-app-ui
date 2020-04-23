@@ -19,6 +19,8 @@ namespace IVPN.Interfaces
         event EventHandler ServiceInitialized;
         event EventHandler ServiceExited;
 
+        event IVPNClientProxy.AlternateDNSChangedHandler AlternateDNSChanged;
+
         Task SetCredentials(
             string AccountID,
             string Session,

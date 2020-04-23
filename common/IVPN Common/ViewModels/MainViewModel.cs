@@ -197,6 +197,8 @@ namespace IVPN.ViewModels
                 }
             };
 
+            __Service.AlternateDNSChanged += __Service_AlternateDNSChanged;
+
             Settings.PropertyChanged += (object sender, PropertyChangedEventArgs e) => {
                 if (e.PropertyName.Equals(nameof(Settings.VpnProtocolType)))
                 {
@@ -1790,6 +1792,72 @@ namespace IVPN.ViewModels
 #endregion
 
 #region DNS
+
+        
+        private void __Service_AlternateDNSChanged(string dns)
+        {
+            bool atOn = false;
+            bool settingsChanged = false;
+
+            bool isHardcore = false;
+            if (IPAddress.TryParse(dns, out IPAddress dnsIp) ==false)
+                dnsIp = null;
+
+            if (dnsIp != null
+                &&
+                (
+                dnsIp.Equals(IPAddress.None)
+                || dnsIp.Equals(IPAddress.IPv6None)
+                || dnsIp.Equals(IPAddress.Loopback)
+                || dnsIp.Equals(IPAddress.Any)
+                || dnsIp.Equals(IPAddress.IPv6Any)
+                )
+               )
+            {
+                dnsIp = null;
+            }
+
+            if (dnsIp != null && __Service.Servers.IsAntitracker(dnsIp, out isHardcore, out _))
+                atOn = true;
+
+            if (Settings.IsAntiTracker != atOn)
+            {
+                RaisePropertyWillChange(nameof(IsAntiTrackerEnabled));
+                Settings.IsAntiTracker = atOn;
+                RaisePropertyChanged(nameof(IsAntiTrackerEnabled));
+
+                settingsChanged = true;
+            }
+
+            if (Settings.IsAntiTrackerHardcore != isHardcore)
+            {
+                Settings.IsAntiTrackerHardcore = isHardcore;
+                settingsChanged = true;
+            }
+
+            bool isDnsDefined = dnsIp != null;
+            if (atOn == false)
+            {
+                if (Settings.IsCustomDns != isDnsDefined)
+                {
+                    Settings.IsCustomDns = isDnsDefined;
+                    settingsChanged = true;
+                }
+
+                if (
+                    (isDnsDefined == true  && !string.Equals(Settings.CustomDns, dnsIp.ToString()))
+                    ||
+                    (isDnsDefined == false && !string.IsNullOrEmpty(Settings.CustomDns))
+                    )
+                {
+                    Settings.CustomDns = (dnsIp!=null)?dnsIp.ToString():"";
+                    settingsChanged = true;
+                }
+            }
+
+            if (settingsChanged)
+                Settings.Save();
+        }
 
         private bool __IsIsAntiTrackerChangingStatus;
         public bool IsIsAntiTrackerChangingStatus

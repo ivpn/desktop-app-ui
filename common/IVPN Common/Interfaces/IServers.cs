@@ -62,7 +62,7 @@ namespace IVPNCommon.Interfaces
         ServerLocation GetServerByIP(IPAddress addr, VpnType vpnType);
         ServerLocation GetServerByOpenVpnMultihopID(string multihopId);
 
-
         IPAddress GetDnsIp(DnsTypeEnum dnsType, bool isMultihop);
+        bool IsAntitracker(IPAddress dnsIP, out bool isHardcore, out bool isMultihop);
     }
 }

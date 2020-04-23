@@ -25,6 +25,8 @@ namespace IVPN.Models
         public event EventHandler ServiceInitialized = delegate { };
         public event EventHandler ServiceExited = delegate { };
 
+        public event IVPNClientProxy.AlternateDNSChangedHandler AlternateDNSChanged = delegate { };
+
         private readonly IVPNClientProxy __ServiceProxy;
         private ConnectionTarget __ConnectionTarget;
         private readonly object __ConnectionTargetLocker = new object();
@@ -57,6 +59,11 @@ namespace IVPN.Models
                     UpdateKillSwitchIsEnabled((bool)enabled);
                 if (isPersistant!=null)
                     UpdateKillSwitchIsPersistent((bool)isPersistant);
+            };
+
+            __ServiceProxy.AlternateDNSChanged += (string dns) =>
+            {
+                AlternateDNSChanged(dns);
             };
 
             __State = ServiceState.Uninitialized;

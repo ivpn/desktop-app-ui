@@ -38,6 +38,7 @@ namespace IVPN
         public delegate void ExceptionHappenedHandler(Exception exception);
         public delegate void SessionInfoChangedHandler(SessionInfo s);
         public delegate void KillSwitchStatusHandler(bool? enabled, bool? isPersistant, bool? isAllowLAN, bool? isAllowMulticast);
+        public delegate void AlternateDNSChangedHandler(string dns);
         public event ServerListChangedHandler ServerListChanged = delegate { };
         public event ServersPingsUpdatedHandler ServersPingsUpdated = delegate { };
         public event ConnectedHandler Connected = delegate { };
@@ -51,6 +52,7 @@ namespace IVPN
         public event EventHandler ClientProxyDisconnected = delegate { };
         public event SessionInfoChangedHandler SessionInfoChanged = delegate { };
         public event KillSwitchStatusHandler KillSwitchStatus = delegate { };
+        public event AlternateDNSChangedHandler AlternateDNSChanged = delegate { };
 
         private TcpClient __Client;
         private StreamReader __StreamReader;
@@ -301,12 +303,14 @@ namespace IVPN
                     case "KillSwitchStatusResp":
                         var kwResp = JsonConvert.DeserializeObject<Responses.IVPNKillSwitchStatusResponse>(line);
                         responseReceived(kwResp);
+                        // KillSwitch change can be requested by another client - notifying about every change
                         KillSwitchStatus(kwResp.IsEnabled, kwResp.IsPersistent, kwResp.IsAllowLAN, kwResp.IsAllowMulticast);
                         break;
 
                     case "KillSwitchGetIsPestistentResp":
                         var kwPers = JsonConvert.DeserializeObject<Responses.IVPNKillSwitchGetIsPestistentResponse>(line);
                         responseReceived(kwPers);
+                        // KillSwitch change can be requested by another client - notifying about every change
                         KillSwitchStatus(null, kwPers.IsPersistent, null, null);
                         break;
 
@@ -332,8 +336,13 @@ namespace IVPN
                         break;
 
                     case "SetAlternateDNSResp":
-                        responseReceived(JsonConvert.DeserializeObject<Responses.IVPNSetAlternateDnsResponse>(line));
+                        var dnsSetResp = JsonConvert.DeserializeObject<Responses.IVPNSetAlternateDnsResponse>(line);
+                        responseReceived(dnsSetResp);
+                        // DNS change can be requested by another client - notifying about every change
+                        if (dnsSetResp.IsSuccess)
+                            AlternateDNSChanged(dnsSetResp.ChangedDNS);
                         break;
+
                     case "EmptyResp":
                         responseReceived(JsonConvert.DeserializeObject<Responses.IVPNEmptyResponse>(line));
                         break;

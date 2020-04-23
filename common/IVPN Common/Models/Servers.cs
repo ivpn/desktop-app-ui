@@ -273,6 +273,40 @@ namespace IVPN.Models
 
             return dnsIp;
         }
+
+        public bool IsAntitracker(IPAddress dns, out bool isHardcore, out bool isMultihop)
+        {
+            isHardcore = false;
+            isMultihop = false;
+
+            if (dns == null)
+                return false;
+
+            string dnsIP = dns.ToString();
+
+            if (string.Equals(__AllVpnServers?.Config?.AntiTracker?.Default?.Ip, dnsIP))
+            {
+                return true;
+            }
+            if (string.Equals(__AllVpnServers?.Config?.AntiTracker?.Hardcore?.Ip, dnsIP))
+            {
+                isHardcore = true;
+                return true;
+            }
+            if (string.Equals(__AllVpnServers?.Config?.AntiTracker?.Default?.MultihopIp, dnsIP))
+            {
+                isMultihop = true;
+                return true;
+            }
+            if (string.Equals(__AllVpnServers?.Config?.AntiTracker?.Hardcore?.MultihopIp, dnsIP))
+            {
+                isHardcore = true;
+                isMultihop = true;
+                return true;
+            }
+
+            return false;
+        } 
         #endregion //Dns servers info
 
         #region Private implementation
