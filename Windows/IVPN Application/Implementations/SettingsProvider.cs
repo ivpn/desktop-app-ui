@@ -6,6 +6,8 @@ using IVPN.Interfaces;
 using IVPN.Models.Configuration;
 using System.Runtime.CompilerServices;
 using IVPN.VpnProtocols;
+using IVPN.Lib;
+using IVPN_Helpers.DataConverters;
 
 namespace IVPN.Models
 {
@@ -358,6 +360,51 @@ namespace IVPN.Models
         public void OnSettingsChanged(AppSettings settings, [CallerMemberName] string propertyName = "")
         {
             // no implementation here for now
+        }
+
+        // READ OLD-STYLE CREDENTIALS (compatibility with older client versions) 
+        public bool GetOldStyleCredentials(
+            out string AccountID,
+            out string Session,
+            out string OvpnUser,
+            out string OvpnPass,
+            out string WgPublicKey,
+            out string WgPrivateKey,
+            out string WgLocalIP,
+            out Int64 WgKeyGenerated)
+        {
+            // READ OLD-STYLE CREDENTIALS (compatibility with older client versions) 
+            AccountID = Properties.Settings.Default.Username;
+            Session = Properties.Settings.Default.SessionToken;
+            OvpnUser = Properties.Settings.Default.VpnUser;
+            OvpnPass = CryptoUtil.DecryptString(Properties.Settings.Default.VpnSafePass);
+            WgPublicKey = Properties.Settings.Default.WireGuardClientPublicKey;
+            WgPrivateKey = CryptoUtil.DecryptString(Properties.Settings.Default.WireGuardClientPrivateKey);
+            WgLocalIP = Properties.Settings.Default.WireGuardClientInternalIp;
+
+            DateTime wgKeyTimestamp = default(DateTime);
+            try
+            {
+                wgKeyTimestamp = DateTime.ParseExact(Properties.Settings.Default.WireGuardKeysTimestamp,
+                    DateTimeSerializationFormatString, System.Globalization.CultureInfo.InvariantCulture);
+            }
+            catch { }
+
+            WgKeyGenerated = DateTimeConverter.ToUnixTime(wgKeyTimestamp);
+
+            // REMOVE ALL OLD-STYLE CREDENTIALS
+            Properties.Settings.Default.Username = "";
+            Properties.Settings.Default.SessionToken = "";
+            Properties.Settings.Default.VpnUser = "";
+            Properties.Settings.Default.VpnSafePass = "";
+            Properties.Settings.Default.WireGuardClientInternalIp = "";
+            Properties.Settings.Default.WireGuardKeysTimestamp = "";
+            Properties.Settings.Default.WireGuardClientPrivateKey = "";
+            Properties.Settings.Default.WireGuardClientPublicKey = "";
+            
+            if (string.IsNullOrEmpty(Session))
+                return false;
+            return true;
         }
     }
 }
