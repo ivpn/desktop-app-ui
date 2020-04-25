@@ -32,10 +32,12 @@ if not exist %MAKENSIS% (
 call :read_app_version 			|| goto :error
 call :read_service_repo_path 	|| goto :error
 call :build_service				|| goto :error
+call :build_cli				|| goto :error
 call :build_ui					|| goto :error
 call :copy_files 				|| goto :error
 call :build_installer			|| goto :error
 
+rem THE END
 goto :success
 
 
@@ -103,7 +105,13 @@ goto :success
 
 :build_service
 	echo [*] Building IVPN service and dependencies...
-	call %SERVICE_REPO%\References\Windows\scripts\build-all.bat %APPVER% || exit /b 1	
+	call %SERVICE_REPO%\References\Windows\scripts\build-all.bat %APPVER% || exit /b 1
+	goto :eof
+
+:build_cli
+	echo [*] Building IVPN CLI...
+	echo %SERVICE_REPO%\..\desktop-app-cli\References\Windows\build.bat
+	call %SERVICE_REPO%\..\desktop-app-cli\References\Windows\build.bat %APPVER% || exit /b 1
 	goto :eof
 
 :build_ui
@@ -139,9 +147,18 @@ goto :success
 	goto :eof
 
 :success
+	goto :remove_tmp_vars_before_exit
 	echo [*] SUCCESS
 	exit /b 0
 
 :error
+	goto :remove_tmp_vars_before_exit
 	echo [!] IVPN Client installer build FAILED with error #%errorlevel%.
 	exit /b %errorlevel%
+
+:remove_tmp_vars_before_exit
+	endlocal
+	rem Removing temporary global variables
+	set IVPN_GOROOT=
+	set IVPN_PATH=
+	goto :eof
