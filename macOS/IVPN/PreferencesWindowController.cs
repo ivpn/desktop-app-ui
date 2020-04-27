@@ -67,13 +67,6 @@ namespace IVPN
             base.WindowDidLoad();
 
             GuiBtnLaunchAtLogin.IntValue = (__Settings.RunOnLogin) ? 1 : 0;
-
-            // Add 'WARNING' text of red color to the WireGuard description text
-            NSMutableAttributedString wgDescriptionText = new NSMutableAttributedString();
-            var warningStr = AttributedString.Create("WARNING: ", NSColor.Red, GuiWireGuardDescription.Alignment, GuiWireGuardDescription.Font);
-            wgDescriptionText.Insert(GuiWireGuardDescription.AttributedStringValue, 0);
-            wgDescriptionText.Insert(warningStr, 0);
-            GuiWireGuardDescription.AttributedStringValue = wgDescriptionText;
         }
 
         private void SetMainViewModel(MainViewModel mainViewModel)
@@ -465,6 +458,16 @@ namespace IVPN
 
             popover.ContentViewController = informationPopoverController;
             popover.Show(GuiButtonOpenvpnTooltip.Bounds, GuiButtonOpenvpnTooltip, NSRectEdge.MinYEdge);
+        }
+
+        partial void OnGuiBtnWireguardTooltip(Foundation.NSObject sender)
+        {
+            var popover = new NSPopover { Behavior = NSPopoverBehavior.Transient };
+            NSViewController informationPopoverController = new NSViewController();
+            informationPopoverController.View = GuiPanelWireguardTooltip;
+
+            popover.ContentViewController = informationPopoverController;
+            popover.Show(GuiBtnWireguardTooltip.Bounds, GuiBtnWireguardTooltip, NSRectEdge.MinYEdge);
         }
 
         #endregion //Selecting VPN protocol type

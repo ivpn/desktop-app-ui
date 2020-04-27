@@ -2,6 +2,10 @@
 
 All notable changes to this project will be documented in this file.
 
+## Version 2.11.9 - 2020-04-27
+
+[IMPROVED] Removed WireGuard warning
+
 ## Version 2.11.7 - 2020-03-30
 
 [FIXED] Sending logs
