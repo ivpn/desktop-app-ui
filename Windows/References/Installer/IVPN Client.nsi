@@ -12,6 +12,8 @@ SetCompressor lzma
 !include "StrFunc.nsh"
 !include "x64.nsh"
 !include "WinVer.nsh"
+; include for some of the windows messages defines
+!include "winmessages.nsh"
 
 ${StrLoc}
 
@@ -39,6 +41,11 @@ InstallDir "$PROGRAMFILES64\${PRODUCT_IDENTIFIER}"
 ;InstallDirRegKey HKLM "Software\${PRODUCT_IDENTIFIER}" ""
 RequestExecutionLevel admin
 
+; HKLM (all users)
+;!define env_hklm 'HKLM "SYSTEM\CurrentControlSet\Control\Session Manager\Environment"'
+; HKCU (current user) 
+!define env_hkcu 'HKCU "Environment"'
+
 ; ---------
 ; variables
 ; ---------
@@ -48,20 +55,7 @@ var /GLOBAL BitDir
 
 Var HEADLINE_FONT
 
-
-!macro COMMON_INIT
-  StrCpy $StartMenuFolder "IVPN"
-
-  ${If} ${RunningX64}
-    SetRegView 64
-    StrCpy $BitDir "x86_64"
-  ${Else}
-    SetRegView 32
-    StrCpy $BitDir "x86"
-  ${EndIf}
-
-  DetailPrint "Running on architecture: $BitDir"
-!macroend
+;---------------------------
 
 ; StrContains
 ; This function does a case sensitive searches for an occurrence of a substring in a string. 
@@ -110,15 +104,88 @@ FunctionEnd
  
 !define StrContains '!insertmacro "_StrContainsConstructor"'
 
-Function CheckOSSupported
-    ${If} ${AtLeastWinVista}
-        goto end
-    ${EndIf}
+;---------------------------
+!define StrRepl "!insertmacro StrRepl"
+!macro StrRepl output string old new
+    Push `${string}`
+    Push `${old}`
+    Push `${new}`
+    !ifdef __UNINSTALL__
+        Call un.StrRepl
+    !else
+        Call StrRepl
+    !endif
+    Pop ${output}
+!macroend
+ 
+!macro Func_StrRepl un
+    Function ${un}StrRepl
+        Exch $R2 ;new
+        Exch 1
+        Exch $R1 ;old
+        Exch 2
+        Exch $R0 ;string
+        Push $R3
+        Push $R4
+        Push $R5
+        Push $R6
+        Push $R7
+        Push $R8
+        Push $R9
+ 
+        StrCpy $R3 0
+        StrLen $R4 $R1
+        StrLen $R6 $R0
+        StrLen $R9 $R2
+        loop:
+            StrCpy $R5 $R0 $R4 $R3
+            StrCmp $R5 $R1 found
+            StrCmp $R3 $R6 done
+            IntOp $R3 $R3 + 1 ;move offset by 1 to check the next character
+            Goto loop
+        found:
+            StrCpy $R5 $R0 $R3
+            IntOp $R8 $R3 + $R4
+            StrCpy $R7 $R0 "" $R8
+            StrCpy $R0 $R5$R2$R7
+            StrLen $R6 $R0
+            IntOp $R3 $R3 + $R9 ;move offset by length of the replacement string
+            Goto loop
+        done:
+ 
+        Pop $R9
+        Pop $R8
+        Pop $R7
+        Pop $R6
+        Pop $R5
+        Pop $R4
+        Pop $R3
+        Push $R0
+        Push $R1
+        Pop $R0
+        Pop $R1
+        Pop $R0
+        Pop $R2
+        Exch $R1
+    FunctionEnd
+!macroend
+!insertmacro Func_StrRepl ""
+!insertmacro Func_StrRepl "un."
+;---------------------------
 
-    MessageBox MB_ICONSTOP|MB_OK "Unsupported Windows Version.$\nThis version of IVPN Client can only be installed on Windows Vista and above."
-    Quit
-end:
-FunctionEnd
+!macro COMMON_INIT
+  StrCpy $StartMenuFolder "IVPN"
+
+  ${If} ${RunningX64}
+    SetRegView 64
+    StrCpy $BitDir "x86_64"
+  ${Else}
+    SetRegView 32
+    StrCpy $BitDir "x86"
+  ${EndIf}
+
+  DetailPrint "Running on architecture: $BitDir"
+!macroend
 
 Function .onInit
   !insertmacro COMMON_INIT
@@ -219,6 +286,13 @@ LicenseForceSelection checkbox "I Agree"
 !insertmacro MUI_PAGE_LICENSE License.txt
 ;!insertmacro MUI_PAGE_STARTMENU Application $StartMenuFolder
 !insertmacro MUI_PAGE_INSTFILES
+
+;===============================
+; FINISH page modification
+!define MUI_PAGE_CUSTOMFUNCTION_PRE fin_pre
+!define MUI_PAGE_CUSTOMFUNCTION_SHOW fin_show
+!define MUI_PAGE_CUSTOMFUNCTION_LEAVE fin_leave
+;===============================
 !insertmacro MUI_PAGE_FINISH
 
 !insertmacro MUI_UNPAGE_WELCOME
@@ -226,10 +300,47 @@ LicenseForceSelection checkbox "I Agree"
 !insertmacro MUI_UNPAGE_INSTFILES
 !insertmacro MUI_UNPAGE_FINISH
 
-
 !insertmacro MUI_LANGUAGE "English"
 
+;===============================  
+; FINISH page modification handlers
+Function fin_show
+	ReadINIStr $0 "$PLUGINSDIR\iospecial.ini" "Field 6" "HWND"
+	SetCtlColors $0 0x000000 0xFFFFFF
+FunctionEnd
 
+Function fin_pre
+	WriteINIStr "$PLUGINSDIR\iospecial.ini" "Settings" "NumFields" "6"
+	WriteINIStr "$PLUGINSDIR\iospecial.ini" "Field 6" "Type" "CheckBox"
+	WriteINIStr "$PLUGINSDIR\iospecial.ini" "Field 6" "Text" "Add IVPN CLI binary to the path"
+	WriteINIStr "$PLUGINSDIR\iospecial.ini" "Field 6" "Left" "120"
+	WriteINIStr "$PLUGINSDIR\iospecial.ini" "Field 6" "Right" "315"
+	WriteINIStr "$PLUGINSDIR\iospecial.ini" "Field 6" "Top" "130"
+	WriteINIStr "$PLUGINSDIR\iospecial.ini" "Field 6" "Bottom" "140"
+	WriteINIStr "$PLUGINSDIR\iospecial.ini" "Field 6" "State" "0"
+FunctionEnd
+
+Function fin_leave
+	ReadINIStr $0 "$PLUGINSDIR\iospecial.ini" "Field 6" "State"
+	StrCmp $0 "0" end
+	 
+	; UPDATING %PATH% VARIABLE 
+	ReadRegStr $0 ${env_hkcu} "PATH"
+	
+	; check if PATH already updated
+	${StrContains} $1 "$INSTDIR" $0
+	StrCmp $1 "$INSTDIR" end ; do nothing	
+	
+	; set variable for local machine
+	StrCpy $0 "$0;$INSTDIR"
+	WriteRegExpandStr ${env_hkcu} PATH "$0"
+
+	; make sure windows knows about the change
+	SendMessage ${HWND_BROADCAST} ${WM_WININICHANGE} 0 "STR:Environment" /TIMEOUT=100
+	
+	end:
+FunctionEnd
+;===============================
 
 ; ------------------
 ; installer sections
@@ -492,11 +603,34 @@ Section "Uninstall"
   DeleteRegValue HKLM "Software\Microsoft\Windows\CurrentVersion\Run" "IVPN Client Runtime Warmup"
   DeleteRegKey HKLM "Software\Microsoft\Windows\CurrentVersion\Uninstall\${PRODUCT_IDENTIFIER}"
 
+  ; UPDATING %PATH% VARIABLE 
+  ; read PATH variable value
+  ReadRegStr $0 ${env_hkcu} "PATH"
+  ; remove all references to $INSTDIR
+  ${StrRepl} $1 $0 "$INSTDIR;" "" 
+  ${StrRepl} $1 $1 ";$INSTDIR" "" 
+  ${StrRepl} $1 $1 "$INSTDIR" "" 
+  ${If} $1 != $0
+	WriteRegExpandStr ${env_hkcu} PATH "$1"
+	; make sure windows knows about the change
+	SendMessage ${HWND_BROADCAST} ${WM_WININICHANGE} 0 "STR:Environment" /TIMEOUT=100    
+  ${EndIf}
+  
 SectionEnd
 
 ; ----------------
 ; helper functions
 ; ----------------
+
+Function CheckOSSupported
+    ${If} ${AtLeastWinVista}
+        goto end
+    ${EndIf}
+
+    MessageBox MB_ICONSTOP|MB_OK "Unsupported Windows Version.$\nThis version of IVPN Client can only be installed on Windows Vista and above."
+    Quit
+end:
+FunctionEnd
 
 ; Return values:
 ;	<0 - Error

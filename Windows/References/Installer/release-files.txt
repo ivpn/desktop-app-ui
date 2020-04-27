@@ -13,6 +13,7 @@ NetworkHelpers.dll
 Newtonsoft.Json.dll
 SharpRaven.dll
 System.Runtime.InteropServices.RuntimeInformation.dll
+ivpn.exe
 etc\ca.crt
 etc\servers.json
 etc\signing.pub

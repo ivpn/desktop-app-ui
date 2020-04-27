@@ -13,6 +13,7 @@ SET FILE_LIST=%SCRIPTDIR%release-files.txt
 
 set APPVER=???
 set SERVICE_REPO=???
+set CLI_REPO=???
 
 rem Checking if msbuild available
 WHERE msbuild >nul 2>&1
@@ -29,13 +30,14 @@ if not exist %MAKENSIS% (
 	goto :error
 )
 
-call :read_app_version 			|| goto :error
+call :read_app_version 				|| goto :error
 call :read_service_repo_path 	|| goto :error
-call :build_service				|| goto :error
-call :build_cli				|| goto :error
-call :build_ui					|| goto :error
-call :copy_files 				|| goto :error
-call :build_installer			|| goto :error
+call :read_cli_repo_path 			|| goto :error
+call :build_service						|| goto :error
+call :build_cli								|| goto :error
+call :build_ui								|| goto :error
+call :copy_files 							|| goto :error
+call :build_installer					|| goto :error
 
 rem THE END
 goto :success
@@ -70,6 +72,7 @@ goto :success
 	set BIN_FOLDER_APP=%cd%\
 	set BIN_FOLDER_SERVICE=%SERVICE_REPO%\bin\x86\
 	set BIN_FOLDER_SERVICE_REFS=%SERVICE_REPO%\References\Windows\
+	set BIN_FOLDER_CLI=%CLI_REPO%\bin\x86\
 
 	cd %SCRIPTDIR%
 
@@ -82,6 +85,7 @@ goto :success
 	for /f "tokens=*" %%i in (%FILE_LIST%) DO (
 		set SRCPATH=???
 		if exist "%BIN_FOLDER_SERVICE%%%i" set SRCPATH=%BIN_FOLDER_SERVICE%%%i
+		if exist "%BIN_FOLDER_CLI%%%i" set SRCPATH=%BIN_FOLDER_CLI%%%i
 		if exist "%BIN_FOLDER_SERVICE_REFS%%%i" set SRCPATH=%BIN_FOLDER_SERVICE_REFS%%%i
 		if exist "%BIN_FOLDER_APP%%%i"  set SRCPATH=%BIN_FOLDER_APP%%%i
 		if exist "%SCRIPTDIR%%%i" set SRCPATH=%SCRIPTDIR%%%i
@@ -97,8 +101,8 @@ goto :success
 
 		copy /y "!SRCPATH!" "%INSTALLER_TMP_DIR%\%%i" > NUL
 		IF !errorlevel! NEQ 0 (
-			ECHO     Error: failed to copy to "%INSTALLER_TMP_DIR%"
-			EXIT /B 0
+			ECHO     Error: failed to copy "!SRCPATH!" to "%INSTALLER_TMP_DIR%"
+			EXIT /B 1
 		)
 	)
 	goto :eof
@@ -110,8 +114,8 @@ goto :success
 
 :build_cli
 	echo [*] Building IVPN CLI...
-	echo %SERVICE_REPO%\..\desktop-app-cli\References\Windows\build.bat
-	call %SERVICE_REPO%\..\desktop-app-cli\References\Windows\build.bat %APPVER% || exit /b 1
+	echo %CLI_REPO%\References\Windows\build.bat
+	call %CLI_REPO%\References\Windows\build.bat %APPVER% || exit /b 1
 	goto :eof
 
 :build_ui
@@ -133,17 +137,28 @@ goto :success
 
 :read_service_repo_path
 	echo [*] Checking location of IVPN service local repository...
-
 	cd %SCRIPTDIR%..\config
 	set /p repo_path=<service_repo_local_path.txt || goto :read_service_repo_path_error
 	cd %repo_path% || goto :read_service_repo_path_error
 	set SERVICE_REPO=%cd%
-
 	echo     Service sources: %SERVICE_REPO%
 	goto :eof
 :read_service_repo_path_error
 	echo [!] Failed to get info about location of IVPN service local repository
 	echo [!] Please, clone IVPN service repository and modify file '%SCRIPTDIR%..\config\service_repo_local_path.txt'
+	goto :eof
+
+:read_cli_repo_path
+	echo [*] Checking location of IVPN CLI local repository...
+	cd %SCRIPTDIR%..\config
+	set /p repo_path=<cli_repo_local_path.txt || goto :read_cli_repo_path_error
+	cd %repo_path% || goto :read_CLI_repo_path_error
+	set CLI_REPO=%cd%
+	echo     CLI sources: %CLI_REPO%
+	goto :eof
+:read_cli_repo_path_error
+	echo [!] Failed to get info about location of IVPN CLI local repository
+	echo [!] Please, clone IVPN CLI repository and modify file '%SCRIPTDIR%..\config\cli_repo_local_path.txt'
 	goto :eof
 
 :success
