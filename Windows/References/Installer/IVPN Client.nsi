@@ -30,6 +30,7 @@ ${StrLoc}
 !define APP_RUN_PATH "$INSTDIR\IVPN Client.exe"
 !define PROCESS_NAME "IVPN Client.exe"
 !define IVPN_SERVICE_NAME "IVPN Client"
+!define PATHDIR "$INSTDIR\cli"
 
 ; The following variables will be set from the build.bat script
 ; !define PRODUCT_VERSION "2.0-b4"
@@ -328,11 +329,16 @@ Function fin_leave
 	ReadRegStr $0 ${env_hkcu} "PATH"
 	
 	; check if PATH already updated
-	${StrContains} $1 "$INSTDIR" $0
-	StrCmp $1 "$INSTDIR" end ; do nothing	
+	${StrContains} $1 "${PATHDIR}" $0
+	StrCmp $1 "${PATHDIR}" end ; do nothing	
+	
+	; remove last symbol ';' from %PATH% (if exists)
+	StrCpy $2 $0 "" -1
+	StrCmp $2 ";" 0 +2
+	StrCpy $0 $0 -1
 	
 	; set variable for local machine
-	StrCpy $0 "$0;$INSTDIR"
+	StrCpy $0 "$0;${PATHDIR}"
 	WriteRegExpandStr ${env_hkcu} PATH "$0"
 
 	; make sure windows knows about the change
@@ -570,6 +576,7 @@ Section "Uninstall"
   RMDir /r "$INSTDIR\OpenVPN"
   RMDir /r "$INSTDIR\WireGuard" 
   RMDir /r "$INSTDIR\Resources"
+  RMDir /r "$INSTDIR\cli"
   RMDir /r "$INSTDIR\de"
   RMDir /r "$INSTDIR\en"
   RMDir /r "$INSTDIR\es"
@@ -607,9 +614,9 @@ Section "Uninstall"
   ; read PATH variable value
   ReadRegStr $0 ${env_hkcu} "PATH"
   ; remove all references to $INSTDIR
-  ${StrRepl} $1 $0 "$INSTDIR;" "" 
-  ${StrRepl} $1 $1 ";$INSTDIR" "" 
-  ${StrRepl} $1 $1 "$INSTDIR" "" 
+  ${StrRepl} $1 $0 "${PATHDIR};" "" 
+  ${StrRepl} $1 $1 ";${PATHDIR}" "" 
+  ${StrRepl} $1 $1 ${PATHDIR}" "" 
   ${If} $1 != $0
 	WriteRegExpandStr ${env_hkcu} PATH "$1"
 	; make sure windows knows about the change
