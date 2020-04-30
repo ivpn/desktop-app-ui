@@ -12,8 +12,6 @@ namespace IVPN.Models
 
         private readonly SemaphoreSlim __LockerSemaphore = new SemaphoreSlim(1,1);
         private readonly Func<bool> __IsCanUpdateKey;
-        private readonly AppSettings __AppSettings;
-        private readonly ILocalizedStrings __LocalizedStrings;
         private readonly IService __Service;
 
         #region Public functionality
@@ -24,20 +22,10 @@ namespace IVPN.Models
         public event OnStartStopDelegate OnStarted = delegate { };
         public event OnStartStopDelegate OnStopped = delegate { };
 
-        /*
-        // Next regeneration date-time
-        private DateTime KeysExpiryDate => __AppSettings.WireGuardKeysTimestamp.AddDays(RegenerationIntervalDays);
-        // Delay before next try to regenerate keys (when previous check was failed)
-        private const double RetryCheckDelayOnFailMins = 60;
-        private double RegenerationIntervalDays => __AppSettings.WireGuardKeysRegenerationIntervalHours / 24.0;
-        */
-
-        public WireguardKeysManager(IService service, Func<bool> isCanUpdateKey, AppSettings appSettings, ILocalizedStrings appServices)
+        public WireguardKeysManager(IService service, Func<bool> isCanUpdateKey)
         {
             __Service = service;
             __IsCanUpdateKey = isCanUpdateKey;
-            __AppSettings = appSettings;
-            __LocalizedStrings = appServices;
         }
 
         /// <summary>

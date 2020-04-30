@@ -161,7 +161,7 @@ namespace IVPN
                     App.Settings.Save();
                 }
 
-                Logging.Info("IMPORTANT: WiFi manager is not initialized. Probably, Windows-WiFi service stopped. ("+IVPNException.GetDetailedMessage(ex) + ")");
+                Logging.Info("IMPORTANT: WiFi manager is not initialized. Probably, Windows-WiFi service stopped. (" + IVPNException.GetDetailedMessage(ex) + ")");
             }
 
             MainViewModel.PropertyChanged += MainViewModel_PropertyChanged;
@@ -169,7 +169,7 @@ namespace IVPN
             if (Service.State == ServiceState.Uninitialized)
                 await InitViewModel.InitializeAsync();
         }
-                
+
         private void MainViewModel_PropertyChanged(object sender, PropertyChangedEventArgs e)
         {
             if (e.PropertyName == nameof(MainViewModel.ConnectionState))
@@ -253,7 +253,7 @@ namespace IVPN
 
             // In case if KillSwitch is persistant - disconnect VPN and minimize into tray
             // When VPN-off and firewall on - will be shown topmost nitification-window "All traffic blocked"
-            if ((App.Settings.FirewallType == IVPNFirewallType.Persistent 
+            if ((App.Settings.FirewallType == IVPNFirewallType.Persistent
                     || (App.Settings.FirewallDeactivationOnExit == false && Service.KillSwitchIsEnabled))
                 && App.Settings.DisableFirewallNotificationWindow == false
                 && Service.IsConnectedToService)
@@ -302,7 +302,7 @@ namespace IVPN
 
         private static void RestoreWindowLastPosition(Window wnd, string position)
         {
-            if (wnd!=null && !String.IsNullOrEmpty(position))
+            if (wnd != null && !String.IsNullOrEmpty(position))
             {
                 var windowPosition = position.Split(new char[] { ',' });
                 if (windowPosition.Length == 2)
@@ -359,7 +359,7 @@ namespace IVPN
                 Service.State == ServiceState.ReconnectingOnService ||
                 Service.State == ServiceState.ReconnectingOnClient)
             {
-                if (App.Settings.DoNotShowDialogOnAppClose==false)
+                if (App.Settings.DoNotShowDialogOnAppClose == false)
                 {
                     string message = StringUtils.String("Exiting_will_stop_vpn");
                     if (App.Settings.FirewallType == IVPNFirewallType.Persistent)
@@ -403,7 +403,7 @@ namespace IVPN
 
             return true;
         }
- 
+
         private async Task<bool> AskAndDisconnectAsync()
         {
             if (Service.State == ServiceState.Connected ||
@@ -413,7 +413,7 @@ namespace IVPN
             {
                 if (AskAndDisconnect() == false)
                     return false;
-                
+
                 await Task.Run<bool>(() =>
                 {
                     // Wait 5 seconds for client to terminate.
@@ -445,7 +445,7 @@ namespace IVPN
         {
             if (!Dispatcher.CheckAccess())
             {
-                GuiUtils.InvokeInGuiThread(this, () => { AnimatedNavigate(targetFrame, navigationAnimation, onComplete); }) ;
+                GuiUtils.InvokeInGuiThread(this, () => { AnimatedNavigate(targetFrame, navigationAnimation, onComplete); });
                 return;
             }
 
@@ -454,7 +454,7 @@ namespace IVPN
                 __NavigationQueue.Enqueue(new NavigationRequest(targetFrame, navigationAnimation, onComplete));
                 return;
             }
-                        
+
             /*
             bool shouldNavigate = __CurrentFrame != null &&
                                   __CurrentFrame != targetFrame;
@@ -565,7 +565,7 @@ namespace IVPN
             __NavigationInProgress = true;
 
             Frame documentFrame = targetFrame;
-            
+
             TranslateTransform transitionFrameTransform = new TranslateTransform();
             TranslateTransform documentFrameTransform = new TranslateTransform();
             DoubleAnimation opacityAnimation = new DoubleAnimation
@@ -629,7 +629,7 @@ namespace IVPN
 
         private void ShowBackButton()
         {
-            if (GuiBackButtonOnTitle!=null)
+            if (GuiBackButtonOnTitle != null)
                 GuiBackButtonOnTitle.Visibility = Visibility.Visible;
         }
 
@@ -655,7 +655,7 @@ namespace IVPN
             return Dispatcher.Invoke(method, args);
         }
 
-        public bool InvokeRequired => true;
+        public bool InvokeRequired => Application.Current.Dispatcher.Thread != Thread.CurrentThread;
 
         public void ShowPreferencesWindow()
         {

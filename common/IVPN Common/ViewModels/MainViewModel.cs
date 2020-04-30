@@ -112,9 +112,7 @@ namespace IVPN.ViewModels
                     return __AppState.IsLoggedIn()
                         && Settings.VpnProtocolType == VpnType.WireGuard
                         && (ConnectionState == ServiceState.Connected || ConnectionState == ServiceState.Connecting);
-                },
-                appSettings: Settings,
-                appServices: __AppServices);
+                });
 
             SettingsCommand = new RelayCommand(OpenSettings);
             SelectServerCommand = new RelayCommand(SelectServerExecuted);
@@ -803,14 +801,6 @@ namespace IVPN.ViewModels
                     } 
 
                     ConnectionError = reasonDescription;
-                }
-
-                // SM-APP-1000 Client app have to check, whether session_token is valid after each disconnection event using /session/status call.
-                // SM-APP-1010 Client app have to check, whether session_token is valid after each connection error as well
-                if (sessionStatus == null)
-                {
-                    if (IsKillSwitchEnabled == false) // when KillSwitch enabled - no sense to request status. Request will be blocked.
-                        __AppState.SessionManager.RequestStatusCheck();
                 }
             }
             finally

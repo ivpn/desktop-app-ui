@@ -90,7 +90,7 @@ namespace IVPN.ViewModels
             }
         }
 
-        public string WireGuardClientInternalIp => __MainViewModel.AppState.Session?.WgLocalIP.ToString() ?? "";
+        public string WireGuardClientInternalIp => __MainViewModel.AppState.Session?.WgLocalIP?.ToString() ?? "";
         public string WireGuardClientPublicKey => __MainViewModel.AppState.Session?.WgPublicKey ?? "";
 
         public async Task RegenerateNewKeyAsync()

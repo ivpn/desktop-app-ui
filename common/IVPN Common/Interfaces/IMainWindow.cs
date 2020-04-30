@@ -1,9 +1,10 @@
 ﻿using IVPN.Models;
 using IVPN.ViewModels;
+using System.ComponentModel;
 
 namespace IVPN.Interfaces
 {
-    public interface IMainWindow
+    public interface IMainWindow: ISynchronizeInvoke
     {
         void ShowPreferencesWindow();
 

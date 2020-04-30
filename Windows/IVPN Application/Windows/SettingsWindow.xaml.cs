@@ -25,11 +25,13 @@ namespace IVPN.Windows
     /// </summary>
     public partial class SettingsWindow : Window, INotifyPropertyChanged, ISynchronizeInvoke
     {
-        private readonly AppSettings __Settings;
-        
         private bool __IsDiagnosticsInProgress;
         private string __LogsProgressString;
 
+
+        public Service Service { get; set; }
+        public string AppVersion => Platform.Version;
+        public AppState AppState {get; private set;}
         public ViewModelNetworksSettings NetworksSettings { get; }
         public ViewModelWireguardSettings WireGuardSettings { get; }
 
@@ -43,6 +45,7 @@ namespace IVPN.Windows
                 Service = service,
                 Owner = Application.Current.MainWindow
             };
+
             __Instance.ShowDialog();
         }
 
@@ -55,8 +58,10 @@ namespace IVPN.Windows
         private SettingsWindow(AppSettings settings, ViewModelWireguardSettings wgSettingsModel)
         {
             InitializeComponent();
-            __Settings = settings;
-            __Settings.FreezeSettings(); // save corrent settings state (in order to have possibility to restore)
+            Settings = settings;
+            AppState = AppState.Instance();
+            
+            Settings.FreezeSettings(); // save corrent settings state (in order to have possibility to restore)
 
             // if WiFi functionality is disable - hide trusted\untrusted wifi configuration
             NetworksSettings = new ViewModelNetworksSettings(Settings.NetworkActions, this);
@@ -126,7 +131,7 @@ namespace IVPN.Windows
         {
             Service.Proxy.DiagnosticsGenerated -= Proxy_DiagnosticsGenerated;
 
-            __Settings.UnfreezeSettings(isRestoreFreezedState: true); // restore settings from freezed state (if old settings snapshot is still available)
+            Settings.UnfreezeSettings(isRestoreFreezedState: true); // restore settings from freezed state (if old settings snapshot is still available)
 
             base.OnClosing(e);
 
@@ -178,11 +183,11 @@ namespace IVPN.Windows
             Settings.ProxySafePassword = CryptoUtil.EncryptString(txtProxyPassword.Password);
             Settings.NetworkActions.Actions = NetworksSettings.GetNetworkActionsInUse();
 
-            __Settings.UnfreezeSettings(isRestoreFreezedState: false); // forged about old freezed settings data
-            __Settings.Save(); // save current settings state
+            Settings.UnfreezeSettings(isRestoreFreezedState: false); // forged about old freezed settings data
+            Settings.Save(); // save current settings state
             
             // Notify service about changes in original settings
-            DoUpdateServiceSettings(__Settings);
+            DoUpdateServiceSettings(Settings);
 
             return true;
         }
@@ -255,7 +260,7 @@ namespace IVPN.Windows
         {
             try
             {
-                __DiagReport = ErrorReporter.PrepareDiagReportToSend(__Settings,
+                __DiagReport = ErrorReporter.PrepareDiagReportToSend(Settings,
                     diagInfoResponse.EnvironmentLog,
                     diagInfoResponse.ServiceLog,
                     diagInfoResponse.ServiceLog0,
@@ -371,7 +376,7 @@ namespace IVPN.Windows
                 DialogResult = true;
         }
 
-        public AppSettings Settings => __Settings;
+        public AppSettings Settings { get; }
 
         public bool IsDiagnosticsInProgress
         {
@@ -451,10 +456,6 @@ namespace IVPN.Windows
             __NotificationWindow?.Close();
         }
 
-        public Service Service { get; set; }
-
-        public string AppVersion => Platform.Version;
-        
         // In use for WPF binding to ComboBox
         public IList<NetworkActionsConfig.WiFiActionTypeEnum> NetworkPossibleDefaultActions => new List<NetworkActionsConfig.WiFiActionTypeEnum>
         {

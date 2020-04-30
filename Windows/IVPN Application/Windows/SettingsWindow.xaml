@@ -258,7 +258,7 @@
                     <TextBox HorizontalAlignment="Left" Margin="0,0,0,10" IsReadOnly="True"
                              Height="36" Width="240"
                              Style="{StaticResource TextBoxDefault}"  
-                             Text="{Binding Settings.Username}"/>
+                             Text="{Binding AppState.Session.AccountID, Mode=OneWay}"/>
 
                     <Button Width="240" Height="36" 
                             Style="{StaticResource ButtonMain}" 

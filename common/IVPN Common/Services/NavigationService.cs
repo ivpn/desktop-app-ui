@@ -17,6 +17,14 @@ namespace IVPN
             __MainWindowController = mainWindowController;
         }
 
+        private void navigate(Action action)
+        {
+            if (__MainWindowController.InvokeRequired)
+                __MainWindowController.Invoke(action, null);
+            else
+                action();
+        }
+
         #region IAppNavigationService implementation
 
         public void NavigateToMainPage(NavigationAnimation animation)
@@ -26,94 +34,124 @@ namespace IVPN
             if (CurrentPage == NavigationTarget.LogOutPage)
                 return;
 
-            __MainWindowController.ShowMainPage(animation);
-            CurrentPage = NavigationTarget.MainPage;
+            navigate(() =>
+            {
+                __MainWindowController.ShowMainPage(animation);
+                CurrentPage = NavigationTarget.MainPage;
+            });
         }
 
         public void NavigateToInitPage(NavigationAnimation animation)
         {
-            __MainWindowController.ShowInitPage(animation);
-            CurrentPage = NavigationTarget.InitPage;
+            navigate(() =>
+            {
+                __MainWindowController.ShowInitPage(animation);
+                CurrentPage = NavigationTarget.InitPage;
+            });
         }
 
         public void NavigateToLogInPage(NavigationAnimation animation, bool doLogIn = false, bool doForceLogin = false)
         {
-            // firewall should be disabled on LogIn page 
-            __MainWindowController.MainViewModel.ForceDisconnectAndDisableFirewall();
+            navigate(() =>
+            {
+                // firewall should be disabled on LogIn page 
+                __MainWindowController.MainViewModel.ForceDisconnectAndDisableFirewall();
 
-            __MainWindowController.ShowLogInPage(animation, doLogIn, doForceLogin);
-            CurrentPage = NavigationTarget.LogInPage;
+                __MainWindowController.ShowLogInPage(animation, doLogIn, doForceLogin);
+                CurrentPage = NavigationTarget.LogInPage;
+            });
         }
 
         public void NavigateToSessionLimitPage(NavigationAnimation animation)
         {
-            // firewall should be disabled on LogIn page 
-            __MainWindowController.MainViewModel.ForceDisconnectAndDisableFirewall();
+            navigate(() =>
+            {
+                // firewall should be disabled on LogIn page 
+                __MainWindowController.MainViewModel.ForceDisconnectAndDisableFirewall();
 
-            // if user is authenticated - do the LogOut first
-            if (__MainWindowController.AppState.IsLoggedIn())
-            {
-                __MainWindowController.ShowLogOutPage(animation, showSessionLimit: true);
-                CurrentPage = NavigationTarget.LogOutPage;
-            }
-            else
-            {
-                __MainWindowController.ShowSessionLimitPage(animation);
-                CurrentPage = NavigationTarget.SessionLimitPage;
-            }
+                // if user is authenticated - do the LogOut first
+                if (__MainWindowController.AppState.IsLoggedIn())
+                {
+                    __MainWindowController.ShowLogOutPage(animation, showSessionLimit: true);
+                    CurrentPage = NavigationTarget.LogOutPage;
+                }
+                else
+                {
+                    __MainWindowController.ShowSessionLimitPage(animation);
+                    CurrentPage = NavigationTarget.SessionLimitPage;
+                }
+            });
         }
 
         public void NavigateToLogOutPage(NavigationAnimation animation)
         {
-            try
+            navigate(() =>
             {
-                __MainWindowController.ShowLogOutPage(animation);
-                CurrentPage = NavigationTarget.LogOutPage;
-            }
-            catch
-            {
-                NavigateToLogInPage(NavigationAnimation.FadeToRight);
-                CurrentPage = NavigationTarget.LogInPage;
-            }
+                try
+                {
+                    __MainWindowController.ShowLogOutPage(animation);
+                    CurrentPage = NavigationTarget.LogOutPage;
+                }
+                catch
+                {
+                    NavigateToLogInPage(NavigationAnimation.FadeToRight);
+                    CurrentPage = NavigationTarget.LogInPage;
+                }
+            });
         }
 
         public void NavigateToSingUpPage(NavigationAnimation animation)
         {
-            __MainWindowController.ShowSingUpPage(animation);
-            CurrentPage = NavigationTarget.SingUpPage;
+            navigate(() =>
+            {
+                __MainWindowController.ShowSingUpPage(animation);
+                CurrentPage = NavigationTarget.SingUpPage;
+            });
         }
 
         public void NavigateToAutomaticServerConfiguration(NavigationAnimation animation = NavigationAnimation.FadeToLeft)
         {
-            __MainWindowController.ShowFastestServerConfiguration(animation);
-            CurrentPage = NavigationTarget.AutomaticServerConfiguration;
+            navigate(() =>
+            {
+                __MainWindowController.ShowFastestServerConfiguration(animation);
+                CurrentPage = NavigationTarget.AutomaticServerConfiguration;
+            });
         }
 
         public void NavigateToServerSelection(NavigationAnimation animation)
         {
-            if (__MainWindowController.MainViewModel.IsAutomaticServerSelection)
-                __MainWindowController.ServerListViewModel.SetAutomaticServerSelection(ServerSelectionType.SingleServer);
-            else
-                __MainWindowController.ServerListViewModel.SetSelectedServer(__MainWindowController.MainViewModel.SelectedServer, ServerSelectionType.SingleServer);
+            navigate(() =>
+            {
+                if (__MainWindowController.MainViewModel.IsAutomaticServerSelection)
+                    __MainWindowController.ServerListViewModel.SetAutomaticServerSelection(ServerSelectionType.SingleServer);
+                else
+                    __MainWindowController.ServerListViewModel.SetSelectedServer(__MainWindowController.MainViewModel.SelectedServer, ServerSelectionType.SingleServer);
 
-            __MainWindowController.ShowServersPage(animation);
-            CurrentPage = NavigationTarget.ServerSelection;
+                __MainWindowController.ShowServersPage(animation);
+                CurrentPage = NavigationTarget.ServerSelection;
+            });
         }
 
         public void NavigateToEntryServerSelection(NavigationAnimation animation)
         {
-            __MainWindowController.ServerListViewModel.SetSelectedServer(__MainWindowController.MainViewModel.SelectedServer, ServerSelectionType.EntryServer);
+            navigate(() =>
+            {
+                __MainWindowController.ServerListViewModel.SetSelectedServer(__MainWindowController.MainViewModel.SelectedServer, ServerSelectionType.EntryServer);
 
-            __MainWindowController.ShowServersPage(animation);
-            CurrentPage = NavigationTarget.ServerSelection;
+                __MainWindowController.ShowServersPage(animation);
+                CurrentPage = NavigationTarget.ServerSelection;
+            });
         }
 
         public void NavigateToExitServerSelection(NavigationAnimation animation)
         {
-            __MainWindowController.ServerListViewModel.SetSelectedServer(__MainWindowController.MainViewModel.SelectedExitServer, ServerSelectionType.ExitServer);
+            navigate(() =>
+            {
+                __MainWindowController.ServerListViewModel.SetSelectedServer(__MainWindowController.MainViewModel.SelectedExitServer, ServerSelectionType.ExitServer);
 
-            __MainWindowController.ShowServersPage(animation);
-            CurrentPage = NavigationTarget.ServerSelection;
+                __MainWindowController.ShowServersPage(animation);
+                CurrentPage = NavigationTarget.ServerSelection;
+            });
         }
 
         public void OpenUrl(string url)
@@ -122,25 +160,34 @@ namespace IVPN
                 || !Uri.IsWellFormedUriString(url, UriKind.RelativeOrAbsolute))
                 return;
 
-            __MainWindowController.OpenUrl(url);
+            navigate(() =>
+            {
+                __MainWindowController.OpenUrl(url);
+            });
         }
 
         public void ServerLocationSelectedAutomatic()
         {
-            __MainWindowController.MainViewModel.IsAutomaticServerSelection = true;
-            NavigateToMainPage(NavigationAnimation.FadeToRight);
-            CurrentPage = NavigationTarget.MainPage;
+            navigate(() =>
+            {
+                __MainWindowController.MainViewModel.IsAutomaticServerSelection = true;
+                NavigateToMainPage(NavigationAnimation.FadeToRight);
+                CurrentPage = NavigationTarget.MainPage;
+            });
         }
 
         public void ServerLocationSelected(ServerLocation serverLocation)
         {
-            if (__MainWindowController.ServerListViewModel.ServerSelectionType == ServerSelectionType.ExitServer)
-                __MainWindowController.MainViewModel.SelectedExitServer = serverLocation;
-            else
-                __MainWindowController.MainViewModel.SelectedServer = serverLocation;
+            navigate(() =>
+            {
+                if (__MainWindowController.ServerListViewModel.ServerSelectionType == ServerSelectionType.ExitServer)
+                    __MainWindowController.MainViewModel.SelectedExitServer = serverLocation;
+                else
+                    __MainWindowController.MainViewModel.SelectedServer = serverLocation;
 
-            NavigateToMainPage(NavigationAnimation.FadeToRight);
-            CurrentPage = NavigationTarget.MainPage;
+                NavigateToMainPage(NavigationAnimation.FadeToRight);
+                CurrentPage = NavigationTarget.MainPage;
+            });
         }
 
         public void GoBack()
@@ -164,7 +211,10 @@ namespace IVPN
 
         public void ShowSettingsWindow()
         {
-            __MainWindowController.ShowPreferencesWindow();
+            navigate(() =>
+            {
+                __MainWindowController.ShowPreferencesWindow();
+            });
         }
 
         private void RaiseNavigated(NavigationTarget navigationTarget)
