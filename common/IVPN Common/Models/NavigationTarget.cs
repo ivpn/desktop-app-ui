@@ -2,6 +2,7 @@
 {
     public enum NavigationTarget
     {
+        Undefined,
         LogInPage,
         SessionLimitPage,
         SingUpPage,
