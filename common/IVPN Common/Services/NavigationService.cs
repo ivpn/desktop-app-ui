@@ -36,6 +36,8 @@ namespace IVPN
 
             navigate(() =>
             {
+                if (CurrentPage == NavigationTarget.MainPage)
+                    return;
                 __MainWindowController.ShowMainPage(animation);
                 CurrentPage = NavigationTarget.MainPage;
             });
@@ -45,6 +47,8 @@ namespace IVPN
         {
             navigate(() =>
             {
+                if (CurrentPage == NavigationTarget.InitPage)
+                    return;
                 __MainWindowController.ShowInitPage(animation);
                 CurrentPage = NavigationTarget.InitPage;
             });
@@ -57,6 +61,8 @@ namespace IVPN
                 // firewall should be disabled on LogIn page 
                 __MainWindowController.MainViewModel.ForceDisconnectAndDisableFirewall();
 
+                if (CurrentPage == NavigationTarget.LogInPage)
+                    return;
                 __MainWindowController.ShowLogInPage(animation, doLogIn, doForceLogin);
                 CurrentPage = NavigationTarget.LogInPage;
             });
@@ -72,11 +78,15 @@ namespace IVPN
                 // if user is authenticated - do the LogOut first
                 if (__MainWindowController.AppState.IsLoggedIn())
                 {
+                    if (CurrentPage == NavigationTarget.LogOutPage)
+                        return;
                     __MainWindowController.ShowLogOutPage(animation, showSessionLimit: true);
                     CurrentPage = NavigationTarget.LogOutPage;
                 }
                 else
                 {
+                    if (CurrentPage == NavigationTarget.SessionLimitPage)
+                        return;
                     __MainWindowController.ShowSessionLimitPage(animation);
                     CurrentPage = NavigationTarget.SessionLimitPage;
                 }
@@ -89,6 +99,8 @@ namespace IVPN
             {
                 try
                 {
+                    if (CurrentPage == NavigationTarget.LogOutPage)
+                        return;
                     __MainWindowController.ShowLogOutPage(animation);
                     CurrentPage = NavigationTarget.LogOutPage;
                 }
@@ -104,6 +116,8 @@ namespace IVPN
         {
             navigate(() =>
             {
+                if (CurrentPage == NavigationTarget.SingUpPage)
+                    return;
                 __MainWindowController.ShowSingUpPage(animation);
                 CurrentPage = NavigationTarget.SingUpPage;
             });
@@ -113,6 +127,8 @@ namespace IVPN
         {
             navigate(() =>
             {
+                if (CurrentPage == NavigationTarget.AutomaticServerConfiguration)
+                    return;
                 __MainWindowController.ShowFastestServerConfiguration(animation);
                 CurrentPage = NavigationTarget.AutomaticServerConfiguration;
             });
@@ -127,6 +143,8 @@ namespace IVPN
                 else
                     __MainWindowController.ServerListViewModel.SetSelectedServer(__MainWindowController.MainViewModel.SelectedServer, ServerSelectionType.SingleServer);
 
+                if (CurrentPage == NavigationTarget.ServerSelection)
+                    return;
                 __MainWindowController.ShowServersPage(animation);
                 CurrentPage = NavigationTarget.ServerSelection;
             });
@@ -138,6 +156,8 @@ namespace IVPN
             {
                 __MainWindowController.ServerListViewModel.SetSelectedServer(__MainWindowController.MainViewModel.SelectedServer, ServerSelectionType.EntryServer);
 
+                if (CurrentPage == NavigationTarget.ServerSelection)
+                    return;
                 __MainWindowController.ShowServersPage(animation);
                 CurrentPage = NavigationTarget.ServerSelection;
             });
@@ -149,6 +169,8 @@ namespace IVPN
             {
                 __MainWindowController.ServerListViewModel.SetSelectedServer(__MainWindowController.MainViewModel.SelectedExitServer, ServerSelectionType.ExitServer);
 
+                if (CurrentPage == NavigationTarget.ServerSelection)
+                    return;
                 __MainWindowController.ShowServersPage(animation);
                 CurrentPage = NavigationTarget.ServerSelection;
             });
@@ -171,6 +193,8 @@ namespace IVPN
             navigate(() =>
             {
                 __MainWindowController.MainViewModel.IsAutomaticServerSelection = true;
+                if (CurrentPage == NavigationTarget.MainPage)
+                    return;
                 NavigateToMainPage(NavigationAnimation.FadeToRight);
                 CurrentPage = NavigationTarget.MainPage;
             });
@@ -185,6 +209,8 @@ namespace IVPN
                 else
                     __MainWindowController.MainViewModel.SelectedServer = serverLocation;
 
+                if (CurrentPage == NavigationTarget.MainPage)
+                    return;
                 NavigateToMainPage(NavigationAnimation.FadeToRight);
                 CurrentPage = NavigationTarget.MainPage;
             });

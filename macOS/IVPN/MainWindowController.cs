@@ -1366,11 +1366,7 @@ namespace IVPN
             return null;
         }
 
-        public bool InvokeRequired {
-            get {
-                return false;
-            }
-        }
+        public bool InvokeRequired => NSThread.IsMain;
 
         #endregion
 
