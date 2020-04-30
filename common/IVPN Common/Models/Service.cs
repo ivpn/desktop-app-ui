@@ -118,6 +118,12 @@ namespace IVPN.Models
 
             __ServiceProxy.ServerListChanged += (VpnServersInfo servers) =>
             {
+                // If still no servers info - save it immediately (do not use "Invoke" mechanism) 
+                // It needed for situations when VPN already connected (on application start)
+                //      All servers must be initialised on the moment when VPN connection status will be received.
+                if (Servers.ServersList == null || Servers.ServersList.Count == 0)
+                    Servers.UpdateServers(servers);
+
                 __SyncInvoke.BeginInvoke(new Action(() =>
                 {
                     // Update servers information

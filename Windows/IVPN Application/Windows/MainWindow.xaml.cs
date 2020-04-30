@@ -707,6 +707,16 @@ namespace IVPN
         
         public void ShowMainPage(NavigationAnimation animation)
         {
+            // run only on main UI thread
+            if (Application.Current.Dispatcher.Thread != Thread.CurrentThread)
+            {
+                Application.Current.Dispatcher.Invoke(() =>
+                {
+                    ShowMainPage(animation);
+                });
+                return;
+            }
+
             // update account menu item
             App.UpdateTrayMenuItems(AppState, MainViewModel);
             // Hide 'Back' button on window title

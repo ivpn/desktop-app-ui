@@ -99,6 +99,7 @@ namespace IVPN.Responses
         public string ServerIP;
         public VpnType VpnType;
         public string ExitServerID;
+        public string ManualDNS;
     }
 
     public class IVPNDisconnectedResponse : IVPNResponse

@@ -152,6 +152,19 @@ namespace IVPN.ViewModels
 
             CheckCapabilities();
             __AppState.OnAccountStatusChanged += (AccountStatus sessionStatus) => { CheckCapabilities(); };
+            __AppState.OnSessionChanged += (SessionInfo sessionInfo) =>
+            {
+                if (__AppState.IsLoggedIn())
+                {
+                    if (__NavigationService.CurrentPage == NavigationTarget.LogInPage)
+                        __NavigationService.NavigateToMainPage(NavigationAnimation.FadeToLeft);
+                }
+                else
+                {
+                    if (__NavigationService.CurrentPage != NavigationTarget.LogInPage && __NavigationService.CurrentPage != NavigationTarget.LogOutPage )
+                        __NavigationService.NavigateToLogInPage(NavigationAnimation.FadeToRight);
+                }
+            };
 
             __Service.Disconnected += Disconnected;
             __Service.ServiceInitialized += ServiceInitializedAsync;

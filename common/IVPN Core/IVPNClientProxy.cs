@@ -282,6 +282,7 @@ namespace IVPN
                     case "ConnectedResp":
                         var connectedRes = JsonConvert.DeserializeObject<Responses.IVPNConnectedResponse>(line);  
                         Connected(connectedRes.TimeSecFrom1970, connectedRes.ClientIP, connectedRes.ServerIP, connectedRes.VpnType, connectedRes.ExitServerID);
+                        AlternateDNSChanged(connectedRes.ManualDNS);
                         break;
 
                     case "DisconnectedResp":

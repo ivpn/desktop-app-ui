@@ -207,14 +207,19 @@ namespace IVPN.Views
 
         private void ShowFirewallOffPopupWarningIfRequired()
         {
-            if (Application.Current.MainWindow == null 
-                || ViewModel.ConnectionState!= ServiceState.Connected
+            if (Application.Current.MainWindow == null
+                || ViewModel.ConnectionState != ServiceState.Connected
                 || ViewModel.PauseStatus != MainViewModel.PauseStatusEnum.Resumed
                 || ViewModel.IsKillSwitchEnabled
                 || ViewModel.NavigationService.CurrentPage != NavigationTarget.MainPage
                 || Application.Current.MainWindow.WindowState == WindowState.Minimized)
-                return;
-            GuiFirewallIsOffPopup.IsOpen = true;
+            {
+                GuiFirewallIsOffPopup.IsOpen = false;
+            }
+            else
+            {
+                GuiFirewallIsOffPopup.IsOpen = true;
+            }
         }
 
         private bool CheckIsCanChangeHop()
