@@ -31,10 +31,10 @@
                         </Grid.RowDefinitions>
                         
                         <TextBlock Grid.Row="0" Grid.Column="0" Margin="3">Local IP:</TextBlock>
-                        <TextBox  Grid.Row="0" Grid.Column="1" Margin="3" Text="{Binding ViewModel.Settings.WireGuardClientInternalIp}" IsReadOnly="True" Background="LightGray"/>
+                        <TextBox  Grid.Row="0" Grid.Column="1" Margin="3" Text="{Binding ViewModel.WireGuardClientInternalIp, Mode=OneWay}" IsReadOnly="True" Background="LightGray"/>
 
                         <TextBlock Grid.Row="1" Grid.Column="0" Margin="3">Public key:</TextBlock>
-                        <TextBox  Grid.Row="1" Grid.Column="1" Margin="3" Height="50" Text="{Binding ViewModel.Settings.WireGuardClientPublicKey}" TextWrapping="Wrap" IsReadOnly="True" Background="LightGray" TextOptions.TextFormattingMode="Display" AcceptsReturn="True"/>
+                        <TextBox  Grid.Row="1" Grid.Column="1" Margin="3" Height="50" Text="{Binding ViewModel.WireGuardClientPublicKey, Mode=OneWay}" TextWrapping="Wrap" IsReadOnly="True" Background="LightGray" TextOptions.TextFormattingMode="Display" AcceptsReturn="True"/>
                     </Grid>
 
                     <Button HorizontalAlignment="Right" Style="{StaticResource ButtonSecondary}" Width="120" Height="32" Margin="0,5,3,5" Name="UiButtonRegenerate" Click="UiButtonRegenerate_OnClick">

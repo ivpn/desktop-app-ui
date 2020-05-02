@@ -1796,7 +1796,6 @@ namespace IVPN.ViewModels
 
 #region DNS
 
-        
         private void __Service_AlternateDNSChanged(string dns)
         {
             bool atOn = false;
@@ -1831,8 +1830,8 @@ namespace IVPN.ViewModels
 
                 settingsChanged = true;
             }
-
-            if (Settings.IsAntiTrackerHardcore != isHardcore)
+            
+            if (atOn && Settings.IsAntiTrackerHardcore != isHardcore)
             {
                 Settings.IsAntiTrackerHardcore = isHardcore;
                 settingsChanged = true;

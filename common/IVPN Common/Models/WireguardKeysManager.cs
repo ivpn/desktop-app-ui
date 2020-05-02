@@ -39,10 +39,12 @@ namespace IVPN.Models
             try
             {
                 OnStarted();
+                OnProgress("Generating new keys...");
                 await __Service.WireGuardGeneratedKeys(false);
             }
             finally
             {
+                OnProgress("");
                 OnStopped();
                 __LockerSemaphore.Release();
             }
@@ -65,11 +67,13 @@ namespace IVPN.Models
             try
             {
                 OnStarted();
+                OnProgress("Generating new keys...");
                 await __Service.WireGuardGeneratedKeys(true);
                 return true;
             }
             finally
             {
+                OnProgress("");
                 OnStopped();
                 __LockerSemaphore.Release();
             }
