@@ -119,11 +119,11 @@
             <point key="canvasLocation" x="173" y="437.5"/>
         </window>
         <customView id="64" userLabel="General">
-            <rect key="frame" x="0.0" y="0.0" width="562" height="342"/>
+            <rect key="frame" x="0.0" y="0.0" width="562" height="375"/>
             <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
             <subviews>
                 <button fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="65">
-                    <rect key="frame" x="137" y="234" width="395" height="18"/>
+                    <rect key="frame" x="137" y="267" width="395" height="18"/>
                     <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
                     <buttonCell key="cell" type="check" title="Launch at login" bezelStyle="regularSquare" imagePosition="left" state="on" inset="2" id="74">
                         <behavior key="behavior" changeContents="YES" doesNotDimImage="YES" lightByContents="YES"/>
@@ -134,7 +134,7 @@
                     </connections>
                 </button>
                 <button fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="66">
-                    <rect key="frame" x="137" y="210" width="395" height="18"/>
+                    <rect key="frame" x="137" y="243" width="395" height="18"/>
                     <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
                     <buttonCell key="cell" type="check" title="Show main window on launch" bezelStyle="regularSquare" imagePosition="left" state="on" inset="2" id="73">
                         <behavior key="behavior" changeContents="YES" doesNotDimImage="YES" lightByContents="YES"/>
@@ -149,7 +149,7 @@
                     </connections>
                 </button>
                 <button fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="67">
-                    <rect key="frame" x="137" y="275" width="395" height="18"/>
+                    <rect key="frame" x="137" y="308" width="395" height="18"/>
                     <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
                     <buttonCell key="cell" type="check" title="When joining insecure WiFi networks" bezelStyle="regularSquare" imagePosition="left" state="on" inset="2" id="72">
                         <behavior key="behavior" changeContents="YES" doesNotDimImage="YES" lightByContents="YES"/>
@@ -160,7 +160,7 @@
                     </connections>
                 </button>
                 <textField horizontalHuggingPriority="251" verticalHuggingPriority="750" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="68">
-                    <rect key="frame" x="18" y="302" width="116" height="17"/>
+                    <rect key="frame" x="18" y="335" width="116" height="17"/>
                     <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
                     <textFieldCell key="cell" scrollable="YES" lineBreakMode="clipping" sendsActionOnEndEditing="YES" alignment="right" title="Autoconnect:" id="71">
                         <font key="font" size="14" name="SFProText-Medium"/>
@@ -169,7 +169,7 @@
                     </textFieldCell>
                 </textField>
                 <textField horizontalHuggingPriority="251" verticalHuggingPriority="750" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="8ed-Fy-TDT">
-                    <rect key="frame" x="18" y="237" width="116" height="17"/>
+                    <rect key="frame" x="18" y="270" width="116" height="17"/>
                     <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
                     <textFieldCell key="cell" scrollable="YES" lineBreakMode="clipping" sendsActionOnEndEditing="YES" alignment="right" title="On launch:" id="mnl-EJ-IcI">
                         <font key="font" size="14" name="SFProText-Medium"/>
@@ -178,7 +178,7 @@
                     </textFieldCell>
                 </textField>
                 <button fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="69">
-                    <rect key="frame" x="137" y="299" width="395" height="18"/>
+                    <rect key="frame" x="137" y="332" width="395" height="18"/>
                     <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
                     <buttonCell key="cell" type="check" title="On launch" bezelStyle="regularSquare" imagePosition="left" state="on" inset="2" id="70">
                         <behavior key="behavior" changeContents="YES" doesNotDimImage="YES" lightByContents="YES"/>
@@ -189,7 +189,7 @@
                     </connections>
                 </button>
                 <button verticalHuggingPriority="750" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="JfB-3l-wko">
-                    <rect key="frame" x="137" y="186" width="395" height="18"/>
+                    <rect key="frame" x="137" y="219" width="395" height="18"/>
                     <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
                     <buttonCell key="cell" type="check" title="Show application icon in system dock" bezelStyle="regularSquare" imagePosition="left" state="on" inset="2" id="5hj-7s-zO9">
                         <behavior key="behavior" changeContents="YES" doesNotDimImage="YES" lightByContents="YES"/>
@@ -200,7 +200,7 @@
                     </connections>
                 </button>
                 <button fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="bec-lz-z1R">
-                    <rect key="frame" x="137" y="124" width="395" height="42"/>
+                    <rect key="frame" x="137" y="157" width="395" height="42"/>
                     <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
                     <buttonCell key="cell" type="check" bezelStyle="regularSquare" imagePosition="left" alignment="left" state="on" inset="2" id="g7L-ES-HLS">
                         <behavior key="behavior" changeContents="YES" doesNotDimImage="YES" lightByContents="YES"/>
@@ -213,7 +213,7 @@ application</string>
                     </connections>
                 </button>
                 <textField horizontalHuggingPriority="251" verticalHuggingPriority="750" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="DXO-Q2-VDZ">
-                    <rect key="frame" x="18" y="148" width="116" height="17"/>
+                    <rect key="frame" x="18" y="181" width="116" height="17"/>
                     <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
                     <textFieldCell key="cell" scrollable="YES" lineBreakMode="clipping" sendsActionOnEndEditing="YES" alignment="right" title="On exit:" id="fkz-AH-kdq">
                         <font key="font" size="14" name="SFProText-Medium"/>
@@ -222,7 +222,7 @@ application</string>
                     </textFieldCell>
                 </textField>
                 <button verticalHuggingPriority="750" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="Ope-L2-z0z">
-                    <rect key="frame" x="137" y="104" width="395" height="18"/>
+                    <rect key="frame" x="137" y="137" width="395" height="18"/>
                     <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
                     <buttonCell key="cell" type="check" title="Stop IVPN Agent when application is not running" bezelStyle="regularSquare" imagePosition="left" state="on" inset="2" id="hbJ-dV-FMw">
                         <behavior key="behavior" changeContents="YES" doesNotDimImage="YES" lightByContents="YES"/>
@@ -232,15 +232,24 @@ application</string>
                         <binding destination="-2" name="value" keyPath="settings.StopServerOnClientDisconnect" id="gLg-Kk-YoG"/>
                     </connections>
                 </button>
-                <box fixedFrame="YES" boxType="custom" cornerRadius="4" title="Box" translatesAutoresizingMaskIntoConstraints="NO" id="4Cr-Ol-PAB">
-                    <rect key="frame" x="22" y="20" width="520" height="62"/>
+                <textField verticalHuggingPriority="750" horizontalCompressionResistancePriority="250" fixedFrame="YES" setsMaxLayoutWidthAtFirstLayout="YES" translatesAutoresizingMaskIntoConstraints="NO" id="Nr9-ek-ZLy">
+                    <rect key="frame" x="155" y="93" width="340" height="38"/>
                     <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
+                    <textFieldCell key="cell" sendsActionOnEndEditing="YES" title="By enabling this feature, you will NOT be able to use the IVPN command-line interface." id="Dgr-rY-rVN">
+                        <font key="font" size="12" name="SFProText-Regular"/>
+                        <color key="textColor" name="secondaryLabelColor" catalog="System" colorSpace="catalog"/>
+                        <color key="backgroundColor" name="controlColor" catalog="System" colorSpace="catalog"/>
+                    </textFieldCell>
+                </textField>
+                <box fixedFrame="YES" boxType="custom" cornerRadius="4" title="Box" translatesAutoresizingMaskIntoConstraints="NO" id="4Cr-Ol-PAB">
+                    <rect key="frame" x="20" y="20" width="522" height="59"/>
+                    <autoresizingMask key="autoresizingMask" heightSizable="YES" flexibleMaxY="YES"/>
                     <view key="contentView" id="ZPB-zm-Hah">
-                        <rect key="frame" x="1" y="1" width="518" height="60"/>
+                        <rect key="frame" x="1" y="1" width="520" height="57"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
                             <button fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="360">
-                                <rect key="frame" x="114" y="22" width="368" height="18"/>
+                                <rect key="frame" x="114" y="19" width="368" height="18"/>
                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
                                 <buttonCell key="cell" type="check" title="Create log files" bezelStyle="regularSquare" imagePosition="left" state="on" inset="2" id="361">
                                     <behavior key="behavior" changeContents="YES" doesNotDimImage="YES" lightByContents="YES"/>
@@ -251,7 +260,7 @@ application</string>
                                 </connections>
                             </button>
                             <textField horizontalHuggingPriority="251" verticalHuggingPriority="750" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="PhX-VF-kBi">
-                                <rect key="frame" x="18" y="22" width="94" height="19"/>
+                                <rect key="frame" x="18" y="19" width="94" height="19"/>
                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
                                 <textFieldCell key="cell" scrollable="YES" lineBreakMode="clipping" sendsActionOnEndEditing="YES" alignment="right" title="Diagnostics:" id="8iu-pA-M3m">
                                     <font key="font" size="14" name="SFProText-Medium"/>
@@ -264,7 +273,7 @@ application</string>
                     <color key="borderColor" name="gridColor" catalog="System" colorSpace="catalog"/>
                 </box>
             </subviews>
-            <point key="canvasLocation" x="770" y="-64"/>
+            <point key="canvasLocation" x="770" y="-47.5"/>
         </customView>
         <customView id="75" userLabel="Connection">
             <rect key="frame" x="0.0" y="0.0" width="562" height="485"/>
@@ -805,7 +814,7 @@ application</string>
                     <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
                     <textFieldCell key="cell" sendsActionOnEndEditing="YES" id="156">
                         <font key="font" size="12" name="SFProText-Regular"/>
-                        <string key="title">When this option is enabled the IVPN Firewall is started during system boot time before any other process. IVPN Firewall will always be active even when IVPN Client is not running.</string>
+                        <string key="title">When this option is enabled the IVPN Firewall is started during system boot time. IVPN Firewall will always be active even when IVPN Client is not running.</string>
                         <color key="textColor" name="secondaryLabelColor" catalog="System" colorSpace="catalog"/>
                         <color key="backgroundColor" name="controlColor" catalog="System" colorSpace="catalog"/>
                     </textFieldCell>
@@ -962,14 +971,14 @@ application</string>
                     <autoresizingMask key="autoresizingMask" flexibleMaxY="YES"/>
                     <clipView key="contentView" drawsBackground="NO" id="AX3-D8-LjV">
                         <rect key="frame" x="1" y="1" width="520" height="74"/>
-                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <autoresizingMask key="autoresizingMask"/>
                         <subviews>
                             <textView importsGraphics="NO" richText="NO" verticallyResizable="YES" usesFontPanel="YES" findStyle="panel" allowsUndo="YES" usesRuler="YES" allowsNonContiguousLayout="YES" textCompletion="NO" id="rKT-DC-ZFe">
                                 <rect key="frame" x="0.0" y="0.0" width="505" height="74"/>
                                 <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                                 <color key="textColor" name="textColor" catalog="System" colorSpace="catalog"/>
                                 <color key="backgroundColor" name="textBackgroundColor" catalog="System" colorSpace="catalog"/>
-                                <size key="minSize" width="505" height="74"/>
+                                <size key="minSize" width="520" height="74"/>
                                 <size key="maxSize" width="558" height="10000000"/>
                                 <color key="insertionPointColor" name="controlTextColor" catalog="System" colorSpace="catalog"/>
                                 <connections>
@@ -1056,7 +1065,7 @@ application</string>
                                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                                         <clipView key="contentView" id="9d7-k6-HGz">
                                             <rect key="frame" x="1" y="1" width="480" height="174"/>
-                                            <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                                            <autoresizingMask key="autoresizingMask"/>
                                             <subviews>
                                                 <view fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="IhW-jE-gqj" userLabel="NetworksView">
                                                     <rect key="frame" x="0.0" y="0.0" width="450" height="144"/>
