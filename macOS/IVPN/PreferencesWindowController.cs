@@ -11,6 +11,7 @@ using IVPN.Models;
 using IVPN.Models.Configuration;
 using IVPNCommon.ViewModels;
 using IVPN.GuiHelpers;
+using System.IO;
 
 namespace IVPN
 {
@@ -49,7 +50,7 @@ namespace IVPN
             Initialize();
 
             __Service = service;
-            
+
             SetMainViewModel(mainViewModel);
             SetSettings(settings);
         }
@@ -67,6 +68,7 @@ namespace IVPN
             base.WindowDidLoad();
 
             GuiBtnLaunchAtLogin.IntValue = (__Settings.RunOnLogin) ? 1 : 0;
+            GuiOpenVpnUserConfigFile.StringValue = __Service.ConfigOvpnExtaParamsFile;
         }
 
         private void SetMainViewModel(MainViewModel mainViewModel)
@@ -120,20 +122,6 @@ namespace IVPN
                 bool isPersistent = settings.FirewallType == IVPNFirewallType.Persistent;
                 __MainViewModel.KillSwitchIsPersistent = isPersistent;
             }));
-
-			__Observers.Add (Settings.AddObserver (new NSString ("OpenVPNExtraParameters"), NSKeyValueObservingOptions.New, (NSObservedChange e) => {
-                
-                if (!Helpers.OpenVPN.OpenVPNConfigChecker.IsIsUserParametersAllowed(settings.OpenVPNExtraParameters, out string errorDesc))
-                {                    
-                    IVPNAlert.Show(//this.Window, - do not use window argument (alert will be possible to show when window closing)
-                        __MainViewModel.AppServices.LocalizedString("OpenVPNParamsNotSupported", "Some OpenVPN additional parameters are not supported"),
-                        errorDesc,
-                        NSAlertStyle.Warning);
-                    return;
-                }
-
-                __Service.Proxy.SetPreference ("open_vpn_extra_parameters", settings.OpenVPNExtraParameters );
-			}));
 
             __Observers.Add(Settings.AddObserver(new NSString("StopServerOnClientDisconnect"), NSKeyValueObservingOptions.New, (NSObservedChange e) => {
                 __Service.Proxy.SetPreference("is_stop_server_on_client_disconnect", __Settings.StopServerOnClientDisconnect ? "1" : "0");
@@ -340,6 +328,16 @@ namespace IVPN
         partial void ShowDnsSettings(NSObject sender)
         {
             SwitchSettings(DnsSettings);
+        }
+
+        partial void OnBtnEditOpenVpnConfigFile(Foundation.NSObject sender)
+        {
+            var file = __Service.ConfigOvpnExtaParamsFile;
+            if (String.IsNullOrEmpty(file))
+                return;
+
+            var dir = Path.GetDirectoryName(file);
+            NSWorkspace.SharedWorkspace.OpenFile(dir);
         }
 
         //strongly typed window accessor

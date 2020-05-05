@@ -43,7 +43,6 @@
   <ItemGroup>
     <Compile Include="DataConverters\DateTimeConverter.cs" />
     <Compile Include="Exceptions\Exceptions.cs" />
-    <Compile Include="OpenVPN\OpenVPNConfigChecker.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="ServiceReturnCodes.cs" />
     <Compile Include="Validate\EmailValidator.cs" />

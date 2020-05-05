@@ -73,7 +73,6 @@ namespace IVPN
             __Defaults["LastWindowPosition"] = "";
             __Defaults["LastNotificationWindowPosition"] = "";
 
-            __Defaults["OpenVPNExtraParameters"] = "";
             __Defaults["DisableFirewallNotificationWindow"] = false;
             __Defaults["RunOnLogin"] = false;
             __Defaults["MacIsShowIconInSystemDock"] = false;

@@ -716,6 +716,17 @@ namespace IVPN.Models
             }
         }
 
+        public string ConfigOvpnExtaParamsFile
+        {
+            get
+            {
+                var file = Proxy?.DaemonParams?.UserDefinedOvpnFile;
+                if (file == null)
+                    file = "";
+                return file;
+            }
+        }
+
         public async Task PauseOn()
         {
             await __ServiceProxy.PauseConnection();

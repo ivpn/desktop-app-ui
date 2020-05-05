@@ -19,6 +19,7 @@
                 <outlet property="GuiBtnProtocolTypeWireGuard" destination="HeH-eE-QoO" id="z9f-0e-5Vr"/>
                 <outlet property="GuiBtnWireguardTooltip" destination="XVn-DK-9bw" id="LYu-a5-dsy"/>
                 <outlet property="GuiButtonOpenvpnTooltip" destination="bGf-d5-IJR" id="ZlN-MS-lOR"/>
+                <outlet property="GuiOpenVpnUserConfigFile" destination="6Tv-l0-lA8" id="9Ms-bm-mis"/>
                 <outlet property="GuiPanelOpenvpnTooltip" destination="PqD-Oi-UEv" id="HKn-Cc-O53"/>
                 <outlet property="GuiPanelWireguardConfigDetails" destination="Ub4-KR-MaY" id="tHF-CT-gQT"/>
                 <outlet property="GuiPanelWireguardTooltip" destination="6Pc-oM-jWg" id="hO6-Bh-viE"/>
@@ -547,11 +548,11 @@ application</string>
                                 <rect key="frame" x="10" y="33" width="516" height="329"/>
                                 <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                                 <subviews>
-                                    <customView translatesAutoresizingMaskIntoConstraints="NO" id="Vvx-nJ-Xc1">
+                                    <customView fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="Vvx-nJ-Xc1">
                                         <rect key="frame" x="-3" y="107" width="522" height="97"/>
                                         <autoresizingMask key="autoresizingMask" flexibleMinY="YES"/>
                                         <subviews>
-                                            <textField horizontalHuggingPriority="251" verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="kas-g9-mfF">
+                                            <textField horizontalHuggingPriority="251" verticalHuggingPriority="750" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="kas-g9-mfF">
                                                 <rect key="frame" x="16" y="53" width="479" height="24"/>
                                                 <autoresizingMask key="autoresizingMask" flexibleMinY="YES"/>
                                                 <textFieldCell key="cell" lineBreakMode="clipping" alignment="center" title="Registering new keys..." id="flo-7M-tEw">
@@ -563,17 +564,17 @@ application</string>
                                                     <binding destination="-2" name="value" keyPath="WireguardSettingsViewModel.ProgressStatus" id="7u4-Gg-ZUG"/>
                                                 </connections>
                                             </textField>
-                                            <progressIndicator wantsLayer="YES" horizontalHuggingPriority="750" verticalHuggingPriority="750" maxValue="100" bezeled="NO" indeterminate="YES" controlSize="small" style="spinning" translatesAutoresizingMaskIntoConstraints="NO" id="95a-lP-FF3">
+                                            <progressIndicator wantsLayer="YES" horizontalHuggingPriority="750" verticalHuggingPriority="750" fixedFrame="YES" maxValue="100" bezeled="NO" indeterminate="YES" controlSize="small" style="spinning" translatesAutoresizingMaskIntoConstraints="NO" id="95a-lP-FF3">
                                                 <rect key="frame" x="247" y="28" width="16" height="16"/>
                                                 <autoresizingMask key="autoresizingMask" flexibleMinY="YES"/>
                                             </progressIndicator>
                                         </subviews>
                                     </customView>
-                                    <customView translatesAutoresizingMaskIntoConstraints="NO" id="82z-gM-6Hz">
+                                    <customView fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="82z-gM-6Hz">
                                         <rect key="frame" x="-3" y="-46" width="522" height="370"/>
                                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
                                         <subviews>
-                                            <popUpButton verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="ZR1-tB-hSP">
+                                            <popUpButton verticalHuggingPriority="750" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="ZR1-tB-hSP">
                                                 <rect key="frame" x="188" y="335" width="192" height="26"/>
                                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
                                                 <popUpButtonCell key="cell" type="push" title="Item 1" bezelStyle="rounded" alignment="left" lineBreakMode="truncatingTail" state="on" borderStyle="borderAndBezel" imageScaling="proportionallyDown" inset="2" selectedItem="acL-dG-zoq" id="qG2-SZ-V3p">
@@ -592,7 +593,7 @@ application</string>
                                                     </connections>
                                                 </popUpButtonCell>
                                             </popUpButton>
-                                            <textField horizontalHuggingPriority="251" verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="fsn-6c-Qq8">
+                                            <textField horizontalHuggingPriority="251" verticalHuggingPriority="750" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="fsn-6c-Qq8">
                                                 <rect key="frame" x="25" y="341" width="158" height="19"/>
                                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
                                                 <textFieldCell key="cell" scrollable="YES" lineBreakMode="clipping" sendsActionOnEndEditing="YES" alignment="right" title="Preferred port:" id="a5d-89-a52">
@@ -601,7 +602,7 @@ application</string>
                                                     <color key="backgroundColor" name="controlColor" catalog="System" colorSpace="catalog"/>
                                                 </textFieldCell>
                                             </textField>
-                                            <textField horizontalHuggingPriority="251" verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="3IG-ar-7Li">
+                                            <textField horizontalHuggingPriority="251" verticalHuggingPriority="750" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="3IG-ar-7Li">
                                                 <rect key="frame" x="6" y="305" width="177" height="19"/>
                                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
                                                 <textFieldCell key="cell" scrollable="YES" lineBreakMode="clipping" sendsActionOnEndEditing="YES" alignment="right" title="Regenerate key every" id="2aX-Kp-grq">
@@ -610,7 +611,7 @@ application</string>
                                                     <color key="backgroundColor" name="controlColor" catalog="System" colorSpace="catalog"/>
                                                 </textFieldCell>
                                             </textField>
-                                            <popUpButton verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="2Bk-P7-D76">
+                                            <popUpButton verticalHuggingPriority="750" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="2Bk-P7-D76">
                                                 <rect key="frame" x="188" y="301" width="60" height="26"/>
                                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
                                                 <popUpButtonCell key="cell" type="push" title="7" bezelStyle="rounded" alignment="left" lineBreakMode="truncatingTail" state="on" borderStyle="borderAndBezel" tag="7" imageScaling="proportionallyDown" inset="2" selectedItem="G0l-ID-773" id="8mT-5B-SjW">
@@ -715,7 +716,7 @@ application</string>
                                                     </connections>
                                                 </popUpButtonCell>
                                             </popUpButton>
-                                            <textField verticalHuggingPriority="750" horizontalCompressionResistancePriority="250" setsMaxLayoutWidthAtFirstLayout="YES" translatesAutoresizingMaskIntoConstraints="NO" id="WqZ-g5-00g">
+                                            <textField verticalHuggingPriority="750" horizontalCompressionResistancePriority="250" fixedFrame="YES" setsMaxLayoutWidthAtFirstLayout="YES" translatesAutoresizingMaskIntoConstraints="NO" id="WqZ-g5-00g">
                                                 <rect key="frame" x="188" y="248" width="328" height="48"/>
                                                 <autoresizingMask key="autoresizingMask" flexibleMinX="YES" flexibleMaxX="YES" flexibleMinY="YES"/>
                                                 <textFieldCell key="cell" sendsActionOnEndEditing="YES" alignment="left" title="Keys regeneration will start automatically in the defined interval. It will also change the internal IP address." id="p0x-1e-wic">
@@ -724,7 +725,7 @@ application</string>
                                                     <color key="backgroundColor" name="controlColor" catalog="System" colorSpace="catalog"/>
                                                 </textFieldCell>
                                             </textField>
-                                            <textField horizontalHuggingPriority="251" verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="Hva-LF-ZuX">
+                                            <textField horizontalHuggingPriority="251" verticalHuggingPriority="750" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="Hva-LF-ZuX">
                                                 <rect key="frame" x="252" y="305" width="177" height="19"/>
                                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
                                                 <textFieldCell key="cell" scrollable="YES" lineBreakMode="clipping" sendsActionOnEndEditing="YES" alignment="left" title="days." id="EFd-7F-5eT">
@@ -733,14 +734,14 @@ application</string>
                                                     <color key="backgroundColor" name="controlColor" catalog="System" colorSpace="catalog"/>
                                                 </textFieldCell>
                                             </textField>
-                                            <box boxType="secondary" title="Box" titlePosition="noTitle" translatesAutoresizingMaskIntoConstraints="NO" id="E9B-og-lLT">
+                                            <box fixedFrame="YES" boxType="secondary" title="Box" titlePosition="noTitle" translatesAutoresizingMaskIntoConstraints="NO" id="E9B-og-lLT">
                                                 <rect key="frame" x="17" y="57" width="488" height="94"/>
                                                 <autoresizingMask key="autoresizingMask" flexibleMaxY="YES"/>
                                                 <view key="contentView" id="Lyd-Nh-NCS">
                                                     <rect key="frame" x="3" y="3" width="482" height="88"/>
                                                     <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                                                     <subviews>
-                                                        <textField verticalHuggingPriority="750" horizontalCompressionResistancePriority="250" setsMaxLayoutWidthAtFirstLayout="YES" translatesAutoresizingMaskIntoConstraints="NO" id="278-Zd-2Og">
+                                                        <textField verticalHuggingPriority="750" horizontalCompressionResistancePriority="250" fixedFrame="YES" setsMaxLayoutWidthAtFirstLayout="YES" translatesAutoresizingMaskIntoConstraints="NO" id="278-Zd-2Og">
                                                             <rect key="frame" x="4" y="8" width="460" height="40"/>
                                                             <autoresizingMask key="autoresizingMask" flexibleMinX="YES" flexibleMaxY="YES"/>
                                                             <textFieldCell key="cell" sendsActionOnEndEditing="YES" alignment="right" id="aza-Bo-bOp">
@@ -750,7 +751,7 @@ application</string>
                                                                 <color key="backgroundColor" name="controlColor" catalog="System" colorSpace="catalog"/>
                                                             </textFieldCell>
                                                         </textField>
-                                                        <button verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="lEo-rw-wld">
+                                                        <button verticalHuggingPriority="750" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="lEo-rw-wld">
                                                             <rect key="frame" x="345" y="49" width="126" height="32"/>
                                                             <autoresizingMask key="autoresizingMask" flexibleMinX="YES" flexibleMaxY="YES"/>
                                                             <buttonCell key="cell" type="push" title="Configuration" bezelStyle="rounded" alignment="center" borderStyle="border" imageScaling="proportionallyDown" inset="2" id="WCY-wt-UhI">
@@ -944,11 +945,11 @@ application</string>
         </customView>
         <userDefaultsController representsSharedInstance="YES" id="209"/>
         <customView id="KIt-0M-8fk" userLabel="OpenVPN">
-            <rect key="frame" x="0.0" y="0.0" width="562" height="214"/>
+            <rect key="frame" x="0.0" y="0.0" width="562" height="164"/>
             <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
             <subviews>
                 <textField horizontalHuggingPriority="251" verticalHuggingPriority="750" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="f1q-Zk-F8H">
-                    <rect key="frame" x="18" y="173" width="434" height="19"/>
+                    <rect key="frame" x="18" y="123" width="434" height="19"/>
                     <autoresizingMask key="autoresizingMask" flexibleMinY="YES"/>
                     <textFieldCell key="cell" scrollable="YES" lineBreakMode="clipping" sendsActionOnEndEditing="YES" title="OpenVPN additional configuration parameters:" id="Qmq-rf-74l">
                         <font key="font" size="14" name="SFProText-Medium"/>
@@ -957,7 +958,7 @@ application</string>
                     </textFieldCell>
                 </textField>
                 <textField verticalHuggingPriority="750" horizontalCompressionResistancePriority="250" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="Bid-Xs-k70">
-                    <rect key="frame" x="18" y="112" width="526" height="55"/>
+                    <rect key="frame" x="18" y="62" width="526" height="55"/>
                     <autoresizingMask key="autoresizingMask" flexibleMinY="YES"/>
                     <textFieldCell key="cell" sendsActionOnEndEditing="YES" alignment="left" id="Osz-wS-aRA">
                         <font key="font" size="12" name="SFProText-Regular"/>
@@ -966,38 +967,28 @@ application</string>
                         <color key="backgroundColor" name="controlColor" catalog="System" colorSpace="catalog"/>
                     </textFieldCell>
                 </textField>
-                <scrollView wantsLayer="YES" fixedFrame="YES" horizontalLineScroll="10" horizontalPageScroll="10" verticalLineScroll="10" verticalPageScroll="10" usesPredominantAxisScrolling="NO" translatesAutoresizingMaskIntoConstraints="NO" id="DV0-rh-oWK">
-                    <rect key="frame" x="20" y="22" width="522" height="76"/>
+                <textField verticalHuggingPriority="750" horizontalCompressionResistancePriority="250" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="6Tv-l0-lA8">
+                    <rect key="frame" x="18" y="12" width="526" height="19"/>
                     <autoresizingMask key="autoresizingMask" flexibleMaxY="YES"/>
-                    <clipView key="contentView" drawsBackground="NO" id="AX3-D8-LjV">
-                        <rect key="frame" x="1" y="1" width="520" height="74"/>
-                        <autoresizingMask key="autoresizingMask"/>
-                        <subviews>
-                            <textView importsGraphics="NO" richText="NO" verticallyResizable="YES" usesFontPanel="YES" findStyle="panel" allowsUndo="YES" usesRuler="YES" allowsNonContiguousLayout="YES" textCompletion="NO" id="rKT-DC-ZFe">
-                                <rect key="frame" x="0.0" y="0.0" width="505" height="74"/>
-                                <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
-                                <color key="textColor" name="textColor" catalog="System" colorSpace="catalog"/>
-                                <color key="backgroundColor" name="textBackgroundColor" catalog="System" colorSpace="catalog"/>
-                                <size key="minSize" width="520" height="74"/>
-                                <size key="maxSize" width="558" height="10000000"/>
-                                <color key="insertionPointColor" name="controlTextColor" catalog="System" colorSpace="catalog"/>
-                                <connections>
-                                    <binding destination="-2" name="value" keyPath="settings.OpenVPNExtraParameters" id="Qk7-tg-GT3"/>
-                                </connections>
-                            </textView>
-                        </subviews>
-                    </clipView>
-                    <scroller key="horizontalScroller" wantsLayer="YES" verticalHuggingPriority="750" doubleValue="1" horizontal="YES" id="zpv-Qv-AtG">
-                        <rect key="frame" x="1" y="59" width="520" height="16"/>
-                        <autoresizingMask key="autoresizingMask"/>
-                    </scroller>
-                    <scroller key="verticalScroller" wantsLayer="YES" verticalHuggingPriority="750" horizontal="NO" id="drQ-7R-AOK">
-                        <rect key="frame" x="505" y="1" width="16" height="74"/>
-                        <autoresizingMask key="autoresizingMask"/>
-                    </scroller>
-                </scrollView>
+                    <textFieldCell key="cell" lineBreakMode="charWrapping" selectable="YES" sendsActionOnEndEditing="YES" state="on" alignment="right" placeholderString="Path to extra user-defined OpenVPN parameters file" id="2iy-4n-T7f">
+                        <font key="font" metaFont="miniSystem"/>
+                        <color key="textColor" name="disabledControlTextColor" catalog="System" colorSpace="catalog"/>
+                        <color key="backgroundColor" name="textBackgroundColor" catalog="System" colorSpace="catalog"/>
+                    </textFieldCell>
+                </textField>
+                <button verticalHuggingPriority="750" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="EdU-hn-nK7" userLabel="Button_AllNetworksToDefault">
+                    <rect key="frame" x="295" y="32" width="253" height="32"/>
+                    <autoresizingMask key="autoresizingMask" flexibleMinX="YES" flexibleMaxY="YES"/>
+                    <buttonCell key="cell" type="push" title="Open configuration file location" bezelStyle="rounded" alignment="center" borderStyle="border" imageScaling="proportionallyDown" inset="2" id="WW9-ou-gpM">
+                        <behavior key="behavior" pushIn="YES" lightByBackground="YES" lightByGray="YES"/>
+                        <font key="font" size="13" name="SFProText-Medium"/>
+                    </buttonCell>
+                    <connections>
+                        <action selector="OnBtnEditOpenVpnConfigFile:" target="-2" id="VFk-2w-Kvs"/>
+                    </connections>
+                </button>
             </subviews>
-            <point key="canvasLocation" x="770" y="2124"/>
+            <point key="canvasLocation" x="770" y="2099"/>
         </customView>
         <customView id="0UW-e9-Oh9" userLabel="Networks">
             <rect key="frame" x="0.0" y="0.0" width="562" height="453"/>
@@ -1065,7 +1056,7 @@ application</string>
                                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                                         <clipView key="contentView" id="9d7-k6-HGz">
                                             <rect key="frame" x="1" y="1" width="480" height="174"/>
-                                            <autoresizingMask key="autoresizingMask"/>
+                                            <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                                             <subviews>
                                                 <view fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="IhW-jE-gqj" userLabel="NetworksView">
                                                     <rect key="frame" x="0.0" y="0.0" width="450" height="144"/>
@@ -1208,7 +1199,7 @@ application</string>
                                 <rect key="frame" x="106" y="153" width="240" height="54"/>
                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
                                 <textFieldCell key="cell" lineBreakMode="charWrapping" selectable="YES" sendsActionOnEndEditing="YES" state="on" borderStyle="bezel" alignment="left" drawsBackground="YES" id="NNX-ms-3eW">
-                                    <font key="font" metaFont="cellTitle"/>
+                                    <font key="font" metaFont="controlContent"/>
                                     <color key="textColor" name="disabledControlTextColor" catalog="System" colorSpace="catalog"/>
                                     <color key="backgroundColor" name="textBackgroundColor" catalog="System" colorSpace="catalog"/>
                                 </textFieldCell>
@@ -1229,7 +1220,7 @@ application</string>
                                 <rect key="frame" x="107" y="215" width="134" height="21"/>
                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
                                 <textFieldCell key="cell" scrollable="YES" lineBreakMode="clipping" selectable="YES" sendsActionOnEndEditing="YES" state="on" borderStyle="bezel" alignment="left" title="0.0.0.0" drawsBackground="YES" id="UW0-kR-q9P">
-                                    <font key="font" metaFont="cellTitle"/>
+                                    <font key="font" metaFont="controlContent"/>
                                     <color key="textColor" name="disabledControlTextColor" catalog="System" colorSpace="catalog"/>
                                     <color key="backgroundColor" name="textBackgroundColor" catalog="System" colorSpace="catalog"/>
                                 </textFieldCell>

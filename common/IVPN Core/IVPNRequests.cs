@@ -23,6 +23,9 @@ namespace IVPN.Requests
         // GetStatus == true - client requests current status (Vpn connection, Firewal... etc.)
         public bool GetStatus;
 
+        // GetConfigParams == true - client requests config parameters (user-defined OpevVPN file location ... etc.)
+        public bool GetConfigParams;
+
         // KeepDaemonAlone informs daemon\service to do nothing when client disconnects
         // 		false (default) - VPN disconnects when client disconnects from a daemon
         // 		true - do nothing when client disconnects from a daemon (if VPN is connected - do not disconnect)

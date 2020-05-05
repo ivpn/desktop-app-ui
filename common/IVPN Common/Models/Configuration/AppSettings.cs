@@ -512,12 +512,6 @@ namespace IVPN.Models.Configuration
             }
         }
 
-        /// <summary>
-        /// Additional parameters for OpenVPN. 
-        /// Each parameter on a new line.
-        /// (will be stored into 'openvpn.conf')
-        /// </summary>
-        public string OpenVPNExtraParameters { get; set; }
         #endregion //OpenVPN configuration
 
         #region WireGuard configuration

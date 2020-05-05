@@ -54,6 +54,8 @@ namespace IVPN
         public event KillSwitchStatusHandler KillSwitchStatus = delegate { };
         public event AlternateDNSChangedHandler AlternateDNSChanged = delegate { };
 
+        public Responses.ConfigParamsResp DaemonParams;
+
         private TcpClient __Client;
         private StreamReader __StreamReader;
         private StreamWriter __StreamWriter;
@@ -87,7 +89,13 @@ namespace IVPN
                 ConnectToService();
 
                 // send hello
-                SendRequest(new Requests.Hello { Version = Platform.Version, Secret = Secret, GetServersList = true, GetStatus = true });
+                SendRequest(new Requests.Hello {
+                    Version = Platform.Version,
+                    Secret = Secret,
+                    GetServersList = true,
+                    GetStatus = true,
+                    GetConfigParams = true
+                });
 
 
                 while (HandleResponse())
@@ -237,6 +245,10 @@ namespace IVPN
                         Logging.Info("got hello, server version is " + resp.Version
                             + (string.IsNullOrEmpty(resp.Session.Session)?"Not logged in":"Logged in"));
 
+                        break;
+
+                    case "ConfigParamsResp":
+                        DaemonParams = JsonConvert.DeserializeObject<Responses.ConfigParamsResp>(line);
                         break;
 
                     case "ServerListResp":

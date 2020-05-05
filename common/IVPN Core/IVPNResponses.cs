@@ -24,6 +24,11 @@ namespace IVPN.Responses
         public SessionInfo Session;
     }
 
+    public class ConfigParamsResp : IVPNResponse
+    {
+        public string UserDefinedOvpnFile;
+    }
+
     public class SessionInfo
     {
         public string AccountID;

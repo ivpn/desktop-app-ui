@@ -49,6 +49,9 @@ namespace IVPN
 		AppKit.NSButton GuiButtonOpenvpnTooltip { get; set; }
 
 		[Outlet]
+		AppKit.NSTextField GuiOpenVpnUserConfigFile { get; set; }
+
+		[Outlet]
 		AppKit.NSView GuiPanelOpenvpnTooltip { get; set; }
 
 		[Outlet]
@@ -113,6 +116,9 @@ namespace IVPN
 
 		[Action ("OnBtnCloseWireguardConfigDetails:")]
 		partial void OnBtnCloseWireguardConfigDetails (Foundation.NSObject sender);
+
+		[Action ("OnBtnEditOpenVpnConfigFile:")]
+		partial void OnBtnEditOpenVpnConfigFile (Foundation.NSObject sender);
 
 		[Action ("OnFirewallTypeChanged:")]
 		partial void OnFirewallTypeChanged (Foundation.NSObject sender);
@@ -217,14 +223,14 @@ namespace IVPN
 				GuiBtnProtocolTypeWireGuard = null;
 			}
 
-			if (GuiButtonOpenvpnTooltip != null) {
-				GuiButtonOpenvpnTooltip.Dispose ();
-				GuiButtonOpenvpnTooltip = null;
-			}
-
 			if (GuiBtnWireguardTooltip != null) {
 				GuiBtnWireguardTooltip.Dispose ();
 				GuiBtnWireguardTooltip = null;
+			}
+
+			if (GuiButtonOpenvpnTooltip != null) {
+				GuiButtonOpenvpnTooltip.Dispose ();
+				GuiButtonOpenvpnTooltip = null;
 			}
 
 			if (GuiPanelOpenvpnTooltip != null) {
@@ -232,14 +238,14 @@ namespace IVPN
 				GuiPanelOpenvpnTooltip = null;
 			}
 
-			if (GuiPanelWireguardTooltip != null) {
-				GuiPanelWireguardTooltip.Dispose ();
-				GuiPanelWireguardTooltip = null;
-			}
-
 			if (GuiPanelWireguardConfigDetails != null) {
 				GuiPanelWireguardConfigDetails.Dispose ();
 				GuiPanelWireguardConfigDetails = null;
+			}
+
+			if (GuiPanelWireguardTooltip != null) {
+				GuiPanelWireguardTooltip.Dispose ();
+				GuiPanelWireguardTooltip = null;
 			}
 
 			if (GuiProgressViewWireguardKeysGeneration != null) {
@@ -325,6 +331,11 @@ namespace IVPN
 			if (Toolbar != null) {
 				Toolbar.Dispose ();
 				Toolbar = null;
+			}
+
+			if (GuiOpenVpnUserConfigFile != null) {
+				GuiOpenVpnUserConfigFile.Dispose ();
+				GuiOpenVpnUserConfigFile = null;
 			}
 		}
 	}
