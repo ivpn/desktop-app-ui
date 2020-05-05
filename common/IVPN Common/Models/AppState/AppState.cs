@@ -33,7 +33,7 @@ namespace IVPN.Models
             {
                 __AccountStatus = value;
 
-                if (__IsLoaded)
+                if (__IsLoaded && __AccountStatus!=null)
                 {
                     Save();
 
