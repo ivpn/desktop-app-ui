@@ -116,14 +116,31 @@ namespace IVPN.Models.Configuration
             out string WgLocalIP,
             out Int64 WgKeyGenerated)
         {
-            return __SettingsProvider.GetOldStyleCredentials(out AccountID,
-                out Session,
-                out OvpnUser,
-                out OvpnPass,
-                out WgPublicKey,
-                out WgPrivateKey,
-                out WgLocalIP,
-                out WgKeyGenerated);
+            AccountID = "";
+            Session = "";
+            OvpnUser = "";
+            OvpnPass = "";
+            WgPublicKey = "";
+            WgPrivateKey = "";
+            WgLocalIP = "";
+            WgKeyGenerated = 0;
+
+            try
+            {
+                return __SettingsProvider.GetOldStyleCredentials(out AccountID,
+                    out Session,
+                    out OvpnUser,
+                    out OvpnPass,
+                    out WgPublicKey,
+                    out WgPrivateKey,
+                    out WgLocalIP,
+                    out WgKeyGenerated);
+            }
+            catch(Exception ex)
+            {
+                Logging.Info("ERROR: failed to load old-style credentials: " + ex.Message);
+                return false;
+            }
         }
 
         #region Temporary settings

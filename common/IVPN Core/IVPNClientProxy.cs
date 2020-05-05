@@ -66,7 +66,7 @@ namespace IVPN
 
         private CancellationTokenSource __CancellationToken;
 
-        public void Initialize(int port, UInt64 secret)
+        public void Initialize(int port, UInt64 secret, Requests.RawCredentials creds)
         {
             __IsExiting = false;
             if (__Thread != null)
@@ -75,11 +75,11 @@ namespace IVPN
             ServicePort = port;
             Secret = secret;
 
-            __Thread = new Thread(ClientThread) {Name = "IVPN Client Proxy", IsBackground = true};
+            __Thread = new Thread(() => ClientThread(creds)) {Name = "IVPN Client Proxy", IsBackground = true};
             __Thread.Start();
         }
 
-        private void ClientThread()
+        private void ClientThread(Requests.RawCredentials registerCreds)
         {
             try
             {
@@ -87,7 +87,14 @@ namespace IVPN
                 ConnectToService();
 
                 // send hello
-                SendRequest(new Requests.Hello { Version = Platform.Version, Secret = Secret, GetServersList = true, GetStatus = true });
+                SendRequest(new Requests.Hello
+                    {
+                        Version = Platform.Version,
+                        Secret = Secret,
+                        GetServersList = true,
+                        GetStatus = true,
+                        SetRawCredentials = registerCreds
+                    });
 
 
                 while (HandleResponse())
@@ -524,29 +531,6 @@ namespace IVPN
                     Port = port
                 }
             });
-        }
-
-        public async Task SetCredentials(
-            string AccountID,
-            string Session,
-            string OvpnUser,
-            string OvpnPass,
-            string WgPublicKey,
-            string WgPrivateKey,
-            string WgLocalIP,
-            Int64 WgKeyGenerated)
-        {
-            var request = new Requests.SetCredentials {
-                 AccountID= AccountID,
-                 Session= Session,
-                 OvpnUser= OvpnUser,
-                 OvpnPass= OvpnPass,
-                 WgPublicKey= WgPublicKey,
-                 WgPrivateKey= WgPrivateKey,
-                 WgLocalIP= WgLocalIP,
-                 WgKeyGenerated= WgKeyGenerated
-            };
-            await SendRecvRequestAsync<Responses.IVPNEmptyResponse>(request);
         }
 
         public void Disconnect()

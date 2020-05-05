@@ -405,6 +405,8 @@ namespace IVPN
             if (isHasUsername)
                 KeyChain.RemoveSecuredValueFromKeychain(AccountID, "VpnSafePass");
 
+            NSUserDefaults.StandardUserDefaults.RemoveObject("Username");
+
             if (string.IsNullOrEmpty(Session))
                 return false;
             return true;
