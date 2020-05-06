@@ -95,7 +95,6 @@
     <Compile Include="ViewModels\ViewModelLogIn.cs" />
     <Compile Include="Lib\IOperationStartStopNotifier.cs" />
     <Compile Include="Models\Session\SessionManager.cs" />
-    <Compile Include="Models\Session\AccountStatus.cs" />
     <Compile Include="Models\PrivateEmail\PrivateEmailInfo.cs" />
     <Compile Include="ViewModels\PrivateEmailsManagerViewModel.cs" />
     <Compile Include="ViewModels\ViewModelLogOut.cs" />

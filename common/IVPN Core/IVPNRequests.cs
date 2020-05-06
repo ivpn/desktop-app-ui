@@ -136,7 +136,7 @@ namespace IVPN.Requests
         public bool ForceLogin;
     }
 
-    public class SessionStatus : Request { }
+    public class AccountStatus : Request { }
 
     public class SessionDelete : Request { }
 

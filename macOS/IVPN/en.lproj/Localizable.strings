@@ -14,7 +14,7 @@
 "Error_UserNameIsEmpty" = "Please enter your account ID";
 "Error_PasswordIsEmpty" = "Please enter your password";
 "Error_Authentication" = "Account ID is incorrect";
-"Error_AuthenticationGoToLogInPage" = "Incorrect username or password.\n\nYou have been redirected to the login page to re-enter your credentials.";
+"Error_AuthenticationGoToLogInPage" = "You are logged out.\n\nYou have been redirected to the login page to re-enter your credentials.";
 
 "Error_EmailIsEmpty" = "Please enter your email address";
 "Error_EmailNotValid" = "Email adress is not valid";

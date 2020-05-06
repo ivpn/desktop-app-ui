@@ -4,7 +4,6 @@ using System.Threading;
 using System.Threading.Tasks;
 using IVPN.Interfaces;
 using IVPN.RESTApi;
-using IVPNCommon.Api;
 
 namespace IVPN.Models.Session
 {
@@ -31,7 +30,6 @@ namespace IVPN.Models.Session
         #endregion //Internal variables
 
         #region Public functionality
-        public event OnAccountStatusReceivedDelegate OnAcountStatusReceived = delegate { };
         public event OnSessionRequestErrorDelegate OnSessionRequestError = delegate { };
 
         private SessionManager(ISessionKeeper sessionKeeper, IService service)
@@ -55,16 +53,6 @@ namespace IVPN.Models.Session
 
                     throw new IVPNRestRequestApiException(HttpStatusCode.OK, (ApiStatusCode)resp.APIStatus, resp.APIErrorMessage);
                 }
-
-                var acc = new AccountStatus(
-                resp.Account.Active,
-                IVPN_Helpers.DataConverters.DateTimeConverter.FromUnixTime(resp.Account.ActiveUntil),
-                resp.Account.IsRenewable,
-                resp.Account.WillAutoRebill,
-                resp.Account.IsFreeTrial,
-                resp.Account.Capabilities);
-
-                OnAcountStatusReceived(acc);
             }
             catch (Exception ex)
             {
@@ -101,7 +89,10 @@ namespace IVPN.Models.Session
             {
                 try
                 {
-                    await CheckStatus();
+                    if (!__SessionKeeper.IsLoggedIn())
+                        return; // User not loged-in () no registered sesion - nonthing to check
+
+                    await __Service.AccountStatus();
                 }
                 catch (Exception ex)
                 {
@@ -109,66 +100,6 @@ namespace IVPN.Models.Session
                 } 
             });
         }
-
-        /// <summary>
-        /// Immediately check accountStatus
-        /// </summary>
-        public async Task<AccountStatus> CheckStatusNowAsync(int timeoutMs)
-        {
-            try
-            {
-                var ret = await CheckStatus(timeoutMs);
-
-                if (ret != null)
-                    OnAcountStatusReceived(ret);
-
-                return ret;
-            }
-            catch (Exception ex)
-            {
-                Logging.Info($"{ex}");
-                throw;
-            }
-        }
         #endregion //Public functionality
-
-        #region Private functionality
-
-        protected async Task<AccountStatus> CheckStatus(int timeoutMs = ApiServices.DefaultTimeout)
-        {
-            try
-            {
-                if (!__SessionKeeper.IsLoggedIn())
-                    return null; // User not loged-in () no registered sesion - nonthing to check
-
-                var resp = await __Service.SessionStatus();
-                if (resp.APIStatus == 0)
-                    throw new Exception("Internal error: Failed to create session");
-                else if (resp.APIStatus != (int)ApiStatusCode.Success)
-                {
-                    if (resp.APIStatus == (int)ApiStatusCode.SessionNotFound)
-                        OnSessionRequestError(resp.APIStatus, resp.APIErrorMessage, resp.Account);
-
-                    throw new IVPNRestRequestApiException(HttpStatusCode.OK, (ApiStatusCode)resp.APIStatus, resp.APIErrorMessage);
-                }
-
-                var acc = new AccountStatus(
-                    resp.Account.Active,
-                    IVPN_Helpers.DataConverters.DateTimeConverter.FromUnixTime(resp.Account.ActiveUntil),
-                    resp.Account.IsRenewable,
-                    resp.Account.WillAutoRebill,
-                    resp.Account.IsFreeTrial,
-                    resp.Account.Capabilities);
-
-                OnAcountStatusReceived(acc);
-                return acc;
-            }
-            catch (Exception ex)
-            {
-                Logging.Info($"Error checking account status: {ex}");
-                throw;
-            }
-        }
-        #endregion //Private functionality
     }
 }

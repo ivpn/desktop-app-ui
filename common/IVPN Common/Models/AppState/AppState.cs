@@ -29,6 +29,7 @@ namespace IVPN.Models
         public AccountStatus AccountStatus
         {
             get => __AccountStatus;
+            // keep 'set' public to be able to deserialize
             set
             {
                 __AccountStatus = value;
@@ -79,11 +80,24 @@ namespace IVPN.Models
             var oldSession = Session;
             Session = session;
             if (string.IsNullOrEmpty(Session?.AccountID)
-                || !string.Equals(oldSession?.AccountID, Session?.AccountID))
+                ||
+                (oldSession != null && !string.Equals(oldSession?.AccountID, Session?.AccountID))
+               )
             {
                 AccountStatus = null;
             }
             OnSessionChanged(Session);
+
+            if (Session != null)
+                SessionManager.RequestStatusCheck();
+        }
+
+        public void SetAccountStatus(string sessionToken, AccountStatus accountStatus)
+        {
+            if (string.IsNullOrEmpty(Session?.Session) || !string.Equals(sessionToken, Session?.Session))
+                return;
+
+            AccountStatus = accountStatus;
         }
 
         #region Private functionality
@@ -144,15 +158,9 @@ namespace IVPN.Models
                 __SingletonInstance = new AppState();
 
             __SingletonInstance.__IsLoaded = true;
-
+            
             // Init session manager
             __SingletonInstance.SessionManager = SessionManager.CreateSessionManager(__SingletonInstance, service);
-            __SingletonInstance.SessionManager.OnAcountStatusReceived += (AccountStatus accountStatus) =>
-            {
-                if (accountStatus != null)
-                    __SingletonInstance.AccountStatus = accountStatus;
-            };
-
             return __SingletonInstance;
         }
 

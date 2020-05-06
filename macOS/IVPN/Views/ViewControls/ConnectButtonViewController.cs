@@ -111,7 +111,7 @@ namespace IVPN
             UpdateGuiData();
             InitializeInformationPopover();
 
-            __MainViewModel.AppState.SessionManager.OnAcountStatusReceived += UpdateSessionStatusInfo;
+            __MainViewModel.AppState.OnAccountStatusChanged += UpdateSessionStatusInfo;
             UpdateSessionStatusInfo(__MainViewModel.AppState.AccountStatus);
 
             GuiWiFiButton.Activated += GuiWiFiButton_Activated;
@@ -156,7 +156,6 @@ namespace IVPN
 
             __MainViewModel = viewModel ?? throw new IVPNInternalException("ViewModel is not defined");
             __MainViewModel.PropertyChanged += __MainViewModel_PropertyChanged;
-            __MainViewModel.OnAccountSuspended += __MainViewModel_OnAccountSuspended;
 
             __MainViewModel.Settings.NetworkActions.PropertyChanged += NetworkActionsConfig_PropertyChanged;
             UpdateGuiData();
@@ -190,90 +189,6 @@ namespace IVPN
                 else
                     action();
             }
-        }
-
-        private void UpdateSessionStatusInfo(AccountStatus sessionStatus)
-        {
-            InvokeOnMainThread(() =>
-           {
-               try
-               {
-                   GuiNotificationButtonBottom.Hidden = true;
-                   if (sessionStatus == null)
-                       return;
-
-                   if (!sessionStatus.IsActive)
-                   {
-                       string part1 = LocalizedStrings.Instance.LocalizedString("Label_SubscriptionExpired");
-                       if (sessionStatus.IsOnFreeTrial)
-                           part1 = LocalizedStrings.Instance.LocalizedString("Label_FreeTrialExpired");
-                       string part2 = LocalizedStrings.Instance.LocalizedString("Label_AccountExpiredUpgradeNow");
-
-                       string title = part1 + " " + part2;
-                       CustomButtonStyles.ApplyStyleInfoButton(GuiNotificationButtonBottom, title, NSImage.ImageNamed("iconStatusBad"));
-
-                       NSMutableAttributedString attrTitle = new NSMutableAttributedString(title);
-
-                       NSStringAttributes stringAttributes0 = new NSStringAttributes();
-                       stringAttributes0.Font = GuiNotificationButtonBottom.TitleFont;
-                       stringAttributes0.ForegroundColor = GuiNotificationButtonBottom.TitleForegroundColor;
-                       stringAttributes0.ParagraphStyle = new NSMutableParagraphStyle { Alignment = NSTextAlignment.Center };
-
-                       NSStringAttributes stringAttributes1 = new NSStringAttributes();
-                       stringAttributes1.ForegroundColor = NSColor.FromRgb(59, 159, 230);
-
-                       attrTitle.AddAttributes(stringAttributes0, new NSRange(0, title.Length));
-                       attrTitle.AddAttributes(stringAttributes1, new NSRange(title.Length - part2.Length, part2.Length));
-
-                       GuiNotificationButtonBottom.TitleTextAttributedString = attrTitle;
-
-                       GuiNotificationButtonBottom.Hidden = false;
-                   }
-                   else
-                   {
-                       if (sessionStatus.WillAutoRebill)
-                           return;
-
-                       if ((sessionStatus.ActiveUtil - DateTime.Now).TotalMilliseconds < TimeSpan.FromDays(4).TotalMilliseconds)
-                       {
-                           int daysLeft = (int)(sessionStatus.ActiveUtil - DateTime.Now).TotalDays;
-                           if (daysLeft < 0)
-                               daysLeft = 0;
-
-                           string notificationString;
-
-                           if (daysLeft == 0)
-                           {
-                               notificationString = LocalizedStrings.Instance.LocalizedString("Label_AccountDaysLeft_LastDay");
-                               if (sessionStatus.IsOnFreeTrial)
-                                   notificationString = LocalizedStrings.Instance.LocalizedString("Label_FreeTrialDaysLeft_LastDay");
-                           }
-                           else if (daysLeft == 1)
-                           {
-                               notificationString = LocalizedStrings.Instance.LocalizedString("Label_AccountDaysLeft_OneDay");
-                               if (sessionStatus.IsOnFreeTrial)
-                                   notificationString = LocalizedStrings.Instance.LocalizedString("Label_FreeTrialDaysLeft_OneDay");
-                           }
-                           else
-                           {
-                               notificationString = LocalizedStrings.Instance.LocalizedString("Label_AccountDaysLeft_PARAMETRIZED");
-                               if (sessionStatus.IsOnFreeTrial)
-                                   notificationString = LocalizedStrings.Instance.LocalizedString("Label_FreeTrialDaysLeft_PARAMETRIZED");
-
-                               notificationString = string.Format(notificationString, daysLeft);
-                           }
-                           CustomButtonStyles.ApplyStyleInfoButton(GuiNotificationButtonBottom, notificationString, NSImage.ImageNamed("iconStatusModerate"));
-
-                           GuiNotificationButtonBottom.Hidden = false;
-                       }
-                   }
-               }
-               catch (Exception ex)
-               {
-                   Logging.Info(string.Format("{0}", ex));
-                   GuiNotificationButtonBottom.Hidden = true;
-               }
-           });
         }
 
         public override void ViewDidAppear()
@@ -423,6 +338,140 @@ namespace IVPN
             }
         }
 
+        #region Account status 
+        private void UpdateSessionStatusInfo(AccountStatus sessionStatus)
+        {
+            InvokeOnMainThread(() =>
+            {
+                try
+                {
+                    GuiNotificationButtonBottom.Hidden = true;
+                    if (sessionStatus == null)
+                        return;
+
+                    if (!sessionStatus.IsActive)
+                    {
+                        string part1 = LocalizedStrings.Instance.LocalizedString("Label_SubscriptionExpired");
+                        if (sessionStatus.IsOnFreeTrial)
+                            part1 = LocalizedStrings.Instance.LocalizedString("Label_FreeTrialExpired");
+                        string part2 = LocalizedStrings.Instance.LocalizedString("Label_AccountExpiredUpgradeNow");
+
+                        string title = part1 + " " + part2;
+                        CustomButtonStyles.ApplyStyleInfoButton(GuiNotificationButtonBottom, title, NSImage.ImageNamed("iconStatusBad"));
+
+                        NSMutableAttributedString attrTitle = new NSMutableAttributedString(title);
+
+                        NSStringAttributes stringAttributes0 = new NSStringAttributes();
+                        stringAttributes0.Font = GuiNotificationButtonBottom.TitleFont;
+                        stringAttributes0.ForegroundColor = GuiNotificationButtonBottom.TitleForegroundColor;
+                        stringAttributes0.ParagraphStyle = new NSMutableParagraphStyle { Alignment = NSTextAlignment.Center };
+
+                        NSStringAttributes stringAttributes1 = new NSStringAttributes();
+                        stringAttributes1.ForegroundColor = NSColor.FromRgb(59, 159, 230);
+
+                        attrTitle.AddAttributes(stringAttributes0, new NSRange(0, title.Length));
+                        attrTitle.AddAttributes(stringAttributes1, new NSRange(title.Length - part2.Length, part2.Length));
+
+                        GuiNotificationButtonBottom.TitleTextAttributedString = attrTitle;
+
+                        GuiNotificationButtonBottom.Hidden = false;
+                    }
+                    else
+                    {
+                        if (sessionStatus.WillAutoRebill)
+                            return;
+
+                        if ((sessionStatus.ActiveUtil - DateTime.Now).TotalMilliseconds < TimeSpan.FromDays(4).TotalMilliseconds)
+                        {
+                            int daysLeft = (int)(sessionStatus.ActiveUtil - DateTime.Now).TotalDays;
+                            if (daysLeft < 0)
+                                daysLeft = 0;
+
+                            string notificationString;
+
+                            if (daysLeft == 0)
+                            {
+                                notificationString = LocalizedStrings.Instance.LocalizedString("Label_AccountDaysLeft_LastDay");
+                                if (sessionStatus.IsOnFreeTrial)
+                                    notificationString = LocalizedStrings.Instance.LocalizedString("Label_FreeTrialDaysLeft_LastDay");
+                            }
+                            else if (daysLeft == 1)
+                            {
+                                notificationString = LocalizedStrings.Instance.LocalizedString("Label_AccountDaysLeft_OneDay");
+                                if (sessionStatus.IsOnFreeTrial)
+                                    notificationString = LocalizedStrings.Instance.LocalizedString("Label_FreeTrialDaysLeft_OneDay");
+                            }
+                            else
+                            {
+                                notificationString = LocalizedStrings.Instance.LocalizedString("Label_AccountDaysLeft_PARAMETRIZED");
+                                if (sessionStatus.IsOnFreeTrial)
+                                    notificationString = LocalizedStrings.Instance.LocalizedString("Label_FreeTrialDaysLeft_PARAMETRIZED");
+
+                                notificationString = string.Format(notificationString, daysLeft);
+                            }
+                            CustomButtonStyles.ApplyStyleInfoButton(GuiNotificationButtonBottom, notificationString, NSImage.ImageNamed("iconStatusModerate"));
+
+                            GuiNotificationButtonBottom.Hidden = false;
+                        }
+                    }
+                }
+                catch (Exception ex)
+                {
+                    Logging.Info(string.Format("{0}", ex));
+                    GuiNotificationButtonBottom.Hidden = true;
+                }
+            });
+        }
+
+        /// <summary>
+        /// Notification button pressed (frea trial button)
+        /// </summary>
+        partial void GuiNotificationButtonBottomPressed(NSObject sender)
+        {
+            ShowAccountExpireDialog(__MainViewModel.AppState.AccountStatus);
+        }
+
+        private void ShowAccountExpireDialog(AccountStatus sessionStatus)
+        {
+            AccountStatus acc = sessionStatus;
+            if (acc == null)
+                return;
+
+            if (!NSThread.IsMain)
+            {
+                InvokeOnMainThread(() => ShowAccountExpireDialog(sessionStatus));
+                return;
+            }
+
+            try
+            {
+                if (__SubscriptionExpireWindowCrl != null)
+                    __SubscriptionExpireWindowCrl.Close();
+
+                __SubscriptionExpireWindowCrl = new SubscriptionWillExpireWindowController(acc, __MainViewModel?.AppState?.Session?.AccountID);
+
+                MainWindowController wndController = AppDelegate.GetMainWindowController();
+                if (wndController != null && wndController.Window != null)
+                {
+                    NSWindow mainWindow = wndController.Window;
+
+                    // Set window position centered to the main window
+                    CGRect mainWindowRect = mainWindow.Frame;
+                    CGRect infoWindowRect = __SubscriptionExpireWindowCrl.Window.Frame;
+                    CGPoint wndNewPos = new CGPoint(mainWindowRect.X + mainWindowRect.Width / 2 - infoWindowRect.Width / 2,
+                                                     mainWindowRect.Y + mainWindowRect.Height / 2 - infoWindowRect.Height / 2);
+                    __SubscriptionExpireWindowCrl.Window.SetFrameOrigin(wndNewPos);
+                }
+
+                __SubscriptionExpireWindowCrl.ShowWindow(this);
+            }
+            catch (Exception ex)
+            {
+                Logging.Info(string.Format("{0}", ex));
+            }
+        }
+        #endregion //Account status
+
         #region Information Popover
         readonly ViewStacker __InformationPopoverStacker = new ViewStacker();
         private NSPopover __GuiPopoverConnectionInfo;
@@ -481,58 +530,7 @@ namespace IVPN
                 __GuiPopoverConnectionInfo.Show(GuiInformationButton.Bounds, GuiInformationButton, NSRectEdge.MinYEdge);
         }
         #endregion Information Popover
-        /// <summary>
-        /// Notification button pressed (frea trial button)
-        /// </summary>
-        partial void GuiNotificationButtonBottomPressed(Foundation.NSObject sender)
-        {
-            ShowAccountExpireDialog(__MainViewModel.AppState.AccountStatus);
-        }
-
-        private void __MainViewModel_OnAccountSuspended(AccountStatus sessionStatus)
-        {
-            ShowAccountExpireDialog(sessionStatus);
-        }
-
-        private void ShowAccountExpireDialog(AccountStatus sessionStatus)
-        {
-            AccountStatus acc = sessionStatus;
-            if (acc == null)
-                return;
-
-            if (!NSThread.IsMain)
-            {
-                InvokeOnMainThread(() => ShowAccountExpireDialog(sessionStatus));
-                return;
-            }
-
-            try
-            {
-                if (__SubscriptionExpireWindowCrl != null)
-                    __SubscriptionExpireWindowCrl.Close();
-
-                __SubscriptionExpireWindowCrl = new SubscriptionWillExpireWindowController(acc, __MainViewModel?.AppState?.Session?.AccountID);
-
-                MainWindowController wndController = AppDelegate.GetMainWindowController();
-                if (wndController != null && wndController.Window != null)
-                {
-                    NSWindow mainWindow = wndController.Window;
-
-                    // Set window position centered to the main window
-                    CGRect mainWindowRect = mainWindow.Frame;
-                    CGRect infoWindowRect = __SubscriptionExpireWindowCrl.Window.Frame;
-                    CGPoint wndNewPos = new CGPoint(mainWindowRect.X + mainWindowRect.Width / 2 - infoWindowRect.Width / 2,
-                                                     mainWindowRect.Y + mainWindowRect.Height / 2 - infoWindowRect.Height / 2);
-                    __SubscriptionExpireWindowCrl.Window.SetFrameOrigin(wndNewPos);
-                }
-
-                __SubscriptionExpireWindowCrl.ShowWindow(this);
-            }
-            catch (Exception ex)
-            {
-                Logging.Info(string.Format("{0}", ex));
-            }
-        }
+        
         #region Animations
 
         private void StopAllAnimations()

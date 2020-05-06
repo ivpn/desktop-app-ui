@@ -110,7 +110,7 @@ namespace IVPN.Models
             Servers.OnPingUpdateRequired += Proxy.PingServers;
 
             __ServiceProxy.SessionInfoChanged += (SessionInfo s) => AppState.Instance().SetSession(s);
-            
+            __ServiceProxy.AccountStatusReceived += (string sessionToken, AccountStatus accountInfo) => AppState.Instance().SetAccountStatus(sessionToken, accountInfo);
 
             __ServiceProxy.ServerListChanged += (VpnServersInfo servers) =>
             {
@@ -738,9 +738,9 @@ namespace IVPN.Models
             await __ServiceProxy.LogOut();
         }
 
-        public async Task<Responses.SessionStatusResponse> SessionStatus()
+        public async Task<Responses.AccountStatusResponse> AccountStatus()
         {
-            return await __ServiceProxy.SessionStatus();
+            return await __ServiceProxy.AccountStatus();
         }
 
         public async Task WireGuardGeneratedKeys(bool generateIfNecessary)

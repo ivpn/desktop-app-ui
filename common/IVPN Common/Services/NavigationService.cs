@@ -97,10 +97,11 @@ namespace IVPN
         {
             navigate(() =>
             {
+                if (CurrentPage == NavigationTarget.LogOutPage || CurrentPage == NavigationTarget.LogInPage)
+                    return;
+
                 try
                 {
-                    if (CurrentPage == NavigationTarget.LogOutPage)
-                        return;
                     __MainWindowController.ShowLogOutPage(animation);
                     CurrentPage = NavigationTarget.LogOutPage;
                 }

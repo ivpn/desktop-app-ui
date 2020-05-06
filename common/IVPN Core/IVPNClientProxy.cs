@@ -37,6 +37,7 @@ namespace IVPN
         public delegate void DiagnosticsGeneratedHandler(Responses.IVPNDiagnosticsGeneratedResponse diagInfoResponse);
         public delegate void ExceptionHappenedHandler(Exception exception);
         public delegate void SessionInfoChangedHandler(SessionInfo s);
+        public delegate void AccountStatusReceivedHandler(string sessionToken, AccountStatus accountInfo);
         public delegate void KillSwitchStatusHandler(bool? enabled, bool? isPersistant, bool? isAllowLAN, bool? isAllowMulticast);
         public delegate void AlternateDNSChangedHandler(string dns);
         public event ServerListChangedHandler ServerListChanged = delegate { };
@@ -51,6 +52,7 @@ namespace IVPN
         public event ExceptionHappenedHandler ClientException = delegate { };
         public event EventHandler ClientProxyDisconnected = delegate { };
         public event SessionInfoChangedHandler SessionInfoChanged = delegate { };
+        public event AccountStatusReceivedHandler AccountStatusReceived = delegate { };
         public event KillSwitchStatusHandler KillSwitchStatus = delegate { };
         public event AlternateDNSChangedHandler AlternateDNSChanged = delegate { };
 
@@ -233,13 +235,7 @@ namespace IVPN
                     case "HelloResp":
                         var resp = JsonConvert.DeserializeObject<Responses.IVPNHelloResponse>(line);
 
-                        NotifySessionInfo(
-                                    resp.Session.AccountID,
-                                    resp.Session.Session,
-                                    resp.Session.WgPublicKey,
-                                    resp.Session.WgLocalIP,
-                                    resp.Session.WgKeyGenerated,
-                                    resp.Session.WgKeysRegenInerval);
+                        NotifySessionInfo(resp.Session);
                                                
                         Logging.Info("got hello, server version is " + resp.Version
                             + (string.IsNullOrEmpty(resp.Session.Session)?"Not logged in":"Logged in"));
@@ -326,21 +322,16 @@ namespace IVPN
                         {
                             var snResp = JsonConvert.DeserializeObject<Responses.SessionNewResponse>(line);
                             if (snResp.APIStatus == (int)ApiStatusCode.Success)
-                            {
-                                NotifySessionInfo(
-                                    snResp.Session.AccountID,
-                                    snResp.Session.Session,
-                                    snResp.Session.WgPublicKey,
-                                    snResp.Session.WgLocalIP,
-                                    snResp.Session.WgKeyGenerated,
-                                    snResp.Session.WgKeysRegenInerval);
-                            }
+                                NotifySessionInfo(snResp.Session);
+
                             responseReceived(snResp);
                         }
                         break;
 
-                    case "SessionStatusResp":
-                        responseReceived(JsonConvert.DeserializeObject<Responses.SessionStatusResponse>(line));
+                    case "AccountStatusResp":
+                        var accStatResp = JsonConvert.DeserializeObject<Responses.AccountStatusResponse>(line);
+                        NotifyAccountStatus(accStatResp.SessionToken, accStatResp.Account);
+                        responseReceived(accStatResp);
                         break;
 
                     case "SetAlternateDNSResp":
@@ -366,28 +357,34 @@ namespace IVPN
             return true;
         }
 
-        private void NotifySessionInfo(string accountID,
-            string session,
-            string wgPublicKey,
-            string wgLocalIP,
-            Int64 wgKeyGenerated,
-            Int64 wgKeyRotateInterval)
+        private void NotifySessionInfo(Responses.SessionInfo si)
         {
-            IPAddress.TryParse(wgLocalIP, out IPAddress wgLocalIPAddr);
+            IPAddress.TryParse(si.WgLocalIP, out IPAddress wgLocalIPAddr);
             var s = new SessionInfo(
-                accountID,
-                session,
-                wgPublicKey,
+                si.AccountID,
+                si.Session,
+                si.WgPublicKey,
                 wgLocalIPAddr,
-                IVPN_Helpers.DataConverters.DateTimeConverter.FromUnixTime(wgKeyGenerated),
-                new TimeSpan(0, 0, (int)wgKeyRotateInterval));
+                IVPN_Helpers.DataConverters.DateTimeConverter.FromUnixTime(si.WgKeyGenerated),
+                new TimeSpan(0, 0, (int)si.WgKeysRegenInerval));
+
             SessionInfoChanged(s);
         }
 
-        private void CheckConnected()
+        private void NotifyAccountStatus(string sessionToken, Responses.AccountInfo ai)
         {
-            if (!ServiceConnected)
-                throw new IVPNClientProxyNotConnectedException("Proxy is not connected to service");
+            if (string.IsNullOrEmpty(sessionToken))
+                return;
+
+            var acc = new AccountStatus(
+                    ai.Active,
+                    IVPN_Helpers.DataConverters.DateTimeConverter.FromUnixTime(ai.ActiveUntil),
+                    ai.IsRenewable,
+                    ai.WillAutoRebill,
+                    ai.IsFreeTrial,
+                    ai.Capabilities);
+
+            AccountStatusReceived(sessionToken, acc);
         }
 
         #region Send/Recv
@@ -397,10 +394,6 @@ namespace IVPN
         private void SendRequest(Requests.Request request)
         {
             Logging.Info("Sending: " + request);
-
-            // Hello request can be sent without being in "connected
-            if (!(request is Requests.Hello))
-                CheckConnected();
 
             lock (__StreamWriter)
             {
@@ -605,9 +598,9 @@ namespace IVPN
             return await SendRecvRequestAsync<Responses.SessionNewResponse>(new Requests.SessionNew { AccountID = accountId, ForceLogin = forceLogin });
         }
 
-        public async Task<Responses.SessionStatusResponse> SessionStatus()
+        public async Task<Responses.AccountStatusResponse> AccountStatus()
         {
-            return await SendRecvRequestAsync<Responses.SessionStatusResponse>(new Requests.SessionStatus{});
+            return await SendRecvRequestAsync<Responses.AccountStatusResponse>(new Requests.AccountStatus{});
         }
 
         public async Task LogOut()
