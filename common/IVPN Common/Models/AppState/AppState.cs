@@ -88,7 +88,7 @@ namespace IVPN.Models
             }
             OnSessionChanged(Session);
 
-            if (Session != null)
+            if (string.IsNullOrEmpty(oldSession?.Session) && !string.IsNullOrEmpty(Session?.Session))
                 SessionManager.RequestStatusCheck();
         }
 

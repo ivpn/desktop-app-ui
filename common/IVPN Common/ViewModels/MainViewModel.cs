@@ -410,10 +410,11 @@ namespace IVPN.ViewModels
                     }                    
                 }
 
-                if (ConnectionState == ServiceState.Connected ||
-                    ConnectionState == ServiceState.Disconnected)
+                if (ConnectionState == ServiceState.Connected) 
                 {
                     // Perform account check only if something wrong with account (it is not active OR are going to expire OR it is trial)
+                    // Checking only in 'connected' state (account state also checked automatically by daemon after each disconnection)
+
                     if (__AppState?.AccountStatus == null 
                         || __AppState.AccountStatus.IsActive == false
                         || __AppState.AccountStatus.IsOnFreeTrial 
@@ -713,7 +714,13 @@ namespace IVPN.ViewModels
                 return;
             __IsDisconnectFailureProcessed = true;
 
-            ConnectionError = reasonDescription;
+            // Do not show authentication error
+            // It can occur in such cases:
+            // - session was forced to LogOut: no necessary to show connection error because we will be redirected to LogIn page (notification with a description will be shown to user)
+            // - account expired:  no necessary to show connection error because account status warning will be shown to user
+            // - too many connections from this device in short period of time (blocked by server)
+            if (reason != DisconnectionReason.AuthenticationError)
+                ConnectionError = reasonDescription;
             ConnectionState = __Service.State;
         }
 
