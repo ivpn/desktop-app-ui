@@ -152,19 +152,20 @@ namespace IVPN_Uninstaller
                     "/Library/Logs/IVPN Agent.log.0",
                     "/Library/Logs/IVPN Agent CrashInfo.log",
                     "/Library/Logs/IVPN Agent CrashInfo.log.0",
-                    "/Library/Application Support/net.ivpn.client.Agent/last-btime", // seems, the file created by OS 
+                    "/Library/Application Support/net.ivpn.client.Agent/last-btime", // seems, the file created by OS
                     System.IO.Path.Combine(
-                        Environment.GetFolderPath(Environment.SpecialFolder.Personal),  
+                        Environment.GetFolderPath(Environment.SpecialFolder.Personal),
                         "Library/Preferences/net.ivpn.client.IVPN.plist")
                 };
 
                 string[] foldersToRemove = new string[] {
                     "/Applications/IVPN.app",
+                    "/Library/Application Support/IVPN/OpenVPN",
                     System.IO.Path.Combine(System.Environment.GetFolderPath(System.Environment.SpecialFolder.UserProfile), "Library/Application Support/IVPN"),
                     "/Library/Application Support/IVPN",
                     "~/Library/Application Support/IVPN",
-                    "/Library/Application Support/net.ivpn.client.Agent/LocalMachine", // seems, the folder created by OS 
-                    "/Library/Application Support/net.ivpn.client.Agent" // seems, the folder created by OS 
+                    "/Library/Application Support/net.ivpn.client.Agent/LocalMachine", // seems, the folder created by OS
+                    "/Library/Application Support/net.ivpn.client.Agent" // seems, the folder created by OS
                 };
 
                 foreach (var file in filesToRemove) {
