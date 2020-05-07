@@ -337,18 +337,6 @@ namespace IVPN.Properties {
         
         [global::System.Configuration.UserScopedSettingAttribute()]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        [global::System.Configuration.DefaultSettingValueAttribute("")]
-        public string OpenVPNExtraParameters {
-            get {
-                return ((string)(this["OpenVPNExtraParameters"]));
-            }
-            set {
-                this["OpenVPNExtraParameters"] = value;
-            }
-        }
-        
-        [global::System.Configuration.UserScopedSettingAttribute()]
-        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
         [global::System.Configuration.DefaultSettingValueAttribute("False")]
         public bool DisableFirewallNotificationWindow {
             get {

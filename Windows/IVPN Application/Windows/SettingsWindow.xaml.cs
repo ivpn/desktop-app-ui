@@ -45,13 +45,13 @@ namespace IVPN.Windows
                 Service = service,
                 Owner = Application.Current.MainWindow
             };
-
+            
             __Instance.ShowDialog();
         }
 
         public static void CloseSettingsWindow()
         {
-            __Instance?.Close();
+            __Instance?.Close(); 
             __Instance = null;
         }
 
@@ -165,19 +165,6 @@ namespace IVPN.Windows
 
         public bool ApplySettings()
         {
-            // check OpenVPN extra parameters defined bu user
-            // Some parameters can be deprecated (e.g. parameters which can execute external command)
-            if (!Helpers.OpenVPN.OpenVPNConfigChecker.IsIsUserParametersAllowed(Settings.OpenVPNExtraParameters, out var errorInfo))
-            {
-                MessageBox.Show(StringUtils.String("OpenVPNParamsNotSupported")
-                    + Environment.NewLine 
-                    + errorInfo
-                    + Environment.NewLine + Environment.NewLine + StringUtils.String("CheckSettings"),
-
-                    "Not supported OpenVPN extra parameters", MessageBoxButton.OK, MessageBoxImage.Error);
-                return false;
-            }
-
             UpdateProxyType();
 
             Settings.ProxySafePassword = CryptoUtil.EncryptString(txtProxyPassword.Password);
@@ -344,8 +331,6 @@ namespace IVPN.Windows
             Service.Proxy.SetPreference("is_stop_server_on_client_disconnect", settings.StopServerOnClientDisconnect ? "1" : "0");
 
             Service.Proxy.SetPreference("connect_insecure_wifi", settings.ServiceConnectOnInsecureWifi ? "1" : "0");
-
-            Service.Proxy.SetPreference("open_vpn_extra_parameters", settings.OpenVPNExtraParameters);
 
             if (Application.Current.MainWindow is MainWindow mainWindow)
             {
@@ -549,6 +534,20 @@ namespace IVPN.Windows
         private void BtnWireguardPopup_Click(object sender, RoutedEventArgs e)
         {
             PopupWireguardInfo.IsOpen = true;
+        }
+
+        private void GuiBtnOpenOvpnParamsConfigFile_Click(object sender, RoutedEventArgs e)
+        {
+            var file = Service.ConfigOvpnExtaParamsFile;
+            if (string.IsNullOrEmpty(file))
+                return;
+
+            var dir = Path.GetDirectoryName(file);
+            if (Directory.Exists(dir))
+            {
+                // opens the folder in explorer
+                Process.Start(dir);
+            }
         }
     }
 }

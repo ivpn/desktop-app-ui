@@ -70,9 +70,6 @@ namespace IVPN.Models
                 // Diagnostics
                 settings.IsLoggingEnabled = Properties.Settings.Default.IsLoggingEnabled;
 
-                // Additional OpenVPN parameters defined by user
-                settings.OpenVPNExtraParameters = Properties.Settings.Default.OpenVPNExtraParameters;
-
                 settings.DisableFirewallNotificationWindow = Properties.Settings.Default.DisableFirewallNotificationWindow;
 
                 // Actions for Trusted\Untrusted networks
@@ -153,7 +150,6 @@ namespace IVPN.Models
                 Properties.Settings.Default.IsMultiHop = settings.IsMultiHop;
 
                 Properties.Settings.Default.IsLoggingEnabled = settings.IsLoggingEnabled;
-                Properties.Settings.Default.OpenVPNExtraParameters = settings.OpenVPNExtraParameters;
 
                 Properties.Settings.Default.DisableFirewallNotificationWindow = settings.DisableFirewallNotificationWindow;
 

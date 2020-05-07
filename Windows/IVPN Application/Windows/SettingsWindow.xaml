@@ -34,6 +34,12 @@
             <Setter Property="Foreground" Value="#99000000"/>
         </Style>
 
+        <Style x:Key="SecondarySmallTextStyleTextBox" TargetType="TextBox">
+            <Setter Property="TextWrapping" Value="Wrap"/>
+            <Setter Property="FontSize" Value="11"/>
+            <Setter Property="Foreground" Value="#99000000"/>
+        </Style>
+
         <Style x:Key="PopupItemButtonStyle"  TargetType="Button" BasedOn="{StaticResource ButtonMouseOverBackgroundChangeble}">
             <Setter Property="Background" Value="Transparent"/>
             <!--<Setter Property="Foreground" Value="White"/>-->
@@ -832,10 +838,12 @@
                     <Grid.RowDefinitions>
                         <RowDefinition Height="Auto"/>
                         <RowDefinition Height="Auto"/>
+                        <RowDefinition Height="Auto"/>
+                        <RowDefinition Height="Auto"/>
                         <RowDefinition Height="*"/>
                     </Grid.RowDefinitions>
 
-                    <TextBlock Grid.Row="0" Margin="0,0,0,10" >OpenVPN additional configuration parameters:</TextBlock>
+                    <TextBlock Grid.Row="0" Margin="0,0,0,10" >OpenVPN additional configuration parameters</TextBlock>
 
                     <TextBlock Grid.Row="1" Margin="0,0,0,10"  
                                Style="{StaticResource SecondaryTextStyle}">
@@ -843,15 +851,15 @@
                                Only change them if you understand what you are doing.
                     </TextBlock>
 
-                    <TextBlock Grid.Row="2" Margin="9,6,4,4" FontSize="15">Write parameters here...</TextBlock>
-                    <TextBox Grid.Row="2"  Height="100"  Background="White"
-                             Text="{Binding Settings.OpenVPNExtraParameters}" 
-                             Style="{StaticResource TextBoxDefault}"
-                             VerticalContentAlignment="Top"
-                             TextWrapping="Wrap" 
-                             AcceptsReturn="True" 
-                             Padding="5,5,5,5"
-                             ScrollViewer.VerticalScrollBarVisibility="Auto" />
+                    <Button Grid.Row="2" Height="32" HorizontalAlignment="Right" Style="{StaticResource ButtonSecondary}"
+                            Name="GuiBtnOpenOvpnParamsConfigFile" Click="GuiBtnOpenOvpnParamsConfigFile_Click">
+                        <TextBlock Margin="15,0,15,0">Open configuration file location</TextBlock>
+                    </Button>
+
+                    <TextBox Grid.Row="3" Margin="0,5,0,0" Style="{StaticResource SecondarySmallTextStyleTextBox}"
+                            Text="{Binding Service.ConfigOvpnExtaParamsFile, Mode=OneWay}"
+                            Background="Transparent" HorizontalAlignment="Right" BorderThickness="0"
+                            IsReadOnly="True" TextWrapping="Wrap" />
                 </Grid>
             </TabItem>
 
