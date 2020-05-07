@@ -522,7 +522,16 @@ namespace IVPN.Windows
         {            
             if (Settings.VpnProtocolType == VpnType.WireGuard && ! (AppState.Instance().Session?.IsWireGuardKeysInitialized() ?? false))
             {
-                await WireGuardSettings.RegenerateNewKeyAsync();
+                try
+                {
+                    await WireGuardSettings.RegenerateNewKeyAsync();
+                }
+                finally
+                {
+                    bool hasKeys = AppState.Instance().Session?.IsWireGuardKeysInitialized() ?? false;
+                    if (!hasKeys)
+                        Settings.VpnProtocolType = VpnType.OpenVPN;
+                }
             }
         }
 

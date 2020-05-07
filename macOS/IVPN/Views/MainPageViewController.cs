@@ -127,7 +127,10 @@ namespace IVPN
             switch (e.PropertyName) 
             {
                 case nameof (__MainViewModel.ConnectionError):
-                if (!string.IsNullOrEmpty (__MainViewModel.ConnectionError))
+                    if (!__MainViewModel.AppState.IsLoggedIn())
+                        break; // not necessary to show connection error when logged-out
+
+                    if (!string.IsNullOrEmpty (__MainViewModel.ConnectionError))
                         IVPNAlert.Show (LocalizedStrings.Instance.LocalizedString("Error_ConnectionError"), 
                                     __MainViewModel.ConnectionError, NSAlertStyle.Warning);
                     break;

@@ -74,14 +74,14 @@ namespace IVPN.Models
             SetProxyHandlers();
         }
 
-        public async Task<bool> InitializeAsync(int port, UInt64 secret)
+        public async Task<bool> InitializeAsync(int port, UInt64 secret, Requests.RawCredentials creds)
         {
             if (__State != ServiceState.Uninitialized)
                 return true;
 
             __InitializationSignal.Reset();
 
-            __ServiceProxy.Initialize(port, secret);
+            __ServiceProxy.Initialize(port, secret, creds);
             await Task.Run(() =>
             {
                 while (!__ServiceProxy.IsExiting)
@@ -99,10 +99,6 @@ namespace IVPN.Models
                 await UpdateKillSwitchIsEnabled();
                 await UpdateKillSwitchIsPersistent();
 
-                // request server for DNS filter status (is it disabled or not?)
-                // response can be received asynchronously (without 'await')
-                //UpdateIsDnsFilterDisabled();
-
                 ServiceInitialized(this, new EventArgs());
             }
 
@@ -114,7 +110,7 @@ namespace IVPN.Models
             Servers.OnPingUpdateRequired += Proxy.PingServers;
 
             __ServiceProxy.SessionInfoChanged += (SessionInfo s) => AppState.Instance().SetSession(s);
-            
+            __ServiceProxy.AccountStatusReceived += (string sessionToken, AccountStatus accountInfo) => AppState.Instance().SetAccountStatus(sessionToken, accountInfo);
 
             __ServiceProxy.ServerListChanged += (VpnServersInfo servers) =>
             {
@@ -544,27 +540,6 @@ namespace IVPN.Models
 
         }
 
-        public async Task SetCredentials(
-            string AccountID,
-            string Session,
-            string OvpnUser,
-            string OvpnPass,
-            string WgPublicKey,
-            string WgPrivateKey,
-            string WgLocalIP,
-            Int64 WgKeyGenerated)
-        {
-            await __ServiceProxy.SetCredentials(
-             AccountID,
-             Session,
-             OvpnUser,
-             OvpnPass,
-             WgPublicKey,
-             WgPrivateKey,
-             WgLocalIP,
-             WgKeyGenerated);
-        }
-
         /// <summary>
         /// Register connection progress object
         /// All registered objects will be notified about progress during connection
@@ -774,9 +749,9 @@ namespace IVPN.Models
             await __ServiceProxy.LogOut();
         }
 
-        public async Task<Responses.SessionStatusResponse> SessionStatus()
+        public async Task<Responses.AccountStatusResponse> AccountStatus()
         {
-            return await __ServiceProxy.SessionStatus();
+            return await __ServiceProxy.AccountStatus();
         }
 
         public async Task WireGuardGeneratedKeys(bool generateIfNecessary)

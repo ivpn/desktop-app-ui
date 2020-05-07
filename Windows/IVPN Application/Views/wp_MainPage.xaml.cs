@@ -98,7 +98,6 @@ namespace IVPN.Views
             };
 
             ViewModel.AppState.OnAccountStatusChanged += (info) => UpdateSessionInfo(info);
-            ViewModel.OnAccountSuspended += ViewModelOnAccountSuspended;
 
             UpdateSessionInfo(ViewModel.AppState.AccountStatus);
 
@@ -276,14 +275,6 @@ namespace IVPN.Views
         #endregion // Private emails
 
         #region Account expiration info
-        private void ViewModelOnAccountSuspended(AccountStatus accountInfo)
-        {
-            if (GuiUtils.IsInvokedInGuiThread(this, () => UpdateSessionInfo(accountInfo)))
-                return;
-
-            UpdateSessionInfo(accountInfo);
-        }
-        
         private void UpdateSessionInfo(AccountStatus accountInfo)
         {
             if (GuiUtils.IsInvokedInGuiThread(this, () => UpdateSessionInfo(accountInfo)))

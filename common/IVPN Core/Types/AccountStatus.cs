@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 
-namespace IVPN.Models.Session
+namespace IVPN
 {
     /// <summary>
     /// Information about user account

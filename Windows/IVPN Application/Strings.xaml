@@ -43,7 +43,7 @@
     <s:String x:Key="Error_UserNameIsEmpty">Please enter your account ID</s:String>
     <s:String x:Key="Error_PasswordIsEmpty">Please enter your password</s:String>
     <s:String x:Key="Error_Authentication">The account ID you entered was incorrect. Please try again.</s:String>
-    <s:String x:Key="Error_AuthenticationGoToLogInPage">Incorrect username or password.\n\nYou have been redirected to the login page to re-enter your credentials.</s:String>
+    <s:String x:Key="Error_AuthenticationGoToLogInPage">You are logged out.\n\nYou have been redirected to the login page to re-enter your credentials.</s:String>
     <s:String x:Key="Error_RestServer_Communication">Server communication error</s:String>
     <s:String x:Key="Error_RestServer_ConnectionError">There was an error communicating with our servers. Please check your internet connection and try again.</s:String>
     <s:String x:Key="Error_RestServer_ConnectionError_Title">Server communication error</s:String>

@@ -822,47 +822,6 @@
                 </StackPanel>
             </TabItem>
 
-            <TabItem Header="openvpn" Name="OpenVPNTab">
-                <TabItem.Style>
-                    <Style TargetType="TabItem" BasedOn="{StaticResource TabItemStyle}">
-                        <Style.Triggers>
-                            <DataTrigger Binding="{Binding Settings.VpnProtocolType}" Value="{x:Static vpnProtocols:VpnType.WireGuard}">
-                                <Setter Property="Visibility" Value="Collapsed"/>
-                            </DataTrigger>
-                        </Style.Triggers>
-                    </Style>
-                </TabItem.Style>
-
-                <Grid Margin="0,40,0,0">
-
-                    <Grid.RowDefinitions>
-                        <RowDefinition Height="Auto"/>
-                        <RowDefinition Height="Auto"/>
-                        <RowDefinition Height="Auto"/>
-                        <RowDefinition Height="Auto"/>
-                        <RowDefinition Height="*"/>
-                    </Grid.RowDefinitions>
-
-                    <TextBlock Grid.Row="0" Margin="0,0,0,10" >OpenVPN additional configuration parameters</TextBlock>
-
-                    <TextBlock Grid.Row="1" Margin="0,0,0,10"  
-                               Style="{StaticResource SecondaryTextStyle}">
-                               Be careful when changing these parameters as they can affect OpenVPN stability.<LineBreak/>
-                               Only change them if you understand what you are doing.
-                    </TextBlock>
-
-                    <Button Grid.Row="2" Height="32" HorizontalAlignment="Right" Style="{StaticResource ButtonSecondary}"
-                            Name="GuiBtnOpenOvpnParamsConfigFile" Click="GuiBtnOpenOvpnParamsConfigFile_Click">
-                        <TextBlock Margin="15,0,15,0">Open configuration file location</TextBlock>
-                    </Button>
-
-                    <TextBox Grid.Row="3" Margin="0,5,0,0" Style="{StaticResource SecondarySmallTextStyleTextBox}"
-                            Text="{Binding Service.ConfigOvpnExtaParamsFile, Mode=OneWay}"
-                            Background="Transparent" HorizontalAlignment="Right" BorderThickness="0"
-                            IsReadOnly="True" TextWrapping="Wrap" />
-                </Grid>
-            </TabItem>
-
             <TabItem Header="antitracker">
                 <Grid Margin="0,40,0,0">
                     <Grid.RowDefinitions>
@@ -933,6 +892,48 @@
                     </StackPanel>
                 </Grid>
             </TabItem>
+
+            <TabItem Header="openvpn" Name="OpenVPNTab">
+                <TabItem.Style>
+                    <Style TargetType="TabItem" BasedOn="{StaticResource TabItemStyle}">
+                        <Style.Triggers>
+                            <DataTrigger Binding="{Binding Settings.VpnProtocolType}" Value="{x:Static vpnProtocols:VpnType.WireGuard}">
+                                <Setter Property="Visibility" Value="Collapsed"/>
+                            </DataTrigger>
+                        </Style.Triggers>
+                    </Style>
+                </TabItem.Style>
+
+                <Grid Margin="0,40,0,0">
+
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="Auto"/>
+                        <RowDefinition Height="Auto"/>
+                        <RowDefinition Height="Auto"/>
+                        <RowDefinition Height="Auto"/>
+                        <RowDefinition Height="*"/>
+                    </Grid.RowDefinitions>
+
+                    <TextBlock Grid.Row="0" Margin="0,0,0,10" >OpenVPN additional configuration parameters</TextBlock>
+
+                    <TextBlock Grid.Row="1" Margin="0,0,0,10"  
+                               Style="{StaticResource SecondaryTextStyle}">
+                               Be careful when changing these parameters as they can affect OpenVPN stability.<LineBreak/>
+                               Only change them if you understand what you are doing.
+                    </TextBlock>
+
+                    <Button Grid.Row="2" Height="32" HorizontalAlignment="Right" Style="{StaticResource ButtonSecondary}"
+                            Name="GuiBtnOpenOvpnParamsConfigFile" Click="GuiBtnOpenOvpnParamsConfigFile_Click">
+                        <TextBlock Margin="15,0,15,0">Open configuration file location</TextBlock>
+                    </Button>
+
+                    <TextBox Grid.Row="3" Margin="0,5,0,0" Style="{StaticResource SecondarySmallTextStyleTextBox}"
+                            Text="{Binding Service.ConfigOvpnExtaParamsFile, Mode=OneWay}"
+                            Background="Transparent" HorizontalAlignment="Right" BorderThickness="0"
+                            IsReadOnly="True" TextWrapping="Wrap" />
+                </Grid>
+            </TabItem>
+
         </TabControl>
 
         <Rectangle Grid.Row="1" Height="2" Fill="#26394D" Stroke="#26394D" Opacity="0.1"  Margin="0,20,0,20" HorizontalAlignment="Stretch" />

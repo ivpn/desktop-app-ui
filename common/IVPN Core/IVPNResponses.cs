@@ -63,11 +63,11 @@ namespace IVPN.Responses
         public AccountInfo Account;
     }
 
-    public class SessionStatusResponse : IVPNResponse
+    public class AccountStatusResponse : IVPNResponse 
     {
         public int APIStatus;
         public string APIErrorMessage;
-        public SessionInfo Session;
+        public string SessionToken;
         public AccountInfo Account;
     }
 

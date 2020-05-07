@@ -30,6 +30,22 @@ namespace IVPN.Requests
         // 		false (default) - VPN disconnects when client disconnects from a daemon
         // 		true - do nothing when client disconnects from a daemon (if VPN is connected - do not disconnect)
         public bool KeepDaemonAlone;
+
+        // Register credentials (if not logged in)
+        // Used when updating from an old client version
+        public RawCredentials SetRawCredentials;
+    }
+
+    // RawCredentials - RAW credentials
+    public class RawCredentials {
+        public string AccountID;
+        public string Session;
+        public string OvpnUser;
+        public string OvpnPass;
+        public string WgPublicKey;
+        public string WgPrivateKey;
+        public string WgLocalIP;
+        public Int64 WgKeyGenerated;
     }
 
     /// <summary>
@@ -123,7 +139,7 @@ namespace IVPN.Requests
         public bool ForceLogin;
     }
 
-    public class SessionStatus : Request { }
+    public class AccountStatus : Request { }
 
     public class SessionDelete : Request { }
 
@@ -135,17 +151,5 @@ namespace IVPN.Requests
     public class WireGuardSetKeysRotationInterval : Request
     {
         public Int64 Interval; // seconds
-    }
-
-    public class SetCredentials : Request
-    {
-        public string AccountID;
-        public string Session;
-        public string OvpnUser;
-        public string OvpnPass;
-        public string WgPublicKey;
-        public string WgPrivateKey;
-        public string WgLocalIP;
-        public Int64 WgKeyGenerated;
     }
 }

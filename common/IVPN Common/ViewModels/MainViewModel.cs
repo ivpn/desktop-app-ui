@@ -18,7 +18,6 @@ using IVPN.VpnProtocols;
 using IVPN.WiFi;
 using IVPNCommon.Interfaces;
 using IVPN.RESTApi;
-using IVPN.Models.Session;
 
 namespace IVPN.ViewModels
 {
@@ -87,7 +86,6 @@ namespace IVPN.ViewModels
         public WireguardKeysManager WireguardKeysManager { get; }
 
         public delegate void OnAccountSuspendedDelegate (AccountStatus account);
-        public event OnAccountSuspendedDelegate OnAccountSuspended = delegate { };
 
         public MainViewModel(
             AppState appState,
@@ -138,14 +136,7 @@ namespace IVPN.ViewModels
             __Service.Servers.PropertyChanged += delegate (object sender, PropertyChangedEventArgs args)
             {
                 if (args.PropertyName == nameof(__Service.Servers.ServersList))
-                {
                     UpdateSelectedServers();
-
-                    // If we still do not have SessionStatus - we can try to do new API request (can be used alternate API IPs from servers.json)
-                    // Do SessionStatus update ONLY if it still not received.
-                    if (__AppState.AccountStatus == null)
-                        __AppState.SessionManager.RequestStatusCheck();
-                }
             };
 
             CheckCapabilities();
@@ -154,13 +145,22 @@ namespace IVPN.ViewModels
             {
                 if (__AppState.IsLoggedIn())
                 {
-                    if (__NavigationService.CurrentPage == NavigationTarget.LogInPage)
+                    if (__NavigationService.CurrentPage == NavigationTarget.LogInPage
+                    || __NavigationService.CurrentPage == NavigationTarget.InitPage
+                    || __NavigationService.CurrentPage == NavigationTarget.Undefined)
                         __NavigationService.NavigateToMainPage(NavigationAnimation.FadeToLeft);
                 }
                 else
                 {
-                    if (__NavigationService.CurrentPage != NavigationTarget.LogInPage && __NavigationService.CurrentPage != NavigationTarget.LogOutPage )
+                    if (__NavigationService.CurrentPage != NavigationTarget.LogInPage
+                        && __NavigationService.CurrentPage != NavigationTarget.LogOutPage
+                        && __NavigationService.CurrentPage != NavigationTarget.InitPage
+                        && __NavigationService.CurrentPage != NavigationTarget.Undefined
+                        )
+                    {
                         __NavigationService.NavigateToLogInPage(NavigationAnimation.FadeToRight);
+                        NotifyError(__AppServices.LocalizedString("Error_AuthenticationGoToLogInPage"));
+                    }
                 }
             };
 
@@ -313,27 +313,6 @@ namespace IVPN.ViewModels
         
         async void ServiceInitializedAsync(object sender, EventArgs e)
         {
-            // old versions compatibility. Sending old-stype credentials (if exists) to a service
-            if (Settings.GetOldStyleCredentials(out string AccountID,
-                out string Session,
-                out string OvpnUser,
-                out string OvpnPass,
-                out string WgPublicKey,
-                out string WgPrivateKey,
-                out string WgLocalIP,
-                out Int64 WgKeyGenerated))
-            {
-                Logging.Info("Upgrading old-style credentials...");
-                try
-                {
-                    await __Service.SetCredentials(AccountID, Session, OvpnUser, OvpnPass, WgPublicKey, WgPrivateKey, WgLocalIP, WgKeyGenerated);
-                }
-                catch (Exception ex)
-                {
-                    Logging.Info("Failed to update old-style credentials: ", ex.Message);
-                }
-            }
-
             __Service.KillSwitchAllowLANMulticast = Settings.FirewallAllowLANMulticast;
             __Service.KillSwitchAllowLAN = Settings.FirewallAllowLAN;
 
@@ -431,10 +410,11 @@ namespace IVPN.ViewModels
                     }                    
                 }
 
-                if (ConnectionState == ServiceState.Connected ||
-                    ConnectionState == ServiceState.Disconnected)
+                if (ConnectionState == ServiceState.Connected) 
                 {
                     // Perform account check only if something wrong with account (it is not active OR are going to expire OR it is trial)
+                    // Checking only in 'connected' state (account state also checked automatically by daemon after each disconnection)
+
                     if (__AppState?.AccountStatus == null 
                         || __AppState.AccountStatus.IsActive == false
                         || __AppState.AccountStatus.IsOnFreeTrial 
@@ -698,7 +678,7 @@ namespace IVPN.ViewModels
             }
         }
 
-        async void Disconnected (bool failure, DisconnectionReason reason, string reasonDescription)
+        void Disconnected (bool failure, DisconnectionReason reason, string reasonDescription)
         {
             if (__Service.State == ServiceState.ReconnectingOnClient)
             {
@@ -706,12 +686,7 @@ namespace IVPN.ViewModels
                 Connect();
                 return;
             }
-            
-            await DoDisconnectedAsync (failure, reason, reasonDescription);
-        }
 
-        async Task DoDisconnectedAsync(bool failure, DisconnectionReason reason, string reasonDescription)
-        {
             Logging.Info("Disconnected event received");
 
             if (ConnectionInfo != null) 
@@ -728,10 +703,10 @@ namespace IVPN.ViewModels
                 && __FirewallAutoEnabled)
                     IsKillSwitchEnabled = false;
 
-            await ProcessDisconnectedReason (failure, reason, reasonDescription);
+            ProcessDisconnectedReason (failure, reason, reasonDescription);
         }
 
-        async Task ProcessDisconnectedReason(bool failure, DisconnectionReason reason, string reasonDescription)
+        void ProcessDisconnectedReason(bool failure, DisconnectionReason reason, string reasonDescription)
         {
             // We can receive multiple 'Disconnected' events with fail description for one 'connect' try.
             // So, we processing only first event.
@@ -739,74 +714,14 @@ namespace IVPN.ViewModels
                 return;
             __IsDisconnectFailureProcessed = true;
 
-            try
-            {
-                AccountStatus sessionStatus = null;                
-                if (failure)
-                {
-                    // When account is suspended - openvpn fails with authentication error.
-                    // To check is the account is suspended or it is really wrong credentails - we are sending Acount status request
-                    if (reason == DisconnectionReason.AuthenticationError) 
-                    {
-                        if (IsKillSwitchEnabled == false) // when KillSwitch enabled - no sense to request status. Request will be blocked.
-                        {
-                            try
-                            {
-                                sessionStatus = await __AppState.SessionManager.CheckStatusNowAsync(5000);
-                            }
-                            catch (IVPNRestRequestApiException ex)
-                            {
-                                if (ex.ApiStatusCode == ApiStatusCode.SessionNotFound)
-                                    return; // this error already processed by 'SessionManager.OnSessionRequestError' event handler. Do nothing. 
-
-                                if (ex.ApiStatusCode == ApiStatusCode.Unauthorized)
-                                {
-                                    ConnectionState = ServiceState.Disconnected;
-
-                                    // Wrong username or password - moving user to log-in page
-                                    __NavigationService.NavigateToLogOutPage(NavigationAnimation.FadeToRight);
-                                    ConnectionError = __AppServices.LocalizedString("Error_AuthenticationGoToLogInPage");
-                                    return;
-                                }
-                            }
-                            catch
-                            {
-                                sessionStatus = null;
-                                // ignore all
-                            }                            
-                        }
-
-                        ConnectionState = __Service.State;
-                        if (sessionStatus != null) 
-                        {
-                            if (!sessionStatus.IsActive) 
-                            {
-                                // raise event "account suspended"
-                                OnAccountSuspended (sessionStatus);
-                                reasonDescription = null;
-                            }
-                        } 
-                        else 
-                        {
-                            // Unable to get latest account status info
-                            // So, we can make conclusion based only on account 'ExpirationDate' of last known account status (saved in AppState)
-                            if (__AppState.AccountStatus != null
-                                && __AppState.AccountStatus.ActiveUtil != default
-                                && __AppState.AccountStatus.ActiveUtil <= DateTime.Now)
-                            {
-                                ConnectionError = __AppServices.LocalizedString ("Error_ConnectionError_AccountExpiredOrWrongPassword");
-                                reasonDescription = null;
-                            }
-                        }
-                    } 
-
-                    ConnectionError = reasonDescription;
-                }
-            }
-            finally
-            {
-                ConnectionState = __Service.State;
-            }
+            // Do not show authentication error
+            // It can occur in such cases:
+            // - session was forced to LogOut: no necessary to show connection error because we will be redirected to LogIn page (notification with a description will be shown to user)
+            // - account expired:  no necessary to show connection error because account status warning will be shown to user
+            // - too many connections from this device in short period of time (blocked by server)
+            if (reason != DisconnectionReason.AuthenticationError)
+                ConnectionError = reasonDescription;
+            ConnectionState = __Service.State;
         }
 
         private void UpdateTrayIconOnConnect(ConnectionInfo ci)

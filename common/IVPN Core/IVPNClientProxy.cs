@@ -37,6 +37,7 @@ namespace IVPN
         public delegate void DiagnosticsGeneratedHandler(Responses.IVPNDiagnosticsGeneratedResponse diagInfoResponse);
         public delegate void ExceptionHappenedHandler(Exception exception);
         public delegate void SessionInfoChangedHandler(SessionInfo s);
+        public delegate void AccountStatusReceivedHandler(string sessionToken, AccountStatus accountInfo);
         public delegate void KillSwitchStatusHandler(bool? enabled, bool? isPersistant, bool? isAllowLAN, bool? isAllowMulticast);
         public delegate void AlternateDNSChangedHandler(string dns);
         public event ServerListChangedHandler ServerListChanged = delegate { };
@@ -51,6 +52,7 @@ namespace IVPN
         public event ExceptionHappenedHandler ClientException = delegate { };
         public event EventHandler ClientProxyDisconnected = delegate { };
         public event SessionInfoChangedHandler SessionInfoChanged = delegate { };
+        public event AccountStatusReceivedHandler AccountStatusReceived = delegate { };
         public event KillSwitchStatusHandler KillSwitchStatus = delegate { };
         public event AlternateDNSChangedHandler AlternateDNSChanged = delegate { };
 
@@ -68,7 +70,7 @@ namespace IVPN
 
         private CancellationTokenSource __CancellationToken;
 
-        public void Initialize(int port, UInt64 secret)
+        public void Initialize(int port, UInt64 secret, Requests.RawCredentials creds)
         {
             __IsExiting = false;
             if (__Thread != null)
@@ -77,11 +79,11 @@ namespace IVPN
             ServicePort = port;
             Secret = secret;
 
-            __Thread = new Thread(ClientThread) {Name = "IVPN Client Proxy", IsBackground = true};
+            __Thread = new Thread(() => ClientThread(creds)) {Name = "IVPN Client Proxy", IsBackground = true};
             __Thread.Start();
         }
 
-        private void ClientThread()
+        private void ClientThread(Requests.RawCredentials registerCreds)
         {
             try
             {
@@ -89,14 +91,15 @@ namespace IVPN
                 ConnectToService();
 
                 // send hello
-                SendRequest(new Requests.Hello {
-                    Version = Platform.Version,
-                    Secret = Secret,
-                    GetServersList = true,
-                    GetStatus = true,
-                    GetConfigParams = true
-                });
-
+                SendRequest(new Requests.Hello
+                    {
+                        Version = Platform.Version,
+                        Secret = Secret,
+                        GetServersList = true,
+                        GetStatus = true,
+                        GetConfigParams = true,
+                        SetRawCredentials = registerCreds
+                    });
 
                 while (HandleResponse())
                 {
@@ -234,13 +237,7 @@ namespace IVPN
                     case "HelloResp":
                         var resp = JsonConvert.DeserializeObject<Responses.IVPNHelloResponse>(line);
 
-                        NotifySessionInfo(
-                                    resp.Session.AccountID,
-                                    resp.Session.Session,
-                                    resp.Session.WgPublicKey,
-                                    resp.Session.WgLocalIP,
-                                    resp.Session.WgKeyGenerated,
-                                    resp.Session.WgKeysRegenInerval);
+                        NotifySessionInfo(resp.Session);
                                                
                         Logging.Info("got hello, server version is " + resp.Version
                             + (string.IsNullOrEmpty(resp.Session.Session)?"Not logged in":"Logged in"));
@@ -332,20 +329,17 @@ namespace IVPN
                             var snResp = JsonConvert.DeserializeObject<Responses.SessionNewResponse>(line);
                             if (snResp.APIStatus == (int)ApiStatusCode.Success)
                             {
-                                NotifySessionInfo(
-                                    snResp.Session.AccountID,
-                                    snResp.Session.Session,
-                                    snResp.Session.WgPublicKey,
-                                    snResp.Session.WgLocalIP,
-                                    snResp.Session.WgKeyGenerated,
-                                    snResp.Session.WgKeysRegenInerval);
+                                NotifySessionInfo(snResp.Session);
+                                NotifyAccountStatus(snResp.Session.Session, snResp.Account);
                             }
                             responseReceived(snResp);
                         }
                         break;
 
-                    case "SessionStatusResp":
-                        responseReceived(JsonConvert.DeserializeObject<Responses.SessionStatusResponse>(line));
+                    case "AccountStatusResp":
+                        var accStatResp = JsonConvert.DeserializeObject<Responses.AccountStatusResponse>(line);
+                        NotifyAccountStatus(accStatResp.SessionToken, accStatResp.Account);
+                        responseReceived(accStatResp);
                         break;
 
                     case "SetAlternateDNSResp":
@@ -371,28 +365,34 @@ namespace IVPN
             return true;
         }
 
-        private void NotifySessionInfo(string accountID,
-            string session,
-            string wgPublicKey,
-            string wgLocalIP,
-            Int64 wgKeyGenerated,
-            Int64 wgKeyRotateInterval)
+        private void NotifySessionInfo(Responses.SessionInfo si)
         {
-            IPAddress.TryParse(wgLocalIP, out IPAddress wgLocalIPAddr);
+            IPAddress.TryParse(si.WgLocalIP, out IPAddress wgLocalIPAddr);
             var s = new SessionInfo(
-                accountID,
-                session,
-                wgPublicKey,
+                si.AccountID,
+                si.Session,
+                si.WgPublicKey,
                 wgLocalIPAddr,
-                IVPN_Helpers.DataConverters.DateTimeConverter.FromUnixTime(wgKeyGenerated),
-                new TimeSpan(0, 0, (int)wgKeyRotateInterval));
+                IVPN_Helpers.DataConverters.DateTimeConverter.FromUnixTime(si.WgKeyGenerated),
+                new TimeSpan(0, 0, (int)si.WgKeysRegenInerval));
+
             SessionInfoChanged(s);
         }
 
-        private void CheckConnected()
+        private void NotifyAccountStatus(string sessionToken, Responses.AccountInfo ai)
         {
-            if (!ServiceConnected)
-                throw new IVPNClientProxyNotConnectedException("Proxy is not connected to service");
+            if (string.IsNullOrEmpty(sessionToken))
+                return;
+
+            var acc = new AccountStatus(
+                    ai.Active,
+                    IVPN_Helpers.DataConverters.DateTimeConverter.FromUnixTime(ai.ActiveUntil),
+                    ai.IsRenewable,
+                    ai.WillAutoRebill,
+                    ai.IsFreeTrial,
+                    ai.Capabilities);
+
+            AccountStatusReceived(sessionToken, acc);
         }
 
         #region Send/Recv
@@ -402,10 +402,6 @@ namespace IVPN
         private void SendRequest(Requests.Request request)
         {
             Logging.Info("Sending: " + request);
-
-            // Hello request can be sent without being in "connected
-            if (!(request is Requests.Hello))
-                CheckConnected();
 
             lock (__StreamWriter)
             {
@@ -538,29 +534,6 @@ namespace IVPN
             });
         }
 
-        public async Task SetCredentials(
-            string AccountID,
-            string Session,
-            string OvpnUser,
-            string OvpnPass,
-            string WgPublicKey,
-            string WgPrivateKey,
-            string WgLocalIP,
-            Int64 WgKeyGenerated)
-        {
-            var request = new Requests.SetCredentials {
-                 AccountID= AccountID,
-                 Session= Session,
-                 OvpnUser= OvpnUser,
-                 OvpnPass= OvpnPass,
-                 WgPublicKey= WgPublicKey,
-                 WgPrivateKey= WgPrivateKey,
-                 WgLocalIP= WgLocalIP,
-                 WgKeyGenerated= WgKeyGenerated
-            };
-            await SendRecvRequestAsync<Responses.IVPNEmptyResponse>(request);
-        }
-
         public void Disconnect()
         {
             Logging.Info("Disconnecting...");
@@ -633,9 +606,9 @@ namespace IVPN
             return await SendRecvRequestAsync<Responses.SessionNewResponse>(new Requests.SessionNew { AccountID = accountId, ForceLogin = forceLogin });
         }
 
-        public async Task<Responses.SessionStatusResponse> SessionStatus()
+        public async Task<Responses.AccountStatusResponse> AccountStatus()
         {
-            return await SendRecvRequestAsync<Responses.SessionStatusResponse>(new Requests.SessionStatus{});
+            return await SendRecvRequestAsync<Responses.AccountStatusResponse>(new Requests.AccountStatus{});
         }
 
         public async Task LogOut()

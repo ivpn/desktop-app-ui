@@ -153,7 +153,32 @@ namespace IVPN.ViewModels
 
             try
             {
-                await __Service.InitializeAsync(port, secret);
+                // old versions compatibility. Sending old-stype credentials (if exists) to a service
+                Requests.RawCredentials credentialsToRegister = null;
+                if (__Settings.GetOldStyleCredentials(out string AccountID,
+                    out string Session,
+                    out string OvpnUser,
+                    out string OvpnPass,
+                    out string WgPublicKey,
+                    out string WgPrivateKey,
+                    out string WgLocalIP,
+                    out Int64 WgKeyGenerated))
+                {
+                    credentialsToRegister = new Requests.RawCredentials()
+                    {
+                        AccountID = AccountID,
+                        Session = Session,
+                        OvpnUser = OvpnUser,
+                        OvpnPass = OvpnPass,
+                        WgPublicKey = WgPublicKey,
+                        WgPrivateKey = WgPrivateKey,
+                        WgLocalIP = WgLocalIP,
+                        WgKeyGenerated = WgKeyGenerated
+                    };
+                    Logging.Info("Connecting to a daemon. Registering RAW credentials...");
+                }
+
+                await __Service.InitializeAsync(port, secret, credentialsToRegister);
             }
             finally
             {
