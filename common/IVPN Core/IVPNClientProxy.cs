@@ -322,8 +322,10 @@ namespace IVPN
                         {
                             var snResp = JsonConvert.DeserializeObject<Responses.SessionNewResponse>(line);
                             if (snResp.APIStatus == (int)ApiStatusCode.Success)
+                            {
                                 NotifySessionInfo(snResp.Session);
-
+                                NotifyAccountStatus(snResp.Session.Session, snResp.Account);
+                            }
                             responseReceived(snResp);
                         }
                         break;

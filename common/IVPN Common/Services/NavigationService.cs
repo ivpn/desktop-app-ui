@@ -29,13 +29,13 @@ namespace IVPN
 
         public void NavigateToMainPage(NavigationAnimation animation)
         {
-            // Avoid enter Main page when we are logging-out. Can happen on startup (on first check of session status) when session was deleted from API server.
-            // TODO: bad architecture. 
-            if (CurrentPage == NavigationTarget.LogOutPage)
-                return;
-
             navigate(() =>
             {
+                // Avoid enter Main page when we are logging-out. Can happen on startup (on first check of session status) when session was deleted from API server.
+                // TODO: bad architecture. 
+                if (CurrentPage == NavigationTarget.LogOutPage)
+                    return;
+
                 if (CurrentPage == NavigationTarget.MainPage)
                     return;
                 __MainWindowController.ShowMainPage(animation);
