@@ -214,6 +214,8 @@ namespace IVPN.ViewModels
                     !string.Equals(SelectedExitServer?.VpnServer?.GatewayId, ConnectionInfo?.ExitServer?.VpnServer?.GatewayId)
                     )
                 {
+                    IsAutomaticServerSelection = false;
+
                     if (ConnectionInfo.VpnType != AppSettings.Instance().VpnProtocolType)
                         AppSettings.Instance().VpnProtocolType = ConnectionInfo.VpnType;
 
