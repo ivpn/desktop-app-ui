@@ -3,12 +3,13 @@
 **IVPN Client Desktop** is an official IVPN client for Windows and macOS.
 It divided on two parts:
   - IVPN Client Desktop UI (user interface application - this repository)
-  - IVPN service/daemon (repository *ivpn-desktop-daemon*)
+  - IVPN service/daemon (repository [Daemon for IVPN Client Desktop](https://github.com/ivpn/desktop-app-daemon))
 
 IVPN Client Desktop UI built using Xamarin.Mac (C#).
 
-IVPN Client Desktop app is distributed on the official site [www.ivpn.net](www.ivpn.net).  
+IVPN Client Desktop app is distributed on the official site [www.ivpn.net](https://www.ivpn.net).  
 
+* [About this Repo](#about-repo)
 * [Installation](#installation)
 * [Versioning](#versioning)
 * [Contributing](#contributing)
@@ -16,6 +17,11 @@ IVPN Client Desktop app is distributed on the official site [www.ivpn.net](www.i
 * [License](#license)
 * [Authors](#Authors)
 * [Acknowledgements](#acknowledgements)
+
+<a name="about-repo"></a>
+## About this Repo
+
+This is the official Git repo of the [IVPN Client Desktop](https://github.com/ivpn/desktop-app-ui).
 
 <a name="installation"></a>
 ## Installation
