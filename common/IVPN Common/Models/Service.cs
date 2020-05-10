@@ -444,7 +444,6 @@ namespace IVPN.Models
             {
                 var connTarget = __ConnectionTarget;
                 if (connTarget != null
-                    && reason !=  DisconnectionReason.DisconnectRequested
                     && (
                         State == ServiceState.Connected ||
                         State == ServiceState.ReconnectingOnService ||
