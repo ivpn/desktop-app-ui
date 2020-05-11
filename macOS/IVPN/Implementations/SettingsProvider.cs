@@ -90,7 +90,7 @@ namespace IVPN
             __Defaults["FirewallType"] = (int)IVPNFirewallType.Manual;
             __Defaults["IsIVPNAlwaysOnWarningDisplayed"] = false;
 
-            __Defaults["IsLoggingEnabled"] = true;
+            __Defaults["IsLoggingEnabled"] = false;
 
             __Defaults["LastWindowPosition"] = "";
             __Defaults["LastNotificationWindowPosition"] = "";
