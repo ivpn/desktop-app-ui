@@ -445,7 +445,7 @@ namespace IVPN.Models
                 var connTarget = __ConnectionTarget;
                 if (connTarget != null
                     && (
-                        State == ServiceState.Connected ||
+                        __IsSuspended == true ||
                         State == ServiceState.ReconnectingOnService ||
                         State == ServiceState.ReconnectingOnClient // ReconnectingOnClient - was set by watchdog. Current connection failed - try to reconnect
                     )) 
