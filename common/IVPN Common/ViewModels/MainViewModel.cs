@@ -220,11 +220,11 @@ namespace IVPN.ViewModels
                         AppSettings.Instance().VpnProtocolType = ConnectionInfo.VpnType;
 
                     // select connected server
-                    SetSelectedServer(ConnectionInfo?.Server, false);
+                    SetSelectedServer(ConnectionInfo?.Server, isCanReconnect: false );
 
                     if (ConnectionInfo?.ExitServer != null)
                     {
-                        SetSelectedExitServer(ConnectionInfo?.ExitServer);
+                        SetSelectedExitServer(ConnectionInfo?.ExitServer, isCanReconnect: false);
                         IsMultiHop = true;
                     }
                     else
@@ -1042,7 +1042,7 @@ namespace IVPN.ViewModels
             }
         }
 
-        private void SetSelectedExitServer(ServerLocation value)
+        private void SetSelectedExitServer(ServerLocation value, bool isCanReconnect = true)
         {
             if (value == null)
                 return;
@@ -1061,9 +1061,12 @@ namespace IVPN.ViewModels
 
                 // perform save in background thread to avoid GUI freeze
                 Task.Run(() => Settings.Save());
-                
-                // reconnect, if necessary
-                ReconnectIfConnectedAfterServerChange();
+
+                if (isCanReconnect)
+                {
+                    // reconnect, if necessary
+                    ReconnectIfConnectedAfterServerChange();
+                }
             }
         }
 
