@@ -2,6 +2,11 @@
 
 All notable changes to this project will be documented in this file.
 
+## Version 2.12.0 - 2020-05-14
+
+[NEW] Command line interface for IVPN service  
+[IMPROVED] Overall stability  
+
 ## Version 2.11.9 - 2020-04-27
 
 [IMPROVED] Removed WireGuard warning
