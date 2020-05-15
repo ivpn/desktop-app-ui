@@ -1,13 +1,11 @@
-# IVPN Client Desktop (Windows/macOS)
+# IVPN Client (Windows/macOS)
 
-**IVPN Client Desktop** is an official IVPN client for Windows and macOS.
-It divided on two parts:
-  - IVPN Client Desktop UI (user interface application - this repository)
-  - IVPN service/daemon (repository [Daemon for IVPN Client Desktop](https://github.com/ivpn/desktop-app-daemon))
+**IVPN Client** is an official IVPN client for Windows and macOS.
+It is a client for  IVPN daemon ([ivpn-desktop-daemon](https://github.com/ivpn/desktop-app-daemon))   
 
-IVPN Client Desktop UI built using Xamarin.Mac (C#).
+IVPN Client built using Xamarin.Mac (C#).
 
-IVPN Client Desktop app is distributed on the official site [www.ivpn.net](https://www.ivpn.net).  
+IVPN Client app is distributed on the official site [www.ivpn.net](https://www.ivpn.net).  
 
 * [About this Repo](#about-repo)
 * [Installation](#installation)
@@ -21,7 +19,7 @@ IVPN Client Desktop app is distributed on the official site [www.ivpn.net](https
 <a name="about-repo"></a>
 ## About this Repo
 
-This is the official Git repo of the [IVPN Client Desktop](https://github.com/ivpn/desktop-app-ui).
+This is the official Git repo of the [IVPN Client](https://github.com/ivpn/desktop-app-ui).
 
 <a name="installation"></a>
 ## Installation
@@ -47,35 +45,36 @@ These instructions will get you a copy of the project up and running on your loc
   - Go 1.13+
 
 ### Compilation
+To build fully redistributable 'installer' binary, addition projects are in use of build process:
+  - IVPN service/daemon (repository [Daemon for IVPN Client](https://github.com/ivpn/desktop-app-daemon))
+  - IVPN command line interface (repository [IVPN CLI](https://github.com/ivpn/desktop-app-cli))
 
 #### Windows
-
-To compile IVPN Desktop it is necessary to have **IVPN Daemon for IVPN Client Desktop** sources:
-
-  - please, checkout *ivpn-desktop-daemon* repository.
-  - update path to *ivpn-desktop-daemon* location in file `Windows/References/config/service_repo_local_path.txt` (if necessary)
-
-To compile IVPN Desktop all binaries and create an installer for the whole application - run the batch file from the terminal. Use Developer Command Prompt for Visual Studio (required for building native sub-projects).
+**Important:**  Use *Developer Command Prompt for Visual Studio* (required for building native sub-projects) to compile.
 ```
-ivpn-desktop-ui/Windows/References/Installer/build.bat
+git clone https://github.com/ivpn/desktop-app-ui.git
+git clone https://github.com/ivpn/desktop-app-daemon.git
+git clone https://github.com/ivpn/desktop-app-cli.git
+desktop-app-ui\Windows\References\Installer\build.bat
 ```
-New compiled installer of IVPN Desktop can be found in folder `Windows/References/bin`
+These commands will compile the project and its dependencies. The compiled installer of VPN Client placed in the folder `desktop-app-ui\Windows\References\bin`
 
 #### macOS
+```
+git clone https://github.com/ivpn/desktop-app-ui.git
+git clone https://github.com/ivpn/desktop-app-daemon.git
+git clone https://github.com/ivpn/desktop-app-cli.git
+```
+**Important:** Create text file which contains Apple Developer ID `desktop-app-ui/macOS/scripts/config/devid_certificate.txt`.
+This is required for signing binaries.  
 
-To compile IVPN Desktop it is necessary to have **IVPN Daemon for IVPN Client Desktop** sources:
-
-  - please, checkout *ivpn-desktop-daemon* repository.
-  - update path to *ivpn-desktop-daemon* location in file `macOS/scripts/config/daemon_repo_local_path.txt` (if necessary)
-  - **Important:** Create text file which contains Apple Developer ID `macOS/scripts/config/devid_certificate.txt`. This is required for signing binaries.
-
-To compile IVPN Desktop all binaries and create DMG-installer for it - run the batch file from the terminal:
+Running this script will compile the project with all dependencies.
 ```
 macOS/scripts/dmg/build.sh
 ```
-New compiled DMG-installer of IVPN Desktop can be found in folder `macOS/scripts/dmg/_compiled`.
+Compiled *.DMG installer of IVPN Client can be found in folder `macOS/scripts/dmg/_compiled`.
 
-**Note!** In order to run application as macOS daemon, the binary must be signed by Apple Developer ID (must be located in `macOS/scripts/config/devid_certificate.txt`).
+**Note!** The binary must be signed by Apple Developer ID to install and run the application (must be located in `desktop-app-ui/macOS/scripts/config/devid_certificate.txt`).
 
 <a name="versioning"></a>
 ## Versioning
@@ -93,7 +92,7 @@ So we have: `Major.Minor.Patch`
 <a name="contributing"></a>
 ## Contributing
 
-If you are interested in contributing to IVPN Client Desktop project, please read our [Contributing Guidelines](/.github/CONTRIBUTING.md).
+If you are interested in contributing to IVPN Client project, please read our [Contributing Guidelines](/.github/CONTRIBUTING.md).
 
 <a name="security"></a>
 ## Security Policy

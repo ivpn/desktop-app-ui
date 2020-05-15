@@ -20,11 +20,9 @@
 //  along with the IVPN Client Desktop. If not, see <https://www.gnu.org/licenses/>.
 //
 
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.IO;
-using System.Diagnostics;
-using IVPN.VpnProtocols;
 using IVPN.Exceptions;
 
 namespace IVPN
@@ -259,24 +257,20 @@ namespace IVPN
 			// Unsubscribe from default event for future
 			PowerModeChanged -= NativeNotifyPowerModeChanged;
 
-			// Call event
-		    
-            var evt = PowerModeChanged;
-            if (evt!=null)
-                evt(sender, e);
-		}
+            // Call event
+
+            PowerModeChanged?.Invoke(sender, e);
+        }
 
 		/// <summary>
 		/// .Net implementation of PowerModeChanged
 		/// </summary>
 		public static void NativeNotifyPowerModeChanged (object sender, Microsoft.Win32.PowerModeChangedEventArgs e)
 		{
-		    var evt = PowerModeChanged;
-		    if (evt != null)
-		        evt(sender, e);
-		}
+            PowerModeChanged?.Invoke(sender, e);
+        }
 
-		public static event Microsoft.Win32.PowerModeChangedEventHandler PowerModeChanged;
+        public static event Microsoft.Win32.PowerModeChangedEventHandler PowerModeChanged = delegate { };
 		#endregion //PowerModeChanged
 	}
 }
