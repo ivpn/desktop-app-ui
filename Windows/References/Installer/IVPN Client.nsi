@@ -269,10 +269,8 @@ FunctionEnd
 !define MUI_FINISHPAGE_SHOWREADME_TEXT "Create a desktop shortcut"
 !define MUI_FINISHPAGE_SHOWREADME_FUNCTION finishpageaction
 Function finishpageaction
-CreateShortcut "$desktop\IVPN Client.lnk" "${APP_RUN_PATH}"
+CreateShortcut "$DESKTOP\IVPN Client.lnk" "${APP_RUN_PATH}"
 FunctionEnd
-
-
 
 LicenseForceSelection checkbox "I Agree"
 
@@ -569,10 +567,9 @@ Section "Uninstall"
   ;DetailPrint "${DEVCON_BASENAME} remove returned: $R0"
   
   DetailPrint "Removing files..."
-  SetShellVarContext current ; To be able to get environment variables of current user (like "$LOCALAPPDATA")   
+ 
   ; remove all
-  
-  Delete "$desktop\IVPN Client.lnk"
+  Delete "$DESKTOP\IVPN Client.lnk"
   Delete "$INSTDIR\Uninstall.exe"
   RMDir /r "$INSTDIR\etc"
   RMDir /r "$INSTDIR\mutable"
@@ -591,19 +588,25 @@ Section "Uninstall"
   RMDir /r "$INSTDIR\ko"
   RMDir /r "$INSTDIR\zh-Hans"
   RMDir /r "$INSTDIR\zh-Hant" 
+  RMDir /r "$INSTDIR\mutable" 
 
+  ;Delete "$INSTDIR\*.config"
+  ;Delete "$INSTDIR\*.xml"
+  ;Delete "$INSTDIR\*.bat"
+  ;Delete "$INSTDIR\*.vbs"
+  ;Delete "$INSTDIR\*.dll"
+  ;Delete "$INSTDIR\*.exe"
+  ;Delete "$INSTDIR\*.ico"
+  Delete "$INSTDIR\*.*"
+  RMDir "$INSTDIR"
+  
+  SetShellVarContext current ; To be able to get environment variables of current user ("$LOCALAPPDATA")  
   RMDir /r "$LOCALAPPDATA\IVPN"
   RMDir /r "$LOCALAPPDATA\IVPN_Limited"
-
-  Delete "$INSTDIR\*.config"
-  Delete "$INSTDIR\*.xml"
-  Delete "$INSTDIR\*.bat"
-  Delete "$INSTDIR\*.vbs"
-  Delete "$INSTDIR\*.dll"
-  Delete "$INSTDIR\*.exe"
-  Delete "$INSTDIR\*.ico"
-  RMDir "$INSTDIR"
-
+  SetShellVarContext all
+  RMDir /r "$LOCALAPPDATA\IVPN"
+  RMDir /r "$LOCALAPPDATA\IVPN_Limited"
+  
   ;!insertmacro MUI_STARTMENU_GETFOLDER Application $StartMenuFolder
   StrCpy $StartMenuFolder "IVPN"
 
@@ -633,7 +636,7 @@ Section "Uninstall"
 	; make sure windows knows about the change
 	SendMessage ${HWND_BROADCAST} ${WM_WININICHANGE} 0 "STR:Environment" /TIMEOUT=100    
   ${EndIf}
-  
+   
 SectionEnd
 
 ; ----------------
