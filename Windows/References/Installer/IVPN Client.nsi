@@ -42,8 +42,9 @@ InstallDir "$PROGRAMFILES64\${PRODUCT_IDENTIFIER}"
 ;InstallDirRegKey HKLM "Software\${PRODUCT_IDENTIFIER}" ""
 RequestExecutionLevel admin
 
+
 ; HKLM (all users)
-;!define env_hklm 'HKLM "SYSTEM\CurrentControlSet\Control\Session Manager\Environment"'
+!define env_hklm 'HKLM "SYSTEM\CurrentControlSet\Control\Session Manager\Environment"'
 ; HKCU (current user) 
 !define env_hkcu 'HKCU "Environment"'
 
@@ -175,6 +176,9 @@ FunctionEnd
 ;---------------------------
 
 !macro COMMON_INIT
+  ; install for  'all users'
+  SetShellVarContext all
+
   StrCpy $StartMenuFolder "IVPN"
 
   ${If} ${RunningX64}
@@ -304,7 +308,7 @@ LicenseForceSelection checkbox "I Agree"
 !insertmacro MUI_LANGUAGE "English"
 
 ;===============================  
-; FINISH page modification handlers
+; FINISH page modification handlers (add additional checkbox "Add IVPN CLI binary to the path" to the 'finish' page)
 Function fin_show
 	ReadINIStr $0 "$PLUGINSDIR\iospecial.ini" "Field 6" "HWND"
 	SetCtlColors $0 0x000000 0xFFFFFF
@@ -326,7 +330,7 @@ Function fin_leave
 	StrCmp $0 "0" end
 	 
 	; UPDATING %PATH% VARIABLE 
-	ReadRegStr $0 ${env_hkcu} "PATH"
+	ReadRegStr $0 ${env_hklm} "PATH"
 	
 	; check if PATH already updated
 	${StrContains} $1 "${PATHDIR}" $0
@@ -339,7 +343,7 @@ Function fin_leave
 	
 	; set variable for local machine
 	StrCpy $0 "$0;${PATHDIR}"
-	WriteRegExpandStr ${env_hkcu} PATH "$0"
+	WriteRegExpandStr ${env_hklm} PATH "$0"
 
 	; make sure windows knows about the change
 	SendMessage ${HWND_BROADCAST} ${WM_WININICHANGE} 0 "STR:Environment" /TIMEOUT=100
@@ -534,14 +538,14 @@ SectionEnd
 
 Section "Uninstall"
   ; stop service
-  nsExec::ExecToLog '"$SYSDIR\sc.exe" stop "IVPN Client"'
+  nsExec::ExecToLog '"$SYSDIR\sc.exe" stop "${IVPN_SERVICE_NAME}"'
 
   ; wait a little (give change for IVPN Client application to stop)
   Sleep 1500
   ; When service stopping - IVPN Client must also Close automatically
   ; anyway, there could be situations when IVPN Client not connected to service (cannot receive 'service exiting' notification.)
   ; Therefore, here we try to stop IVPN Client process manually.
-  nsExec::ExecToStack "taskkill /IM $\"${PROCESS_NAME}$\""
+  nsExec::ExecToStack "taskkill /IM $\"${PROCESS_NAME}$\" /T /F"
   ; give some time to stop the process 
   Sleep 1500
 
@@ -610,15 +614,22 @@ Section "Uninstall"
   DeleteRegValue HKLM "Software\Microsoft\Windows\CurrentVersion\Run" "IVPN Client Runtime Warmup"
   DeleteRegKey HKLM "Software\Microsoft\Windows\CurrentVersion\Uninstall\${PRODUCT_IDENTIFIER}"
 
-  ; UPDATING %PATH% VARIABLE 
-  ; read PATH variable value
+  ; UPDATING %PATH% VARIABLE   
+  ; read PATH variable value (current user)
   ReadRegStr $0 ${env_hkcu} "PATH"
   ; remove all references to $INSTDIR
   ${StrRepl} $1 $0 "${PATHDIR};" "" 
   ${StrRepl} $1 $1 ";${PATHDIR}" "" 
   ${StrRepl} $1 $1 ${PATHDIR}" "" 
+  
+  ; read PATH variable value (all users)
+  ReadRegStr $0 ${env_hklm} "PATH"
+  ; remove all references to $INSTDIR
+  ${StrRepl} $1 $0 "${PATHDIR};" "" 
+  ${StrRepl} $1 $1 ";${PATHDIR}" "" 
+  ${StrRepl} $1 $1 ${PATHDIR}" "" 
   ${If} $1 != $0
-	WriteRegExpandStr ${env_hkcu} PATH "$1"
+	WriteRegExpandStr ${env_hklm} PATH "$1"
 	; make sure windows knows about the change
 	SendMessage ${HWND_BROADCAST} ${WM_WININICHANGE} 0 "STR:Environment" /TIMEOUT=100    
   ${EndIf}
