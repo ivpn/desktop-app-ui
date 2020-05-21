@@ -774,7 +774,7 @@ Function StopClient
 	DetailPrint "Terminating IVPN Client application..."
 	
 	; stop client
-	nsExec::ExecToStack "taskkill /IM $\"${PROCESS_NAME}$\" /T /F"
+	nsExec::ExecToStack "taskkill /IM $\"${PROCESS_NAME}$\" /F"
 	Pop $0 ; Return
 	Pop $1 ; Output	
 	${If} $0 != '0'
