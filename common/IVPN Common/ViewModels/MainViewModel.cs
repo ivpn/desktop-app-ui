@@ -724,7 +724,10 @@ namespace IVPN.ViewModels
 
             if (Settings.FirewallType == IVPNFirewallType.Manual 
                 && Settings.FirewallAutoOnOff 
-                && __FirewallAutoEnabled)
+                && __FirewallAutoEnabled
+                && !(failure && ConnectionState == ServiceState.Connected) // in case it we were connected - something bad happened with connection
+                                                               // it is unexpected disconnection - do not disable firewall 
+                )
                     IsKillSwitchEnabled = false;
 
             ProcessDisconnectedReason (failure, reason, reasonDescription);
