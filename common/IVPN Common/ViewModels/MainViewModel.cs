@@ -247,8 +247,6 @@ namespace IVPN.ViewModels
 
             __KillSwitchIsPersistent = __Service.KillSwitchIsPersistent;
 
-            Platform.PowerModeChanged += OnPowerChange;
-
             // SM-APP-1100 If session is not valid (user received Session not found error) client app have to assume that the user was forcibly logged out and present user with the “Log In” form.
             __AppState.SessionManager.OnSessionRequestError += (int apiStatus, string apiErrMes, Responses.AccountInfo account) => { ProcessApiErrorResponse(apiStatus, apiErrMes, account); };
         }
@@ -287,24 +285,6 @@ namespace IVPN.ViewModels
             }
 
             return false;
-        }
-
-        private void OnPowerChange(Object sender, PowerModeChangedEventArgs e)
-        {         
-            switch (e.Mode)
-            {
-                case PowerModes.Suspend:
-                    if (__ConnectionState == ServiceState.Connected)
-                        __Service.Suspend();
-
-                    break;
-
-                case PowerModes.Resume:
-                    if (__Service.IsSuspended)
-                        __Service.Resume();
-
-                    break;
-            }
         }
 
         public void StartDurationUpdateTimer()
