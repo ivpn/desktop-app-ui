@@ -57,7 +57,6 @@ namespace IVPN.Models
         private IProgress<string> __ConnectionProgress;
 
         private ServiceState __State;
-        bool __IsSuspended;
 
         private readonly EventWaitHandle __InitializationSignal;
         
@@ -270,9 +269,6 @@ namespace IVPN.Models
             {
                 ReportProgress("Cancelling...");
                 State = ServiceState.CancellingConnection;
-
-                if (__IsSuspended)
-                    __IsSuspended = false;
             }
 
             if (State == ServiceState.Connected)
@@ -445,7 +441,6 @@ namespace IVPN.Models
                 var connTarget = __ConnectionTarget;
                 if (connTarget != null
                     && (
-                        __IsSuspended == true ||
                         State == ServiceState.ReconnectingOnService ||
                         State == ServiceState.ReconnectingOnClient // ReconnectingOnClient - was set by watchdog. Current connection failed - try to reconnect
                     )) 
@@ -458,15 +453,6 @@ namespace IVPN.Models
 
                     // Do some delay before next connection. But stop in case of disconnection request
                     for (int i=0; i<30 && State == ServiceState.ReconnectingOnClient; i++) await Task.Delay(100);
-                    
-                    if (__IsSuspended)
-                    {
-                        if (!await WaitUntilUnsuspended())
-                        {
-                            SetStatusDisconnected(failure, reason, reasonDescription);
-                            return;
-                        }
-                    }
 
                     if (State == ServiceState.Disconnecting)
                     {
@@ -492,23 +478,6 @@ namespace IVPN.Models
                 
             Disconnected(failure, reason, reasonDescription);
         }
-
-        private async Task<bool> WaitUntilUnsuspended()
-        {
-            await Task.Run(() =>
-            {
-                while (__IsSuspended && State == ServiceState.ReconnectingOnClient)
-                {
-                    Thread.Sleep(100);
-                }
-            });
-
-            if (State != ServiceState.ReconnectingOnClient)
-                return false;
-
-            return true;
-        }
-
 
         Task<ConnectionResult> IService.Connect(
                                 IProgress<string> progress,
@@ -674,24 +643,6 @@ namespace IVPN.Models
         public bool KillSwitchAllowLANMulticast
         {
             set => __ServiceProxy.KillSwitchSetAllowLANMulticast(value);
-        }
-
-        public void Suspend()
-        {           
-            if (__State == ServiceState.Connected)
-            {
-                __ServiceProxy.Disconnect();
-                __IsSuspended = true;
-                Logging.Info ("Suspend");
-			}
-        }
-
-        public bool IsSuspended => __IsSuspended;
-
-        public void Resume()
-        {           
-            __IsSuspended = false;
-            Logging.Info ("Resume");
         }
 
         public ConnectionTarget ConnectionTarget

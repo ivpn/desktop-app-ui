@@ -46,19 +46,12 @@ namespace IVPN.Interfaces
         Task<ConnectionResult> Connect(IProgress<string> progress,
                                  CancellationToken cancellationToken,
                                  ConnectionTarget connectionTarget);
-
-        void Suspend();
-        void Resume();
-
         void Disconnect();
         void Exit();
 
         IServers Servers { get; }
 
         ServiceState State { get; }
-
-        bool IsSuspended { get; }
-
         bool KillSwitchIsEnabled { get; set; }
 
         bool KillSwitchAllowLAN { set; }
