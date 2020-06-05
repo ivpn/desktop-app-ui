@@ -33,3 +33,4 @@ Windows/NetworkHelpers/obj/
 .deps/
 Windows/IVPN Application/bin/
 Windows/References/bin/
+*.blob
