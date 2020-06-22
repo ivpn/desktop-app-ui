@@ -71,7 +71,7 @@
         <!--<Image Stretch="None" Margin="0,27,0,29" Source="/IVPN Client;component/Resources/imageLaptopDark.png" SnapsToDevicePixels="True"/>-->
 
         <Popup x:Name="GuiWrongPasswordPopup" StaysOpen="False" Placement="Top" 
-               MaxWidth="260"
+               MaxWidth="300"
                HorizontalOffset="10" VerticalOffset="6" 
                PlacementTarget="{Binding ElementName= GuiUsernamePlaceholder}" PopupAnimation="Fade" AllowsTransparency="True">
             <Border BorderThickness="0" Background="#ff2f38" Opacity="0.99">
@@ -82,7 +82,7 @@
         </Popup>
 
         <Grid Margin="0,0,0,13">
-            <Label Style="{StaticResource LabelPlaeholder}" Content="ivpnXXXXXXXX" Name="GuiUsernamePlaceholder"
+            <Label Style="{StaticResource LabelPlaeholder}" Content="i-XXXX-... or ivpnXXXXXXXX" Name="GuiUsernamePlaceholder"
 			    Width="{Binding Width, ElementName=GuiTextBoxUsername}"
 			    Height="{Binding Height, ElementName=GuiTextBoxUsername}"/>
             <TextBox Style="{StaticResource TextBoxDefault}" x:Name="GuiTextBoxUsername"

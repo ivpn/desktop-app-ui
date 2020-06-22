@@ -59,7 +59,7 @@
     <s:String x:Key="Mesage_CannotSelectServerSameCountry">Entry and exit servers cannot be in the same country</s:String>
     <s:String x:Key="Mesage_CannotSelectServerSameCountry_Description">When using multihop you must select entry and exit servers in different countries. Please select a different entry or exit server.</s:String>
     <s:String x:Key="Message_InvalidUsername">You entered an invalid account ID</s:String>
-    <s:String x:Key="Message_InvalidUsername_Description">Your account ID starts with the letters 'ivpn' and can be found in the welcome email sent to you on signup. You cannot use your email address.</s:String>
+    <s:String x:Key="Message_InvalidUsername_Description">Your account ID has to be in 'i-XXXX-XXXX-XXXX' or 'ivpnXXXXXXXX' format. You can find it on other devices where you are logged in and in the client area of the IVPN website.</s:String>
     <s:String x:Key="Message_PasswordResetSuccessInstructions">Please check your email, we have sent instructions to reset your password.</s:String>
 
     <s:String x:Key="Meggase_ResetAllNetworkActionsCaption">Reset all settings to default values</s:String>
