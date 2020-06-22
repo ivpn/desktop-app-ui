@@ -117,6 +117,8 @@ namespace IVPN.ViewModels
                     __NavigationService.NavigateToSessionLimitPage(NavigationAnimation.FadeToLeft); // Show 'session limit' page
                 else if (ex.ApiStatusCode == ApiStatusCode.Unauthorized)
                     OnAccountCredentailsError(__AppServices.LocalizedString("Error_Authentication"));
+                else if (ex.ApiStatusCode == ApiStatusCode.AccountNotActivatedByPurchase)
+                    NotifyError("Please complete your purchase", $"This operation cannot be performed on a new account. Please complete the purchase first.");
                 else
                 {
                     Logging.Info("EXCEPTION on LogIn (API request): " + ex);
@@ -222,7 +224,7 @@ namespace IVPN.ViewModels
         #region Private functionality
         private bool ValidateUsername(string username)
         {
-            if (Regex.IsMatch(username, "^ivpn[a-zA-Z0-9]{7,8}$"))
+            if (Regex.IsMatch(username, "^ivpn[a-zA-Z0-9]{7,8}$") || Regex.IsMatch(username, "^i(-[a-zA-Z0-9]{4,4}){3,3}$"))
                 return true;
 
             return false;

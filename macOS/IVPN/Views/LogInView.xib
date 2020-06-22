@@ -1,8 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<document type="com.apple.InterfaceBuilder3.Cocoa.XIB" version="3.0" toolsVersion="15400" targetRuntime="MacOSX.Cocoa" propertyAccessControl="none" useAutolayout="YES">
+<document type="com.apple.InterfaceBuilder3.Cocoa.XIB" version="3.0" toolsVersion="16097" targetRuntime="MacOSX.Cocoa" propertyAccessControl="none" useAutolayout="YES">
     <dependencies>
-        <deployment identifier="macosx"/>
-        <plugIn identifier="com.apple.InterfaceBuilder.CocoaPlugin" version="15400"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.CocoaPlugin" version="16097"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
     <objects>
@@ -106,23 +105,23 @@
             <point key="canvasLocation" x="60" y="730.5"/>
         </customView>
         <customView id="0Df-Ej-czp" customClass="PopoverContentView">
-            <rect key="frame" x="0.0" y="0.0" width="258" height="117"/>
+            <rect key="frame" x="0.0" y="0.0" width="320" height="117"/>
             <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
             <subviews>
                 <textField verticalHuggingPriority="750" horizontalCompressionResistancePriority="250" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="vR1-nV-ent">
-                    <rect key="frame" x="-2" y="6" width="262" height="105"/>
+                    <rect key="frame" x="-2" y="6" width="324" height="105"/>
                     <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                     <textFieldCell key="cell" controlSize="mini" sendsActionOnEndEditing="YES" alignment="center" id="01j-iu-9jX">
                         <font key="font" metaFont="system"/>
                         <string key="title">You entered an invalid account ID. 
 
-Your account ID starts with the letters 'ivpn' and can be found in the welcome email sent to you on signup. You cannot use your email address.</string>
+Your account ID has to be in 'i-XXXX-XXXX-XXXX' or 'ivpnXXXXXXXX' format. You can find it on other devices where you are logged in and in the client area of the IVPN website.</string>
                         <color key="textColor" white="1" alpha="1" colorSpace="deviceWhite"/>
                         <color key="backgroundColor" name="controlColor" catalog="System" colorSpace="catalog"/>
                     </textFieldCell>
                 </textField>
             </subviews>
-            <point key="canvasLocation" x="108" y="848.5"/>
+            <point key="canvasLocation" x="139" y="848.5"/>
         </customView>
     </objects>
     <resources>

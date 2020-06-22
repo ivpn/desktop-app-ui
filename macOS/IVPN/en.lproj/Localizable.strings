@@ -136,7 +136,7 @@
 
 "Placeholder_YourEmail" = "Email";
 "Placeholder_Password" = "Password";
-"Placeholder_Username" = "ivpnXXXXXXXX";
+"Placeholder_Username" = "i-XXXX-... or ivpnXXXXXXXX";
 
 "NetworkConfig_Trusted" = "Trusted";
 "NetworkConfig_Untrusted" = "Untrusted";
@@ -149,7 +149,7 @@
 "Mesage_CannotSelectServerSameCountry" = "Entry and exit servers cannot be in the same country";
 "Mesage_CannotSelectServerSameCountry_Description" = "When using multihop you must select entry and exit servers in different countries. Please select a different entry or exit server.";
 "Message_InvalidUsername" = "You entered an invalid account ID";
-"Message_InvalidUsername_Description" = "Your account ID starts with the letters 'ivpn' and can be found in the welcome email sent to you on signup. You cannot use your email address.";
+"Message_InvalidUsername_Description" = "Your account ID has to be in 'i-XXXX-XXXX-XXXX' or 'ivpnXXXXXXXX' format. You can find it on other devices where you are logged in and in the client area of the IVPN website.";
 "Message_LooksLikeAgentWasChashed" = "It appears the IVPN Agent crashed some time ago";
 "Meggase_CapturingLogs" = "Capturing logs, please wait...";
 "Message_PasswordResetSuccessInstructions" = "Please check your email, we have sent instructions to reset your password.";

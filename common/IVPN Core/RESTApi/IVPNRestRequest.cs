@@ -49,9 +49,10 @@ namespace IVPN.RESTApi
 
         SessionNotFound         = 601, // Session not found Session not found
         SessionTooManySessions  = 602, // Too many sessions Too many sessions
+        AccountNotActivatedByPurchase     = 11005, // This operation cannot be performed on a new account.Complete the purchase first
 
         // are in use? :
-        
+
         Conflict            = 409,  // Account with this email already registered. Please Sign In instead
         NotFound            = 404,  // Service not found
         Forbidden           = 403,  // Account logged out
