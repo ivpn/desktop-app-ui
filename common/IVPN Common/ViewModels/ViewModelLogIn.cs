@@ -118,7 +118,7 @@ namespace IVPN.ViewModels
                 else if (ex.ApiStatusCode == ApiStatusCode.Unauthorized)
                     OnAccountCredentailsError(__AppServices.LocalizedString("Error_Authentication"));
                 else if (ex.ApiStatusCode == ApiStatusCode.AccountNotActivatedByPurchase)
-                    NotifyError("Please complete your purchase", $"This operation cannot be performed on a new account. Please complete the purchase first.");
+                    NotifyError("Account not activated", "This operation cannot be performed on a new account. Please complete the purchase first.");
                 else
                 {
                     Logging.Info("EXCEPTION on LogIn (API request): " + ex);
