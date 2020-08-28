@@ -535,7 +535,11 @@ SectionEnd
 ; -----------
 
 Section "Uninstall"
+  DetailPrint "Ensure firewall is disabled..."
+  nsExec::ExecToLog '"${PATHDIR}\ivpn.exe" firewall -off'  
+  DetailPrint "Ensure VPN is disconnected..."
   nsExec::ExecToLog '"${PATHDIR}\ivpn.exe" disconnect'  
+  DetailPrint "Logout..."
   nsExec::ExecToLog '"${PATHDIR}\ivpn.exe" logout'
 
   ; stop service
