@@ -535,6 +535,9 @@ SectionEnd
 ; -----------
 
 Section "Uninstall"
+  nsExec::ExecToLog '"${PATHDIR}\ivpn.exe" disconnect'  
+  nsExec::ExecToLog '"${PATHDIR}\ivpn.exe" logout'
+
   ; stop service
   nsExec::ExecToLog '"$SYSDIR\sc.exe" stop "${IVPN_SERVICE_NAME}"'
 
