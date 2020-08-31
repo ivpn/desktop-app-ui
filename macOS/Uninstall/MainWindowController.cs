@@ -141,6 +141,18 @@ namespace IVPN_Uninstaller
 
             bool isSuccess = true;
             using (var auth = Authorization.Create(flags)) {
+                // disable firewall
+                var ret = IVPN.Shell.ShellCommand.RunCommand("/Applications/IVPN.app/Contents/MacOS/cli/ivpn", "firewall -off");
+                if (ret.IsAborted || ret.ExitCode != 0)
+                    Logging.Info("Failed to disable firewall." + ((string.IsNullOrEmpty(ret.ErrorOutput)) ? "" : ret.ErrorOutput));
+                // disconnect (if connected)
+                ret = IVPN.Shell.ShellCommand.RunCommand("/Applications/IVPN.app/Contents/MacOS/cli/ivpn", "disconnect");
+                if (ret.IsAborted || ret.ExitCode != 0)
+                    Logging.Info("Failed to disconnect." + ((string.IsNullOrEmpty(ret.ErrorOutput)) ? "" : ret.ErrorOutput));
+                // logout
+                ret = IVPN.Shell.ShellCommand.RunCommand("/Applications/IVPN.app/Contents/MacOS/cli/ivpn", "logout");
+                if (ret.IsAborted || ret.ExitCode != 0)
+                    Logging.Info("Failed to logout." + ((string.IsNullOrEmpty(ret.ErrorOutput)) ? "" : ret.ErrorOutput));
 
                 if (PrivilegeHelper.IsHelperInstalled()) 
                 {
@@ -151,10 +163,9 @@ namespace IVPN_Uninstaller
                         return false;
                 }
 
-
                 const string IVPNAppBundleID = "net.ivpn.client.IVPN";
                 // Erasing app NSUserDefaults data
-                var ret = IVPN.Shell.ShellCommand.RunCommand("defaults", $"delete {IVPNAppBundleID}");
+                ret = IVPN.Shell.ShellCommand.RunCommand("defaults", $"delete {IVPNAppBundleID}");
                 if (ret.IsAborted || ret.ExitCode != 0)
                 {
                     Logging.Info("Failed to delete application user defaults." + ((string.IsNullOrEmpty(ret.ErrorOutput)) ? "" : ret.ErrorOutput));
