@@ -77,7 +77,7 @@ namespace IVPN.Views
             __ViewModel.OnDidExecute += (sender) =>
             {
                 LoginBtnCaption.Text = StringUtils.String("Button_LogIn");
-                
+
                 GuiProgressBar.Visibility = Visibility.Collapsed;
                 GuiProgressBar.IsIndeterminate = false;
             };
@@ -89,14 +89,14 @@ namespace IVPN.Views
         {
             SubscriptionExpireWindow.Show(session, ViewModel.UserName);
         }
-        
+
         void __ViewModel_OnError(string errorText, string errorDescription = "")
         {
             if (!string.IsNullOrEmpty(errorDescription))
                 MessageBox.Show(Application.Current.MainWindow, errorDescription, errorText , MessageBoxButton.OK, MessageBoxImage.Error);
             else
-                MessageBox.Show(Application.Current.MainWindow, errorText + Environment.NewLine + errorDescription, 
-                    StringUtils.String("Error_MessageboxTitle"), 
+                MessageBox.Show(Application.Current.MainWindow, errorText + Environment.NewLine + errorDescription,
+                    StringUtils.String("Error_MessageboxTitle"),
                     MessageBoxButton.OK, MessageBoxImage.Error);
         }
 
@@ -110,7 +110,7 @@ namespace IVPN.Views
         {
             GuiWrongPasswordPopup.IsOpen = false;
         }
-        
+
         private void GuiButtonLogin_OnClick(object sender, RoutedEventArgs e)
         {
             PrepareBeforeLogIn();
@@ -131,10 +131,10 @@ namespace IVPN.Views
             if (handler != null) handler(this, new PropertyChangedEventArgs(propertyName));
         }
         #endregion //INotifyPropertyChanged
-        
+
         private void Hyperlink_ClientAreaClick(object sender, RoutedEventArgs e)
         {
-            System.Diagnostics.Process.Start("https://www.ivpn.net/clientarea/login");
+            System.Diagnostics.Process.Start("https://www.ivpn.net/account");
         }
     }
 }

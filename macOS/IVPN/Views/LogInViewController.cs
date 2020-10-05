@@ -83,7 +83,7 @@ namespace IVPN
 
             // ACCOUNT ID DESCRIPTION ...
             // Initialize Account ID description text with link to a Client Area
-            NSData descriptionData = NSData.FromString("Your account ID can be found in the <a style=\"text-decoration:none\" href=\"https://www.ivpn.net/clientarea/login\">Client Area</a> of the website");
+            NSData descriptionData = NSData.FromString("Your account ID can be found in the <a style=\"text-decoration:none\" href=\"https://www.ivpn.net/account\">Client Area</a> of the website");
             NSDictionary resultDocumentAttributes;
             NSAttributedString nSAttributed = NSAttributedString.CreateWithHTML(descriptionData, out resultDocumentAttributes);
 

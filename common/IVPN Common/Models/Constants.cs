@@ -54,7 +54,7 @@ namespace IVPN
 
         public static string GetRenewUrl (string username)
         {
-            return @"https://www.ivpn.net/clientarea/renew/" + username + "?client=" + Platform.ShortPlatformName;
+            return @"https://www.ivpn.net/account";
         }
 
         public static string GetSignUpUrl ()
