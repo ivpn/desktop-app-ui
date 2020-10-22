@@ -2,9 +2,19 @@
 
 All notable changes to this project will be documented in this file.
 
+## Version 2.12.6 - 2020-09-02
+
+[IMPROVED] Uninstaller improvements  
+
+[Download IVPN Client v. 2.12.6](https://cdn.ivpn.net/releases/win/IVPN-Client-v2.12.6.exe)  
+SHA256: 2a6dca061a646d52ffc820381ec4defeea8c13280dfb98f8bb1c44ff8a44d765
+
 ## Version 2.12.4 - 2020-06-30
 
 [IMPROVED] Account ID validation logic  
+
+[Download IVPN Client v. 2.12.4](https://cdn.ivpn.net/releases/win/IVPN-Client-v2.12.4.exe)  
+SHA256: 05d6051420974faa2115118330ffca0274751094b55e56017192cf2e4de23a70
 
 ## Version 2.12.3 - 2020-06-05
 
@@ -12,41 +22,59 @@ All notable changes to this project will be documented in this file.
 [FIXED] Random disconnections on waking-up from sleep  
 [FIXED] Updated installer to allow access to application for non privileged users  
 
+[Download IVPN Client v. 2.12.3](https://cdn.ivpn.net/releases/win/IVPN-Client-v2.12.3.exe)  
+SHA256: f95cf1bbed6e1d8b4e14443c028f6663203b9efd2c2d1f6b4d591f014c51b2ef
+
 ## Version 2.12.2 - 2020-05-23
 
 [IMPROVED] Overall stability  
 [FIXED] Potential disconnection when network changes  
 
+[Download IVPN Client v. 2.12.2](https://cdn.ivpn.net/releases/win/IVPN-Client-v2.12.2.exe)  
+SHA256: 1f282bf3fb0940df5501104d21d3c8c43b3e16eda37871ea4acc258ba0cc8b4a
+
 ## Version 2.12.1 - 2020-05-21
 
 [FIXED] Potential disconnection when network changes  
+
+[Download IVPN Client v. 2.12.1](https://cdn.ivpn.net/releases/win/IVPN-Client-v2.12.1.exe)  
+SHA256: 2d68a1e0539a3ed8f9ec38d963c7e93031b2f17b14a4356d2f30d4455d666bda
 
 ## Version 2.12.0 - 2020-05-14
 
 [NEW] Command line interface for IVPN service  
 [IMPROVED] Overall stability  
 
+[Download IVPN Client v. 2.12.0](https://cdn.ivpn.net/releases/win/IVPN-Client-v2.12.0.exe)  
+SHA256: adf1f4d88b8c7cea5bc9dd007cd80358666ee927217258aa89e7523b6b24f29e
+
 ## Version 2.11.9 - 2020-04-27
 
-[IMPROVED] Removed WireGuard warning
+[IMPROVED] Removed WireGuard warning  
+
+[Download IVPN Client v. 2.11.9](https://cdn.ivpn.net/releases/win/IVPN-Client-v2.11.9.exe)  
+SHA256: ec516252e48d960d9a59d05a73d3a8098e1565102f9833ac7012d29f058276a3
 
 ## Version 2.11.6 - 2020-03-27
 
-[FIXED] Sometimes ping indicators are not updating because of an issue on the daemon side
+[FIXED] Sometimes ping indicators are not updating because of an issue on the daemon side  
+
+[Download IVPN Client v. 2.11.6](https://cdn.ivpn.net/releases/win/IVPN-Client-v2.11.6.exe)  
+SHA256: 036905d9610de0fefbd11ce772d166cd4dd5c38735b9a084c7db5023b8c57b55
 
 ## Version 2.11.5 - 2020-03-26
 
 [IMPROVED] Reconnection functionality  
-[FIXED] "Automatically change port" feature
+[FIXED] "Automatically change port" feature  
 
 ## Version 2.11.4 - 2020-03-04
 
-[FIXED] Crash because of the missing library on Windows Server
+[FIXED] Crash because of the missing library on Windows Server  
 
 ## Version 2.11.3 - 2020-02-24
 
 [FIXED] Pause feature for WireGuard  
-[FIXED] Reset AntiTracker to default value on LogOut
+[FIXED] Reset AntiTracker to default value on LogOut  
 
 ## Version 2.11.2 - 2020-02-20
 
@@ -55,11 +83,11 @@ All notable changes to this project will be documented in this file.
 [FIXED] Unable to connect WireGuard if its service not uninstalled  
 [FIXED] Issue with background update of WireGuard keys  
 [FIXED] Firewall config changes from Always-On to On-Demand after upgrade  
-[FIXED] Processing of users additional OpenVPN parameters
+[FIXED] Processing of users additional OpenVPN parameters  
 
 ## Version 2.11.0 - 2020-01-28
 
-[IMPROVED] Improved performance of IVPN Service
+[IMPROVED] Improved performance of IVPN Service  
 
 ## Version 2.10.9 - 2019-12-12
 
