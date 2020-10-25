@@ -2,9 +2,20 @@
 
 All notable changes to this project will be documented in this file.
 
+## Version 2.12.6 - 2020-09-02
+
+[IMPROVED] Uninstaller improvements  
+[FIXED] Spontaneous reconnections  
+
+[Download IVPN Client v. 2.12.6](https://cdn.ivpn.net/releases/osx/IVPN-2.12.6.dmg)  
+SHA256: dac7caeff9a1584e6e471a566df0b662c03ef15cab4abf5b8dba349ac9901d2e
+
 ## Version 2.12.4 - 2020-06-30
 
 [IMPROVED] Account ID validation logic  
+
+[Download IVPN Client v. 2.12.4](https://cdn.ivpn.net/releases/osx/IVPN-2.12.4.dmg)  
+SHA256: 3d12c0d576cf3d61f16ecd23852b486c99b8208acfa9552c24e14d9f95dd1c66
 
 ## Version 2.12.3 - 2020-06-05
 
@@ -13,27 +24,45 @@ All notable changes to this project will be documented in this file.
 [FIXED] Always-on Firewall is blocking traffic on system boot  
 [FIXED] WireGuard connection error when a network interface not initialized  
 
+[Download IVPN Client v. 2.12.3](https://cdn.ivpn.net/releases/osx/IVPN-2.12.3.dmg)  
+SHA256: 858b8fcf618a6213e1021f108d5f0986e79d6faca378a7b6d33d39c48490585e
+
 ## Version 2.12.2 - 2020-05-23
 
 [IMPROVED] Overall stability  
 [FIXED] Potential disconnection when network changes  
 
+[Download IVPN Client v. 2.12.2](https://cdn.ivpn.net/releases/osx/IVPN-2.12.2.dmg)  
+SHA256: f3657528b6f96f444e83e889a0a6cc6f337ae7328f15718e40ea424fc102aa2f
+
 ## Version 2.12.1 - 2020-05-21
 
 [FIXED] Potential disconnection when network changes  
+
+[Download IVPN Client v. 2.12.1](https://cdn.ivpn.net/releases/osx/IVPN-2.12.1.dmg)  
+SHA256: 39723ff2f3e8f4b96dbd90b70ead407cf2d050fea86083816ec02a1b1d6e90ee
 
 ## Version 2.12.0 - 2020-05-14
 
 [NEW] Command line interface for IVPN service  
 [IMPROVED] Overall stability  
 
+[Download IVPN Client v. 2.12.0](https://cdn.ivpn.net/releases/osx/IVPN-2.12.0.dmg)  
+SHA256: a8296ed265f5d56695c75beeb6c3263b829a239a5619708160f6df92de16a1ed
+
 ## Version 2.11.9 - 2020-04-27
 
-[IMPROVED] Removed WireGuard warning
+[IMPROVED] Removed WireGuard warning  
+
+[Download IVPN Client v. 2.11.9](https://cdn.ivpn.net/releases/osx/IVPN-2.11.9.dmg)  
+SHA256: 56ecadde02dca890d0eca9de677961abc405b60384ed382cf86b105050e077de
 
 ## Version 2.11.7 - 2020-03-30
 
-[FIXED] Sending logs
+[FIXED] Sending logs  
+
+[Download IVPN Client v. 2.11.7](https://cdn.ivpn.net/releases/osx/IVPN-2.11.7.dmg)  
+SHA256: b5589eea1709d4de8c770719fb7067506980cf3e8043b0f03f3d9548e97cffde
 
 ## Version 2.11.6 - 2020-03-27
 
