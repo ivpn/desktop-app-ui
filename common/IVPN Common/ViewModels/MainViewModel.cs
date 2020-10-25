@@ -1735,7 +1735,6 @@ namespace IVPN.ViewModels
                 (
                 dnsIp.Equals(IPAddress.None)
                 || dnsIp.Equals(IPAddress.IPv6None)
-                || dnsIp.Equals(IPAddress.Loopback)
                 || dnsIp.Equals(IPAddress.Any)
                 || dnsIp.Equals(IPAddress.IPv6Any)
                 )
