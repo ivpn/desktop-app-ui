@@ -86,5 +86,13 @@ namespace IVPN
             else
                 __ConfigButton.Hidden = true;
         }
+
+        public override void DrawRect(CGRect dirtyRect)
+        {
+            base.DrawRect(dirtyRect);
+
+            var bgClr = Colors.WindowBackground;
+            base.Layer.BackgroundColor = Colors.IsDarkMode ? bgClr.CGColor : NSColor.White.CGColor;
+        }
     }
 }

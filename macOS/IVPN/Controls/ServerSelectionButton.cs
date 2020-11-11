@@ -127,7 +127,6 @@ namespace IVPN
             base.DrawRect(dirtyRect);
 
             var bgClr = Colors.WindowBackground;
-            base.Layer.BackgroundColor = Colors.IsDarkMode ? bgClr.CGColor : NSColor.White.CGColor;
             __DisabledLayer.BackgroundColor = Colors.IsDarkMode ? new CGColor(bgClr.RedComponent, bgClr.GreenComponent, bgClr.BlueComponent, 0.6f) : new CGColor(1.0f, 0.6f);
         }
 

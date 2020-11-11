@@ -211,7 +211,11 @@ namespace IVPN.ViewModels
                     ||
                     !string.Equals(SelectedServer?.VpnServer?.GatewayId, ConnectionInfo?.Server?.VpnServer?.GatewayId)
                     ||
-                    !string.Equals(SelectedExitServer?.VpnServer?.GatewayId, ConnectionInfo?.ExitServer?.VpnServer?.GatewayId)
+                    (
+                        IsMultiHop
+                        && 
+                        !string.Equals(SelectedExitServer?.VpnServer?.GatewayId, ConnectionInfo?.ExitServer?.VpnServer?.GatewayId)
+                    )
                     )
                 {
                     IsAutomaticServerSelection = false;
