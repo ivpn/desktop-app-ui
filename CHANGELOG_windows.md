@@ -4,8 +4,8 @@ All notable changes to this project will be documented in this file.
 
 ## Version 2.12.9 - 2020-11-11
 
-[FIXED] Set custom DNS to 127.0.0.1
-[FIXED] Various UI issues
+[FIXED] Set custom DNS to 127.0.0.1  
+[FIXED] Various UI issues  
 
 [Download IVPN Client v. 2.12.9](https://cdn.ivpn.net/releases/win/IVPN-Client-v2.12.9.exe)  
 SHA256: 056093764da1f31db740db16528fb282a341cd5b26e3c6bb96e3805a200b86a1
