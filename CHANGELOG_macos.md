@@ -4,9 +4,9 @@ All notable changes to this project will be documented in this file.
 
 ## Version 2.12.9 - 2020-11-11
 
-[IMPROVED] Сompatibility with macOS Big Sur 
-[FIXED] Set custom DNS to 127.0.0.1
-[FIXED] Various UI issues
+[IMPROVED] Сompatibility with macOS Big Sur  
+[FIXED] Set custom DNS to 127.0.0.1  
+[FIXED] Various UI issues  
 
 [Download IVPN Client v. 2.12.9](https://cdn.ivpn.net/releases/osx/IVPN-2.12.9.dmg)  
 SHA256: d3c2ca2c5c6aecaff51807797e58c6403752eed4e64dcde0f4170b14024c8a03
