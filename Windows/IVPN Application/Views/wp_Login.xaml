@@ -124,7 +124,7 @@
                 Click="GuiButtonStartFreeTrial_OnClick"
                 Style="{StaticResource ButtonMouseOverAndPressedStyle}">
             
-            <TextBlock FontSize="15" Foreground="#ff385777">Start my free trial</TextBlock>
+            <TextBlock FontSize="15" Foreground="#ff385777">Sign Up</TextBlock>
         </Button>
         
     </StackPanel>
