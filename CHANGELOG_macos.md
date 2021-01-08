@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file.
 
+## Version 2.12.10 - 2020-11-12
+
+[FIXED] Removed dependencies from WIFI libraries 
+
+[Download IVPN Client v. 2.12.10](https://cdn.ivpn.net/releases/osx/IVPN-2.12.10.dmg)  
+SHA256: b955b230977d64b45cb81b6f4a31b8f42dbc864b98bc91202f46a495c89b3d21
+
 ## Version 2.12.9 - 2020-11-11
 
 [IMPROVED] Сompatibility with macOS Big Sur  
