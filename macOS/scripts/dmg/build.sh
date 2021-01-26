@@ -37,7 +37,7 @@ CheckLastResult "Failed to determine location of IVPN CLI sources. Plase check '
 echo '---------------------------'
 echo "Building IVPN Daemon ($DAEMON_REPO_ABS_PATH)...";
 echo '---------------------------'
-$DAEMON_REPO_ABS_PATH/References/macOS/scripts/build-all.sh -norebuild -v $EXPECTED_VERSION
+$DAEMON_REPO_ABS_PATH/References/macOS/scripts/build-all.sh -libivpn -norebuild -v $EXPECTED_VERSION
 CheckLastResult "ERROR building IVPN Daemon"
 
 echo '---------------------------'
