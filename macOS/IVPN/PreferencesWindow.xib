@@ -1,7 +1,8 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<document type="com.apple.InterfaceBuilder3.Cocoa.XIB" version="3.0" toolsVersion="16096" targetRuntime="MacOSX.Cocoa" propertyAccessControl="none" useAutolayout="YES">
+<document type="com.apple.InterfaceBuilder3.Cocoa.XIB" version="3.0" toolsVersion="17156" targetRuntime="MacOSX.Cocoa" propertyAccessControl="none" useAutolayout="YES">
     <dependencies>
-        <plugIn identifier="com.apple.InterfaceBuilder.CocoaPlugin" version="16096"/>
+        <deployment identifier="macosx"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.CocoaPlugin" version="17156"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
     <objects>
@@ -49,7 +50,7 @@
             <windowStyleMask key="styleMask" titled="YES" closable="YES"/>
             <windowPositionMask key="initialPositionMask" leftStrut="YES" rightStrut="YES" topStrut="YES" bottomStrut="YES"/>
             <rect key="contentRect" x="131" y="74" width="562" height="577"/>
-            <rect key="screenRect" x="0.0" y="0.0" width="1440" height="877"/>
+            <rect key="screenRect" x="0.0" y="0.0" width="1440" height="875"/>
             <view key="contentView" id="3">
                 <rect key="frame" x="0.0" y="0.0" width="562" height="577"/>
                 <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
@@ -63,42 +64,58 @@
             <toolbar key="toolbar" implicitIdentifier="786DFDB5-F1ED-4B19-88F9-C9210695E187" autosavesConfiguration="NO" allowsUserCustomization="NO" displayMode="iconAndLabel" sizeMode="regular" id="54">
                 <allowedToolbarItems>
                     <toolbarItem implicitItemIdentifier="A40C3E0A-F727-4785-9209-A0A1AD83C6B5" explicitItemIdentifier="generalSettings" label="General" paletteLabel="General" tag="-1" image="iconPreferencesGeneral" selectable="YES" id="60">
+                        <size key="minSize" width="22" height="22"/>
+                        <size key="maxSize" width="22" height="22"/>
                         <connections>
                             <action selector="ShowGeneralSettings:" target="-2" id="168"/>
                         </connections>
                     </toolbarItem>
                     <toolbarItem implicitItemIdentifier="91F71B9C-181D-401A-B220-3A7ADF6C2E58" explicitItemIdentifier="connectionSettings" label="Connection" paletteLabel="Connection" tag="-1" image="iconPreferencesConnection" selectable="YES" id="61">
+                        <size key="minSize" width="22" height="22"/>
+                        <size key="maxSize" width="22" height="22"/>
                         <connections>
                             <action selector="ShowConnectionSettings:" target="-2" id="165"/>
                         </connections>
                     </toolbarItem>
                     <toolbarItem implicitItemIdentifier="38AB5291-6DF3-42D1-9282-EC8F854A976F" explicitItemIdentifier="firewallSettings" label="IVPN Firewall" paletteLabel="IVPN Firewall" tag="-1" image="iconPreferencesFirewall" selectable="YES" id="62">
+                        <size key="minSize" width="22" height="22"/>
+                        <size key="maxSize" width="22" height="22"/>
                         <connections>
                             <action selector="ShowFirewallSettings:" target="-2" id="166"/>
                         </connections>
                     </toolbarItem>
                     <toolbarItem implicitItemIdentifier="08747609-9B95-458F-8B82-1D3E43556EC3" explicitItemIdentifier="giagnosticsSettings" label="Diagnostics" paletteLabel="Diagnostics" tag="-1" image="toolbar-log" selectable="YES" id="63">
+                        <size key="minSize" width="22" height="22"/>
+                        <size key="maxSize" width="22" height="22"/>
                         <connections>
                             <action selector="ShowDiagnosticsSettings:" target="-2" id="167"/>
                         </connections>
                     </toolbarItem>
                     <toolbarItem implicitItemIdentifier="73732EFE-6325-4BDE-BC7A-9B6B255ADD3A" explicitItemIdentifier="openVPN" label="OpenVPN" paletteLabel="OpenVpn" tag="-1" image="iconPreferencesOpenvpn" selectable="YES" id="Nm9-pC-wzw">
+                        <size key="minSize" width="22" height="22"/>
+                        <size key="maxSize" width="22" height="22"/>
                         <connections>
                             <action selector="ShowOpenVPNSettings:" target="-2" id="pXj-bl-cXj"/>
                         </connections>
                     </toolbarItem>
                     <toolbarItem implicitItemIdentifier="7EB5453B-2AD4-48B9-B36C-CDE53478B5F7" label="Networks" paletteLabel="Networks" tag="-1" image="iconWiFi" selectable="YES" id="fvG-H0-3jB">
                         <nil key="toolTip"/>
+                        <size key="minSize" width="22" height="22"/>
+                        <size key="maxSize" width="22" height="22"/>
                         <connections>
                             <action selector="ShowNetworksSettings:" target="-2" id="ad4-yA-eaA"/>
                         </connections>
                     </toolbarItem>
                     <toolbarItem implicitItemIdentifier="E9672DB5-CBD1-458D-A4BA-75837E23F93A" label="AntiTracker" paletteLabel="AntiTracker" tag="-1" image="iconPreferencesAntiTracker" selectable="YES" id="4dT-ko-xEj">
+                        <size key="minSize" width="22" height="22"/>
+                        <size key="maxSize" width="22" height="22"/>
                         <connections>
                             <action selector="ShowAntitrackerSettings:" target="-2" id="1Gq-Oe-ZgW"/>
                         </connections>
                     </toolbarItem>
                     <toolbarItem implicitItemIdentifier="13EE10B6-BA0C-4BC0-9BAD-CD3625BD6126" label="DNS" paletteLabel="DNS" tag="-1" image="iconPreferencesDNS" selectable="YES" id="wHR-W9-HOT">
+                        <size key="minSize" width="21" height="22"/>
+                        <size key="maxSize" width="21" height="22"/>
                         <connections>
                             <action selector="ShowDnsSettings:" target="-2" id="nTx-rY-a12"/>
                         </connections>
@@ -290,7 +307,7 @@ application</string>
                     </textFieldCell>
                 </textField>
                 <button verticalHuggingPriority="750" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="prz-eJ-eMK">
-                    <rect key="frame" x="47" y="415" width="81" height="19"/>
+                    <rect key="frame" x="47" y="415.5" width="81" height="19"/>
                     <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
                     <buttonCell key="cell" type="radio" title="OpenVPN" bezelStyle="regularSquare" imagePosition="left" alignment="left" inset="2" id="Xwd-j2-EwN">
                         <behavior key="behavior" changeContents="YES" doesNotDimImage="YES" lightByContents="YES"/>
@@ -301,7 +318,7 @@ application</string>
                     </connections>
                 </button>
                 <button verticalHuggingPriority="750" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="HeH-eE-QoO">
-                    <rect key="frame" x="47" y="386" width="88" height="19"/>
+                    <rect key="frame" x="47" y="386.5" width="88" height="19"/>
                     <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
                     <buttonCell key="cell" type="radio" title="WireGuard" bezelStyle="regularSquare" imagePosition="left" alignment="left" inset="2" id="HVm-RQ-Ksx">
                         <behavior key="behavior" changeContents="YES" doesNotDimImage="YES" lightByContents="YES"/>
@@ -350,7 +367,7 @@ application</string>
                                         </popUpButtonCell>
                                     </popUpButton>
                                     <button verticalHuggingPriority="750" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="ltY-me-RZN">
-                                        <rect key="frame" x="185" y="268" width="328" height="18"/>
+                                        <rect key="frame" x="185" y="268.5" width="328" height="18"/>
                                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
                                         <buttonCell key="cell" type="check" title="Automatically change port on connection error" bezelStyle="regularSquare" imagePosition="left" state="on" inset="2" id="MaQ-Cc-vuA">
                                             <behavior key="behavior" changeContents="YES" doesNotDimImage="YES" lightByContents="YES"/>
@@ -521,7 +538,7 @@ application</string>
                                         </textFieldCell>
                                     </textField>
                                     <button fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="77">
-                                        <rect key="frame" x="185" y="38" width="243" height="18"/>
+                                        <rect key="frame" x="185" y="38.5" width="243" height="18"/>
                                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
                                         <buttonCell key="cell" type="check" title="Use obfsproxy" bezelStyle="regularSquare" imagePosition="left" state="on" inset="2" id="80">
                                             <behavior key="behavior" changeContents="YES" doesNotDimImage="YES" lightByContents="YES"/>
@@ -605,7 +622,7 @@ application</string>
                                             <textField horizontalHuggingPriority="251" verticalHuggingPriority="750" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="3IG-ar-7Li">
                                                 <rect key="frame" x="6" y="305" width="177" height="19"/>
                                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
-                                                <textFieldCell key="cell" scrollable="YES" lineBreakMode="clipping" sendsActionOnEndEditing="YES" alignment="right" title="Regenerate key every" id="2aX-Kp-grq">
+                                                <textFieldCell key="cell" scrollable="YES" lineBreakMode="clipping" sendsActionOnEndEditing="YES" alignment="right" title="Rotate key every" id="2aX-Kp-grq">
                                                     <font key="font" size="14" name="SFProText-Medium"/>
                                                     <color key="textColor" name="labelColor" catalog="System" colorSpace="catalog"/>
                                                     <color key="backgroundColor" name="controlColor" catalog="System" colorSpace="catalog"/>
@@ -821,7 +838,7 @@ application</string>
                     </textFieldCell>
                 </textField>
                 <button fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="158">
-                    <rect key="frame" x="40" y="114" width="412" height="18"/>
+                    <rect key="frame" x="40" y="114.5" width="412" height="18"/>
                     <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
                     <buttonCell key="cell" type="check" title="Allow LAN traffic when IVPN Firewall is enabled" bezelStyle="regularSquare" imagePosition="left" state="on" inset="2" id="159">
                         <behavior key="behavior" changeContents="YES" doesNotDimImage="YES" lightByContents="YES"/>
@@ -832,7 +849,7 @@ application</string>
                     </connections>
                 </button>
                 <button fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="174">
-                    <rect key="frame" x="40" y="176" width="412" height="18"/>
+                    <rect key="frame" x="40" y="176.5" width="412" height="18"/>
                     <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
                     <buttonCell key="cell" type="check" title="Deactivate IVPN Firewall on IVPN Client exit" bezelStyle="regularSquare" imagePosition="left" state="on" inset="2" id="175">
                         <behavior key="behavior" changeContents="YES" doesNotDimImage="YES" lightByContents="YES"/>
@@ -865,7 +882,7 @@ application</string>
                     </textFieldCell>
                 </textField>
                 <button fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="172">
-                    <rect key="frame" x="40" y="195" width="446" height="31"/>
+                    <rect key="frame" x="40" y="195.5" width="446" height="31"/>
                     <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
                     <buttonCell key="cell" type="check" title="Activate on connect to VPN and deactivate on disconnect" bezelStyle="regularSquare" imagePosition="left" alignment="left" state="on" inset="2" id="177">
                         <behavior key="behavior" changeContents="YES" doesNotDimImage="YES" lightByContents="YES"/>
@@ -877,7 +894,7 @@ application</string>
                     </connections>
                 </button>
                 <button fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="152-YF-xvM">
-                    <rect key="frame" x="40" y="89" width="412" height="18"/>
+                    <rect key="frame" x="40" y="89.5" width="412" height="18"/>
                     <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
                     <buttonCell key="cell" type="check" title="Allow Multicast when LAN traffic is allowed" bezelStyle="regularSquare" imagePosition="left" state="on" inset="2" id="txC-h4-jYB">
                         <behavior key="behavior" changeContents="YES" doesNotDimImage="YES" lightByContents="YES"/>
@@ -898,7 +915,7 @@ application</string>
                     </textFieldCell>
                 </textField>
                 <button fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="Qwt-lq-hOw">
-                    <rect key="frame" x="40" y="25" width="412" height="18"/>
+                    <rect key="frame" x="40" y="25.5" width="412" height="18"/>
                     <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
                     <buttonCell key="cell" type="check" title="Do not show IVPN Firewall notification window" bezelStyle="regularSquare" imagePosition="left" inset="2" id="lPV-ey-3IS">
                         <behavior key="behavior" changeContents="YES" doesNotDimImage="YES" lightByContents="YES"/>
@@ -909,7 +926,7 @@ application</string>
                     </connections>
                 </button>
                 <button verticalHuggingPriority="750" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="BCg-sg-uMe">
-                    <rect key="frame" x="41" y="324" width="199" height="18"/>
+                    <rect key="frame" x="41" y="324.5" width="199" height="18"/>
                     <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
                     <buttonCell key="cell" type="radio" title="Always-on Firewall" bezelStyle="regularSquare" imagePosition="left" alignment="left" inset="2" id="w4B-7H-Yei">
                         <behavior key="behavior" changeContents="YES" doesNotDimImage="YES" lightByContents="YES"/>
@@ -920,7 +937,7 @@ application</string>
                     </connections>
                 </button>
                 <button verticalHuggingPriority="750" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="6hC-Qy-kMd">
-                    <rect key="frame" x="41" y="424" width="245" height="18"/>
+                    <rect key="frame" x="41" y="424.5" width="245" height="18"/>
                     <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
                     <buttonCell key="cell" type="radio" title="On-demand" bezelStyle="regularSquare" imagePosition="left" alignment="left" inset="2" id="eVg-04-yWB">
                         <behavior key="behavior" changeContents="YES" doesNotDimImage="YES" lightByContents="YES"/>
@@ -1056,7 +1073,7 @@ application</string>
                                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                                         <clipView key="contentView" id="9d7-k6-HGz">
                                             <rect key="frame" x="1" y="1" width="480" height="174"/>
-                                            <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                                            <autoresizingMask key="autoresizingMask"/>
                                             <subviews>
                                                 <view fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="IhW-jE-gqj" userLabel="NetworksView">
                                                     <rect key="frame" x="0.0" y="0.0" width="450" height="144"/>
@@ -1177,7 +1194,7 @@ application</string>
             <windowStyleMask key="styleMask" titled="YES" closable="YES"/>
             <windowPositionMask key="initialPositionMask" leftStrut="YES" rightStrut="YES" topStrut="YES" bottomStrut="YES"/>
             <rect key="contentRect" x="-2288" y="172" width="363" height="256"/>
-            <rect key="screenRect" x="0.0" y="0.0" width="1440" height="877"/>
+            <rect key="screenRect" x="0.0" y="0.0" width="1440" height="875"/>
             <view key="contentView" id="kZu-Ie-I8Q">
                 <rect key="frame" x="0.0" y="0.0" width="363" height="256"/>
                 <autoresizingMask key="autoresizingMask"/>
@@ -1199,7 +1216,7 @@ application</string>
                                 <rect key="frame" x="106" y="153" width="240" height="54"/>
                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
                                 <textFieldCell key="cell" lineBreakMode="charWrapping" selectable="YES" sendsActionOnEndEditing="YES" state="on" borderStyle="bezel" alignment="left" drawsBackground="YES" id="NNX-ms-3eW">
-                                    <font key="font" metaFont="controlContent"/>
+                                    <font key="font" metaFont="cellTitle"/>
                                     <color key="textColor" name="disabledControlTextColor" catalog="System" colorSpace="catalog"/>
                                     <color key="backgroundColor" name="textBackgroundColor" catalog="System" colorSpace="catalog"/>
                                 </textFieldCell>
@@ -1220,7 +1237,7 @@ application</string>
                                 <rect key="frame" x="107" y="215" width="134" height="21"/>
                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
                                 <textFieldCell key="cell" scrollable="YES" lineBreakMode="clipping" selectable="YES" sendsActionOnEndEditing="YES" state="on" borderStyle="bezel" alignment="left" title="0.0.0.0" drawsBackground="YES" id="UW0-kR-q9P">
-                                    <font key="font" metaFont="controlContent"/>
+                                    <font key="font" metaFont="cellTitle"/>
                                     <color key="textColor" name="disabledControlTextColor" catalog="System" colorSpace="catalog"/>
                                     <color key="backgroundColor" name="textBackgroundColor" catalog="System" colorSpace="catalog"/>
                                 </textFieldCell>
@@ -1247,7 +1264,7 @@ application</string>
                                         <textField horizontalHuggingPriority="251" verticalHuggingPriority="750" horizontalCompressionResistancePriority="250" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="jCh-A3-iEr">
                                             <rect key="frame" x="-2" y="10" width="222" height="18"/>
                                             <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
-                                            <textFieldCell key="cell" sendsActionOnEndEditing="YES" alignment="right" title="Will be automatically regenerated:" id="u94-LL-bKa">
+                                            <textFieldCell key="cell" sendsActionOnEndEditing="YES" alignment="right" title="Will be automatically rotated:" id="u94-LL-bKa">
                                                 <font key="font" size="13" name="SFProText-Regular"/>
                                                 <color key="textColor" name="controlTextColor" catalog="System" colorSpace="catalog"/>
                                                 <color key="backgroundColor" name="controlColor" catalog="System" colorSpace="catalog"/>
