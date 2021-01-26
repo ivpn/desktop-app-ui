@@ -63,7 +63,7 @@
                         <TextBlock Grid.Row="1" Grid.Column="0" Margin="3" HorizontalAlignment="Right">Expiration date:</TextBlock>
                         <TextBlock Grid.Row="1" Grid.Column="1" Margin="3" Text="{Binding ViewModel.ExpirationDate}" HorizontalAlignment="Right"/>
 
-                        <TextBlock Grid.Row="2" Grid.Column="0" Margin="3" HorizontalAlignment="Right">Will be automatically regenerated:</TextBlock>
+                        <TextBlock Grid.Row="2" Grid.Column="0" Margin="3" HorizontalAlignment="Right">Will be automatically rotated:</TextBlock>
                         <TextBlock Grid.Row="2" Grid.Column="1" Margin="3" Text="{Binding ViewModel.AutoRegenerationDate}" HorizontalAlignment="Right"/>
 
                     </Grid>

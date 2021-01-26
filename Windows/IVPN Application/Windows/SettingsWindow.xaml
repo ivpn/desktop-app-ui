@@ -379,7 +379,7 @@
                             </ListBox>
                             
                             <StackPanel Orientation="Horizontal" VerticalAlignment="Center">
-                                <TextBlock VerticalAlignment="Center">Regenerate key every</TextBlock> 
+                                <TextBlock VerticalAlignment="Center">Rotate key every</TextBlock> 
                                 <ComboBox Name="GuiComboBoxWgKeyRegenerateDays" 
                                           MinWidth="50" 
                                           Margin="5,0,5,0"/>
