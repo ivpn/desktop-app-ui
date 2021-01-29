@@ -2,6 +2,15 @@
 
 All notable changes to this project will be documented in this file.
 
+## Version 2.12.16 - 2021-01-29
+
+[NEW] Certificate pinning to prevent man-in-the-middle attacks  
+[IMPROVED] Minor UI changes  
+[FIXED] Minor issue with WireGuard key rotation mechanism  
+
+[Download IVPN Client v. 2.12.16](https://cdn.ivpn.net/releases/osx/IVPN-2.12.16.dmg)  
+SHA256: 917da5511e17bce498cb47726363b29bb253b3b3a5711d49cb0367cb2108e471  
+
 ## Version 2.12.10 - 2020-11-12
 
 [FIXED] Removed dependencies from WIFI libraries 
