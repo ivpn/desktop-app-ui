@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file.
 
+## Version 2.12.17 - 2021-02-02
+
+[FIXED] Version 2.12.16 was not starting on some machines  
+
+[Download IVPN Client v. 2.12.17](https://cdn.ivpn.net/releases/osx/IVPN-2.12.17.dmg)  
+SHA256: 0fd09967482f53c801dc55eaf23a88ad341da37f58d70d9c9e24c2e5aeb36c22  
+
 ## Version 2.12.16 - 2021-01-29
 
 [NEW] Certificate pinning to prevent man-in-the-middle attacks  
