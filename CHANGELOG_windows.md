@@ -9,7 +9,7 @@ All notable changes to this project will be documented in this file.
 [IMPROVED] Windows crash when some third-party security software installed  
 [FIXED] Minor issue with WireGuard key rotation mechanism  
 
-[Download IVPN Client v. 2.12.17](https://cdn.ivpn.net/releases/osx/IVPN-2.12.17.dmg)  
+[Download IVPN Client v. 2.12.17](https://cdn.ivpn.net/releases/win/IVPN-Client-v2.12.17.exe)  
 SHA256: 7dce2cd90a2828f308c5c9063776d05af6074d974c57ee69a7ea79030640149a  
 
 ## Version 2.12.9 - 2020-11-11
