@@ -1,3 +1,6 @@
+_This is a legacy project._  
+_Development has been moved to a new repository:_ https://github.com/ivpn/desktop-app-ui2  
+
 # Changelog
 
 All notable changes to this project will be documented in this file.
