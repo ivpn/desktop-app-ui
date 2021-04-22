@@ -1,5 +1,8 @@
 # IVPN Client (Windows/macOS)
 
+_This is a legacy project._  
+_Development has been moved to a new repository:_ https://github.com/ivpn/desktop-app-ui2  
+
 **IVPN Client** is an official IVPN client for Windows and macOS.
 It is a client for  IVPN daemon ([ivpn-desktop-daemon](https://github.com/ivpn/desktop-app-daemon))   
 
